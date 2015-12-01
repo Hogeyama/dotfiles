@@ -1,0 +1,9 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_1='/home/naoki'
+let g:netrw_dirhist_2='/home/naoki/Dropbox'
+let g:netrw_dirhist_3='/home/naoki/Dropbox/pj'
+let g:netrw_dirhist_4='/home/naoki/Dropbox/pj/hs'
+let g:netrw_dirhist_5='/home/naoki/Dropbox/pj/hs/stack'
+let g:netrw_dirhist_6='/home/naoki/Dropbox/pj/hs/stack/sorting'
+let g:netrw_dirhist_7='/home/naoki/Dropbox/pj/hs/stack/sorting/src'
