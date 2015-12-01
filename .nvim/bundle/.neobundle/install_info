@@ -1,2 +1,0 @@
-3.0
-{'neomake': {'checked_time': 1448704449, 'installed_uri': 'https://github.com/benekastah/neomake.git', 'installed_path': '/home/naoki/.nvim/bundle/neomake', 'revisions': {'1448390897': 'c1de90f063957be873faa1c296132688c14f67ec'}, 'updated_time': '1448390897'}, 'neobundle.vim': {'checked_time': 1448630045, 'installed_uri': 'https://github.com/Shougo/neobundle.vim.git', 'installed_path': '/home/naoki/.nvim/bundle/neobundle.vim', 'revisions': {'1448536351': 'f95ac5dc44b4022486fb234dd005891448a347b8'}, 'updated_time': '1448536351'}}
