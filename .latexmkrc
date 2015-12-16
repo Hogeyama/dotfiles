@@ -13,5 +13,4 @@ $pdf_mode         = 2; # 2 -> generates pdf via ps2pdf
 # This enables Skim to chase the update in PDF automatically.
 $pvc_view_file_via_temporary = 0;
 
-# Use Skim as a previewer
-$pdf_previewer    = "xdg-open";
+$pdf_previewer = "xdg-open";

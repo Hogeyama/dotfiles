@@ -1,5 +1,4 @@
 
-"======================================
 "NeoBundle{{{
 if has('vim_starting')
   set runtimepath+=~/.nvim/bundle/neobundle.vim/
@@ -7,7 +6,6 @@ endif
 
 call neobundle#begin(expand('~/.nvim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
-NeoBundle 'Shougo/deoplete.nvim'
 
 filetype plugin indent on
 NeoBundleCheck
@@ -30,7 +28,6 @@ NeoBundle 'kana/vim-submode'
 NeoBundle 'vim-scripts/zoom.vim'
 NeoBundle 'Shougo/unite-outline'
 NeoBundle 'vim-scripts/Align'
-NeoBundle 'glidenote/memolist.vim'
 NeoBundle 'kana/vim-smartinput'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'osyo-manga/vim-textobj-multiblock'
@@ -39,7 +36,6 @@ NeoBundle 'osyo-manga/vim-watchdogs'
 "text-typeとか
 NeoBundle 'lervag/vimtex'
 NeoBundle 'dag/vim2hs'
-NeoBundle 'elzr/vim-json'
 "Motion
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'rhysd/clever-f.vim'
@@ -55,13 +51,12 @@ NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'rcmdnk/vim-markdown'
 "Scheme
 NeoBundle 'losingkeys/vim-niji'
-NeoBundle 'aharisu/vim_goshrepl'
-NeoBundle 'aharisu/vim-gdev'
+"NeoBundle 'aharisu/vim_goshrepl'
+"NeoBundle 'aharisu/vim-gdev'
 "Color Scheme
-NeoBundle 'zsoltf/vim-maui'
-NeoBundle 'djjcast/mirodark'
 NeoBundle 'nanotech/jellybeans.vim'
 NeoBundle 'w0ng/vim-hybrid'
+NeoBundle 'miyakogi/seiya.vim'
 "だめ
 NeoBundle 'benekastah/neomake'
 call neobundle#end()
@@ -241,13 +236,13 @@ call vimfiler#custom#profile('default', 'context', {
 
 ""NERD_tree""{{{
 let NERDTreeWinPos='right'
-let NERDTreeWinSize=40
+let NERDTreeWinSize=32
 let NERDTreeDirArrows=1
 "}}}
 
 ""deoplete neosnippet{{{
 " Use deoplete.
-"let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 1
 " Use smartcase.
 let g:deoplete#enable_smart_case = 1
 " <Tab>で選ぶ
@@ -353,7 +348,7 @@ let g:haskell_shqq          = 0
 let g:haskell_sql           = 0
 let g:haskell_json          = 0
 let g:haskell_xml           = 0
-autocmd FileType haskell setlocal expandtab tabstop=2
+autocmd FileType haskell setlocal expandtab tabstop=2 foldmethod=marker
 autocmd FileType cabal   setlocal expandtab tabstop=4
 "}}}
 
@@ -394,7 +389,7 @@ vmap ib <Plug>(textobj-multiblock-i)
 "}}}
 
 """EasyMotion{{{
-let g:EasyMotion_keys='hklyuionmwertcvbasdgjf'
+let g:EasyMotion_keys='jfkdlamvneioc'      "'adfghjklweuiocvbnm'
 let g:EasyMotion_do_mapping = 0 "Disable default mappings
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_enter_jump_first = 1 "enterで一番目
@@ -431,8 +426,8 @@ nnoremap <C-a> A
 "nnoremap <C-i> I
 noremap J 5j
 noremap K 5k
-noremap H b
-noremap L w
+noremap H B
+noremap L W
 "物理行移動
 nnoremap j gj
 nnoremap k gk
@@ -467,8 +462,8 @@ inoremap <C-h> <left>
 inoremap <C-l> <right>
 "inoremap <expr><C-h> neocomplete#close_popup() . "\<Left>"
 "inoremap <expr><C-l> neocomplete#close_popup() . "\<Right>"
-inoremap <C-b> <esc>lbi
-inoremap <C-n> <esc>lwi
+inoremap <C-b> <esc>lBi
+inoremap <expr><C-n> deoplete#mappings#close_popup()."<Esc>lWi"
 inoremap <C-a> <esc>A
 inoremap <C-o> <esc>o
 "コマンドライン上下
@@ -520,5 +515,8 @@ let @a = "->"
 let @b = "<-"
 let @d = "δ"
 let @s = "Σ"
+
+nnoremap <Space>se :SeiyaEnable<CR>
+nnoremap <Space>sd :SeiyaDisable<CR>
 
 "vim: set et ts=2 sts=2:

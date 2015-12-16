@@ -3,7 +3,6 @@
 # for examples
 
 ########################
-alias open='xdg-open'
 
 # If not running interactively, don't do anything
 case $- in
@@ -116,6 +115,17 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export QSYS_ROOTDIR="/home/naoki/Programs/altera_lite/15.1/quartus/sopc_builder/bin"
+complete -f cowsayls
+cowsayls(){
+	ls $* | cowsay -n
+}
 
-export ALTERAOCLSDKROOT="/home/naoki/Programs/altera_lite/15.1/hld"
+alias open='xdg-open'
+alias gcc-ppc64='powerpc-linux-gnu-gcc -m64 -static'
+alias run-ppc64='qemu-ppc64'
+alias ls='cowsayls'
+
+export PATH=$PATH:/home/naoki/.local/bin
+#export QSYS_ROOTDIR="/home/naoki/Programs/altera_lite/15.1/quartus/sopc_builder/bin"
+#export ALTERAOCLSDKROOT="/home/naoki/Programs/altera_lite/15.1/hld"
+#export QEMU_LD_PREFIX="/home/naoki/x-tools/powerpc64-unknown-linux-gnu/powerpc64-unknown-linux-gnu/"
