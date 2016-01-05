@@ -119,6 +119,9 @@ complete -f cowsayls
 cowsayls(){
 	ls $* | cowsay -n
 }
+ls_(){
+	ls $*
+}
 
 alias open='xdg-open'
 alias gcc-ppc64='powerpc-linux-gnu-gcc -m64 -static'
