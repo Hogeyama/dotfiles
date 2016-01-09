@@ -1,0 +1,95 @@
+%%%packages
+\usepackage{amsmath, amssymb}
+\usepackage{amsthm}
+\usepackage{ascmac}
+\usepackage{enumitem}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{type1cm}
+\usepackage{listings}
+\usepackage{ulem}
+\usepackage{vaucanson-g}
+\usepackage[dvips]{graphicx}
+%%%format
+\setlength{\textwidth}{\fullwidth}
+\setlength{\textheight}{40\baselineskip}
+\addtolength{\textheight}{\topskip}
+\setlength{\voffset}{-0.2in}
+\setlength{\topmargin}{0pt}
+\setlength{\headheight}{0pt}
+\setlength{\headsep}{0pt}
+%%%theorem environments
+\newtheoremstyle{mystyle}
+  {5pt}       % ABOVESPACE
+  {10pt}      % BELOWSPACE
+  {\rmfamily} % BODYFONT
+  {}          % INDENT (empty value is the same as 0pt)
+  {\bfseries} % HEADFONT
+  {.}         % HEADPUNCT
+  {\newline}  % HEADSPACE
+  {}          % CUSTOM-HEAD-SPEC
+\newtheoremstyle{mystyle2}
+  {}          % ABOVESPACE
+  {20pt}      % BELOWSPACE
+  {\rmfamily} % BODYFONT
+  {\parindent}% INDENT (empty value is the same as 0pt)
+  {\bfseries} % HEADFONT
+  {.}         % HEADPUNCT
+  {\newline}  % HEADSPACE
+  {}          % CUSTOM-HEAD-SPEC
+%%%new theorems
+\theoremstyle{mystyle}
+\newtheorem{defi}{定義}[section]
+\newtheorem{theo}{定理}[section]
+\newtheorem{lemm}{補題}[section]
+\newtheorem*{defi*}{定義}
+\newtheorem*{theo*}{定理}
+\newtheorem*{lemm*}{補題}
+\newtheorem*{que}{問}
+\newtheorem*{sol}{解答}
+%
+\theoremstyle{mystyle2}
+\newtheorem*{sol-indented}{解答}
+\newtheorem*{pro}{証明}
+%
+%%%theorem environments
+\newenvironment{dfn}[1][]{\begin{defi}[#1] \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth}}%
+                       {\end{minipage}\end{defi}}
+\newenvironment{dfn*}[1][]{\begin{defi*}[#1] \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth}}%
+                       {\end{minipage}\end{defi*}}
+\newenvironment{thm}[1][]{\begin{theo}[#1] \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth}}%
+                       {\end{minipage}\end{theo}}
+\newenvironment{thm*}[1][]{\begin{theo*}[#1] \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth}}%
+                       {\end{minipage}\end{theo*}}
+\newenvironment{lem}[1][]{\begin{lemm}[#1] \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth}}%
+                       {\end{minipage}\end{lemm}}
+\newenvironment{lem*}[1][]{\begin{lemm*}[#1] \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth}}%
+                       {\end{minipage}\end{lemm*}}
+\newenvironment{question}[1][]{\begin{que}[#1] \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth}}%
+                       {\end{minipage}\end{que}}
+\newenvironment{solve}{\begin{sol} \makebox[1zw]{}\begin{minipage}[t]{.9\textwidth}}%
+                       {\end{minipage}\end{sol}}
+
+\newenvironment{prove}{\begin{pro} \makebox[3zw]{}\begin{minipage}[t]{.9\textwidth - 1\parindent}}%
+                       {\end{minipage}\end{pro}}
+\newenvironment{solve-indented}{\begin{sol-indented} \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth - 1\parindent}}%
+                       {\end{minipage}\end{sol-indented}}
+
+
+%%%enumitem
+%\setlist{nosep}
+%\setlist{labelindent=\parindent} % < Usually a good idea
+%\setlist[itemize,1]{label=$\triangleright$}
+\setlist[enumerate,1]{label=\arabic*., ref=\arabic*}
+\setlist[enumerate,2]{label=\emph{\alph*}, ref=\theenumi.\emph{\alph*}}
+\setlist[enumerate,3]{label=\roman*, ref=\theenumii.\roman*}
+\setlist[description]{font=\bfseries,style=nextline}
+
+
+\newenvironment{que*}[1][]{\noindent\textbf{問}#1.\newline}{}
+\newenvironment{question*}[1][]{\begin{que*}[#1] \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth}}%
+                       {\end{minipage}\end{que*}}
+
