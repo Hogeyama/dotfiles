@@ -36,6 +36,7 @@ NeoBundle 'osyo-manga/vim-watchdogs'
 "text-typeとか
 NeoBundle 'lervag/vimtex'
 NeoBundle 'dag/vim2hs'
+NeoBundle 'elzr/vim-json'
 "Motion
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'rhysd/clever-f.vim'
@@ -48,16 +49,17 @@ NeoBundle 'eagletmt/ghcmod-vim'
 "MarkDown
 NeoBundle 'Bakudankun/previm'
 NeoBundle 'tyru/open-browser.vim'
-NeoBundle 'rcmdnk/vim-markdown'
+NeoBundle 'vim-pandoc/vim-pandoc'
+NeoBundle 'vim-pandoc/vim-pandoc-syntax'
 "Scheme
 NeoBundle 'losingkeys/vim-niji'
-"NeoBundle 'aharisu/vim_goshrepl'
-"NeoBundle 'aharisu/vim-gdev'
 "Color Scheme
+NeoBundle 'zsoltf/vim-maui'
+NeoBundle 'djjcast/mirodark'
 NeoBundle 'nanotech/jellybeans.vim'
 NeoBundle 'w0ng/vim-hybrid'
 NeoBundle 'miyakogi/seiya.vim'
-"だめ
+"
 NeoBundle 'benekastah/neomake'
 call neobundle#end()
 NeoBundleDocs
@@ -141,42 +143,16 @@ set statusline=\ %f\ %y%m%r%w%q\ %=(%l,%v)[%p%%]\ %{fnamemodify(getcwd(),':~')}\
 "}}}
 
 "{{{Neomake
-let g:neomake_airline=0
+let g:neomake_airline=1
 let g:neomake_open_list=1
-let g:neomake_haskell_ghcmodcheck_maker = {
-        \ 'exe': 'ghc-mod-check.sh',
-        \ 'args': ['%'],
-        \ 'mapexpr': 'substitute(v:val, "\n", "", "g")',
-        \ 'errorformat':
-            \ '%-G%\s%#,' .
-            \ '%f:%l:%c:%trror: %m,' .
-            \ '%f:%l:%c:%tarning: %m,'.
-            \ '%f:%l:%c: %trror: %m,' .
-            \ '%f:%l:%c: %tarning: %m,' .
-            \ '%f:%l:%c:%m,' .
-            \ '%E%f:%l:%c:,' .
-            \ '%Z%m'
-        \ }
-let g:neomake_haskell_runghc_maker = {
-    \ 'exe': 'stack',
-    \ 'args': ['runghc', '%'],
-    \ 'errorformat':
-        \ '%-Z %#,'.
-        \ '%W%f:%l:%v: Warning: %m,'.
-        \ '%W%f:%l:%v: Warning:,'.
-        \ '%E%f:%l:%v: %m,'.
-        \ '%E%>%f:%l:%v:,'.
-        \ '%+C  %#%m,'.
-        \ '%W%>%f:%l:%v:,'.
-        \ '%+C  %#%tarning: %m,',
-    \ 'buffer_output': 1
-    \ }
-let g:neomake_haskell_hlint_remove_invalid_entries  = 1
-let g:neomake_haskell_ghcmod_remove_invalid_entries = 1
-let g:neomake_haskell_runghc_remove_invalid_entries = 1
-nnoremap ,g :Neomake ghcmodcheck<CR>
-nnoremap ,l :Neomake hlint<CR>
-nnoremap ,q :NeomakeSh stack runghc %<CR>
+let g:neomake_place_signs=0
+let g:neomake_echo_current_error=0
+let g:neomake_haskell_hlint_remove_invalid_entries=1
+let g:neomake_haskell_ghcmod_remove_invalid_entries=1
+let g:neomake_haskell_runghc_remove_invalid_entries=1
+nnoremap ,g :NeomakeSh ghc-mod-check.sh %<CR>
+"nnoremap ,l :Neomake hlint<CR>               " use :GhcModLint
+"nnoremap ,q :NeomakeSh stack runghc %<CR>    " use :QuickRun
 "}}}
 
 ""QuickFix"{{{
@@ -518,5 +494,6 @@ let @s = "Σ"
 
 nnoremap <Space>se :SeiyaEnable<CR>
 nnoremap <Space>sd :SeiyaDisable<CR>
+
 
 "vim: set et ts=2 sts=2:
