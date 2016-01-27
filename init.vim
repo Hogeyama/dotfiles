@@ -35,8 +35,8 @@ NeoBundle 'osyo-manga/shabadou.vim'
 NeoBundle 'osyo-manga/vim-watchdogs'
 "text-typeとか
 NeoBundle 'lervag/vimtex'
-NeoBundle 'dag/vim2hs'
-NeoBundle 'elzr/vim-json'
+"NeoBundle 'dag/vim2hs'
+NeoBundle 'neovimhaskell/haskell-vim'
 "Motion
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'rhysd/clever-f.vim'
@@ -59,6 +59,13 @@ NeoBundle 'djjcast/mirodark'
 NeoBundle 'nanotech/jellybeans.vim'
 NeoBundle 'w0ng/vim-hybrid'
 NeoBundle 'miyakogi/seiya.vim'
+NeoBundle 'tomasr/molokai'
+NeoBundle 'chriskempson/tomorrow-theme'
+NeoBundle 'chriskempson/vim-tomorrow-theme'
+NeoBundle 'djjcast/mirodark'
+NeoBundle 'sickill/vim-monokai'
+NeoBundle 'ciaranm/inkpot'
+NeoBundle 'vim-scripts/pyte'
 "
 NeoBundle 'benekastah/neomake'
 call neobundle#end()
@@ -78,10 +85,7 @@ let &t_EI.="\e[1 q"
 let &t_te.="\e[0 q"
 "カラースキーム
 set background=dark
-colorscheme jellybeans
-"colorscheme hybrid
-hi Cursor  guifg=#151515 ctermfg=16 guibg=#dadada ctermbg=253
-hi NonText guifg=#000000 ctermfg=16 guibg=#dadada ctermbg=253
+colorscheme hybrid
 "マーカー
 set foldmethod=marker
 "ビープ音無効
@@ -155,7 +159,7 @@ nnoremap ,g :NeomakeSh ghc-mod-check.sh %<CR>
 "nnoremap ,q :NeomakeSh stack runghc %<CR>    " use :QuickRun
 "}}}
 
-""QuickFix"{{{
+"QuickFix"{{{
 let QFix_Height=5
 "above didn't work
 au FileType qf call AdjustWindowHeight(1, 10)
@@ -164,7 +168,7 @@ function! AdjustWindowHeight(minheight, maxheight)
 endfunction
 "}}}
 
-""Unite{{{
+"Unite{{{
 "設定
 call unite#custom#profile('default', 'context', {
   \   'start_insert': 0,
@@ -199,7 +203,7 @@ nnoremap <C-u><C-o> :Unite -vertical outline<CR>
 
 "}}}
 
-""VimFiler{{{
+"VimFiler{{{
 "safe modeを切る
 let g:vimfiler_safe_mode_by_default = 0
 "デフォルトのエクスプローラーにする
@@ -210,13 +214,13 @@ call vimfiler#custom#profile('default', 'context', {
       \ })
 "}}}
 
-""NERD_tree""{{{
+"NERD_tree"{{{
 let NERDTreeWinPos='right'
 let NERDTreeWinSize=32
 let NERDTreeDirArrows=1
 "}}}
 
-""deoplete neosnippet{{{
+"deoplete neosnippet{{{
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
 " Use smartcase.
@@ -243,7 +247,7 @@ smap <C-f> <Plug>(neosnippet_expand_or_jump)
 xmap <C-f> <Plug>(neosnippet_expand_target)
 "}}}
 
-""QuickRun{{{
+"QuickRun{{{
 let g:quickrun_config = {}
 let g:quickrun_config = {
   \ '_' : {
@@ -268,12 +272,16 @@ let g:quickrun_config = {
   \ 'cmdopt' : 'runghc',
   \ 'exec' : '%c %o %s'
   \},
+  \ 'pandoc' : {
+  \ 'command' : 'pandoc',
+  \ 'cmdopt' : '-f markdown+tex_math_double_backslash+lists_without_preceding_blankline --latex-engine=xelatex',
+  \ 'exec' : '%c %s %o -s -o output.tex'
+  \ },
   \}
 call watchdogs#setup(g:quickrun_config)
-
 "}}}
 
-"""submode{{{
+"submode{{{
 call submode#enter_with('winsize', 'n', '', 'z>', '<C-w>>')
 call submode#enter_with('winsize', 'n', '', 'z<', '<C-w><')
 call submode#enter_with('winsize', 'n', '', 'z+', '<C-w>-')
@@ -284,7 +292,7 @@ call submode#map('winsize', 'n', '', '+', '<C-w>-')
 call submode#map('winsize', 'n', '', '-', '<C-w>+')
 "}}}
 
-""smartinput"{{{
+"smartinput{{{
 call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
 call smartinput#define_rule({
   \   'at'    : '{\%#}',
@@ -299,11 +307,11 @@ call smartinput#define_rule({
             \   'input' : '<Space><Space><Left>',
             \   })"}}}
 
-""C"{{{
+"C"{{{
 autocmd FileType c setlocal expandtab tabstop=4
 "}}}
 
-""Haskell"{{{
+"Haskell"{{{
 nnoremap ,t :update!<CR>:GhcModType<CR>
 nnoremap ,T :update!<CR>:GhcModTypeInsert<CR>
 nnoremap ,i :update!<CR>:GhcModInfo<CR>
@@ -328,21 +336,29 @@ autocmd FileType haskell setlocal expandtab tabstop=2 foldmethod=marker
 autocmd FileType cabal   setlocal expandtab tabstop=4
 "}}}
 
-"""LaTeX{{{
+"LaTeX{{{
+let g:vimtex_view_general_viewer = 'apvlv'
 au BufRead,BufNewFile *.tex set filetype=tex
 let g:vimtex_complete_close_braces = 1
-let g:vimtex_latexmk_options = ''
+let g:vimtex_latexmk_options = '-xelatex'
+
 "有用そう
 "   <localleader>lY  |<plug>(vimtex-labels-toggle)|        `n`
 "   <localleader>ll  |<plug>(vimtex-compile-toggle)|       `n`
 "   <localleader>lk  |<plug>(vimtex-stop)|                 `n`
 "}}}
 
-"""MarkDown{{{
-au BufRead,BufNewFile *.md set filetype=markdown
-autocmd FileType markdown setlocal et sw=2 sts=2 foldmethod=marker
+"MarkDown{{{
+augroup pandoc_syntax
+    au! BufNewFile,BufFilePRe,BufRead *.md set filetype=markdown.pandoc
+augroup END
+autocmd FileType pandoc setlocal et sw=2 sts=2 foldmethod=marker
 let g:previm_enable_realtime = 1
 let g:vim_markdown_math=1
+
+let g:pandoc#folding#mode='marker'
+let g:pandoc#syntax#conceal#use=0
+let g:pandoc#modules#disabled = ["folding"]
 "}}}
 
 ""scheme{{{
@@ -494,6 +510,5 @@ let @s = "Σ"
 
 nnoremap <Space>se :SeiyaEnable<CR>
 nnoremap <Space>sd :SeiyaDisable<CR>
-
 
 "vim: set et ts=2 sts=2:
