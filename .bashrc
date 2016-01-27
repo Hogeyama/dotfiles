@@ -89,7 +89,9 @@ fi
 # some more ls aliases
 alias ll='ls -alF'
 alias la='ls -A'
-alias l='ls -CF'
+alias l='ls_ -CF'
+alias ll_='ls_ -alF'
+alias la_='ls_ -A'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -127,6 +129,9 @@ alias open='xdg-open'
 alias gcc-ppc64='powerpc-linux-gnu-gcc -m64 -static'
 alias run-ppc64='qemu-ppc64'
 alias ls='cowsayls'
+alias rm-latex-subproducts='rm *.aux *.dvi *.synctex.gz *.ps *.fls *.fdb_latexmk'
+alias pandoc-md='pandoc -f markdown+tex_math_double_backslash+lists_without_preceding_blankline --latex-engine=xelatex'
+
 
 export PATH=$PATH:/home/naoki/.local/bin
 #export QSYS_ROOTDIR="/home/naoki/Programs/altera_lite/15.1/quartus/sopc_builder/bin"
