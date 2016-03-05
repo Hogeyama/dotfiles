@@ -51,26 +51,32 @@
 \newtheorem*{pro}{証明}
 %
 %%%theorem environments
-\newenvironment{dfn}[1][]{\begin{defi}[#1] \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth}}%
+
+\ifxetex %\jsZw
+\else
+  \newcommand{\jsZw}{zw}
+\fi
+
+\newenvironment{dfn}[1][]{\begin{defi}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
                        {\end{minipage}\end{defi}}
-\newenvironment{dfn*}[1][]{\begin{defi*}[#1] \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth}}%
+\newenvironment{dfn*}[1][]{\begin{defi*}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
                        {\end{minipage}\end{defi*}}
-\newenvironment{thm}[1][]{\begin{theo}[#1] \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth}}%
+\newenvironment{thm}[1][]{\begin{theo}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
                        {\end{minipage}\end{theo}}
-\newenvironment{thm*}[1][]{\begin{theo*}[#1] \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth}}%
+\newenvironment{thm*}[1][]{\begin{theo*}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
                        {\end{minipage}\end{theo*}}
-\newenvironment{lem}[1][]{\begin{lemm}[#1] \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth}}%
+\newenvironment{lem}[1][]{\begin{lemm}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
                        {\end{minipage}\end{lemm}}
-\newenvironment{lem*}[1][]{\begin{lemm*}[#1] \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth}}%
+\newenvironment{lem*}[1][]{\begin{lemm*}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
                        {\end{minipage}\end{lemm*}}
-\newenvironment{question}[1][]{\begin{que}[#1] \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth}}%
+\newenvironment{question}[1][]{\begin{que}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
                        {\end{minipage}\end{que}}
-\newenvironment{solve}{\begin{sol} \makebox[1zw]{}\begin{minipage}[t]{.9\textwidth}}%
+\newenvironment{solve}{\begin{sol} \makebox[1\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
                        {\end{minipage}\end{sol}}
 
-\newenvironment{prove}{\begin{pro} \makebox[3zw]{}\begin{minipage}[t]{.9\textwidth - 1\parindent}}%
+\newenvironment{prove}{\begin{pro} \makebox[3\jsZw]{}\begin{minipage}[t]{.9\textwidth - 1\parindent}}%
                        {\end{minipage}\end{pro}}
-\newenvironment{solve-indented}{\begin{sol-indented} \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth - 1\parindent}}%
+\newenvironment{solve-indented}{\begin{sol-indented} \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth - 1\parindent}}%
                        {\end{minipage}\end{sol-indented}}
 
 
@@ -284,6 +290,7 @@ $endif$
 %}}}
 
 \begin{document}
+\setlength{\abovedisplayskip}{0pt}
 $if(title)$
 \maketitle
 $endif$
