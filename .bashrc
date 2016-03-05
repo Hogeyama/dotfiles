@@ -74,6 +74,8 @@ xterm*|rxvt*)
     ;;
 esac
 
+PS1="\n\[\e[1;34m\]\u@\h\[\e[00m\] \[\e[1;35m\]\w\[\e[00m\] \n\$ "
+
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -85,13 +87,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
-
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls_ -CF'
-alias ll_='ls_ -alF'
-alias la_='ls_ -A'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -117,23 +112,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-complete -f cowsayls
-cowsayls(){
-	ls $* | cowsay -n
-}
-ls_(){
-	ls $*
-}
-
-alias open='xdg-open'
-alias gcc-ppc64='powerpc-linux-gnu-gcc -m64 -static'
-alias run-ppc64='qemu-ppc64'
-alias ls='cowsayls'
-alias rm-latex-subproducts='rm *.aux *.dvi *.synctex.gz *.ps *.fls *.fdb_latexmk'
-alias pandoc-md='pandoc -f markdown+tex_math_double_backslash+lists_without_preceding_blankline --latex-engine=xelatex'
-
-
-export PATH=$PATH:/home/naoki/.local/bin
 #export QSYS_ROOTDIR="/home/naoki/Programs/altera_lite/15.1/quartus/sopc_builder/bin"
 #export ALTERAOCLSDKROOT="/home/naoki/Programs/altera_lite/15.1/hld"
 #export QEMU_LD_PREFIX="/home/naoki/x-tools/powerpc64-unknown-linux-gnu/powerpc64-unknown-linux-gnu/"
