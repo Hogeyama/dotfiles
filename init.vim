@@ -1,75 +1,72 @@
 
-"NeoBundle{{{
+"dein{{{
 if has('vim_starting')
-  set runtimepath+=~/.nvim/bundle/neobundle.vim/
+  set runtimepath+=~/.nvim/dein/repos/github.com/Shougo/dein.vim/
 endif
 
-call neobundle#begin(expand('~/.nvim/bundle/'))
-NeoBundleFetch 'Shougo/neobundle.vim'
+call dein#begin(expand('~/.cache/dein'))
 
 filetype plugin indent on
-NeoBundleCheck
 nnoremap <Space>nb :NeoBundle
 
-NeoBundle 'majutsushi/tagbar'
+call dein#add('majutsushi/tagbar')
 "essential
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/vimfiler'
-NeoBundle 'Shougo/vimshell'
-NeoBundle 'Shougo/vimproc'
-NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'Shougo/deoplete.nvim'
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'kana/vim-submode'
+call dein#add('Shougo/unite.vim')
+call dein#add('Shougo/vimfiler')
+call dein#add('Shougo/vimshell')
+call dein#add('Shougo/vimproc')
+call dein#add('Shougo/neomru.vim')
+call dein#add('Shougo/deoplete.nvim')
+call dein#add('Shougo/neosnippet')
+call dein#add('Shougo/neosnippet-snippets')
+call dein#add('thinca/vim-quickrun')
+call dein#add('scrooloose/nerdtree')
+call dein#add('kana/vim-submode')
 "便利,拡張
-NeoBundle 'vim-scripts/zoom.vim'
-NeoBundle 'Shougo/unite-outline'
-NeoBundle 'vim-scripts/Align'
-NeoBundle 'kana/vim-smartinput'
-NeoBundle 'kana/vim-textobj-user'
-NeoBundle 'osyo-manga/vim-textobj-multiblock'
-NeoBundle 'osyo-manga/shabadou.vim'
-NeoBundle 'osyo-manga/vim-watchdogs'
+call dein#add('vim-scripts/zoom.vim')
+call dein#add('Shougo/unite-outline')
+call dein#add('vim-scripts/Align')
+call dein#add('kana/vim-smartinput')
+call dein#add('kana/vim-textobj-user')
+call dein#add('osyo-manga/vim-textobj-multiblock')
+call dein#add('osyo-manga/shabadou.vim')
+call dein#add('osyo-manga/vim-watchdogs')
 "text-typeとか
-NeoBundle 'lervag/vimtex'
-"NeoBundle 'dag/vim2hs'
-NeoBundle 'neovimhaskell/haskell-vim'
+call dein#add('lervag/vimtex')
+"call dein#add('dag/vim2hs')
+call dein#add('neovimhaskell/haskell-vim')
 "Motion
-NeoBundle 'Lokaltog/vim-easymotion'
-NeoBundle 'rhysd/clever-f.vim'
+call dein#add('Lokaltog/vim-easymotion')
+call dein#add('rhysd/clever-f.vim')
 "Haskell
-NeoBundle 'thinca/vim-ref'
-NeoBundle 'ujihisa/ref-hoogle'
-NeoBundle 'eagletmt/unite-haddock'
-NeoBundle 'eagletmt/neco-ghc'
-NeoBundle 'eagletmt/ghcmod-vim'
+call dein#add('thinca/vim-ref')
+call dein#add('ujihisa/ref-hoogle')
+call dein#add('eagletmt/unite-haddock')
+call dein#add('eagletmt/neco-ghc')
+call dein#add('eagletmt/ghcmod-vim')
 "MarkDown
-NeoBundle 'Bakudankun/previm'
-NeoBundle 'tyru/open-browser.vim'
-NeoBundle 'vim-pandoc/vim-pandoc'
-NeoBundle 'vim-pandoc/vim-pandoc-syntax'
+call dein#add('Bakudankun/previm')
+call dein#add('tyru/open-browser.vim')
+call dein#add('vim-pandoc/vim-pandoc')
+call dein#add('vim-pandoc/vim-pandoc-syntax')
 "Scheme
-NeoBundle 'losingkeys/vim-niji'
+call dein#add('losingkeys/vim-niji')
 "Color Scheme
-NeoBundle 'zsoltf/vim-maui'
-NeoBundle 'djjcast/mirodark'
-NeoBundle 'nanotech/jellybeans.vim'
-NeoBundle 'w0ng/vim-hybrid'
-NeoBundle 'miyakogi/seiya.vim'
-NeoBundle 'tomasr/molokai'
-NeoBundle 'chriskempson/tomorrow-theme'
-NeoBundle 'chriskempson/vim-tomorrow-theme'
-NeoBundle 'djjcast/mirodark'
-NeoBundle 'sickill/vim-monokai'
-NeoBundle 'ciaranm/inkpot'
-NeoBundle 'vim-scripts/pyte'
+call dein#add('zsoltf/vim-maui')
+call dein#add('djjcast/mirodark')
+call dein#add('nanotech/jellybeans.vim')
+call dein#add('w0ng/vim-hybrid')
+call dein#add('miyakogi/seiya.vim')
+call dein#add('tomasr/molokai')
+call dein#add('chriskempson/tomorrow-theme')
+call dein#add('chriskempson/vim-tomorrow-theme')
+call dein#add('djjcast/mirodark')
+call dein#add('sickill/vim-monokai')
+call dein#add('ciaranm/inkpot')
+call dein#add('vim-scripts/pyte')
 "
-NeoBundle 'benekastah/neomake'
-call neobundle#end()
-NeoBundleDocs
+call dein#add('benekastah/neomake')
+call dein#end()
 "}}}
 
 "各種設定"{{{
@@ -85,7 +82,7 @@ let &t_EI.="\e[1 q"
 let &t_te.="\e[0 q"
 "カラースキーム
 set background=dark
-colorscheme hybrid
+colorscheme maui
 "マーカー
 set foldmethod=marker
 "ビープ音無効
@@ -146,28 +143,6 @@ autocmd QuickFixCmdPost *grep* cwindow
 set statusline=\ %f\ %y%m%r%w%q\ %=(%l,%v)[%p%%]\ %{fnamemodify(getcwd(),':~')}\ \ \ 
 "}}}
 
-"{{{Neomake
-let g:neomake_airline=1
-let g:neomake_open_list=1
-let g:neomake_place_signs=0
-let g:neomake_echo_current_error=0
-let g:neomake_haskell_hlint_remove_invalid_entries=1
-let g:neomake_haskell_ghcmod_remove_invalid_entries=1
-let g:neomake_haskell_runghc_remove_invalid_entries=1
-nnoremap ,g :NeomakeSh ghc-mod-check.sh %<CR>
-"nnoremap ,l :Neomake hlint<CR>               " use :GhcModLint
-"nnoremap ,q :NeomakeSh stack runghc %<CR>    " use :QuickRun
-"}}}
-
-"QuickFix"{{{
-let QFix_Height=5
-"above didn't work
-au FileType qf call AdjustWindowHeight(1, 10)
-function! AdjustWindowHeight(minheight, maxheight)
-  exe max([min([line("$")+1, a:maxheight]), a:minheight]) . "wincmd _"
-endfunction
-"}}}
-
 "Unite{{{
 "設定
 call unite#custom#profile('default', 'context', {
@@ -201,6 +176,60 @@ nnoremap <expr><silent> <C-c> quickrun#is_running() ?
 nnoremap <C-u><C-o> :Unite -vertical outline<CR>
 
 
+"}}}
+
+"QuickFix"{{{
+let QFix_Height=5
+"above didn't work
+au FileType qf call AdjustWindowHeight(1, 10)
+function! AdjustWindowHeight(minheight, maxheight)
+  exe max([min([line("$")+1, a:maxheight]), a:minheight]) . "wincmd _"
+endfunction
+"}}}
+
+"QuickRun{{{
+let g:quickrun_config = {}
+let g:quickrun_config = {
+  \ '_' : {
+  \ 'runner/vimproc/updatetime' : 40,
+  \ 'outputter' : 'quickfix',
+  \ 'hook/copen/enable_exit' : 1,
+  \ 'runner' : 'vimproc',
+  \ },
+  \ 'markdown' : {
+  \ 'command' : 'pandoc',
+  \ 'exec' : '%c %s %o',
+  \ 'cmdopt' : '-f markdown+raw_tex-blank_before_blockquote --filter noverbatim --template=default -o output.tex',
+  \ 'outputter': 'null',
+  \ 'hook/copen/enable_exit' : 0,
+  \},
+  \ 'scheme' : {
+  \ 'command' : 'guile',
+  \ 'cmdopt' : '--no-auto-compile'
+  \ },
+  \ 'haskell' : {
+  \ 'command' : 'stack',
+  \ 'cmdopt' : 'runghc',
+  \ 'exec' : '%c %o %s'
+  \},
+  \ 'pandoc' : {
+  \ 'command' : 'pandoc',
+  \ 'cmdopt' : '-f markdown+tex_math_double_backslash+lists_without_preceding_blankline --latex-engine=xelatex',
+  \ 'exec' : '%c %s %o -s -o output.tex'
+  \ },
+  \}
+call watchdogs#setup(g:quickrun_config)
+"}}}
+
+"{{{Neomake
+let g:neomake_airline=1
+let g:neomake_open_list=1
+let g:neomake_place_signs=0
+let g:neomake_echo_current_error=0
+let g:neomake_haskell_hlint_remove_invalid_entries=1
+let g:neomake_haskell_ghcmod_remove_invalid_entries=1
+let g:neomake_haskell_runghc_remove_invalid_entries=1
+nnoremap ,g :NeomakeSh ghc-mod-check.sh %<CR>
 "}}}
 
 "VimFiler{{{
@@ -245,40 +274,7 @@ endif
 imap <C-f> <Plug>(neosnippet_expand_or_jump)
 smap <C-f> <Plug>(neosnippet_expand_or_jump)
 xmap <C-f> <Plug>(neosnippet_expand_target)
-"}}}
-
-"QuickRun{{{
-let g:quickrun_config = {}
-let g:quickrun_config = {
-  \ '_' : {
-  \ 'runner/vimproc/updatetime' : 40,
-  \ 'outputter' : 'quickfix',
-  \ 'hook/copen/enable_exit' : 1,
-  \ 'runner' : 'vimproc',
-  \ },
-  \ 'markdown' : {
-  \ 'command' : 'pandoc',
-  \ 'exec' : '%c %s %o',
-  \ 'cmdopt' : '-f markdown+raw_tex-blank_before_blockquote --filter noverbatim --template=default -o output.tex',
-  \ 'outputter': 'null',
-  \ 'hook/copen/enable_exit' : 0,
-  \},
-  \ 'scheme' : {
-  \ 'command' : 'guile',
-  \ 'cmdopt' : '--no-auto-compile'
-  \ },
-  \ 'haskell' : {
-  \ 'command' : 'stack',
-  \ 'cmdopt' : 'runghc',
-  \ 'exec' : '%c %o %s'
-  \},
-  \ 'pandoc' : {
-  \ 'command' : 'pandoc',
-  \ 'cmdopt' : '-f markdown+tex_math_double_backslash+lists_without_preceding_blankline --latex-engine=xelatex',
-  \ 'exec' : '%c %s %o -s -o output.tex'
-  \ },
-  \}
-call watchdogs#setup(g:quickrun_config)
+let g:neosnippet#snippets_directory = '~/.nvim/snippets'
 "}}}
 
 "submode{{{
@@ -348,17 +344,30 @@ let g:vimtex_latexmk_options = '-xelatex'
 "   <localleader>lk  |<plug>(vimtex-stop)|                 `n`
 "}}}
 
-"MarkDown{{{
+"MarkDown/Pandoc{{{
 augroup pandoc_syntax
-    au! BufNewFile,BufFilePRe,BufRead *.md set filetype=markdown.pandoc
+    au! BufNewFile,BufFilePRe,BufRead *.md set filetype=pandoc
 augroup END
 autocmd FileType pandoc setlocal et sw=2 sts=2 foldmethod=marker
-let g:previm_enable_realtime = 1
-let g:vim_markdown_math=1
+autocmd FileType pandoc let &spell = 0
 
-let g:pandoc#folding#mode='marker'
-let g:pandoc#syntax#conceal#use=0
+let g:previm_enable_realtime = 1
+let g:vim_markdown_math = 1
+let g:pandoc#folding#mode = 'marker'
+let g:pandoc#syntax#conceal#use = 0
 let g:pandoc#modules#disabled = ["folding"]
+
+"XXX
+let g:pandoc_md_out='out.tex'
+command! PandocMd call PandocMdFun(<f-args>)
+function! PandocMdFun(...) abort
+  if a:0 == 0
+    let s = 'pandoc-md ' . expand('%') . ' -o '. g:pandoc_md_out
+  else
+    let s = 'pandoc-md ' . expand('%') . ' -o '. a:0
+  endif
+  call neomake#Sh(s)
+endfunction
 "}}}
 
 ""scheme{{{
@@ -510,5 +519,15 @@ let @s = "Σ"
 
 nnoremap <Space>se :SeiyaEnable<CR>
 nnoremap <Space>sd :SeiyaDisable<CR>
+tnoremap <Esc> <C-\><C-n>
+tnoremap jk    <C-\><C-n>
+tnoremap zh    <C-\><C-n><C-w>h
+tnoremap zj    <C-\><C-n><C-w>j
+tnoremap zk    <C-\><C-n><C-w>k
+tnoremap zl    <C-\><C-n><C-w>l
+
+let $BASH_ENV='~/.bash_aliases'
+
+
 
 "vim: set et ts=2 sts=2:
