@@ -7,9 +7,7 @@ endif
 call dein#begin(expand('~/.cache/dein'))
 
 filetype plugin indent on
-nnoremap <Space>nb :NeoBundle
 
-call dein#add('majutsushi/tagbar')
 "essential
 call dein#add('Shougo/unite.vim')
 call dein#add('Shougo/vimfiler')
@@ -33,7 +31,6 @@ call dein#add('osyo-manga/shabadou.vim')
 call dein#add('osyo-manga/vim-watchdogs')
 "text-typeとか
 call dein#add('lervag/vimtex')
-"call dein#add('dag/vim2hs')
 call dein#add('neovimhaskell/haskell-vim')
 "Motion
 call dein#add('Lokaltog/vim-easymotion')
@@ -196,17 +193,6 @@ let g:quickrun_config = {
   \ 'hook/copen/enable_exit' : 1,
   \ 'runner' : 'vimproc',
   \ },
-  \ 'markdown' : {
-  \ 'command' : 'pandoc',
-  \ 'exec' : '%c %s %o',
-  \ 'cmdopt' : '-f markdown+raw_tex-blank_before_blockquote --filter noverbatim --template=default -o output.tex',
-  \ 'outputter': 'null',
-  \ 'hook/copen/enable_exit' : 0,
-  \},
-  \ 'scheme' : {
-  \ 'command' : 'guile',
-  \ 'cmdopt' : '--no-auto-compile'
-  \ },
   \ 'haskell' : {
   \ 'command' : 'stack',
   \ 'cmdopt' : 'runghc',
@@ -229,7 +215,8 @@ let g:neomake_echo_current_error=0
 let g:neomake_haskell_hlint_remove_invalid_entries=1
 let g:neomake_haskell_ghcmod_remove_invalid_entries=1
 let g:neomake_haskell_runghc_remove_invalid_entries=1
-nnoremap ,g :NeomakeSh ghc-mod-check.sh %<CR>
+nnoremap ,g :update!<CR>:NeomakeSh ghc-mod check %<CR>
+nnoremap ! :NeomakeSh 
 "}}}
 
 "VimFiler{{{
@@ -332,6 +319,12 @@ autocmd FileType haskell setlocal expandtab tabstop=2 foldmethod=marker
 autocmd FileType cabal   setlocal expandtab tabstop=4
 "}}}
 
+"OCaml"{{{
+let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+execute "set rtp+=" . g:opamshare . "/merlin/vim"
+execute "helptags " . g:opamshare . "/merlin/vim/doc"
+"}}}
+
 "LaTeX{{{
 let g:vimtex_view_general_viewer = 'apvlv'
 au BufRead,BufNewFile *.tex set filetype=tex
@@ -357,20 +350,15 @@ let g:pandoc#folding#mode = 'marker'
 let g:pandoc#syntax#conceal#use = 0
 let g:pandoc#modules#disabled = ["folding"]
 
-"XXX
 let g:pandoc_md_out='out.tex'
 command! PandocMd call PandocMdFun(<f-args>)
 function! PandocMdFun(...) abort
-  if a:0 == 0
-    let s = 'pandoc-md ' . expand('%') . ' -o '. g:pandoc_md_out
-  else
-    let s = 'pandoc-md ' . expand('%') . ' -o '. a:0
-  endif
+  let s = 'pandoc-md ' . expand('%') . ' -o '. (a:0 == 0? g:pandoc_md_out: a:0)
   call neomake#Sh(s)
 endfunction
 "}}}
 
-""scheme{{{
+"scheme{{{
 autocmd FileType scheme setlocal iskeyword=@,33,35-38,42-43,45-58,60-64,94,_,126
 " 33 !
 " 35-38 #$%&
@@ -382,29 +370,29 @@ autocmd FileType scheme setlocal iskeyword=@,33,35-38,42-43,45-58,60-64,94,_,126
 autocmd FileType scheme setlocal et ts=2 sts=2 sw=2
 "}}}
 
-"""multiblock{{{
+"multiblock{{{
 omap ab <Plug>(textobj-multiblock-a)
 omap ib <Plug>(textobj-multiblock-i)
 vmap ab <Plug>(textobj-multiblock-a)
 vmap ib <Plug>(textobj-multiblock-i)
 "}}}
 
-"""EasyMotion{{{
+"EasyMotion{{{
 let g:EasyMotion_keys='jfkdlamvneioc'      "'adfghjklweuiocvbnm'
 let g:EasyMotion_do_mapping = 0 "Disable default mappings
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_enter_jump_first = 1 "enterで一番目
 "}}}
 
-"""clever-f.vim{{{
+"clever-f.vim{{{
 let g:clever_f_smart_case = 1
 let g:clever_f_chars_match_any_signs = ';'
 "}}}
 
-"""キーマッピング{{{
+"キーマッピング{{{
 nnoremap dk ddk
 nnoremap dj dd
-nnoremap Y  C<Esc>p
+nnoremap Y  y$
 "<C-d> $
 inoremap <C-d> $
 "ttでtabnew
@@ -517,6 +505,7 @@ let @b = "<-"
 let @d = "δ"
 let @s = "Σ"
 
+nnoremap .. :cd..<CR>
 nnoremap <Space>se :SeiyaEnable<CR>
 nnoremap <Space>sd :SeiyaDisable<CR>
 tnoremap <Esc> <C-\><C-n>
@@ -527,6 +516,7 @@ tnoremap zk    <C-\><C-n><C-w>k
 tnoremap zl    <C-\><C-n><C-w>l
 
 let $BASH_ENV='~/.bash_aliases'
+
 
 
 
