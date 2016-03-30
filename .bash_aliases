@@ -13,8 +13,6 @@ cd-ls(){
 
 alias cd='cd-ls'
 alias ls='cowsayls'
-alias pandoc-md='pandoc -s -f markdown+tex_math_double_backslash+lists_without_preceding_blankline+ignore_line_breaks --latex-engine=xelatex'
-alias open='xdg-open'
 
 # some more ls aliases
 alias ll='ls -alF'

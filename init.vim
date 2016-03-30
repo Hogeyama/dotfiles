@@ -295,14 +295,15 @@ autocmd FileType c setlocal expandtab tabstop=4
 "}}}
 
 "Haskell"{{{
-nnoremap ,t :update!<CR>:GhcModType<CR>
-nnoremap ,T :update!<CR>:GhcModTypeInsert<CR>
-nnoremap ,i :update!<CR>:GhcModInfo<CR>
-nnoremap ,I :update!<CR>:GhcModInfoPreview<CR>
-nnoremap ,w :update!<CR>:GhcModCheckAsync<CR>
-nnoremap ,l :update!<CR>:GhcModLint<CR>
+autocmd FileType haskell setlocal expandtab tabstop=2 foldmethod=marker
+autocmd FileType haskell nnoremap <buffer> ,t :update!<CR>:GhcModType<CR>
+autocmd FileType haskell nnoremap <buffer> ,T :update!<CR>:GhcModTypeInsert<CR>
+autocmd FileType haskell nnoremap <buffer> ,i :update!<CR>:GhcModInfo<CR>
+autocmd FileType haskell nnoremap <buffer> ,I :update!<CR>:GhcModInfoPreview<CR>
+autocmd FileType haskell nnoremap <buffer> ,w :update!<CR>:GhcModCheckAsync<CR>
+autocmd FileType haskell nnoremap <buffer> ,l :update!<CR>:GhcModLint<CR>
+autocmd FileType haskell nnoremap <buffer> ,h :Unite hoogle<CR>
 autocmd FileType haskell nnoremap <buffer> ,c :noh<CR>:GhcModTypeClear<CR>
-nnoremap ,h :Unite hoogle<CR>
 call unite#custom_default_action('source/hoogle', 'preview')
 let g:haskell_conceal       = 0
 let g:haskell_tabular       = 0
@@ -315,14 +316,23 @@ let g:haskell_shqq          = 0
 let g:haskell_sql           = 0
 let g:haskell_json          = 0
 let g:haskell_xml           = 0
-autocmd FileType haskell setlocal expandtab tabstop=2 foldmethod=marker
 autocmd FileType cabal   setlocal expandtab tabstop=4
 "}}}
 
 "OCaml"{{{
 let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+autocmd FileType ocaml nnoremap <buffer> ,t :update!<CR>:MerlinTypeOf<CR>
+autocmd FileType ocaml vnoremap <buffer> ,t :MerlinTypeOfSel<CR>
+autocmd FileType ocaml nnoremap <buffer> >  :MerlinGrowEnclosing<CR>
+autocmd FileType ocaml nnoremap <buffer> <  :MerlinShrinkEnclosing<CR>
+
+autocmd FileType ocaml nnoremap <buffer> ,o :update!<CR>:MerlinOutline<CR>
+autocmd FileType ocaml nnoremap <buffer> ,w :update!<CR>:MerlinErrorCheck<CR>
+autocmd FileType ocaml nnoremap <buffer> <C-j> :update!<CR>:MerlinLocate<CR>
+autocmd FileType ocaml nnoremap <buffer> ,c :noh<CR>a<Esc>
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
 execute "helptags " . g:opamshare . "/merlin/vim/doc"
+
 "}}}
 
 "LaTeX{{{
@@ -360,13 +370,6 @@ endfunction
 
 "scheme{{{
 autocmd FileType scheme setlocal iskeyword=@,33,35-38,42-43,45-58,60-64,94,_,126
-" 33 !
-" 35-38 #$%&
-" 42-43 *+
-" 45-58 -./[0-9]:
-" 60-64 <=>?@
-" 94 ^
-" 126 ~
 autocmd FileType scheme setlocal et ts=2 sts=2 sw=2
 "}}}
 
@@ -378,10 +381,10 @@ vmap ib <Plug>(textobj-multiblock-i)
 "}}}
 
 "EasyMotion{{{
-let g:EasyMotion_keys='jfkdlamvneioc'      "'adfghjklweuiocvbnm'
-let g:EasyMotion_do_mapping = 0 "Disable default mappings
+let g:EasyMotion_keys='jfkdlamvneioc'
+let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_smartcase = 1
-let g:EasyMotion_enter_jump_first = 1 "enterで一番目
+let g:EasyMotion_enter_jump_first = 1
 "}}}
 
 "clever-f.vim{{{
@@ -514,10 +517,12 @@ tnoremap zh    <C-\><C-n><C-w>h
 tnoremap zj    <C-\><C-n><C-w>j
 tnoremap zk    <C-\><C-n><C-w>k
 tnoremap zl    <C-\><C-n><C-w>l
+tnoremap <C-k> <Up>
+tnoremap <C-j> <Down>
+tnoremap <C-h> <Left>
+tnoremap <C-l> <Right>
 
-let $BASH_ENV='~/.bash_aliases'
+let $BASH_ENV='~/.bashenv'
 
 
-
-
-"vim: set et ts=2 sts=2:
+"vim: set et ts=2 sts=2 tw=2:

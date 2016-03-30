@@ -101,6 +101,9 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+if [ -f ~/.bashenv ]; then
+    . ~/.bashenv
+fi
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -112,6 +115,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
+#{{{hoge
 #export QSYS_ROOTDIR="/home/naoki/Programs/altera_lite/15.1/quartus/sopc_builder/bin"
 #export ALTERAOCLSDKROOT="/home/naoki/Programs/altera_lite/15.1/hld"
-#export QEMU_LD_PREFIX="/home/naoki/x-tools/powerpc64-unknown-linux-gnu/powerpc64-unknown-linux-gnu/"
+#export QEMU_LD_PREFIX="/home/naoki/x-tools/powerpc64-unknown-linux-gnu/powerpc64-unknown-linux-gnu/"#}}}
