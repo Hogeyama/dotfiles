@@ -1,73 +1,74 @@
 ﻿
-"======================================
-"NeoBundle{{{
-set nocompatible
-filetype off
-
+"dein{{{
 if has('vim_starting')
- set runtimepath+=~/.vim/bundle/neobundle.vim
+  set runtimepath+=~/.nvim/dein/repos/github.com/Shougo/dein.vim/
 endif
-nnoremap <Space>nb :NeoBundle
 
-call neobundle#begin(expand('~/.vim/bundle/'))
+call dein#begin(expand('~/.vim/dein'))
 
-NeoBundleFetch 'Shougo/neobundle.vim'
+filetype plugin indent on
 
-NeoBundle 'majutsushi/tagbar'
 "essential
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/vimfiler'
-NeoBundle 'Shougo/vimshell'
-NeoBundle 'Shougo/vimproc'
-NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'Shougo/neocomplete'
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'kana/vim-submode'
+call dein#add('Shougo/unite.vim')
+call dein#add('Shougo/vimfiler')
+call dein#add('Shougo/vimshell')
+call dein#add('Shougo/vimproc')
+call dein#add('Shougo/neomru.vim')
+call dein#add('Shougo/neocomplete.vim')
+call dein#add('Shougo/neosnippet')
+call dein#add('Shougo/neosnippet-snippets')
+call dein#add('thinca/vim-quickrun')
+call dein#add('scrooloose/nerdtree')
+call dein#add('kana/vim-submode')
 "便利,拡張
-NeoBundle 'vim-scripts/zoom.vim'
-NeoBundle 'Shougo/unite-outline'
-NeoBundle 'vim-scripts/Align'
-NeoBundle 'glidenote/memolist.vim'
-NeoBundle 'kana/vim-smartinput'
-NeoBundle 'kana/vim-textobj-user'
-NeoBundle 'osyo-manga/vim-textobj-multiblock'
-NeoBundle 'osyo-manga/shabadou.vim'
-NeoBundle 'osyo-manga/vim-watchdogs'
+call dein#add('vim-scripts/zoom.vim')
+call dein#add('Shougo/unite-outline')
+call dein#add('vim-scripts/Align')
+call dein#add('kana/vim-smartinput')
+call dein#add('kana/vim-textobj-user')
+call dein#add('osyo-manga/vim-textobj-multiblock')
+call dein#add('osyo-manga/shabadou.vim')
+call dein#add('osyo-manga/vim-watchdogs')
 "text-typeとか
-NeoBundle 'lervag/vimtex'
-NeoBundle 'dag/vim2hs'
-NeoBundle 'elzr/vim-json'
+call dein#add('lervag/vimtex')
+call dein#add('neovimhaskell/haskell-vim')
 "Motion
-NeoBundle 'Lokaltog/vim-easymotion'
-NeoBundle 'rhysd/clever-f.vim'
+call dein#add('Lokaltog/vim-easymotion')
+call dein#add('rhysd/clever-f.vim')
 "Haskell
-NeoBundle 'thinca/vim-ref'
-NeoBundle 'ujihisa/ref-hoogle'
-NeoBundle 'eagletmt/unite-haddock'
-NeoBundle 'eagletmt/neco-ghc'
-NeoBundle 'eagletmt/ghcmod-vim'
+call dein#add('thinca/vim-ref')
+call dein#add('ujihisa/ref-hoogle')
+call dein#add('eagletmt/unite-haddock')
+call dein#add('eagletmt/neco-ghc')
+call dein#add('eagletmt/ghcmod-vim')
 "MarkDown
-NeoBundle 'Bakudankun/previm'
-NeoBundle 'tyru/open-browser.vim'
-NeoBundle 'rcmdnk/vim-markdown'
+call dein#add('Bakudankun/previm')
+call dein#add('tyru/open-browser.vim')
+call dein#add('vim-pandoc/vim-pandoc')
+call dein#add('vim-pandoc/vim-pandoc-syntax')
 "Scheme
-NeoBundle 'losingkeys/vim-niji'
-NeoBundle 'aharisu/vim_goshrepl'
-NeoBundle 'aharisu/vim-gdev'
+call dein#add('losingkeys/vim-niji')
 "Color Scheme
-NeoBundle 'zsoltf/vim-maui'
-NeoBundle 'djjcast/mirodark'
-NeoBundle 'nanotech/jellybeans.vim'
-NeoBundle 'w0ng/vim-hybrid'
+call dein#add('zsoltf/vim-maui')
+call dein#add('djjcast/mirodark')
+call dein#add('nanotech/jellybeans.vim')
+call dein#add('w0ng/vim-hybrid')
+call dein#add('miyakogi/seiya.vim')
+call dein#add('tomasr/molokai')
+call dein#add('chriskempson/tomorrow-theme')
+call dein#add('chriskempson/vim-tomorrow-theme')
+call dein#add('djjcast/mirodark')
+call dein#add('sickill/vim-monokai')
+call dein#add('ciaranm/inkpot')
+call dein#add('vim-scripts/pyte')
+"Coq
+call dein#add('jvoorhis/coq.vim')
+call dein#add('vim-scripts/CoqIDE')
 
-call neobundle#end()
+call dein#end()
 "}}}
 
 "各種設定"{{{
-set encoding=utf-8
 set fileencoding=utf-8
 set termencoding=utf-8
 
@@ -80,9 +81,7 @@ let &t_EI.="\e[1 q"
 let &t_te.="\e[0 q"
 "カラースキーム
 set background=dark
-colorscheme jellybeans
-"colorscheme hybrid
-"hi Cursor guifg=#151515 ctermfg=16 guibg=#dadada ctermbg=253
+colorscheme maui
 "マーカー
 set foldmethod=marker
 "ビープ音無効
@@ -103,7 +102,6 @@ set number
 set noexpandtab
 set tabstop=4 shiftwidth=4 softtabstop=0
 autocmd FileType vim setlocal et sw=2 sts=2
-:retab
 "インデントの設定
 set autoindent
 set smartindent
@@ -136,23 +134,15 @@ set list
 set listchars=tab:>.,trail:_
 ""行を跨げるようにする
 set whichwrap =b,s,h,l,<,>,[,]
-"BS改良
+"BS
 set backspace=indent,eol,start
 "grepはquickfixで
 autocmd QuickFixCmdPost *grep* cwindow
+
+set statusline=\ %f\ %y%m%r%w%q\ %=(%l,%v)[%p%%]\ %{fnamemodify(getcwd(),':~')}\ \ \ 
 "}}}
 
-""QuickFix"{{{
-botright cwindow
-let QFix_Height=5
-"above didn't work
-au FileType qf call AdjustWindowHeight(3, 10)
-function! AdjustWindowHeight(minheight, maxheight)
-  exe max([min([line("$")+1, a:maxheight]), a:minheight]) . "wincmd _"
-endfunction
-"}}}
-
-""Unite{{{
+"Unite{{{
 "設定
 call unite#custom#profile('default', 'context', {
   \   'start_insert': 0,
@@ -173,16 +163,13 @@ if executable('ag')
   let g:unite_source_grep_recursive_opt = ''
 endif
 "grep
-nnoremap <silent> <Space>g  :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
-"カーソル位置の単語をgrep検索
-nnoremap <silent> <Space>cg :<C-u>Unite grep:. -buffer-name=search-buffer<CR><C-R><C-W>
+nnoremap <silent> <Space>g  :<C-u>Unite grep:. -winheight=20 -buffer-name=search-buffer<CR>
 "grep検索結果の再呼出
 nnoremap <silent> <Space>rg  :<C-u>UniteResume search-buffer<CR>
 ""ファイル操作
-nnoremap <C-u><C-c> :<C-u>Unite file<CR>
 nnoremap <C-u><C-y> :<C-u>Unite history/yank<CR>
 nnoremap <C-u><C-b> :<C-u>Unite buffer<CR>
-nnoremap <C-h>      :<C-u>Unite file_mru buffer<CR>
+nnoremap <C-h>      :<C-u>Unite file_mru<CR>
 nnoremap <expr><silent> <C-c> quickrun#is_running() ?
     \ quickrun#sweep_sessions() : ":UniteWithBufferDir -buffer-name=files file<CR>"
 nnoremap <C-u><C-o> :Unite -vertical outline<CR>
@@ -190,7 +177,51 @@ nnoremap <C-u><C-o> :Unite -vertical outline<CR>
 
 "}}}
 
-""VimFiler{{{
+"QuickFix"{{{
+let QFix_Height=5
+"above didn't work
+au FileType qf call AdjustWindowHeight(1, 10)
+function! AdjustWindowHeight(minheight, maxheight)
+  exe max([min([line("$")+1, a:maxheight]), a:minheight]) . "wincmd _"
+endfunction
+"}}}
+
+"QuickRun{{{
+let g:quickrun_config = {}
+let g:quickrun_config = {
+  \ '_' : {
+  \ 'runner/vimproc/updatetime' : 40,
+  \ 'outputter' : 'quickfix',
+  \ 'hook/copen/enable_exit' : 1,
+  \ 'runner' : 'vimproc',
+  \ },
+  \ 'haskell' : {
+  \ 'command' : 'stack',
+  \ 'cmdopt' : 'runghc',
+  \ 'exec' : '%c %o %s'
+  \},
+  \ 'pandoc' : {
+  \ 'command' : 'pandoc',
+  \ 'cmdopt' : '-f markdown+tex_math_double_backslash+lists_without_preceding_blankline --latex-engine=xelatex',
+  \ 'exec' : '%c %s %o -s -o output.tex'
+  \ },
+  \}
+call watchdogs#setup(g:quickrun_config)
+"}}}
+
+"{{{Neomake
+let g:neomake_airline=1
+let g:neomake_open_list=1
+let g:neomake_place_signs=0
+let g:neomake_echo_current_error=0
+let g:neomake_haskell_hlint_remove_invalid_entries=1
+let g:neomake_haskell_ghcmod_remove_invalid_entries=1
+let g:neomake_haskell_runghc_remove_invalid_entries=1
+nnoremap ,g :update!<CR>:NeomakeSh ghc-mod check %<CR>
+nnoremap ! :NeomakeSh 
+"}}}
+
+"VimFiler{{{
 "safe modeを切る
 let g:vimfiler_safe_mode_by_default = 0
 "デフォルトのエクスプローラーにする
@@ -201,13 +232,13 @@ call vimfiler#custom#profile('default', 'context', {
       \ })
 "}}}
 
-""NERD_tree""{{{
+"NERD_tree"{{{
 let NERDTreeWinPos='right'
-let NERDTreeWinSize=40
+let NERDTreeWinSize=32
 let NERDTreeDirArrows=1
 "}}}
 
-""neocomplete neosnippet{{{
+"neocomplete neosnippet{{{
 " Use neocomplete.
 let g:neocomplete#enable_at_startup = 1
 " Use smartcase.
@@ -243,47 +274,7 @@ smap <C-f> <Plug>(neosnippet_expand_or_jump)
 xmap <C-f> <Plug>(neosnippet_expand_target)
 "}}}
 
-""QuickRun{{{
-let g:quickrun_config = {}
-let g:quickrun_config = {
-  \ '_' : {
-  \ 'runner/vimproc/updatetime' : 40,
-  \ 'outputter' : 'quickfix',
-  \ 'hook/copen/enable_exit' : 1,
-  \ 'runner' : 'vimproc',
-  \ },
-  \ 'markdown' : {
-  \ 'command' : 'pandoc',
-  \ 'exec' : '%c %s %o',
-  \ 'cmdopt' : '-f markdown+raw_tex-blank_before_blockquote --filter noverbatim --template=default -o output.tex',
-  \ 'outputter': 'null',
-  \ 'hook/copen/enable_exit' : 0,
-  \},
-  \ 'scheme' : {
-  \ 'command' : 'guile',
-  \ 'cmdopt' : '--no-auto-compile'
-  \ },
-  \ 'mt' : {
-  \ 'command' : 'moyo',
-  \ 'exec' : '%c %s',
-  \ 'outputter' : 'null',
-  \ 'hook/copen/enable_exit' : 0,
-  \},
-  \}
-"  \ 'scheme' : {
-"  \ 'command' : 'guile',
-"  \ 'cmdopt' : '--no-auto-compile'
-"  \ },
-"  \ 'haskell' : {
-"  \ 'command' : 'stack',
-"  \ 'cmdopt' : 'runghc',
-"  \ 'exec' : '%c %o %s'
-"  \},
-call watchdogs#setup(g:quickrun_config)
-
-"}}}
-
-"""submode{{{
+"submode{{{
 call submode#enter_with('winsize', 'n', '', 'z>', '<C-w>>')
 call submode#enter_with('winsize', 'n', '', 'z<', '<C-w><')
 call submode#enter_with('winsize', 'n', '', 'z+', '<C-w>-')
@@ -294,7 +285,7 @@ call submode#map('winsize', 'n', '', '+', '<C-w>-')
 call submode#map('winsize', 'n', '', '-', '<C-w>+')
 "}}}
 
-""smartinput"{{{
+"smartinput{{{
 call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
 call smartinput#define_rule({
   \   'at'    : '{\%#}',
@@ -309,19 +300,20 @@ call smartinput#define_rule({
             \   'input' : '<Space><Space><Left>',
             \   })"}}}
 
-""C"{{{
+"C"{{{
 autocmd FileType c setlocal expandtab tabstop=4
 "}}}
 
-""Haskell"{{{
-nnoremap ,t :update!<CR>:GhcModType<CR>
-nnoremap ,T :update!<CR>:GhcModTypeInsert<CR>
-nnoremap ,c :GhcModTypeClear<CR>
-nnoremap ,i :update!<CR>:GhcModInfo<CR>
-nnoremap ,I :update!<CR>:GhcModInfoPreview<CR>
-nnoremap ,w :update!<CR>:GhcModCheck<CR>
-nnoremap ,l :update!<CR>:GhcModLint<CR>
-nnoremap ,h :Unite hoogle<CR>
+"Haskell"{{{
+autocmd FileType haskell setlocal expandtab tabstop=2 foldmethod=marker
+autocmd FileType haskell nnoremap <buffer> ,t :update!<CR>:GhcModType<CR>
+autocmd FileType haskell nnoremap <buffer> ,T :update!<CR>:GhcModTypeInsert<CR>
+autocmd FileType haskell nnoremap <buffer> ,i :update!<CR>:GhcModInfo<CR>
+autocmd FileType haskell nnoremap <buffer> ,I :update!<CR>:GhcModInfoPreview<CR>
+autocmd FileType haskell nnoremap <buffer> ,w :update!<CR>:GhcModCheckAsync<CR>
+autocmd FileType haskell nnoremap <buffer> ,l :update!<CR>:GhcModLint<CR>
+autocmd FileType haskell nnoremap <buffer> ,h :Unite hoogle<CR>
+autocmd FileType haskell nnoremap <buffer> ,c :noh<CR>:GhcModTypeClear<CR>
 call unite#custom_default_action('source/hoogle', 'preview')
 let g:haskell_conceal       = 0
 let g:haskell_tabular       = 0
@@ -334,67 +326,86 @@ let g:haskell_shqq          = 0
 let g:haskell_sql           = 0
 let g:haskell_json          = 0
 let g:haskell_xml           = 0
-autocmd FileType haskell setlocal expandtab tabstop=2
+autocmd FileType cabal   setlocal expandtab tabstop=4
 "}}}
 
-"""LaTeX{{{
+"OCaml"{{{
+let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+autocmd FileType ocaml nnoremap <buffer> ,t :update!<CR>:MerlinTypeOf<CR>
+autocmd FileType ocaml vnoremap <buffer> ,t :MerlinTypeOfSel<CR>
+autocmd FileType ocaml nnoremap <buffer> >  :MerlinGrowEnclosing<CR>
+autocmd FileType ocaml nnoremap <buffer> <  :MerlinShrinkEnclosing<CR>
+
+autocmd FileType ocaml nnoremap <buffer> ,o :update!<CR>:MerlinOutline<CR>
+autocmd FileType ocaml nnoremap <buffer> ,w :update!<CR>:MerlinErrorCheck<CR>
+autocmd FileType ocaml nnoremap <buffer> <C-j> :update!<CR>:MerlinLocate<CR>
+autocmd FileType ocaml nnoremap <buffer> ,c :noh<CR>a<Esc>
+execute "set rtp+=" . g:opamshare . "/merlin/vim"
+execute "helptags " . g:opamshare . "/merlin/vim/doc"
+
+"}}}
+
+"LaTeX{{{
+let g:vimtex_view_general_viewer = 'apvlv'
 au BufRead,BufNewFile *.tex set filetype=tex
 let g:vimtex_complete_close_braces = 1
-let g:vimtex_latexmk_options = ''
+let g:vimtex_latexmk_options = '-xelatex'
+
 "有用そう
 "   <localleader>lY  |<plug>(vimtex-labels-toggle)|        `n`
 "   <localleader>ll  |<plug>(vimtex-compile-toggle)|       `n`
 "   <localleader>lk  |<plug>(vimtex-stop)|                 `n`
 "}}}
 
-"""moyo{{{
-au BufRead,BufNewFile *.mt set filetype=mt
-au Syntax mt source ~/.vim/syntax/mt.vim
-"}}}
+"MarkDown/Pandoc{{{
+augroup pandoc_syntax
+    au! BufNewFile,BufFilePRe,BufRead *.md set filetype=pandoc
+augroup END
+autocmd FileType pandoc setlocal et sw=2 sts=2 foldmethod=marker
+autocmd FileType pandoc let &spell = 0
 
-"""MarkDown{{{
-au BufRead,BufNewFile *.md set filetype=markdown
-autocmd FileType markdown setlocal et sw=2 sts=2 foldmethod=marker
 let g:previm_enable_realtime = 1
-let g:vim_markdown_math=1
+let g:vim_markdown_math = 1
+let g:pandoc#folding#mode = 'marker'
+let g:pandoc#syntax#conceal#use = 0
+let g:pandoc#modules#disabled = ["folding"]
+
+let g:pandoc_md_out='out.tex'
+command! PandocMd call PandocMdFun(<f-args>)
+function! PandocMdFun(...) abort
+  let s = 'pandoc-md ' . expand('%') . ' -o '. (a:0 == 0? g:pandoc_md_out: a:0)
+  call neomake#Sh(s)
+endfunction
 "}}}
 
-""scheme{{{
+"scheme{{{
 autocmd FileType scheme setlocal iskeyword=@,33,35-38,42-43,45-58,60-64,94,_,126
-" 33 !
-" 35-38 #$%&
-" 42-43 *+
-" 45-58 -./[0-9]:
-" 60-64 <=>?@
-" 94 ^
-" 126 ~
 autocmd FileType scheme setlocal et ts=2 sts=2 sw=2
 "}}}
 
-"""multiblock{{{
+"multiblock{{{
 omap ab <Plug>(textobj-multiblock-a)
 omap ib <Plug>(textobj-multiblock-i)
 vmap ab <Plug>(textobj-multiblock-a)
 vmap ib <Plug>(textobj-multiblock-i)
 "}}}
 
-"""EasyMotion{{{
-let g:EasyMotion_keys='hklyuionmwertcvbasdgjf'
-let g:EasyMotion_do_mapping = 0 "Disable default mappings
+"EasyMotion{{{
+let g:EasyMotion_keys='jfkdlamvneioc'
+let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_smartcase = 1
-let g:EasyMotion_enter_jump_first = 1 "enterで一番目
+let g:EasyMotion_enter_jump_first = 1
 "}}}
 
-"""clever-f.vim{{{
+"clever-f.vim{{{
 let g:clever_f_smart_case = 1
 let g:clever_f_chars_match_any_signs = ';'
 "}}}
 
-"""キーマッピング{{{
-"
+"キーマッピング{{{
 nnoremap dk ddk
 nnoremap dj dd
-nnoremap Y  C<Esc>p
+nnoremap Y  y$
 "<C-d> $
 inoremap <C-d> $
 "ttでtabnew
@@ -417,8 +428,8 @@ nnoremap <C-a> A
 "nnoremap <C-i> I
 noremap J 5j
 noremap K 5k
-noremap H b
-noremap L w
+noremap H B
+noremap L W
 "物理行移動
 nnoremap j gj
 nnoremap k gk
@@ -449,10 +460,12 @@ autocmd InsertLeave * set nopaste
 "インサートモードでいろいろ
 inoremap <C-j> <down>
 inoremap <C-k> <up>
-inoremap <expr><C-h> neocomplete#close_popup() . "\<Left>"
-inoremap <expr><C-l> neocomplete#close_popup() . "\<Right>"
-inoremap <C-b> <esc>lbi
-inoremap <C-n> <esc>lwi
+inoremap <C-h> <left>
+inoremap <C-l> <right>
+"inoremap <expr><C-h> neocomplete#close_popup() . "\<Left>"
+"inoremap <expr><C-l> neocomplete#close_popup() . "\<Right>"
+inoremap <C-b> <esc>lBi
+inoremap <expr><C-n> neocomplete#close_popup()."<Esc>lWi"
 inoremap <C-a> <esc>A
 inoremap <C-o> <esc>o
 "コマンドライン上下
@@ -460,23 +473,25 @@ cnoremap <C-j> <down>
 cnoremap <C-k> <up>
 "<Space>cdで開いているファイルのディレクトリに移動する
 nnoremap <Space>cd :cd %:h<CR>
-nnoremap <Space>n  :NERDTree<CR>
+nnoremap <Space>n  :NERDTreeToggle<CR>
 nnoremap <Space>pj :NERDTree ~/Dropbox/pj<CR>
 "QuickRun関連
 nnoremap <C-q> :QuickRun<CR>
 nnoremap <C-q> :QuickRun -exec "gcc -ansi report.c ; ./a.out <input.txt"<CR>
 nnoremap <Space>q :QuickRun<CR>
 nnoremap <Space>m :update!<CR>:cd %:h<CR>:QuickRun -exec "make "<Left>
+nnoremap <Space>r :update!<CR>:cd %:h<CR>:QuickRun -exec "make run"<CR>
 nnoremap <Space>t :update!<CR>:cd %:h<CR>:QuickRun -exec "fast-tags -R ./"<CR>
 nnoremap <Space>w :update!<CR>:WatchdogsRun<CR>
-autocmd FileType haskell nnoremap <Space>w :update!<CR>:GhcModCheckAsync<CR>
+autocmd FileType haskell nnoremap <buffer> <Space>w :update!<CR>:GhcModCheckAsync<CR>
 "ctag
 nnoremap <C-j> <C-]>
 "VimFiler
 nnoremap <Space>e :VimFilerCurrentDir<CR>
 "VimShell
-nnoremap <Space>sh :VimShell<CR>
-nnoremap <Space>si :VimShellInteractive 
+nnoremap <Space>sh  :VimShell<CR>
+nnoremap <Space>sht :VimShellTab<CR>
+nnoremap <Space>si  :VimShellInteractive 
 "Quickrun
 nnoremap <C-q> :update!<CR>:QuickRun<CR>
 """EasyMotion
@@ -494,21 +509,7 @@ vmap e <Plug>(easymotion-bd-e)
 vmap E <Plug>(easymotion-bd-E)
 "検索
 nmap <C-g> <Plug>(easymotion-sn)
-"}}}
-
-""Dvorak練習するかも""{{{
-let g:is_dvorak = 0
-
-function! ToggleDvorakMode()
-  if g:is_dvorak
-    let g:is_dvorak = 0
-    set keymap=
-  else
-    let g:is_dvorak = 1
-    set keymap=dvorak
-  endif
-endfunction
-command! ToggleDovorakMode call ToggleDvorakMode()
+nnoremap ,c :noh<CR>
 "}}}
 
 autocmd FileType json set conceallevel=0
@@ -517,4 +518,9 @@ let @b = "<-"
 let @d = "δ"
 let @s = "Σ"
 
-"vim: set et ts=2 sts=2:
+nnoremap .. :cd..<CR>
+
+let $BASH_ENV='~/.bashenv'
+
+
+"vim: set et ts=2 sts=2 tw=2:

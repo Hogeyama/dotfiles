@@ -4,7 +4,7 @@ if has('vim_starting')
   set runtimepath+=~/.nvim/dein/repos/github.com/Shougo/dein.vim/
 endif
 
-call dein#begin(expand('~/.cache/dein'))
+call dein#begin(expand('~/.nvim/dein'))
 
 filetype plugin indent on
 
@@ -63,6 +63,10 @@ call dein#add('ciaranm/inkpot')
 call dein#add('vim-scripts/pyte')
 "
 call dein#add('benekastah/neomake')
+"Coq
+call dein#add('jvoorhis/coq.vim')
+call dein#add('eagletmt/coqtop-vim')
+
 call dein#end()
 "}}}
 
