@@ -1,4 +1,4 @@
-\documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$babel-lang$,$endif$$if(papersize)$$papersize$,$endif$$for(classoption)$$classoption$$sep$,$endfor$xelatex,ja=standard]{$if(documentclass)$$documentclass$$else$bxjsarticle$endif$}
+\documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$babel-lang$,$endif$$if(papersize)$$papersize$,$endif$$for(classoption)$$classoption$$sep$,$endfor$xelatex,ja=standard, pandoc]{$if(documentclass_)$$documentclass_$$else$bxjsarticle$endif$}
 
 %personal settings%{{{
 %%%packages
@@ -140,11 +140,11 @@ $endif$
 \fi
 % use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-% use microtype if available
-\IfFileExists{microtype.sty}{%
-\usepackage{microtype}
-\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
-}{}
+% use microtype if available XXX xelatexでは使えないっぽい?
+%\IfFileExists{microtype.sty}{%
+%\usepackage{microtype}
+%\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+%}{}
 $if(geometry)$
 \usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
 $endif$
