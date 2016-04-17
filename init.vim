@@ -370,6 +370,7 @@ function! PandocMdFun(...) abort
   let s = 'pandoc-md ' . expand('%') . ' -o '. (a:0 == 0? g:pandoc_md_out: a:1)
   call neomake#Sh(s)
 endfunction
+autocmd FileType pandoc nnoremap <buffer> <C-q> :update!<CR>:PandocMd<CR>
 "}}}
 
 "scheme{{{
@@ -528,5 +529,12 @@ tnoremap <C-l> <Right>
 
 let $BASH_ENV='~/.bashenv'
 
+command! -nargs=1 MV call MVFun(<f-args>)
+function! MVFun(newname) abort
+  call system("rm ". expand("%"))
+  exe ":file " . a:newname
+endfunction
+
+command! -nargs=1 MV call system("rm ".expand("%")) | :file <args>
 
 "vim: set et ts=2 sts=2 tw=2:
