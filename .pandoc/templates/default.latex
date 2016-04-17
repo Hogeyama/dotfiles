@@ -37,62 +37,170 @@
   {}          % CUSTOM-HEAD-SPEC
 %%%new theorems
 \theoremstyle{mystyle}
-\newtheorem{defi}{定義}[section]
-\newtheorem{theo}{定理}[section]
-\newtheorem{lemm}{補題}[section]
-\newtheorem*{defi*}{定義}
-\newtheorem*{theo*}{定理}
-\newtheorem*{lemm*}{補題}
-\newtheorem*{que}{問}
-\newtheorem*{sol}{解答}
+\newtheorem{defi}{\textbf{\underline{Definition}}}[section]
+\newtheorem{theo}{\underline{Theorem}}[section]
+\newtheorem{lemm}{\underline{Lemma}}[section]
+\newtheorem*{defi*}{\underline{Definition}}
+\newtheorem*{theo*}{\underline{Theorem}}
+\newtheorem*{lemm*}{\underline{Lemma}}
+\newtheorem*{que}{Question}
+\newtheorem*{sol}{Answer}
 %
 \theoremstyle{mystyle2}
-\newtheorem*{sol-indented}{解答}
-\newtheorem*{pro}{証明}
-%
+\newtheorem*{sol-indented}{Answer}
+\newtheorem*{pro}{Proof}
+
 %%%theorem environments
 
-\ifxetex %\jsZw
+\ifxetex
 \else
   \newcommand{\jsZw}{zw}
 \fi
 
-\newenvironment{dfn}[1][]{\begin{defi}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
-                       {\end{minipage}\end{defi}}
-\newenvironment{dfn*}[1][]{\begin{defi*}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
-                       {\end{minipage}\end{defi*}}
-\newenvironment{thm}[1][]{\begin{theo}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
-                       {\end{minipage}\end{theo}}
-\newenvironment{thm*}[1][]{\begin{theo*}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
-                       {\end{minipage}\end{theo*}}
-\newenvironment{lem}[1][]{\begin{lemm}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
-                       {\end{minipage}\end{lemm}}
-\newenvironment{lem*}[1][]{\begin{lemm*}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
-                       {\end{minipage}\end{lemm*}}
-\newenvironment{question}[1][]{\begin{que}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
-                       {\end{minipage}\end{que}}
-\newenvironment{solve}{\begin{sol} \makebox[1\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
-                       {\end{minipage}\end{sol}}
+\newenvironment{dfn}[1][]%
+  {\begin{defi}[#1]\makebox[\jsZw]{}%
+      \begin{minipage}[t]{.9\textwidth}%
+        \begin{myleftbar}}%
+        {\end{myleftbar}%
+    \end{minipage}%
+  \end{defi}}
 
-\newenvironment{prove}{\begin{pro} \makebox[3\jsZw]{}\begin{minipage}[t]{.9\textwidth - 1\parindent}}%
-                       {\end{minipage}\end{pro}}
-\newenvironment{solve-indented}{\begin{sol-indented} \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth - 1\parindent}}%
-                       {\end{minipage}\end{sol-indented}}
+\newenvironment{dfn*}[1][]%
+  {\begin{defi*}[#1]\makebox[\jsZw]{}%
+      \begin{minipage}[t]{.9\textwidth}%
+        \begin{myleftbar}}%
+        {\end{myleftbar}%
+    \end{minipage}%
+  \end{defi*}}
 
+\newenvironment{thm}[1][]%
+  {\begin{theo}[#1]\makebox[\jsZw]{}%
+      \begin{minipage}[t]{.9\textwidth}%
+        \begin{myleftbar}}%
+        {\end{myleftbar}%
+    \end{minipage}%
+  \end{theo}}
+
+\newenvironment{thm*}[1][]%
+  {\begin{theo*}[#1]\makebox[\jsZw]{}%
+      \begin{minipage}[t]{.9\textwidth}%
+        \begin{myleftbar}}%
+        {\end{myleftbar}%
+    \end{minipage}%
+  \end{theo*}}
+
+\newenvironment{lem}[1][]%
+  {\begin{lemm}[#1]\makebox[\jsZw]{}%
+      \begin{minipage}[t]{.9\textwidth}%
+        \begin{myleftbar}}%
+        {\end{myleftbar}%
+    \end{minipage}%
+  \end{lemm}}
+
+\newenvironment{lem*}[1][]%
+  {\begin{lemm*}[#1]\makebox[\jsZw]{}%
+      \begin{minipage}[t]{.9\textwidth}%
+        \begin{myleftbar}}%
+        {\end{myleftbar}%
+    \end{minipage}%
+  \end{lemm*}}
+
+\newenvironment{question}[1][]%
+  {\begin{que}[#1]\makebox[\jsZw]{}%
+      \begin{minipage}[t]{.9\textwidth}%
+        \begin{myleftbar}}%
+        {\end{myleftbar}%
+    \end{minipage}%
+  \end{que}}
+
+\newenvironment{solve}%
+  {\begin{sol}\makebox[1\jsZw]{}%
+      \begin{minipage}[t]{.9\textwidth}}%
+  {\end{minipage}\end{sol}}
+
+\newenvironment{prove}%
+  {\begin{pro}\makebox[2\jsZw]{}%
+      \begin{minipage}[t]{.9\textwidth - 1\parindent}}%
+  {\end{minipage}\end{pro}}
+
+\newenvironment{solve-indented}%
+  {\begin{sol-indented}\makebox[2\jsZw]{}%
+      \begin{minipage}[t]{.9\textwidth - 1\parindent}}%
+  {\end{minipage}\end{sol-indented}}
+
+\newenvironment{prove-noindented}%
+  {\begin{sol}\makebox[1\jsZw]{}%
+      \begin{minipage}[t]{.9\textwidth}}%
+  {\end{minipage}\end{sol}}
+
+\newenvironment{myleftbar}{%
+  \def\FrameCommand{\vrule width 1pt \hspace{10pt}}% 
+  \MakeFramed {\advance\hsize-\width \FrameRestore}}%
+ {\endMakeFramed}
+
+\newenvironment{myquote}{\begin{quote}\begin{myleftbar}}%
+  {\end{myleftbar}\end{quote}}
+
+%%% OLD %% %{{{
+%\theoremstyle{mystyle}
+%\newtheorem{defi}{定義}[section]
+%\newtheorem{theo}{定理}[section]
+%\newtheorem{lemm}{補題}[section]
+%\newtheorem*{defi*}{定義}
+%\newtheorem*{theo*}{定理}
+%\newtheorem*{lemm*}{補題}
+%\newtheorem*{que}{問}
+%\newtheorem*{sol}{解答}
+%%
+%\theoremstyle{mystyle2}
+%\newtheorem*{sol-indented}{解答}
+%\newtheorem*{pro}{証明}
+%%
+%%%%theorem environments
+%
+%\ifxetex %\jsZw
+%\else
+%  \newcommand{\jsZw}{zw}
+%\fi
+%
+%\newenvironment{hoge}[1][]%
+% {\begin{defi}[#1] \framebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
+% {\end{minipage}\end{defi}}
+%
+%\newenvironment{dfn}[1][]{\begin{defi}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
+%                         {\end{minipage}\end{defi}}
+%\newenvironment{dfn*}[1][]{\begin{defi*}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
+%                         {\end{minipage}\end{defi*}}
+%\newenvironment{thm}[1][]{\begin{theo}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
+%                         {\end{minipage}\end{theo}}
+%\newenvironment{thm*}[1][]{\begin{theo*}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
+%                         {\end{minipage}\end{theo*}}
+%\newenvironment{lem}[1][]{\begin{lemm}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
+%                         {\end{minipage}\end{lemm}}
+%\newenvironment{lem*}[1][]{\begin{lemm*}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
+%                          {\end{minipage}\end{lemm*}}
+%\newenvironment{question}[1][]{\begin{que}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
+%                              {\end{minipage}\end{que}}
+%\newenvironment{solve}{\begin{sol} \makebox[1\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
+%                      {\end{minipage}\end{sol}}
+%
+%\newenvironment{prove}{\begin{pro} \makebox[3\jsZw]{}\begin{minipage}[t]{.9\textwidth - 1\parindent}}%
+%                      {\end{minipage}\end{pro}}
+%\newenvironment{solve-indented}{\begin{sol-indented} \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth - 1\parindent}}%
+%                               {\end{minipage}\end{sol-indented}}
+%\newenvironment{que*}[1][]{\noindent\textbf{問}#1.\newline}{}
+%\newenvironment{question*}[1][]{\begin{que*}[#1] \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth}}%
+%                       {\end{minipage}\end{que*}}
+%}}}
 
 %%%enumitem
-%\setlist{nosep}
-%\setlist{labelindent=\parindent} % < Usually a good idea
-%\setlist[itemize,1]{label=$$\triangleright$$}
+\setlist{nosep}
+\setlist{labelindent=\parindent} % < Usually a good idea
+\setlist[itemize,1]{label=$$\triangleright$$}
 \setlist[enumerate,1]{label=\arabic*., ref=\arabic*}
 \setlist[enumerate,2]{label=\emph{\alph*}, ref=\theenumi.\emph{\alph*}}
 \setlist[enumerate,3]{label=\roman*, ref=\theenumii.\roman*}
 \setlist[description]{font=\bfseries,style=nextline}
-
-
-\newenvironment{que*}[1][]{\noindent\textbf{問}#1.\newline}{}
-\newenvironment{question*}[1][]{\begin{que*}[#1] \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth}}%
-                       {\end{minipage}\end{que*}}
 %}}}
 %pandoc default settings%{{{
 $if(fontfamily)$
@@ -343,3 +451,13 @@ $include-after$
 
 $endfor$
 \end{document}
+
+
+%\newenvironment{myleftbar}{%
+%  \def\FrameCommand{\vrule width 1pt \hspace{10pt}}% 
+%  \MakeFramed {\advance\hsize-\width \FrameRestore}}%
+% {\endMakeFramed}
+%
+%\newenvironment{myquote}{\begin{quote}\begin{myleftbar}}%
+%  {\end{myleftbar}\end{quote}}
+%
