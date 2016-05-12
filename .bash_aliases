@@ -22,10 +22,14 @@ alias la='ls -A'
 alias ll_='ls_ -alF'
 alias la_='ls_ -A'
 
+alias mkcd='source ~/.local/bin/mkcd.sh'
+
+#alias gcc-ppc64='powerpc-linux-gnu-gcc -m64 -static'
+#alias run-ppc64='qemu-ppc64'
+#alias rm-latex-subproducts='rm *.aux *.dvi *.synctex.gz *.ps *.fls *.fdb_latexmk'
 #others
 alias mkcd='source ~/.local/bin/mkcd.sh'
 alias xelatexmk='latexmk -xelatex'
-alias gcc-ppc64='powerpc-linux-gnu-gcc -m64 -static'
 alias ocaml='rlwrap ocaml'
 alias ocamltop='rlwrap ./ocamltop'
 alias vivado='vivado -mode tcl'

@@ -530,6 +530,12 @@ tnoremap <C-h> <Left>
 tnoremap <C-l> <Right>
 
 let $BASH_ENV='~/.bashenv'
+let g:previm_open_cmd="google-chrome"
+
+command! -nargs=1 MV call system("rm ".expand("%")) | file <args> | w
+
+
+
 
 command! -nargs=1 MV call system("[ ! -f <args> ]rm ".expand("%")) | :file <args> | :w!
 
