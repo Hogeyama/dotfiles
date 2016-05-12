@@ -364,10 +364,11 @@ let g:pandoc#folding#mode = 'marker'
 let g:pandoc#syntax#conceal#use = 0
 let g:pandoc#modules#disabled = ["folding"]
 
-let g:pandoc_md_out='out.tex'
-command! PandocMd call PandocMdFun(<f-args>)
+let g:pandoc_out='out.tex'
+command! -nargs=? PandocMd call PandocMdFun(<f-args>)
 function! PandocMdFun(...) abort
-  let s = 'pandoc-md ' . expand('%') . ' -o '. (a:0 == 0? g:pandoc_md_out: a:0)
+  echo a:0
+  let s = 'pandoc-md ' . expand('%') . ' -o '. (a:0 == 0 ? g:pandoc_out : a:1)
   call neomake#Sh(s)
 endfunction
 "}}}
@@ -527,6 +528,12 @@ tnoremap <C-h> <Left>
 tnoremap <C-l> <Right>
 
 let $BASH_ENV='~/.bashenv'
+let g:previm_open_cmd="google-chrome"
+
+command! -nargs=1 MV call system("rm ".expand("%")) | file <args> | w
+
+
+
 
 
 "vim: set et ts=2 sts=2 tw=2:
