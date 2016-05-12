@@ -4,6 +4,7 @@ complete -f cowsayls
 cowsayls(){
 	ls $* | cowsay -n
 }
+
 ls_(){
 	ls $*
 }
@@ -25,4 +26,7 @@ alias la_='ls_ -A'
 alias mkcd='source ~/.local/bin/mkcd.sh'
 alias xelatexmk='latexmk -xelatex'
 alias gcc-ppc64='powerpc-linux-gnu-gcc -m64 -static'
+alias ocaml='rlwrap ocaml'
+alias ocamltop='rlwrap ./ocamltop'
+alias vivado='vivado -mode tcl'
 

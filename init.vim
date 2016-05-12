@@ -101,7 +101,7 @@ set guioptions-=b
 "行数を表示
 set number
 "タブの設定
-set noexpandtab
+set expandtab
 set tabstop=4 shiftwidth=4 softtabstop=0
 autocmd FileType vim setlocal et sw=2 sts=2
 "インデントの設定
@@ -334,6 +334,9 @@ autocmd FileType ocaml nnoremap <buffer> ,o :update!<CR>:MerlinOutline<CR>
 autocmd FileType ocaml nnoremap <buffer> ,w :update!<CR>:MerlinErrorCheck<CR>
 autocmd FileType ocaml nnoremap <buffer> <C-j> :update!<CR>:MerlinLocate<CR>
 autocmd FileType ocaml nnoremap <buffer> ,c :noh<CR>a<Esc>
+autocmd FileType ocaml setlocal tabstop=2 shiftwidth=2 softtabstop=0
+autocmd FileType ocaml colorscheme hybrid
+autocmd FileType ocaml GoodMatchParen
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
 execute "helptags " . g:opamshare . "/merlin/vim/doc"
 
@@ -473,11 +476,10 @@ nnoremap <Space>pj :NERDTree ~/Dropbox/pj<CR>
 "QuickRun関連
 nnoremap <C-q> :QuickRun<CR>
 nnoremap <C-q> :QuickRun -exec "gcc -ansi report.c ; ./a.out <input.txt"<CR>
-nnoremap <Space>q :QuickRun<CR>
 nnoremap <Space>m :update!<CR>:cd %:h<CR>:QuickRun -exec "make "<Left>
 nnoremap <Space>r :update!<CR>:cd %:h<CR>:QuickRun -exec "make run"<CR>
 nnoremap <Space>t :update!<CR>:cd %:h<CR>:QuickRun -exec "fast-tags -R ./"<CR>
-nnoremap <Space>w :update!<CR>:WatchdogsRun<CR>
+nnoremap ,w :update!<CR>:WatchdogsRun<CR>
 autocmd FileType haskell nnoremap <buffer> <Space>w :update!<CR>:GhcModCheckAsync<CR>
 "ctag
 nnoremap <C-j> <C-]>
@@ -510,14 +512,14 @@ nnoremap ,c :noh<CR>
 autocmd FileType json set conceallevel=0
 let @a = "->"
 let @b = "<-"
-let @d = "δ"
-let @s = "Σ"
 
 nnoremap .. :cd..<CR>
 nnoremap <Space>se :SeiyaEnable<CR>
 nnoremap <Space>sd :SeiyaDisable<CR>
+nnoremap te :vs<CR><C-w>l:te<CR>
 tnoremap <Esc> <C-\><C-n>
 tnoremap jk    <C-\><C-n>
+tnoremap JK    <C-\><C-n><C-w>h
 tnoremap zh    <C-\><C-n><C-w>h
 tnoremap zj    <C-\><C-n><C-w>j
 tnoremap zk    <C-\><C-n><C-w>k
@@ -529,12 +531,12 @@ tnoremap <C-l> <Right>
 
 let $BASH_ENV='~/.bashenv'
 
-command! -nargs=1 MV call MVFun(<f-args>)
-function! MVFun(newname) abort
-  call system("rm ". expand("%"))
-  exe ":file " . a:newname
-endfunction
+command! -nargs=1 MV call system("[ ! -f <args> ]rm ".expand("%")) | :file <args> | :w!
 
-command! -nargs=1 MV call system("rm ".expand("%")) | :file <args>
+command! GoodMatchParen hi MatchParen ctermfg=253 ctermbg=0
+au VimEnter * GoodMatchParen
+
+
+
 
 "vim: set et ts=2 sts=2 tw=2:

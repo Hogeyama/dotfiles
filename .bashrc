@@ -115,4 +115,8 @@ if ! shopt -oq posix; then
   fi
 fi
 
+#Vivado setting
+. $HOME/CAD/script.sh /opt/Xilinx/
+
+
 
