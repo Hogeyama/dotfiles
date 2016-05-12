@@ -27,4 +27,4 @@ export QSYS_ROOTDIR="/home/naoki/Programs/altera_lite/15.1/quartus/sopc_builder/
 export ALTERAOCLSDKROOT="/home/naoki/Programs/altera_lite/15.1/hld"
 
 # OPAM configuration
-. /home/hogeyama/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+. /home/iwayama/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true

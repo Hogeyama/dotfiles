@@ -1,6 +1,6 @@
 shopt -s expand_aliases
-complete -f cowsayls
 
+complete -f cowsayls
 cowsayls(){
 	ls $* | cowsay -n
 }
@@ -15,9 +15,9 @@ alias cd='cd-ls'
 alias ls='cowsayls'
 
 # some more ls aliases
+alias l='ls_ -CF'
 alias ll='ls -alF'
 alias la='ls -A'
-alias l='ls_ -CF'
 alias ll_='ls_ -alF'
 alias la_='ls_ -A'
 
@@ -26,5 +26,7 @@ alias mkcd='source ~/.local/bin/mkcd.sh'
 #alias gcc-ppc64='powerpc-linux-gnu-gcc -m64 -static'
 #alias run-ppc64='qemu-ppc64'
 #alias rm-latex-subproducts='rm *.aux *.dvi *.synctex.gz *.ps *.fls *.fdb_latexmk'
-
+#others
+alias mkcd='source ~/.local/bin/mkcd.sh'
+alias xelatexmk='latexmk -xelatex'
 

@@ -115,7 +115,4 @@ if ! shopt -oq posix; then
   fi
 fi
 
-#{{{hoge
-#export QSYS_ROOTDIR="/home/naoki/Programs/altera_lite/15.1/quartus/sopc_builder/bin"
-#export ALTERAOCLSDKROOT="/home/naoki/Programs/altera_lite/15.1/hld"
-#export QEMU_LD_PREFIX="/home/naoki/x-tools/powerpc64-unknown-linux-gnu/powerpc64-unknown-linux-gnu/"#}}}
+
