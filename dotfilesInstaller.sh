@@ -9,3 +9,4 @@ ln -sf ~/dotfiles/.latexmkrc       ~/.latexmkrc
 ln -sf ~/dotfiles/.latex           ~/.latex
 ln -sf ~/dotfiles/.pandoc          ~/.pandoc
 ln -sf ~/dotfiles/init.vim         ~/.config/nvim/init.vim
+ln -sf ~/dotfiles/.Xmodmap         ~/.Xmodmap

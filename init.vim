@@ -422,8 +422,8 @@ inoremap <C-\> <Esc>:update!<CR>
 "qで閉じる
 nnoremap q :q
 "移動
-nnoremap <C-a> A
-"nnoremap <C-i> I
+nnoremap <C-a> I
+nnoremap <C-e> A
 noremap J 5j
 noremap K 5k
 noremap H B
@@ -464,7 +464,8 @@ inoremap <C-l> <right>
 "inoremap <expr><C-l> neocomplete#close_popup() . "\<Right>"
 inoremap <C-b> <esc>lBi
 inoremap <expr><C-n> deoplete#mappings#close_popup()."<Esc>lWi"
-inoremap <C-a> <esc>A
+inoremap <C-a> <esc>I
+inoremap <C-e> <esc>A
 inoremap <C-o> <esc>o
 "コマンドライン上下
 cnoremap <C-j> <down>
@@ -531,11 +532,6 @@ tnoremap <C-l> <Right>
 
 let $BASH_ENV='~/.bashenv'
 let g:previm_open_cmd="google-chrome"
-
-command! -nargs=1 MV call system("rm ".expand("%")) | file <args> | w
-
-
-
 
 command! -nargs=1 MV call system("[ ! -f <args> ]rm ".expand("%")) | :file <args> | :w!
 
