@@ -102,7 +102,7 @@ set guioptions-=b
 set number
 "タブの設定
 set expandtab
-set tabstop=4 shiftwidth=4 softtabstop=0
+set tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType vim setlocal et sw=2 sts=2
 "インデントの設定
 set autoindent
@@ -538,7 +538,37 @@ command! -nargs=1 MV call system("[ ! -f <args> ]rm ".expand("%")) | :file <args
 command! GoodMatchParen hi MatchParen ctermfg=253 ctermbg=0
 au VimEnter * GoodMatchParen
 
+"OCamlExpr
+let g:ocaml_top = "./q3.top"
+command! -nargs=1 OCamlExpr call OCamlExprFun(<f-args>)
+function! OCamlExprFun(expr) abort
+  let source   = expand('%')
+  let data     = readfile(l:source)
+  let tmpfile  = '/home/iwayama/.local/tmp/ocamlexpr.tmp'
+
+  let makefile = readfile(expand('%:h').'/Makefile')
+  "if length(makefile) = 
+  "let ocamltop = 
 
 
+  let cmd      = g:ocaml_top . ' -open '
+               \ . toupper(expand('%:t:r')[0]) . expand('%:t:r')[1:]
+
+
+  "%内でopenされているmoduleを集める
+  for line in data
+    let modulename = substitute(line, 'open\s\([A-Z][a-z]*\)', '\1', '')
+    if strlen(modulename) != strlen(line)
+      let cmd = cmd . " -open " . modulename
+    endif
+  endfor
+
+  let cmd = "echo '" . a:expr . ";;' | " . cmd
+  call neomake#Sh(cmd)
+  "echo cmd
+endfunction
+
+
+  "call writefile([a:expr.";;"], tmpfile)
 
 "vim: set et ts=2 sts=2 tw=2:
