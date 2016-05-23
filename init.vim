@@ -32,6 +32,7 @@ call dein#add('osyo-manga/vim-watchdogs')
 "text-typeとか
 call dein#add('lervag/vimtex')
 call dein#add('neovimhaskell/haskell-vim')
+call dein#add('itchyny/vim-haskell-indent')
 "Motion
 call dein#add('Lokaltog/vim-easymotion')
 call dein#add('rhysd/clever-f.vim')
@@ -102,7 +103,7 @@ set guioptions-=b
 set number
 "タブの設定
 set expandtab
-set tabstop=2 shiftwidth=2 softtabstop=2
+set tabstop=4 shiftwidth=4 softtabstop=4
 autocmd FileType vim setlocal et sw=2 sts=2
 "インデントの設定
 set autoindent
@@ -142,6 +143,7 @@ set backspace=indent,eol,start
 autocmd QuickFixCmdPost *grep* cwindow
 
 set statusline=\ %f\ %y%m%r%w%q\ %=(%l,%v)[%p%%]\ %{fnamemodify(getcwd(),':~')}\ \ \ 
+set wildmode=longest:full,full
 "}}}
 
 "Unite{{{
@@ -334,6 +336,7 @@ autocmd FileType ocaml nnoremap <buffer> ,o :update!<CR>:MerlinOutline<CR>
 autocmd FileType ocaml nnoremap <buffer> ,w :update!<CR>:MerlinErrorCheck<CR>
 autocmd FileType ocaml nnoremap <buffer> <C-j> :update!<CR>:MerlinLocate<CR>
 autocmd FileType ocaml nnoremap <buffer> ,c :noh<CR>a<Esc>
+autocmd FileType ocaml nnoremap <buffer> <C-q> :OCamlExpr 
 autocmd FileType ocaml setlocal tabstop=2 shiftwidth=2 softtabstop=0
 autocmd FileType ocaml colorscheme hybrid
 autocmd FileType ocaml GoodMatchParen
@@ -538,37 +541,28 @@ command! -nargs=1 MV call system("[ ! -f <args> ]rm ".expand("%")) | :file <args
 command! GoodMatchParen hi MatchParen ctermfg=253 ctermbg=0
 au VimEnter * GoodMatchParen
 
-"OCamlExpr
-let g:ocaml_top = "./q3.top"
-command! -nargs=1 OCamlExpr call OCamlExprFun(<f-args>)
-function! OCamlExprFun(expr) abort
-  let source   = expand('%')
-  let data     = readfile(l:source)
-  let tmpfile  = '/home/iwayama/.local/tmp/ocamlexpr.tmp'
+"OCamlExpr"
+command! -nargs=? OCamlExpr call OCamlExprFun(<f-args>)
+function! OCamlExprFun(...) abort
+  let tmp_init  = '/tmp/ocamlexpr_init'
+  let pwd_init  = expand('%:h').'/.ocamlinit'
+  let home_init = expand('~/.ocamlinit')
 
-  let makefile = readfile(expand('%:h').'/Makefile')
-  "if length(makefile) = 
-  "let ocamltop = 
+  call writefile([], tmp_init)
+  if filereadable(pwd_init)
+    call writefile(readfile(pwd_init), tmp_init, 'a')
+  elseif filereadable(home_init)
+    call writefile(readfile(home_init), tmp_init, 'a')
+  endif
+  call writefile(readfile(expand('%')), tmp_init, 'a')
 
+  let tmp_source = '/tmp/ocamlexpr_source'
+  let expr = a:0==0? '': a:1
+  call writefile([expr.';;'], tmp_source)
 
-  let cmd      = g:ocaml_top . ' -open '
-               \ . toupper(expand('%:t:r')[0]) . expand('%:t:r')[1:]
-
-
-  "%内でopenされているmoduleを集める
-  for line in data
-    let modulename = substitute(line, 'open\s\([A-Z][a-z]*\)', '\1', '')
-    if strlen(modulename) != strlen(line)
-      let cmd = cmd . " -open " . modulename
-    endif
-  endfor
-
-  let cmd = "echo '" . a:expr . ";;' | " . cmd
+  let cmd = "cat ".tmp_source." | "."ocaml -init ".tmp_init
   call neomake#Sh(cmd)
-  "echo cmd
 endfunction
 
-
-  "call writefile([a:expr.";;"], tmpfile)
 
 "vim: set et ts=2 sts=2 tw=2:
