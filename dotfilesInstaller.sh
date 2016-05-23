@@ -1,4 +1,7 @@
 #!/bin/sh
+mkdir -p ~/.config/nvim
+mkdir ~/.i3
+
 ln -sf ~/dotfiles/.profile         ~/.profile
 ln -sf ~/dotfiles/.bashrc          ~/.bashrc
 ln -sf ~/dotfiles/.bashenv         ~/.bashenv
