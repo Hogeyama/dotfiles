@@ -336,7 +336,7 @@ autocmd FileType ocaml nnoremap <buffer> ,o :update!<CR>:MerlinOutline<CR>
 autocmd FileType ocaml nnoremap <buffer> ,w :update!<CR>:MerlinErrorCheck<CR>
 autocmd FileType ocaml nnoremap <buffer> <C-j> :update!<CR>:MerlinLocate<CR>
 autocmd FileType ocaml nnoremap <buffer> ,c :noh<CR>a<Esc>
-autocmd FileType ocaml nnoremap <buffer> <C-q> :OCamlExpr 
+autocmd FileType ocaml nnoremap <buffer> <C-q> :update!<CR>:OCamlExpr 
 autocmd FileType ocaml setlocal tabstop=2 shiftwidth=2 softtabstop=0
 autocmd FileType ocaml colorscheme hybrid
 autocmd FileType ocaml GoodMatchParen
