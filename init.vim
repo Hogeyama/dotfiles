@@ -32,6 +32,7 @@ call dein#add('osyo-manga/vim-watchdogs')
 "text-typeとか
 call dein#add('lervag/vimtex')
 call dein#add('neovimhaskell/haskell-vim')
+call dein#add('itchyny/vim-haskell-indent')
 "Motion
 call dein#add('Lokaltog/vim-easymotion')
 call dein#add('rhysd/clever-f.vim')
@@ -102,7 +103,7 @@ set guioptions-=b
 set number
 "タブの設定
 set expandtab
-set tabstop=4 shiftwidth=4 softtabstop=0
+set tabstop=4 shiftwidth=4 softtabstop=4
 autocmd FileType vim setlocal et sw=2 sts=2
 "インデントの設定
 set autoindent
@@ -142,6 +143,7 @@ set backspace=indent,eol,start
 autocmd QuickFixCmdPost *grep* cwindow
 
 set statusline=\ %f\ %y%m%r%w%q\ %=(%l,%v)[%p%%]\ %{fnamemodify(getcwd(),':~')}\ \ \ 
+set wildmode=longest:full,full
 "}}}
 
 "Unite{{{
@@ -334,6 +336,7 @@ autocmd FileType ocaml nnoremap <buffer> ,o :update!<CR>:MerlinOutline<CR>
 autocmd FileType ocaml nnoremap <buffer> ,w :update!<CR>:MerlinErrorCheck<CR>
 autocmd FileType ocaml nnoremap <buffer> <C-j> :update!<CR>:MerlinLocate<CR>
 autocmd FileType ocaml nnoremap <buffer> ,c :noh<CR>a<Esc>
+autocmd FileType ocaml nnoremap <buffer> <C-q> :update!<CR>:OCamlExpr 
 autocmd FileType ocaml setlocal tabstop=2 shiftwidth=2 softtabstop=0
 autocmd FileType ocaml colorscheme hybrid
 autocmd FileType ocaml GoodMatchParen
@@ -422,8 +425,8 @@ inoremap <C-\> <Esc>:update!<CR>
 "qで閉じる
 nnoremap q :q
 "移動
-nnoremap <C-a> A
-"nnoremap <C-i> I
+nnoremap <C-a> I
+nnoremap <C-e> A
 noremap J 5j
 noremap K 5k
 noremap H B
@@ -464,7 +467,8 @@ inoremap <C-l> <right>
 "inoremap <expr><C-l> neocomplete#close_popup() . "\<Right>"
 inoremap <C-b> <esc>lBi
 inoremap <expr><C-n> deoplete#mappings#close_popup()."<Esc>lWi"
-inoremap <C-a> <esc>A
+inoremap <C-a> <esc>I
+inoremap <C-e> <esc>A
 inoremap <C-o> <esc>o
 "コマンドライン上下
 cnoremap <C-j> <down>
@@ -537,5 +541,27 @@ command! -nargs=1 MV call system("[ ! -f <args> ]rm ".expand("%")) | :file <args
 command! GoodMatchParen hi MatchParen ctermfg=253 ctermbg=0
 au VimEnter * GoodMatchParen
 
+"OCamlExpr"
+command! -nargs=? OCamlExpr call OCamlExprFun(<f-args>)
+function! OCamlExprFun(...) abort
+  let tmp_init  = '/tmp/ocamlexpr_init'
+  let pwd_init  = expand('%:h').'/.ocamlinit'
+  let home_init = expand('~/.ocamlinit')
+
+  call writefile([], tmp_init)
+  if filereadable(pwd_init)
+    call writefile(readfile(pwd_init), tmp_init, 'a')
+  elseif filereadable(home_init)
+    call writefile(readfile(home_init), tmp_init, 'a')
+  endif
+  call writefile(readfile(expand('%')), tmp_init, 'a')
+
+  let tmp_source = '/tmp/ocamlexpr_source'
+  let expr = a:0==0? '': a:1
+  call writefile([expr.';;'], tmp_source)
+
+  let cmd = "cat ".tmp_source." | "."ocaml -init ".tmp_init
+  call neomake#Sh(cmd)
+endfunction
 
 "vim: set et ts=2 sts=2 tw=2:

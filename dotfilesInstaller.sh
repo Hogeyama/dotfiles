@@ -1,4 +1,7 @@
 #!/bin/sh
+mkdir -p ~/.config/nvim
+mkdir ~/.i3
+
 ln -sf ~/dotfiles/.profile         ~/.profile
 ln -sf ~/dotfiles/.bashrc          ~/.bashrc
 ln -sf ~/dotfiles/.bashenv         ~/.bashenv
@@ -9,3 +12,5 @@ ln -sf ~/dotfiles/.latexmkrc       ~/.latexmkrc
 ln -sf ~/dotfiles/.latex           ~/.latex
 ln -sf ~/dotfiles/.pandoc          ~/.pandoc
 ln -sf ~/dotfiles/init.vim         ~/.config/nvim/init.vim
+ln -sf ~/dotfiles/.Xmodmap         ~/.Xmodmap
+ln -sf ~/dotfiles/.i3/config       ~/.i3/config
