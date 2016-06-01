@@ -13,7 +13,9 @@ sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
 sudo update-alternatives --config editor
 
 #dein
-mkdir -p ~/.nvim/dein/repos/github.com/Shougo/dein.vim
+if [ ! -d ~/.nvim/dein/repos/github.com/Shougo/dein.vim ]
+    mkdir -p ~/.nvim/dein/repos/github.com/Shougo/dein.vim
+fi
 git clone https://github.com/Shougo/dein.vim.git ~/.nvim/dein/repos/github.com/Shougo/dein.vim
 
 #stack
@@ -22,9 +24,9 @@ echo 'deb http://download.fpcomplete.com/ubuntu trusty main'| sudo tee /etc/apt/
 sudo apt-get update && sudo apt-get install stack -y
 
 #opam
-add-apt-repository ppa:avsm/ppa
-apt-get update
-apt-get install ocaml ocaml-native-compilers camlp4-extra opam
+sudo add-apt-repository ppa:avsm/ppa
+sudo apt-get update
+sudo apt-get install ocaml ocaml-native-compilers camlp4-extra opam
 
 #others
 sudo apt-get install i3
