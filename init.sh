@@ -12,6 +12,10 @@ sudo update-alternatives --config vim
 sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
 sudo update-alternatives --config editor
 
+#dein
+mkdir -p ~/.nvim/dein/repos/github.com/Shougo/dein.vim
+git clone https://github.com/Shougo/dein.vim.git ~/.nvim/dein/repos/github.com/Shougo/dein.vim
+
 #stack
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 575159689BEFB442
 echo 'deb http://download.fpcomplete.com/ubuntu trusty main'| sudo tee /etc/apt/sources.list.d/fpco.list
@@ -22,4 +26,7 @@ add-apt-repository ppa:avsm/ppa
 apt-get update
 apt-get install ocaml ocaml-native-compilers camlp4-extra opam
 
+#others
+sudo apt-get install i3
+sudo apt-get install texlive-xetex
 
