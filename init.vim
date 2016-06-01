@@ -564,5 +564,4 @@ function! OCamlExprFun(...) abort
   call neomake#Sh(cmd)
 endfunction
 
-
 "vim: set et ts=2 sts=2 tw=2:
