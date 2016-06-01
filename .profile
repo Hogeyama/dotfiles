@@ -27,10 +27,10 @@ export QSYS_ROOTDIR="/home/naoki/Programs/altera_lite/15.1/quartus/sopc_builder/
 export ALTERAOCLSDKROOT="/home/naoki/Programs/altera_lite/15.1/hld"
 
 # OPAM configuration
-. /home/iwayama/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+. $HOME/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
 # xmodmap
 if [ -f "$HOME/.Xmodmap" ]; then
     xmodmap "$HOME/.Xmodmap"
 fi
 
-feh --bg-scale ~/Pictures/Wallpapers/1920x1080xb5c94116dbd935b0390029.jpg
+#feh --bg-scale ~/Pictures/Wallpapers/1920x1080xb5c94116dbd935b0390029.jpg

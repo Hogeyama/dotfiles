@@ -3,6 +3,7 @@ keycode 100 = Delete NoSymbol Henkan_Mode
 keycode 102 = BackSpace NoSymbol Muhenkan
 keycode  22 = BackSpace BackSpace BackSpace BackSpace
 keycode 119 = Delete NoSymbol Delete
+keysym Hiragana_Katakana = Zenkaku_Hankaku
 
 remove Lock = Caps_Lock
 keysym Caps_Lock = Control_L
