@@ -42,6 +42,8 @@ call dein#add('ujihisa/ref-hoogle')
 call dein#add('eagletmt/unite-haddock')
 call dein#add('eagletmt/neco-ghc')
 call dein#add('eagletmt/ghcmod-vim')
+call dein#add('vim-scripts/alex.vim')
+call dein#add('vim-scripts/happy.vim')
 "MarkDown
 call dein#add('Bakudankun/previm')
 call dein#add('tyru/open-browser.vim')
@@ -323,10 +325,11 @@ let g:haskell_sql           = 0
 let g:haskell_json          = 0
 let g:haskell_xml           = 0
 autocmd FileType cabal   setlocal expandtab tabstop=4
+au! BufNewFile,BufFilePRe,BufRead *.x set filetype=alex
+au! BufNewFile,BufFilePRe,BufRead *.y set filetype=happy
 "}}}
 
 "OCaml"{{{
-let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 autocmd FileType ocaml nnoremap <buffer> ,t :update!<CR>:MerlinTypeOf<CR>
 autocmd FileType ocaml vnoremap <buffer> ,t :MerlinTypeOfSel<CR>
 autocmd FileType ocaml nnoremap <buffer> >  :MerlinGrowEnclosing<CR>
@@ -337,11 +340,16 @@ autocmd FileType ocaml nnoremap <buffer> ,w :update!<CR>:MerlinErrorCheck<CR>
 autocmd FileType ocaml nnoremap <buffer> <C-j> :update!<CR>:MerlinLocate<CR>
 autocmd FileType ocaml nnoremap <buffer> ,c :noh<CR>a<Esc>
 autocmd FileType ocaml nnoremap <buffer> <C-q> :update!<CR>:OCamlExpr 
+autocmd FileType ocaml nnoremap <buffer> <C-i> :update!<CR>:rightbelow vs<CR>:te ocaml -init %<CR>
+autocmd FileType ocaml nnoremap <buffer> <C-i> :update!<CR>:rightbelow vs<CR>:te utop -init %<CR>
 autocmd FileType ocaml setlocal tabstop=2 shiftwidth=2 softtabstop=0
+autocmd FileType ocaml setlocal commentstring=(*%s*)
 autocmd FileType ocaml colorscheme hybrid
 autocmd FileType ocaml GoodMatchParen
+let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
 execute "helptags " . g:opamshare . "/merlin/vim/doc"
+
 
 "}}}
 
@@ -537,7 +545,7 @@ let $BASH_ENV='~/.bashenv'
 let g:previm_open_cmd="google-chrome"
 
 command! -nargs=1 MV call system("[ ! -f <args> ]rm ".expand("%")) | :file <args> | :w!
-
+command! RmTrailingWhiteSpaces %s/\s\s*$//g | :noh
 command! GoodMatchParen hi MatchParen ctermfg=253 ctermbg=0
 au VimEnter * GoodMatchParen
 
@@ -563,5 +571,7 @@ function! OCamlExprFun(...) abort
   let cmd = "cat ".tmp_source." | "."ocaml -init ".tmp_init
   call neomake#Sh(cmd)
 endfunction
+
+
 
 "vim: set et ts=2 sts=2 tw=2:
