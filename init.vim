@@ -5,7 +5,6 @@ if has('vim_starting')
 endif
 
 call dein#begin(expand('~/.nvim/dein'))
-
 filetype plugin indent on
 
 "essential
@@ -44,6 +43,8 @@ call dein#add('eagletmt/neco-ghc')
 call dein#add('eagletmt/ghcmod-vim')
 call dein#add('vim-scripts/alex.vim')
 call dein#add('vim-scripts/happy.vim')
+"Agda
+call dein#add('derekelkins/agda-vim')
 "MarkDown
 call dein#add('Bakudankun/previm')
 call dein#add('tyru/open-browser.vim')
@@ -51,6 +52,8 @@ call dein#add('vim-pandoc/vim-pandoc')
 call dein#add('vim-pandoc/vim-pandoc-syntax')
 "Scheme
 call dein#add('losingkeys/vim-niji')
+"Prolog
+call dein#add('adimit/prolog.vim')
 "Color Scheme
 call dein#add('zsoltf/vim-maui')
 call dein#add('djjcast/mirodark')
@@ -303,7 +306,7 @@ autocmd FileType c setlocal expandtab tabstop=4
 "}}}
 
 "Haskell"{{{
-autocmd FileType haskell setlocal expandtab tabstop=2 foldmethod=marker
+autocmd FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=0 foldmethod=marker
 autocmd FileType haskell nnoremap <buffer> ,t :update!<CR>:GhcModType<CR>
 autocmd FileType haskell nnoremap <buffer> ,T :update!<CR>:GhcModTypeInsert<CR>
 autocmd FileType haskell nnoremap <buffer> ,i :update!<CR>:GhcModInfo<CR>
@@ -334,14 +337,13 @@ autocmd FileType ocaml nnoremap <buffer> ,t :update!<CR>:MerlinTypeOf<CR>
 autocmd FileType ocaml vnoremap <buffer> ,t :MerlinTypeOfSel<CR>
 autocmd FileType ocaml nnoremap <buffer> >  :MerlinGrowEnclosing<CR>
 autocmd FileType ocaml nnoremap <buffer> <  :MerlinShrinkEnclosing<CR>
+autocmd FileType ocaml nnoremap <buffer> ,y :MerlinYankLatestType<CR>
 
-autocmd FileType ocaml nnoremap <buffer> ,o :update!<CR>:MerlinOutline<CR>
+"autocmd FileType ocaml nnoremap <buffer> ,o :update!<CR>:MerlinOutline<CR> CtrlPが必要
 autocmd FileType ocaml nnoremap <buffer> ,w :update!<CR>:MerlinErrorCheck<CR>
 autocmd FileType ocaml nnoremap <buffer> <C-j> :update!<CR>:MerlinLocate<CR>
 autocmd FileType ocaml nnoremap <buffer> ,c :noh<CR>a<Esc>
-autocmd FileType ocaml nnoremap <buffer> <C-q> :update!<CR>:OCamlExpr 
-autocmd FileType ocaml nnoremap <buffer> <C-i> :update!<CR>:rightbelow vs<CR>:te ocaml -init %<CR>
-autocmd FileType ocaml nnoremap <buffer> <C-i> :update!<CR>:rightbelow vs<CR>:te utop -init %<CR>
+autocmd FileType ocaml nnoremap <buffer> <C-q> :update!<CR>:OCamlTop<CR>
 autocmd FileType ocaml setlocal tabstop=2 shiftwidth=2 softtabstop=0
 autocmd FileType ocaml setlocal commentstring=(*%s*)
 autocmd FileType ocaml colorscheme hybrid
@@ -517,7 +519,7 @@ vmap W <Plug>(easymotion-bd-W)
 vmap e <Plug>(easymotion-bd-e)
 vmap E <Plug>(easymotion-bd-E)
 "検索
-nmap <C-g> <Plug>(easymotion-sn)
+"nmap <C-g> <Plug>(easymotion-sn)
 nnoremap ,c :noh<CR>
 "}}}
 
@@ -529,6 +531,7 @@ nnoremap .. :cd..<CR>
 nnoremap <Space>se :SeiyaEnable<CR>
 nnoremap <Space>sd :SeiyaDisable<CR>
 nnoremap te :vs<CR><C-w>l:te<CR>
+nnoremap vs :rightbelow vs<CR>
 tnoremap <Esc> <C-\><C-n>
 tnoremap jk    <C-\><C-n>
 tnoremap JK    <C-\><C-n><C-w>h
@@ -570,6 +573,39 @@ function! OCamlExprFun(...) abort
 
   let cmd = "cat ".tmp_source." | "."ocaml -init ".tmp_init
   call neomake#Sh(cmd)
+endfunction
+
+let g:ocamltop = ''
+let g:ocamlmktop_cmd = "make top"
+command! -nargs=? OCamlTop call OCamlTopFun(<f-args>)
+function! OCamlTopFun(...) abort
+  "topcmd
+  if strlen(g:ocamltop) == 0
+    if !(filereadable(expand('%:h').'/Makefile'))
+      throw "Makefile is not readable"
+    endif
+    let makefile = readfile(expand('%:h').'/Makefile')
+    let topcmd = ''
+    for line in makefile
+      let result = substitute(line, '^RESULT\s*=\s*\(.*\)\s*$', '\1', '')
+      if strlen(result) != strlen(line)
+        let topcmd = result . '.top'
+        break
+      endif
+    endfor
+    if strlen(topcmd) == 0
+        throw "だめ"
+    endif
+  else
+    let topcmd = g:ocamltop
+  endif
+
+  let open_module_name = substitute(expand('%:t:r'), '^.', '\u&', '')
+  echo open_module_name
+
+  let cmd = g:ocamlmktop_cmd . ' 1> /dev/null' . ' && ' .
+          \ 'rlwrap ./' . topcmd . ' -open ' . open_module_name
+  exe 'rightbelow vs | te ' . cmd
 endfunction
 
 
