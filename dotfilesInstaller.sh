@@ -11,6 +11,7 @@ ln -sf ~/dotfiles/.profile         ~/.profile
 ln -sf ~/dotfiles/.bashrc          ~/.bashrc
 ln -sf ~/dotfiles/.bashenv         ~/.bashenv
 ln -sf ~/dotfiles/.bash_aliases    ~/.bash_aliases
+ln -sf ~/dotfiles/.apvlvrc       ~/.apvlvrc
 ln -sf ~/dotfiles/.latexmkrc       ~/.latexmkrc
 ln -sf ~/dotfiles/.latex           ~/.latex
 ln -sf ~/dotfiles/.pandoc          ~/.pandoc
