@@ -1,6 +1,6 @@
 \documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$babel-lang$,$endif$$if(papersize)$$papersize$,$endif$$for(classoption)$$classoption$$sep$,$endfor$xelatex,ja=standard, pandoc]{$if(documentclass_)$$documentclass_$$else$bxjsarticle$endif$}
 
-%personal settings%{{{
+%personal settings{{{
 %%%packages
 \usepackage{amsmath, amssymb}
 \usepackage{amsthm}
@@ -35,9 +35,10 @@
   {.}         % HEADPUNCT
   {\newline}  % HEADSPACE
   {}          % CUSTOM-HEAD-SPEC
-%%%new theorems
+%new theorems
 \theoremstyle{mystyle}
-\newtheorem{defi}{\textbf{\underline{Definition}}}[section]
+\newtheorem{defi}{\textbf{\underline{Definition}%
+                         }}[section]
 \newtheorem{theo}{\underline{Theorem}}[section]
 \newtheorem{lemm}{\underline{Lemma}}[section]
 \newtheorem*{defi*}{\underline{Definition}}
@@ -45,6 +46,7 @@
 \newtheorem*{lemm*}{\underline{Lemma}}
 \newtheorem*{que}{Question}
 \newtheorem*{sol}{Answer}
+\newtheorem*{note}{Note}
 %
 \theoremstyle{mystyle2}
 \newtheorem*{sol-indented}{Answer}
@@ -56,6 +58,7 @@
 \else
   \newcommand{\jsZw}{zw}
 \fi
+\newcommand{\texorpdfstring}[2]{#1}
 
 \newenvironment{dfn}[1][]%
   {\begin{defi}[#1]\makebox[\jsZw]{}%
@@ -140,59 +143,6 @@
 
 \newenvironment{myquote}{\begin{quote}\begin{myleftbar}}%
   {\end{myleftbar}\end{quote}}
-
-%%% OLD %% %{{{
-%\theoremstyle{mystyle}
-%\newtheorem{defi}{定義}[section]
-%\newtheorem{theo}{定理}[section]
-%\newtheorem{lemm}{補題}[section]
-%\newtheorem*{defi*}{定義}
-%\newtheorem*{theo*}{定理}
-%\newtheorem*{lemm*}{補題}
-%\newtheorem*{que}{問}
-%\newtheorem*{sol}{解答}
-%%
-%\theoremstyle{mystyle2}
-%\newtheorem*{sol-indented}{解答}
-%\newtheorem*{pro}{証明}
-%%
-%%%%theorem environments
-%
-%\ifxetex %\jsZw
-%\else
-%  \newcommand{\jsZw}{zw}
-%\fi
-%
-%\newenvironment{hoge}[1][]%
-% {\begin{defi}[#1] \framebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
-% {\end{minipage}\end{defi}}
-%
-%\newenvironment{dfn}[1][]{\begin{defi}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
-%                         {\end{minipage}\end{defi}}
-%\newenvironment{dfn*}[1][]{\begin{defi*}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
-%                         {\end{minipage}\end{defi*}}
-%\newenvironment{thm}[1][]{\begin{theo}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
-%                         {\end{minipage}\end{theo}}
-%\newenvironment{thm*}[1][]{\begin{theo*}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
-%                         {\end{minipage}\end{theo*}}
-%\newenvironment{lem}[1][]{\begin{lemm}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
-%                         {\end{minipage}\end{lemm}}
-%\newenvironment{lem*}[1][]{\begin{lemm*}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
-%                          {\end{minipage}\end{lemm*}}
-%\newenvironment{question}[1][]{\begin{que}[#1] \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
-%                              {\end{minipage}\end{que}}
-%\newenvironment{solve}{\begin{sol} \makebox[1\jsZw]{}\begin{minipage}[t]{.9\textwidth}}%
-%                      {\end{minipage}\end{sol}}
-%
-%\newenvironment{prove}{\begin{pro} \makebox[3\jsZw]{}\begin{minipage}[t]{.9\textwidth - 1\parindent}}%
-%                      {\end{minipage}\end{pro}}
-%\newenvironment{solve-indented}{\begin{sol-indented} \makebox[2\jsZw]{}\begin{minipage}[t]{.9\textwidth - 1\parindent}}%
-%                               {\end{minipage}\end{sol-indented}}
-%\newenvironment{que*}[1][]{\noindent\textbf{問}#1.\newline}{}
-%\newenvironment{question*}[1][]{\begin{que*}[#1] \makebox[2zw]{}\begin{minipage}[t]{.9\textwidth}}%
-%                       {\end{minipage}\end{que*}}
-%}}}
-
 %%%enumitem
 \setlist{nosep}
 \setlist{labelindent=\parindent} % < Usually a good idea
@@ -202,6 +152,7 @@
 \setlist[enumerate,3]{label=\roman*, ref=\theenumii.\roman*}
 \setlist[description]{font=\bfseries,style=nextline}
 %}}}
+
 %pandoc default settings%{{{
 $if(fontfamily)$
 \usepackage[$for(fontfamilyoptions)$$fontfamilyoptions$$sep$,$endfor$]{$fontfamily$}
@@ -256,31 +207,31 @@ $endif$
 $if(geometry)$
 \usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
 $endif$
-\usepackage{hyperref}
-\PassOptionsToPackage{usenames,dvipsnames}{color} % color is loaded by hyperref
-\hypersetup{unicode=true,
-$if(title-meta)$
-            pdftitle={$title-meta$},
-$endif$
-$if(author-meta)$
-            pdfauthor={$author-meta$},
-$endif$
-$if(subtitle)$
-            pdfsubject={$subtitle$},
-$endif$
-$if(keywords)$
-            pdfkeywords={$for(keywords)$$keywords$$sep$; $endfor$},
-$endif$
-$if(colorlinks)$
-            colorlinks=true,
-            linkcolor=$if(linkcolor)$$linkcolor$$else$Maroon$endif$,
-            citecolor=$if(citecolor)$$citecolor$$else$Blue$endif$,
-            urlcolor=$if(urlcolor)$$urlcolor$$else$Blue$endif$,
-$else$
-            pdfborder={0 0 0},
-$endif$
-            breaklinks=true}
-\urlstyle{same}  % don't use monospace font for urls
+%\usepackage{hyperref}
+%\PassOptionsToPackage{usenames,dvipsnames}{color} % color is loaded by hyperref
+%\hypersetup{unicode=true,
+%$if(title-meta)$
+%            pdftitle={$title-meta$},
+%$endif$
+%$if(author-meta)$
+%            pdfauthor={$author-meta$},
+%$endif$
+%$if(subtitle)$
+%            pdfsubject={$subtitle$},
+%$endif$
+%$if(keywords)$
+%            pdfkeywords={$for(keywords)$$keywords$$sep$; $endfor$},
+%$endif$
+%$if(colorlinks)$
+%            colorlinks=true,
+%            linkcolor=$if(linkcolor)$$linkcolor$$else$Maroon$endif$,
+%            citecolor=$if(citecolor)$$citecolor$$else$Blue$endif$,
+%            urlcolor=$if(urlcolor)$$urlcolor$$else$Blue$endif$,
+%$else$
+%            pdfborder={0 0 0},
+%$endif$
+%            breaklinks=true}
+%\urlstyle{same}  % don't use monospace font for urls
 $if(lang)$
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[shorthands=off,$for(babel-otherlangs)$$babel-otherlangs$,$endfor$main=$babel-lang$]{babel}

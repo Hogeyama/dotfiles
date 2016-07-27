@@ -19,7 +19,7 @@ call dein#add('Shougo/neosnippet-snippets')
 call dein#add('thinca/vim-quickrun')
 call dein#add('scrooloose/nerdtree')
 call dein#add('kana/vim-submode')
-"便利,拡張
+"便利
 call dein#add('vim-scripts/zoom.vim')
 call dein#add('Shougo/unite-outline')
 call dein#add('vim-scripts/Align')
@@ -28,6 +28,7 @@ call dein#add('kana/vim-textobj-user')
 call dein#add('osyo-manga/vim-textobj-multiblock')
 call dein#add('osyo-manga/shabadou.vim')
 call dein#add('osyo-manga/vim-watchdogs')
+call dein#add('scrooloose/nerdcommenter')
 "text-typeとか
 call dein#add('lervag/vimtex')
 call dein#add('neovimhaskell/haskell-vim')
@@ -79,6 +80,8 @@ call dein#end()
 "各種設定"{{{
 set fileencoding=utf-8
 set termencoding=utf-8
+let mapleader=","
+let maplocalleader=","
 
 filetype plugin on
 filetype indent on
@@ -226,7 +229,6 @@ let g:neomake_echo_current_error=0
 let g:neomake_haskell_hlint_remove_invalid_entries=1
 let g:neomake_haskell_ghcmod_remove_invalid_entries=1
 let g:neomake_haskell_runghc_remove_invalid_entries=1
-nnoremap ,g :update!<CR>:NeomakeSh ghc-mod check %<CR>
 nnoremap ! :NeomakeSh 
 "}}}
 
@@ -241,10 +243,13 @@ call vimfiler#custom#profile('default', 'context', {
       \ })
 "}}}
 
-"NERD_tree"{{{
+"NERD_tree, NERD_commenter"{{{
 let NERDTreeWinPos='right'
 let NERDTreeWinSize=32
 let NERDTreeDirArrows=1
+
+nmap ,, <plug>NERDCommenterToggle
+vmap ,, <plug>NERDCommenterToggle
 "}}}
 
 "deoplete neosnippet{{{
@@ -394,6 +399,10 @@ autocmd FileType scheme setlocal iskeyword=@,33,35-38,42-43,45-58,60-64,94,_,126
 autocmd FileType scheme setlocal et ts=2 sts=2 sw=2
 "}}}
 
+"prolog{{{
+au! BufNewFile,BufFilePRe,BufRead *.pl set filetype=prolog
+"}}}
+
 "multiblock{{{
 omap ab <Plug>(textobj-multiblock-a)
 omap ib <Plug>(textobj-multiblock-i)
@@ -413,7 +422,7 @@ let g:clever_f_smart_case = 1
 let g:clever_f_chars_match_any_signs = ';'
 "}}}
 
-"キーマッピング{{{
+"key-map{{{
 nnoremap dk ddk
 nnoremap dj dd
 nnoremap Y  y$
@@ -510,14 +519,22 @@ nnoremap <C-q> :update!<CR>:QuickRun<CR>
 nmap s <Plug>(easymotion-s2)
 nmap s <Plug>(easymotion-s2)
 "w/e motion
-nmap w <Plug>(easymotion-bd-w)
-nmap W <Plug>(easymotion-bd-W)
-nmap e <Plug>(easymotion-bd-e)
-nmap E <Plug>(easymotion-bd-E)
-vmap w <Plug>(easymotion-bd-w)
-vmap W <Plug>(easymotion-bd-W)
-vmap e <Plug>(easymotion-bd-e)
-vmap E <Plug>(easymotion-bd-E)
+nnoremap b B
+nnoremap B b
+nnoremap w W
+nnoremap W w
+inoremap <C-b>   <esc>Bi
+inoremap <C-S-b> <esc>bi
+inoremap <C-w>   <esc>lWi
+inoremap <C-S-w> <esc>lwi
+"nmap w <Plug>(easymotion-bd-w)
+"nmap W <Plug>(easymotion-bd-W)
+"nmap e <Plug>(easymotion-bd-e)
+"nmap E <Plug>(easymotion-bd-E)
+"vmap w <Plug>(easymotion-bd-w)
+"vmap W <Plug>(easymotion-bd-W)
+"vmap e <Plug>(easymotion-bd-e)
+"vmap E <Plug>(easymotion-bd-E)
 "検索
 "nmap <C-g> <Plug>(easymotion-sn)
 nnoremap ,c :noh<CR>
@@ -552,7 +569,7 @@ command! RmTrailingWhiteSpaces %s/\s\s*$//g | :noh
 command! GoodMatchParen hi MatchParen ctermfg=253 ctermbg=0
 au VimEnter * GoodMatchParen
 
-"OCamlExpr"
+"OCamlExpr "{{{
 command! -nargs=? OCamlExpr call OCamlExprFun(<f-args>)
 function! OCamlExprFun(...) abort
   let tmp_init  = '/tmp/ocamlexpr_init'
@@ -574,7 +591,9 @@ function! OCamlExprFun(...) abort
   let cmd = "cat ".tmp_source." | "."ocaml -init ".tmp_init
   call neomake#Sh(cmd)
 endfunction
+"}}}
 
+" OCamlTop {{{
 let g:ocamltop = ''
 let g:ocamlmktop_cmd = "make top"
 command! -nargs=? OCamlTop call OCamlTopFun(<f-args>)
@@ -607,7 +626,6 @@ function! OCamlTopFun(...) abort
           \ 'rlwrap ./' . topcmd . ' -open ' . open_module_name
   exe 'rightbelow vs | te ' . cmd
 endfunction
-
-
+"}}}
 
 "vim: set et ts=2 sts=2 tw=2:

@@ -1,0 +1,19 @@
+
+map J j
+map K k
+map j <C-f>
+map k <C-b>
+map <Right> <C-f>
+map <Left> <C-b>
+map tt :tabnew<CR>
+map tg gT
+map zh <C-w>h
+map zj <C-w>j
+map zk <C-w>k
+map zl <C-w>l
+
+set defaultdir=$HOME/Dropbox
+set content=no
+set width=640
+set height=1200
+

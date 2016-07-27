@@ -9,7 +9,7 @@ ls_(){
 	ls $*
 }
 cd-ls(){
-	cd $* && ls
+	cd $* && ls -CF
 }
 
 alias cd='cd-ls'
@@ -22,15 +22,13 @@ alias la='ls -A'
 alias ll_='ls_ -alF'
 alias la_='ls_ -A'
 
-alias mkcd='source ~/.local/bin/mkcd.sh'
-
-#alias gcc-ppc64='powerpc-linux-gnu-gcc -m64 -static'
-#alias run-ppc64='qemu-ppc64'
-#alias rm-latex-subproducts='rm *.aux *.dvi *.synctex.gz *.ps *.fls *.fdb_latexmk'
 #others
 alias mkcd='source ~/.local/bin/mkcd.sh'
 alias xelatexmk='latexmk -xelatex'
 alias ocaml='rlwrap ocaml'
 alias ocamltop='rlwrap ./ocamltop'
-alias vivado='vivado -mode tcl'
+alias vivatcl='vivado -mode tcl'
+alias vivabatch='vivado -mode batch -source'
+alias csc='ssh csc.is.s.u-tokyo.ac.jp'
+alias stack-exec='rlwrap stack exec'
 
