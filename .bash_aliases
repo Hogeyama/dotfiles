@@ -2,7 +2,7 @@ shopt -s expand_aliases
 
 complete -f cowsayls
 cowsayls(){
-	ls $* | cowsay -n
+	ls $* | cowsay -n -f tux
 }
 
 ls_(){
@@ -30,5 +30,6 @@ alias ocamltop='rlwrap ./ocamltop'
 alias vivatcl='vivado -mode tcl'
 alias vivabatch='vivado -mode batch -source'
 alias csc='ssh csc.is.s.u-tokyo.ac.jp'
-alias stack-exec='rlwrap stack exec'
+alias stack-exec='rlwrap stack exec --'
+alias node='nodejs'
 

@@ -199,11 +199,11 @@ endfunction
 "}}}
 
 "QuickRun{{{
-let g:quickrun_config = {}
 let g:quickrun_config = {
   \ '_' : {
   \ 'runner/vimproc/updatetime' : 40,
   \ 'outputter' : 'quickfix',
+  \ 'outputter/quickfix/open_cmd' : 'botright copen',
   \ 'hook/copen/enable_exit' : 1,
   \ 'runner' : 'vimproc',
   \ },
@@ -211,12 +211,7 @@ let g:quickrun_config = {
   \ 'command' : 'stack',
   \ 'cmdopt' : 'runghc',
   \ 'exec' : '%c %o %s'
-  \},
-  \ 'pandoc' : {
-  \ 'command' : 'pandoc',
-  \ 'cmdopt' : '-f markdown+tex_math_double_backslash+lists_without_preceding_blankline --latex-engine=xelatex',
-  \ 'exec' : '%c %s %o -s -o output.tex'
-  \ },
+  \}
   \}
 call watchdogs#setup(g:quickrun_config)
 "}}}
@@ -320,6 +315,7 @@ autocmd FileType haskell nnoremap <buffer> ,w :update!<CR>:GhcModCheckAsync<CR>
 autocmd FileType haskell nnoremap <buffer> ,l :update!<CR>:GhcModLint<CR>
 autocmd FileType haskell nnoremap <buffer> ,h :Unite hoogle<CR>
 autocmd FileType haskell nnoremap <buffer> ,c :noh<CR>:GhcModTypeClear<CR>
+autocmd FileType haskell nnoremap <buffer> <Space>t :update!<CR>:QuickRun -exec "fast-tags -R ./"<CR>
 call unite#custom_default_action('source/hoogle', 'preview')
 let g:haskell_conceal       = 0
 let g:haskell_tabular       = 0
@@ -351,7 +347,7 @@ autocmd FileType ocaml nnoremap <buffer> ,c :noh<CR>a<Esc>
 autocmd FileType ocaml nnoremap <buffer> <C-q> :update!<CR>:OCamlTop<CR>
 autocmd FileType ocaml setlocal tabstop=2 shiftwidth=2 softtabstop=0
 autocmd FileType ocaml setlocal commentstring=(*%s*)
-autocmd FileType ocaml colorscheme hybrid
+"autocmd FileType ocaml colorscheme hybrid
 autocmd FileType ocaml GoodMatchParen
 let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
@@ -419,7 +415,7 @@ let g:EasyMotion_enter_jump_first = 1
 
 "clever-f.vim{{{
 let g:clever_f_smart_case = 1
-let g:clever_f_chars_match_any_signs = ';'
+"let g:clever_f_chars_match_any_signs = ';'
 "}}}
 
 "key-map{{{
@@ -498,10 +494,8 @@ nnoremap <Space>n  :NERDTreeToggle<CR>
 nnoremap <Space>pj :NERDTree ~/Dropbox/pj<CR>
 "QuickRun関連
 nnoremap <C-q> :QuickRun<CR>
-nnoremap <C-q> :QuickRun -exec "gcc -ansi report.c ; ./a.out <input.txt"<CR>
 nnoremap <Space>m :update!<CR>:cd %:h<CR>:QuickRun -exec "make "<Left>
 nnoremap <Space>r :update!<CR>:cd %:h<CR>:QuickRun -exec "make run"<CR>
-nnoremap <Space>t :update!<CR>:cd %:h<CR>:QuickRun -exec "fast-tags -R ./"<CR>
 nnoremap ,w :update!<CR>:WatchdogsRun<CR>
 autocmd FileType haskell nnoremap <buffer> <Space>w :update!<CR>:GhcModCheckAsync<CR>
 "ctag
@@ -627,5 +621,9 @@ function! OCamlTopFun(...) abort
   exe 'rightbelow vs | te ' . cmd
 endfunction
 "}}}
+
+nnoremap ,cl <nop>
+
+command! COPEN botright copen
 
 "vim: set et ts=2 sts=2 tw=2:
