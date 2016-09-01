@@ -2,7 +2,10 @@ shopt -s expand_aliases
 
 complete -f cowsayls
 cowsayls(){
-	ls $* | cowsay -n -f tux
+	ls $* | cowsay -f tux | cowthink -n
+}
+cowsayls_(){
+	ls $* | cowsay -n
 }
 
 ls_(){
@@ -17,8 +20,8 @@ alias ls='cowsayls'
 
 # some more ls aliases
 alias l='ls_ -CF'
-alias ll='ls -alF'
-alias la='ls -A'
+alias ll='cowsayls_ -alF'
+alias la='cowsayls -A'
 alias ll_='ls_ -alF'
 alias la_='ls_ -A'
 
@@ -32,4 +35,6 @@ alias vivabatch='vivado -mode batch -source'
 alias csc='ssh csc.is.s.u-tokyo.ac.jp'
 alias stack-exec='rlwrap stack exec --'
 alias node='nodejs'
+alias :e='nvim'
 
+fortune | cowsay -n -f tux | cowthink -n

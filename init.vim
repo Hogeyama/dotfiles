@@ -22,6 +22,7 @@ call dein#add('kana/vim-submode')
 "便利
 call dein#add('vim-scripts/zoom.vim')
 call dein#add('Shougo/unite-outline')
+call dein#add('osyo-manga/unite-quickfix')
 call dein#add('vim-scripts/Align')
 call dein#add('kana/vim-smartinput')
 call dein#add('kana/vim-textobj-user')
@@ -29,6 +30,8 @@ call dein#add('osyo-manga/vim-textobj-multiblock')
 call dein#add('osyo-manga/shabadou.vim')
 call dein#add('osyo-manga/vim-watchdogs')
 call dein#add('scrooloose/nerdcommenter')
+call dein#add('majutsushi/tagbar')
+call dein#add('bitc/lushtags')
 "text-typeとか
 call dein#add('lervag/vimtex')
 call dein#add('neovimhaskell/haskell-vim')
@@ -157,34 +160,35 @@ set wildmode=longest:full,full
 "Unite{{{
 "設定
 call unite#custom#profile('default', 'context', {
-  \   'start_insert': 0,
-  \   'winheight': 5,
-  \   'winwidth': 40,
-  \   'direction': 'botright',
-  \ })
+    \   'start_insert': 0,
+    \   'winheight': 10,
+    \   'winwidth': 40,
+    \   'direction': 'botright',
+    \   'prompt_direction' : 'top'
+    \ })
 call unite#custom#source('file',
-  \   'ignore_pattern','\.\(hi\|o\|log\|gz\|dvi\|aux\|fdb_latexmk\)$')
+    \   'ignore_pattern','\.\(hi\|o\|log\|gz\|dvi\|aux\|fdb_latexmk\)$')
 "ヤンク履歴許可
-let g:unite_source_history_yank_enable=0
+let g:unite_source_history_yank_enable=100
 "ファイル履歴最大
-let g:unite_source_file_mru_limit=200
-"unite grep に ag(The Silver Searcher) を使う
-if executable('ag')
-  let g:unite_source_grep_command = 'ag'
-  let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
-  let g:unite_source_grep_recursive_opt = ''
-endif
-"grep
-nnoremap <silent> <Space>g  :<C-u>Unite grep:. -winheight=20 -buffer-name=search-buffer<CR>
+let g:unite_source_file_mru_limit=100
+
+"""map
+nnoremap [unite] <nop>
+nmap     <C-u> [unite]
+nnoremap [unite]g  :Unite grep -no-quit<CR>
 "grep検索結果の再呼出
-nnoremap <silent> <Space>rg  :<C-u>UniteResume search-buffer<CR>
+nnoremap [unite]rg  :<C-u>UniteResume<CR>
 ""ファイル操作
-nnoremap <C-u><C-y> :<C-u>Unite history/yank<CR>
-nnoremap <C-u><C-b> :<C-u>Unite buffer<CR>
-nnoremap <C-h>      :<C-u>Unite file_mru<CR>
-nnoremap <expr><silent> <C-c> quickrun#is_running() ?
-    \ quickrun#sweep_sessions() : ":UniteWithBufferDir -buffer-name=files file<CR>"
-nnoremap <C-u><C-o> :Unite -vertical outline<CR>
+nnoremap [unite]y :Unite history/yank<CR>
+nnoremap [unite]b :Unite buffer<CR>
+nnoremap [unite]h    :Unite file_mru<CR>
+nnoremap [unite]o :Unite -vertical outline<CR>
+nnoremap <C-h>    :Unite file_mru<CR>
+nnoremap <expr><silent> <C-c>
+    \ quickrun#is_running() ?
+    \ quickrun#sweep_sessions() :
+    \ ":UniteWithBufferDir -buffer-name=files file<CR>"
 
 
 "}}}
@@ -204,6 +208,7 @@ let g:quickrun_config = {
   \ 'runner/vimproc/updatetime' : 40,
   \ 'outputter' : 'quickfix',
   \ 'outputter/quickfix/open_cmd' : 'botright copen',
+  \ 'outputter/buffer/split' : ':botright',
   \ 'hook/copen/enable_exit' : 1,
   \ 'runner' : 'vimproc',
   \ },
@@ -517,6 +522,8 @@ nnoremap b B
 nnoremap B b
 nnoremap w W
 nnoremap W w
+nnoremap e E
+nnoremap E e
 inoremap <C-b>   <esc>Bi
 inoremap <C-S-b> <esc>bi
 inoremap <C-w>   <esc>lWi
@@ -559,7 +566,7 @@ let $BASH_ENV='~/.bashenv'
 let g:previm_open_cmd="google-chrome"
 
 command! -nargs=1 MV call system("[ ! -f <args> ]rm ".expand("%")) | :file <args> | :w!
-command! RmTrailingWhiteSpaces %s/\s\s*$//g | :noh
+command! RmTrailingWhiteSpaces %s/\s\+$//g | :noh
 command! GoodMatchParen hi MatchParen ctermfg=253 ctermbg=0
 au VimEnter * GoodMatchParen
 
@@ -623,7 +630,12 @@ endfunction
 "}}}
 
 nnoremap ,cl <nop>
+nnoremap <F8> :TagbarToggle<CR>
 
-command! COPEN botright copen
+"nvim-hs
+if has('nvim') " This way you can also put it in your vim config file
+    let pong = rpcrequest(rpcstart(expand('$HOME/.local/bin/nvim-hs')), "PingNvimhs")
+    "echo pong
+endif
 
 "vim: set et ts=2 sts=2 tw=2:
