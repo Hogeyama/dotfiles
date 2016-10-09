@@ -36,5 +36,10 @@ alias csc='ssh csc.is.s.u-tokyo.ac.jp'
 alias stack-exec='rlwrap stack exec --'
 alias node='nodejs'
 alias :e='nvim'
+alias 殺す='kill'
+alias mipsrun='mipsel-none-elf-run'
+alias mipsgcc='mipsel-none-elf-gcc -Tidt.ld'
+alias mars='java -jar ~/apps/Mars4_5.jar'
 
 fortune | cowsay -n -f tux | cowthink -n
+

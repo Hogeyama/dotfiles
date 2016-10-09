@@ -29,6 +29,6 @@ sudo apt-get update
 sudo apt-get install ocaml ocaml-native-compilers camlp4-extra opam
 
 #others
-sudo apt-get install i3
+#sudo apt-get install i3
 sudo apt-get install texlive-xetex
 

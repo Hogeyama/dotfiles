@@ -5,19 +5,21 @@ if has('vim_starting')
 endif
 
 call dein#begin(expand('~/.nvim/dein'))
+
 filetype plugin indent on
 
 "essential
 call dein#add('Shougo/unite.vim')
+call dein#add('Shougo/denite.nvim')
 call dein#add('Shougo/vimfiler')
-call dein#add('Shougo/vimshell')
+"call dein#add('Shougo/vimshell')
 call dein#add('Shougo/vimproc')
 call dein#add('Shougo/neomru.vim')
 call dein#add('Shougo/deoplete.nvim')
 call dein#add('Shougo/neosnippet')
 call dein#add('Shougo/neosnippet-snippets')
 call dein#add('thinca/vim-quickrun')
-call dein#add('scrooloose/nerdtree')
+"call dein#add('scrooloose/nerdtree')
 call dein#add('kana/vim-submode')
 "便利
 call dein#add('vim-scripts/zoom.vim')
@@ -36,6 +38,7 @@ call dein#add('bitc/lushtags')
 call dein#add('lervag/vimtex')
 call dein#add('neovimhaskell/haskell-vim')
 call dein#add('itchyny/vim-haskell-indent')
+call dein#add('rust-lang/rust.vim')
 "Motion
 call dein#add('Lokaltog/vim-easymotion')
 call dein#add('rhysd/clever-f.vim')
@@ -49,6 +52,8 @@ call dein#add('vim-scripts/alex.vim')
 call dein#add('vim-scripts/happy.vim')
 "Agda
 call dein#add('derekelkins/agda-vim')
+"Rust
+call dein#add('racer-rust/vim-racer')
 "MarkDown
 call dein#add('Bakudankun/previm')
 call dein#add('tyru/open-browser.vim')
@@ -76,6 +81,7 @@ call dein#add('benekastah/neomake')
 "Coq
 call dein#add('jvoorhis/coq.vim')
 call dein#add('eagletmt/coqtop-vim')
+"call dein#add('vim-scripts/CoqIDE')
 
 call dein#end()
 "}}}
@@ -182,7 +188,7 @@ nnoremap [unite]rg  :<C-u>UniteResume<CR>
 ""ファイル操作
 nnoremap [unite]y :Unite history/yank<CR>
 nnoremap [unite]b :Unite buffer<CR>
-nnoremap [unite]h    :Unite file_mru<CR>
+"nnoremap [unite]h :Unite file_mru<CR>
 nnoremap [unite]o :Unite -vertical outline<CR>
 nnoremap <C-h>    :Unite file_mru<CR>
 nnoremap <expr><silent> <C-c>
@@ -190,6 +196,17 @@ nnoremap <expr><silent> <C-c>
     \ quickrun#sweep_sessions() :
     \ ":UniteWithBufferDir -buffer-name=files file<CR>"
 
+
+"}}}
+
+"Denite"{{{
+".dein/rplugin/python3/denite/ui/default.py:60にbotrightを追加するとしあわせ
+"あとは近くにあるwinheightも10にした
+"今のところfile_mru以外はuniteでいいかなという気持ち
+hi CursorLine ctermbg=8
+call denite#custom#map('_', "\<C-j>", 'move_to_next_line')
+call denite#custom#map('_', "\<C-k>", 'move_to_prev_line')
+nnoremap <C-h> :Denite file_mru<CR>
 
 "}}}
 
@@ -210,6 +227,8 @@ let g:quickrun_config = {
   \ 'outputter/quickfix/open_cmd' : 'botright copen',
   \ 'outputter/buffer/split' : ':botright',
   \ 'hook/copen/enable_exit' : 1,
+  \ 'hook/copen/hook_command' : ':botright',
+  \ 'hook/copen/hook_args' : 'copen',
   \ 'runner' : 'vimproc',
   \ },
   \ 'haskell' : {
@@ -237,17 +256,20 @@ nnoremap ! :NeomakeSh
 let g:vimfiler_safe_mode_by_default = 0
 "デフォルトのエクスプローラーにする
 let g:vimfiler_as_default_explorer = 1
-call vimfiler#custom#profile('default', 'context', {
-      \ 'safe' : 0,
-      \ 'edit_action' : 'tabopen',
-      \ })
+call vimfiler#custom#profile('default', 'context',
+        \ { 'edit_action' : 'tabopen'
+        \ , 'simple' : 1
+        \ , 'split' : 1
+        \ , 'direction' : 'botright'
+        \ , 'winwidth' : 32
+        \ })
+nnoremap <Space>n :VimFilerCurrentDir<CR>
+autocmd FileType vimfiler nmap <buffer> <CR> <Plug>(vimfiler_open_file_in_another_vimfiler)
+autocmd FileType vimfiler nmap <buffer> K    5k
+
 "}}}
 
 "NERD_tree, NERD_commenter"{{{
-let NERDTreeWinPos='right'
-let NERDTreeWinSize=32
-let NERDTreeDirArrows=1
-
 nmap ,, <plug>NERDCommenterToggle
 vmap ,, <plug>NERDCommenterToggle
 "}}}
@@ -293,18 +315,18 @@ call submode#map('winsize', 'n', '', '-', '<C-w>+')
 
 "smartinput{{{
 call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
+call smartinput#map_to_trigger('i', '<CR>', '<CR>', '<CR>')
+
 call smartinput#define_rule({
   \   'at'    : '{\%#}',
   \   'char'  : '<CR>',
   \   'input' : '<CR><Left><CR><Tab>',
   \   })
-
-call smartinput#map_to_trigger('i', '<CR>', '<CR>', '<CR>')
 call smartinput#define_rule({
-            \   'at'    : '(\%#)',
-            \   'char'  : '<Space>',
-            \   'input' : '<Space><Space><Left>',
-            \   })"}}}
+  \   'at'    : '(\%#)',
+  \   'char'  : '<Space>',
+  \   'input' : '<Space><Space><Left>',
+  \   })"}}}
 
 "C"{{{
 autocmd FileType c setlocal expandtab tabstop=4
@@ -312,14 +334,14 @@ autocmd FileType c setlocal expandtab tabstop=4
 
 "Haskell"{{{
 autocmd FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=0 foldmethod=marker
-autocmd FileType haskell nnoremap <buffer> ,t :update!<CR>:GhcModType<CR>
+autocmd FileType haskell nnoremap <buffer> ,t :update!<CR>:NeoGhcModType<CR>
 autocmd FileType haskell nnoremap <buffer> ,T :update!<CR>:GhcModTypeInsert<CR>
-autocmd FileType haskell nnoremap <buffer> ,i :update!<CR>:GhcModInfo<CR>
-autocmd FileType haskell nnoremap <buffer> ,I :update!<CR>:GhcModInfoPreview<CR>
-autocmd FileType haskell nnoremap <buffer> ,w :update!<CR>:GhcModCheckAsync<CR>
-autocmd FileType haskell nnoremap <buffer> ,l :update!<CR>:GhcModLint<CR>
+autocmd FileType haskell nnoremap <buffer> ,i :update!<CR>:NeoGhcModInfo<CR>
+"autocmd FileType haskell nnoremap <buffer> ,I :update!<CR>:GhcModInfoPreview<CR>
+autocmd FileType haskell nnoremap <buffer> ,w :update!<CR>:NeoGhcModCheck<CR>
+autocmd FileType haskell nnoremap <buffer> ,l :update!<CR>:NeoGhcModLint<CR>
 autocmd FileType haskell nnoremap <buffer> ,h :Unite hoogle<CR>
-autocmd FileType haskell nnoremap <buffer> ,c :noh<CR>:GhcModTypeClear<CR>
+autocmd FileType haskell nnoremap <buffer> ,c :noh<CR>:NeoGhcModTypeClear<CR>
 autocmd FileType haskell nnoremap <buffer> <Space>t :update!<CR>:QuickRun -exec "fast-tags -R ./"<CR>
 call unite#custom_default_action('source/hoogle', 'preview')
 let g:haskell_conceal       = 0
@@ -349,7 +371,7 @@ autocmd FileType ocaml nnoremap <buffer> ,y :MerlinYankLatestType<CR>
 autocmd FileType ocaml nnoremap <buffer> ,w :update!<CR>:MerlinErrorCheck<CR>
 autocmd FileType ocaml nnoremap <buffer> <C-j> :update!<CR>:MerlinLocate<CR>
 autocmd FileType ocaml nnoremap <buffer> ,c :noh<CR>a<Esc>
-autocmd FileType ocaml nnoremap <buffer> <C-q> :update!<CR>:OCamlTop<CR>
+autocmd FileType ocaml nnoremap <buffer> <C-q> :update!<CR>:OCamlTop2<CR>
 autocmd FileType ocaml setlocal tabstop=2 shiftwidth=2 softtabstop=0
 autocmd FileType ocaml setlocal commentstring=(*%s*)
 "autocmd FileType ocaml colorscheme hybrid
@@ -357,7 +379,6 @@ autocmd FileType ocaml GoodMatchParen
 let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
 execute "helptags " . g:opamshare . "/merlin/vim/doc"
-
 
 "}}}
 
@@ -395,13 +416,31 @@ endfunction
 autocmd FileType pandoc nnoremap <buffer> <C-q> :update!<CR>:PandocMd<CR>
 "}}}
 
-"scheme{{{
+"Scheme{{{
 autocmd FileType scheme setlocal iskeyword=@,33,35-38,42-43,45-58,60-64,94,_,126
 autocmd FileType scheme setlocal et ts=2 sts=2 sw=2
 "}}}
 
-"prolog{{{
+"Prolog{{{
 au! BufNewFile,BufFilePRe,BufRead *.pl set filetype=prolog
+"}}}
+
+"Rust "{{{
+set hidden
+let g:racer_cmd = '$HOME/.cargo/bin/racer'
+let $RUST_SRC_PATH='$HOME/apps/rustc-1.11.0/src'
+
+let g:rustfmt_autosave = 1
+let g:rustfmt_command = '$HOME/.cargo/bin/rustfmt'
+let g:rustc_path = '/usr/local/bin/rustc'
+let g:rust_recommended_style = 1
+let g:rust_fold = 0
+autocmd FileType rust nnoremap <buffer> <C-q> :update!<CR>:RustRun<CR>
+"}}}
+
+"Seiya"{{{
+nnoremap <Space>se :SeiyaEnable<CR>
+nnoremap <Space>sd :SeiyaDisable<CR>
 "}}}
 
 "multiblock{{{
@@ -495,24 +534,17 @@ cnoremap <C-j> <down>
 cnoremap <C-k> <up>
 "<Space>cdで開いているファイルのディレクトリに移動する
 nnoremap <Space>cd :cd %:h<CR>
-nnoremap <Space>n  :NERDTreeToggle<CR>
-nnoremap <Space>pj :NERDTree ~/Dropbox/pj<CR>
 "QuickRun関連
-nnoremap <C-q> :QuickRun<CR>
+nnoremap <C-q> :update!<CR>:QuickRun<CR>
 nnoremap <Space>m :update!<CR>:cd %:h<CR>:QuickRun -exec "make "<Left>
 nnoremap <Space>r :update!<CR>:cd %:h<CR>:QuickRun -exec "make run"<CR>
 nnoremap ,w :update!<CR>:WatchdogsRun<CR>
-autocmd FileType haskell nnoremap <buffer> <Space>w :update!<CR>:GhcModCheckAsync<CR>
 "ctag
 nnoremap <C-j> <C-]>
-"VimFiler
-nnoremap <Space>e :VimFilerCurrentDir<CR>
 "VimShell
 nnoremap <Space>sh  :VimShell<CR>
 nnoremap <Space>sht :VimShellTab<CR>
 nnoremap <Space>si  :VimShellInteractive 
-"Quickrun
-nnoremap <C-q> :update!<CR>:QuickRun<CR>
 """EasyMotion
 "s{char}{char}{label}
 nmap s <Plug>(easymotion-s2)
@@ -541,13 +573,8 @@ inoremap <C-S-w> <esc>lwi
 nnoremap ,c :noh<CR>
 "}}}
 
-autocmd FileType json set conceallevel=0
-let @a = "->"
-let @b = "<-"
-
+"Terminal他"{{{
 nnoremap .. :cd..<CR>
-nnoremap <Space>se :SeiyaEnable<CR>
-nnoremap <Space>sd :SeiyaDisable<CR>
 nnoremap te :vs<CR><C-w>l:te<CR>
 nnoremap vs :rightbelow vs<CR>
 tnoremap <Esc> <C-\><C-n>
@@ -561,6 +588,10 @@ tnoremap <C-k> <Up>
 tnoremap <C-j> <Down>
 tnoremap <C-h> <Left>
 tnoremap <C-l> <Right>
+"}}}
+
+let @a = "->"
+let @b = "<-"
 
 let $BASH_ENV='~/.bashenv'
 let g:previm_open_cmd="google-chrome"
@@ -597,7 +628,7 @@ endfunction
 " OCamlTop {{{
 let g:ocamltop = ''
 let g:ocamlmktop_cmd = "make top"
-command! -nargs=? OCamlTop call OCamlTopFun(<f-args>)
+command! -nargs=? OCamlTop2 call OCamlTopFun(<f-args>)
 function! OCamlTopFun(...) abort
   "topcmd
   if strlen(g:ocamltop) == 0
@@ -614,7 +645,7 @@ function! OCamlTopFun(...) abort
       endif
     endfor
     if strlen(topcmd) == 0
-        throw "だめ"
+        throw "OCamlTopFun: だめ"
     endif
   else
     let topcmd = g:ocamltop
@@ -631,11 +662,17 @@ endfunction
 
 nnoremap ,cl <nop>
 nnoremap <F8> :TagbarToggle<CR>
+nnoremap <Space>r :RestartNvimhs<CR>
+nnoremap <Space>m :NeomakeSh stack build<CR>
+"nnoremap <Space>m :NeomakeSh cd ~/.nvim/nvim-haskell; stack install > /dev/null<CR>
 
+let g:ghc_mod_nvim_log_directory = "$HOME/.cache/ghc-mod-nvim"
 "nvim-hs
-if has('nvim') " This way you can also put it in your vim config file
-    let pong = rpcrequest(rpcstart(expand('$HOME/.local/bin/nvim-hs')), "PingNvimhs")
-    "echo pong
+if has('nvim')
+    call jobstart([expand('$HOME/.local/bin/nvim-hs-devel.sh')], {'rpc' : v:true})
 endif
+
+autocmd FileType asm setlocal tabstop=8 shiftwidth=8 softtabstop=8 noexpandtab
+
 
 "vim: set et ts=2 sts=2 tw=2:
