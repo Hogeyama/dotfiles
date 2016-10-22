@@ -22,6 +22,7 @@ call dein#add('thinca/vim-quickrun')
 "call dein#add('scrooloose/nerdtree')
 call dein#add('kana/vim-submode')
 call dein#add('kien/ctrlp.vim')
+call dein#add('fholgado/minibufexpl.vim')
 "便利
 call dein#add('vim-scripts/zoom.vim')
 call dein#add('Shougo/unite-outline')
@@ -213,12 +214,6 @@ call denite#custom#map('_', "\<C-k>", 'move_to_prev_line')
 
 "}}}
 
-"CtrlP {{{
-let g:ctrlp_extensions = ['tag', 'buffertag', 'quickfix', 'dir', 'rtscript',
-                        \ 'undo', 'line', 'changes', 'mixed', 'bookmarkdir']
-
-"}}}
-
 "QuickFix"{{{
 let QFix_Height=5
 "above didn't work
@@ -320,6 +315,18 @@ call submode#map('winsize', 'n', '', '>', '<C-w>>')
 call submode#map('winsize', 'n', '', '<', '<C-w><')
 call submode#map('winsize', 'n', '', '+', '<C-w>-')
 call submode#map('winsize', 'n', '', '-', '<C-w>+')
+"}}}
+
+"minibufexpl {{{
+nnoremap <F11> :MBEToggle<CR>
+nnoremap BN :MBEbn<CR>
+nnoremap Bf :MBEbf<CR>
+let g:miniBufExplCycleArround=1
+"}}}
+
+"git-gutter {{{
+let g:gitgutter_map_keys = 0
+let g:gitgutter_signs = 0
 "}}}
 
 "smartinput{{{
