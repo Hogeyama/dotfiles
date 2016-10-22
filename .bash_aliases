@@ -32,14 +32,16 @@ alias ocaml='rlwrap ocaml'
 alias ocamltop='rlwrap ./ocamltop'
 alias vivatcl='vivado -mode tcl'
 alias vivabatch='vivado -mode batch -source'
-alias csc='ssh csc.is.s.u-tokyo.ac.jp'
+alias csc='ssh csc-lg1.is.s.u-tokyo.ac.jp'
 alias stack-exec='rlwrap stack exec --'
 alias node='nodejs'
 alias :e='nvim'
 alias 殺す='kill'
+alias うおォン='sudo poweroff'
 alias mipsrun='mipsel-none-elf-run'
 alias mipsgcc='mipsel-none-elf-gcc -Tidt.ld'
 alias mars='java -jar ~/apps/Mars4_5.jar'
+alias python='python3.5'
 
 fortune | cowsay -n -f tux | cowthink -n
 

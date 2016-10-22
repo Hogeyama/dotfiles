@@ -21,6 +21,7 @@ call dein#add('Shougo/neosnippet-snippets')
 call dein#add('thinca/vim-quickrun')
 "call dein#add('scrooloose/nerdtree')
 call dein#add('kana/vim-submode')
+call dein#add('kien/ctrlp.vim')
 "便利
 call dein#add('vim-scripts/zoom.vim')
 call dein#add('Shougo/unite-outline')
@@ -34,6 +35,7 @@ call dein#add('osyo-manga/vim-watchdogs')
 call dein#add('scrooloose/nerdcommenter')
 call dein#add('majutsushi/tagbar')
 call dein#add('bitc/lushtags')
+call dein#add('airblade/vim-gitgutter')
 "text-typeとか
 call dein#add('lervag/vimtex')
 call dein#add('neovimhaskell/haskell-vim')
@@ -166,14 +168,14 @@ set wildmode=longest:full,full
 "Unite{{{
 "設定
 call unite#custom#profile('default', 'context', {
-    \   'start_insert': 0,
-    \   'winheight': 10,
-    \   'winwidth': 40,
-    \   'direction': 'botright',
-    \   'prompt_direction' : 'top'
-    \ })
+\   'start_insert': 0,
+\   'winheight': 10,
+\   'winwidth': 40,
+\   'direction': 'botright',
+\   'prompt_direction' : 'top'
+\ })
 call unite#custom#source('file',
-    \   'ignore_pattern','\.\(hi\|o\|log\|gz\|dvi\|aux\|fdb_latexmk\)$')
+\   'ignore_pattern','\.\(hi\|o\|log\|gz\|dvi\|aux\|fdb_latexmk\)$')
 "ヤンク履歴許可
 let g:unite_source_history_yank_enable=100
 "ファイル履歴最大
@@ -188,25 +190,32 @@ nnoremap [unite]rg  :<C-u>UniteResume<CR>
 ""ファイル操作
 nnoremap [unite]y :Unite history/yank<CR>
 nnoremap [unite]b :Unite buffer<CR>
-"nnoremap [unite]h :Unite file_mru<CR>
+nnoremap [unite]h :Unite file_mru<CR>
 nnoremap [unite]o :Unite -vertical outline<CR>
 nnoremap <C-h>    :Unite file_mru<CR>
 nnoremap <expr><silent> <C-c>
-    \ quickrun#is_running() ?
-    \ quickrun#sweep_sessions() :
-    \ ":UniteWithBufferDir -buffer-name=files file<CR>"
+\ quickrun#is_running() ?
+\ quickrun#sweep_sessions() :
+\ ":UniteWithBufferDir -buffer-name=files file<CR>"
 
 
 "}}}
 
 "Denite"{{{
 ".dein/rplugin/python3/denite/ui/default.py:60にbotrightを追加するとしあわせ
+"
 "あとは近くにあるwinheightも10にした
 "今のところfile_mru以外はuniteでいいかなという気持ち
 hi CursorLine ctermbg=8
 call denite#custom#map('_', "\<C-j>", 'move_to_next_line')
 call denite#custom#map('_', "\<C-k>", 'move_to_prev_line')
-nnoremap <C-h> :Denite file_mru<CR>
+"nnoremap <C-h> :Denite file_mru<CR>
+
+"}}}
+
+"CtrlP {{{
+let g:ctrlp_extensions = ['tag', 'buffertag', 'quickfix', 'dir', 'rtscript',
+                        \ 'undo', 'line', 'changes', 'mixed', 'bookmarkdir']
 
 "}}}
 
@@ -215,28 +224,28 @@ let QFix_Height=5
 "above didn't work
 au FileType qf call AdjustWindowHeight(1, 10)
 function! AdjustWindowHeight(minheight, maxheight)
-  exe max([min([line("$")+1, a:maxheight]), a:minheight]) . "wincmd _"
+exe max([min([line("$")+1, a:maxheight]), a:minheight]) . "wincmd _"
 endfunction
 "}}}
 
 "QuickRun{{{
 let g:quickrun_config = {
-  \ '_' : {
-  \ 'runner/vimproc/updatetime' : 40,
-  \ 'outputter' : 'quickfix',
-  \ 'outputter/quickfix/open_cmd' : 'botright copen',
-  \ 'outputter/buffer/split' : ':botright',
-  \ 'hook/copen/enable_exit' : 1,
-  \ 'hook/copen/hook_command' : ':botright',
-  \ 'hook/copen/hook_args' : 'copen',
-  \ 'runner' : 'vimproc',
-  \ },
-  \ 'haskell' : {
-  \ 'command' : 'stack',
-  \ 'cmdopt' : 'runghc',
-  \ 'exec' : '%c %o %s'
-  \}
-  \}
+\ '_' : {
+\ 'runner/vimproc/updatetime' : 40,
+\ 'outputter' : 'quickfix',
+\ 'outputter/quickfix/open_cmd' : 'botright copen',
+\ 'outputter/buffer/split' : ':botright',
+\ 'hook/copen/enable_exit' : 1,
+\ 'hook/copen/hook_command' : ':botright',
+\ 'hook/copen/hook_args' : 'copen',
+\ 'runner' : 'vimproc',
+\ },
+\ 'haskell' : {
+\ 'command' : 'stack',
+\ 'cmdopt' : 'runghc',
+\ 'exec' : '%c %o %s'
+\}
+\}
 call watchdogs#setup(g:quickrun_config)
 "}}}
 
@@ -257,12 +266,12 @@ let g:vimfiler_safe_mode_by_default = 0
 "デフォルトのエクスプローラーにする
 let g:vimfiler_as_default_explorer = 1
 call vimfiler#custom#profile('default', 'context',
-        \ { 'edit_action' : 'tabopen'
-        \ , 'simple' : 1
-        \ , 'split' : 1
-        \ , 'direction' : 'botright'
-        \ , 'winwidth' : 32
-        \ })
+    \ { 'edit_action' : 'tabopen'
+    \ , 'simple' : 1
+    \ , 'split' : 1
+    \ , 'direction' : 'botright'
+    \ , 'winwidth' : 32
+    \ })
 nnoremap <Space>n :VimFilerCurrentDir<CR>
 autocmd FileType vimfiler nmap <buffer> <CR> <Plug>(vimfiler_open_file_in_another_vimfiler)
 autocmd FileType vimfiler nmap <buffer> K    5k
@@ -286,13 +295,13 @@ inoremap <expr><S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
 "Define dictionary.
 let g:neocomplete#sources#dictionary#dictionaries = {
-  \ 'default' : '',
-  \ 'vimshell' : $HOME.'/.vimshell_hist',
-  \ }
+\ 'default' : '',
+\ 'vimshell' : $HOME.'/.vimshell_hist',
+\ }
 "Define keyword.
 if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+let g:neocomplete#keyword_patterns = {}
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 endif
 
 "neosnippet
@@ -334,15 +343,16 @@ autocmd FileType c setlocal expandtab tabstop=4
 
 "Haskell"{{{
 autocmd FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=0 foldmethod=marker
-autocmd FileType haskell nnoremap <buffer> ,t :update!<CR>:NeoGhcModType<CR>
+autocmd FileType haskell nnoremap <buffer> ,t :update!<CR>:GhcModType<CR>
 autocmd FileType haskell nnoremap <buffer> ,T :update!<CR>:GhcModTypeInsert<CR>
 autocmd FileType haskell nnoremap <buffer> ,i :update!<CR>:NeoGhcModInfo<CR>
-"autocmd FileType haskell nnoremap <buffer> ,I :update!<CR>:GhcModInfoPreview<CR>
+autocmd FileType haskell nnoremap <buffer> ,I :update!<CR>:GhcModInfoPreview<CR>
 autocmd FileType haskell nnoremap <buffer> ,w :update!<CR>:NeoGhcModCheck<CR>
 autocmd FileType haskell nnoremap <buffer> ,l :update!<CR>:NeoGhcModLint<CR>
 autocmd FileType haskell nnoremap <buffer> ,h :Unite hoogle<CR>
-autocmd FileType haskell nnoremap <buffer> ,c :noh<CR>:NeoGhcModTypeClear<CR>
+autocmd FileType haskell nnoremap <buffer> ,c :noh<CR>:GhcModTypeClear<CR>
 autocmd FileType haskell nnoremap <buffer> <Space>t :update!<CR>:QuickRun -exec "fast-tags -R ./"<CR>
+autocmd FileType haskell hi Folded ctermbg=233
 call unite#custom_default_action('source/hoogle', 'preview')
 let g:haskell_conceal       = 0
 let g:haskell_tabular       = 0
@@ -545,10 +555,6 @@ nnoremap <C-j> <C-]>
 nnoremap <Space>sh  :VimShell<CR>
 nnoremap <Space>sht :VimShellTab<CR>
 nnoremap <Space>si  :VimShellInteractive 
-"""EasyMotion
-"s{char}{char}{label}
-nmap s <Plug>(easymotion-s2)
-nmap s <Plug>(easymotion-s2)
 "w/e motion
 nnoremap b B
 nnoremap B b
@@ -560,17 +566,23 @@ inoremap <C-b>   <esc>Bi
 inoremap <C-S-b> <esc>bi
 inoremap <C-w>   <esc>lWi
 inoremap <C-S-w> <esc>lwi
-"nmap w <Plug>(easymotion-bd-w)
+"""EasyMotion
+"s{char}{char}{label}
+nmap s <Plug>(easymotion-s2)
+"nmap s <Plug>(easymotion-sn)
+nmap M <Plug>(easymotion-bd-jk)
+nmap w <Plug>(easymotion-bd-w)
 "nmap W <Plug>(easymotion-bd-W)
-"nmap e <Plug>(easymotion-bd-e)
+nmap e <Plug>(easymotion-bd-e)
 "nmap E <Plug>(easymotion-bd-E)
-"vmap w <Plug>(easymotion-bd-w)
+vmap w <Plug>(easymotion-bd-w)
 "vmap W <Plug>(easymotion-bd-W)
-"vmap e <Plug>(easymotion-bd-e)
+vmap e <Plug>(easymotion-bd-e)
 "vmap E <Plug>(easymotion-bd-E)
 "検索
 "nmap <C-g> <Plug>(easymotion-sn)
 nnoremap ,c :noh<CR>
+nnoremap ^ :noh<CR>
 "}}}
 
 "Terminal他"{{{
@@ -673,6 +685,11 @@ if has('nvim')
 endif
 
 autocmd FileType asm setlocal tabstop=8 shiftwidth=8 softtabstop=8 noexpandtab
+
+"nnoremap <Space>m :NeomakeSh make 1&2> /dev/null<CR>
+nnoremap <Space>m :NeomakeSh make<CR>
+nnoremap <Space>s :NeomakeSh make status<CR>
+nnoremap <Space>c :NeomakeSh make cat > /dev/null<CR>
 
 
 "vim: set et ts=2 sts=2 tw=2:
