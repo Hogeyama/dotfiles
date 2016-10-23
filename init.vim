@@ -368,7 +368,6 @@ autocmd FileType haskell nnoremap <buffer> ,l :update!<CR>:NeoGhcModLint<CR>
 autocmd FileType haskell nnoremap <buffer> ,h :Unite hoogle<CR>
 autocmd FileType haskell nnoremap <buffer> ,c :noh<CR>:GhcModTypeClear<CR>
 autocmd FileType haskell nnoremap <buffer> <Space>t :update!<CR>:QuickRun -exec "fast-tags -R ./"<CR>
-autocmd FileType haskell hi Folded ctermbg=233
 call unite#custom_default_action('source/hoogle', 'preview')
 let g:haskell_conceal       = 0
 let g:haskell_tabular       = 0
