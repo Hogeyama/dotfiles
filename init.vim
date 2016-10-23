@@ -628,6 +628,7 @@ command! -nargs=1 MV call system("[ ! -f <args> ]rm ".expand("%")) | :file <args
 command! RmTrailingWhiteSpaces %s/\s\+$//g | :noh
 command! GoodMatchParen hi MatchParen ctermfg=253 ctermbg=0
 au VimEnter * GoodMatchParen
+au VimEnter * hi Folded ctermbg=233
 
 "OCamlExpr "{{{
 command! -nargs=? OCamlExpr call OCamlExprFun(<f-args>)
