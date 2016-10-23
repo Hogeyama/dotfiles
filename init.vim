@@ -37,6 +37,7 @@ call dein#add('scrooloose/nerdcommenter')
 call dein#add('majutsushi/tagbar')
 call dein#add('bitc/lushtags')
 call dein#add('airblade/vim-gitgutter')
+call dein#add('tpope/vim-fugitive')
 "text-typeとか
 call dein#add('lervag/vimtex')
 call dein#add('neovimhaskell/haskell-vim')
@@ -259,7 +260,7 @@ nnoremap ! :NeomakeSh
 "safe modeを切る
 let g:vimfiler_safe_mode_by_default = 0
 "デフォルトのエクスプローラーにする
-let g:vimfiler_as_default_explorer = 1
+"let g:vimfiler_as_default_explorer = 1
 call vimfiler#custom#profile('default', 'context',
     \ { 'edit_action' : 'tabopen'
     \ , 'simple' : 1
@@ -327,6 +328,14 @@ let g:miniBufExplCycleArround=1
 "git-gutter {{{
 let g:gitgutter_map_keys = 0
 let g:gitgutter_signs = 0
+nnoremap [gitgutter] <nop>
+nmap     <C-g> [gitgutter]
+nnoremap [gitgutter]n :GitGutterNextHunk<CR>
+nnoremap [gitgutter]p :GitGutterPrevHunk<CR>
+nnoremap [gitgutter]P :GitGutterPreviewHunk<CR>
+nnoremap [gitgutter]e :GitGutterSignsEnable<CR>
+nnoremap [gitgutter]d :GitGutterSignsDisable<CR>
+nnoremap [gitgutter]s :GitGutterStageHunk<CR>
 "}}}
 
 "smartinput{{{
