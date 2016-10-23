@@ -338,6 +338,13 @@ nnoremap [gitgutter]d :GitGutterSignsDisable<CR>
 nnoremap [gitgutter]s :GitGutterStageHunk<CR>
 "}}}
 
+"vim-fugitive{{{
+".dein/plugin/fugitive.vim
+" l:1447 pedit -> vertical pedit
+" wincmd P -> wincmd P | vertical resize 40
+" と書き換えるとgStatusが見やすい
+"}}}
+
 "smartinput{{{
 call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
 call smartinput#map_to_trigger('i', '<CR>', '<CR>', '<CR>')
