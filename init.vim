@@ -4,10 +4,9 @@ if has('vim_starting')
   set runtimepath+=~/.nvim/dein/repos/github.com/Shougo/dein.vim/
 endif
 
-call dein#begin(expand('~/.nvim/dein'))
-
 filetype plugin indent on
 
+call dein#add('vifm/neovim-vifm')
 "essential
 call dein#add('Shougo/unite.vim')
 call dein#add('Shougo/denite.nvim')
@@ -22,11 +21,10 @@ call dein#add('thinca/vim-quickrun')
 "call dein#add('scrooloose/nerdtree')
 call dein#add('kana/vim-submode')
 call dein#add('kien/ctrlp.vim')
-call dein#add('fholgado/minibufexpl.vim')
+call dein#add('benekastah/neomake')
 "便利
 call dein#add('vim-scripts/zoom.vim')
 call dein#add('Shougo/unite-outline')
-call dein#add('osyo-manga/unite-quickfix')
 call dein#add('vim-scripts/Align')
 call dein#add('kana/vim-smartinput')
 call dein#add('kana/vim-textobj-user')
@@ -38,11 +36,14 @@ call dein#add('majutsushi/tagbar')
 call dein#add('bitc/lushtags')
 call dein#add('airblade/vim-gitgutter')
 call dein#add('tpope/vim-fugitive')
+call dein#add('tpope/vim-surround')
 "text-typeとか
 call dein#add('lervag/vimtex')
 call dein#add('neovimhaskell/haskell-vim')
 call dein#add('itchyny/vim-haskell-indent')
 call dein#add('rust-lang/rust.vim')
+call dein#add('racer-rust/vim-racer')
+call dein#add('derekelkins/agda-vim')
 "Motion
 call dein#add('Lokaltog/vim-easymotion')
 call dein#add('rhysd/clever-f.vim')
@@ -54,19 +55,11 @@ call dein#add('eagletmt/neco-ghc')
 call dein#add('eagletmt/ghcmod-vim')
 call dein#add('vim-scripts/alex.vim')
 call dein#add('vim-scripts/happy.vim')
-"Agda
-call dein#add('derekelkins/agda-vim')
-"Rust
-call dein#add('racer-rust/vim-racer')
 "MarkDown
 call dein#add('Bakudankun/previm')
 call dein#add('tyru/open-browser.vim')
 call dein#add('vim-pandoc/vim-pandoc')
 call dein#add('vim-pandoc/vim-pandoc-syntax')
-"Scheme
-call dein#add('losingkeys/vim-niji')
-"Prolog
-call dein#add('adimit/prolog.vim')
 "Color Scheme
 call dein#add('zsoltf/vim-maui')
 call dein#add('djjcast/mirodark')
@@ -80,8 +73,6 @@ call dein#add('djjcast/mirodark')
 call dein#add('sickill/vim-monokai')
 call dein#add('ciaranm/inkpot')
 call dein#add('vim-scripts/pyte')
-"
-call dein#add('benekastah/neomake')
 "Coq
 call dein#add('jvoorhis/coq.vim')
 call dein#add('eagletmt/coqtop-vim')
@@ -204,14 +195,15 @@ nnoremap <expr><silent> <C-c>
 "}}}
 
 "Denite"{{{
-".dein/rplugin/python3/denite/ui/default.py:60にbotrightを追加するとしあわせ
-"
-"あとは近くにあるwinheightも10にした
 "今のところfile_mru以外はuniteでいいかなという気持ち
 hi CursorLine ctermbg=8
-call denite#custom#map('_', "\<C-j>", 'move_to_next_line')
-call denite#custom#map('_', "\<C-k>", 'move_to_prev_line')
-"nnoremap <C-h> :Denite file_mru<CR>
+call denite#custom#map('insert', "\<C-j>", 'move_to_next_line')
+call denite#custom#map('insert', "\<C-k>", 'move_to_prev_line')
+call denite#custom#map('insert', "jk", 'enter_mode:normal')
+nnoremap <C-h>
+    \ :call denite#start([{'name': 'file_mru', 'args': []}]
+    \                    ,{'winheight': 10
+    \                     ,'mode': 'normal'})<CR>
 
 "}}}
 
@@ -319,10 +311,10 @@ call submode#map('winsize', 'n', '', '-', '<C-w>+')
 "}}}
 
 "minibufexpl {{{
-nnoremap <F11> :MBEToggle<CR>
-nnoremap BN :MBEbn<CR>
-nnoremap Bf :MBEbf<CR>
-let g:miniBufExplCycleArround=1
+"nnoremap <F11> :MBEToggle<CR>
+"nnoremap BN :MBEbn<CR>
+"nnoremap Bf :MBEbf<CR>
+"let g:miniBufExplCycleArround=1
 "}}}
 
 "git-gutter {{{
@@ -346,6 +338,7 @@ nnoremap [gitgutter]s :GitGutterStageHunk<CR>
 "}}}
 
 "smartinput{{{
+".dein/autoload/smartinput.vim smartinput#define_default_rules()を編集
 call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
 call smartinput#map_to_trigger('i', '<CR>', '<CR>', '<CR>')
 
@@ -358,7 +351,8 @@ call smartinput#define_rule({
   \   'at'    : '(\%#)',
   \   'char'  : '<Space>',
   \   'input' : '<Space><Space><Left>',
-  \   })"}}}
+  \   })
+"}}}
 
 "C"{{{
 autocmd FileType c setlocal expandtab tabstop=4

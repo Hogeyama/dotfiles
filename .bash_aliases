@@ -41,7 +41,7 @@ alias うおォン='sudo poweroff'
 alias mipsrun='mipsel-none-elf-run'
 alias mipsgcc='mipsel-none-elf-gcc -Tidt.ld'
 alias mars='java -jar ~/apps/Mars4_5.jar'
-alias python='python3.5'
+#alias python='python3.5'
 
 fortune | cowsay -n -f tux | cowthink -n
 
