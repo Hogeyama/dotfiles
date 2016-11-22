@@ -1,24 +1,21 @@
 
-"dein{{{
-if has('vim_starting')
-  set runtimepath+=~/.nvim/dein/repos/github.com/Shougo/dein.vim/
-endif
+"dein {{{
 
 filetype plugin indent on
+set runtimepath+=~/.nvim/dein/repos/github.com/Shougo/dein.vim
+call dein#begin(expand('~/.nvim/dein'))
+call dein#add('repos/github.com/Shougo/dein.vim')
 
-call dein#add('vifm/neovim-vifm')
 "essential
 call dein#add('Shougo/unite.vim')
 call dein#add('Shougo/denite.nvim')
 call dein#add('Shougo/vimfiler')
-"call dein#add('Shougo/vimshell')
 call dein#add('Shougo/vimproc')
 call dein#add('Shougo/neomru.vim')
 call dein#add('Shougo/deoplete.nvim')
 call dein#add('Shougo/neosnippet')
 call dein#add('Shougo/neosnippet-snippets')
 call dein#add('thinca/vim-quickrun')
-"call dein#add('scrooloose/nerdtree')
 call dein#add('kana/vim-submode')
 call dein#add('kien/ctrlp.vim')
 call dein#add('benekastah/neomake')
@@ -55,6 +52,13 @@ call dein#add('eagletmt/neco-ghc')
 call dein#add('eagletmt/ghcmod-vim')
 call dein#add('vim-scripts/alex.vim')
 call dein#add('vim-scripts/happy.vim')
+call dein#add('neovimhaskell/neovim-ghcmod')
+call dein#add('ujihisa/unite-haskellimport')
+"Scala
+call dein#add('derekwyatt/vim-scala')
+call dein#add('ensime/ensime-vim')
+call dein#add('ktvoelker/sbt-vim')
+call dein#add('rhysd/vim-llvm')
 "MarkDown
 call dein#add('Bakudankun/previm')
 call dein#add('tyru/open-browser.vim')
@@ -76,10 +80,101 @@ call dein#add('vim-scripts/pyte')
 "Coq
 call dein#add('jvoorhis/coq.vim')
 call dein#add('eagletmt/coqtop-vim')
-"call dein#add('vim-scripts/CoqIDE')
 
 call dein#end()
 "}}}
+
+""NeoBundle"{{{
+"if has('vim_starting')
+"  set runtimepath+=~/.vim/bundle/neobundle.vim
+"endif
+"
+"call neobundle#begin(expand('~/.vim/bundle/'))
+"
+""essential
+"NeoBundle 'Shougo/neobundle.vim'
+"NeoBundle 'Shougo/vimproc'
+"NeoBundle 'Shougo/unite.vim'
+"NeoBundle 'Shougo/denite.nvim'
+"NeoBundle 'Shougo/vimfiler'
+"NeoBundle 'Shougo/vimproc'
+"NeoBundle 'Shougo/neomru.vim'
+"NeoBundle 'Shougo/deoplete.nvim'
+"NeoBundle 'Shougo/neosnippet'
+"NeoBundle 'Shougo/neosnippet-snippets'
+"NeoBundle 'thinca/vim-quickrun'
+"NeoBundle 'kana/vim-submode'
+"NeoBundle 'kien/ctrlp.vim'
+"NeoBundle 'benekastah/neomake'
+""便利
+"NeoBundle 'vim-scripts/zoom.vim'
+"NeoBundle 'Shougo/unite-outline'
+"NeoBundle 'vim-scripts/Align'
+"NeoBundle 'kana/vim-smartinput'
+"NeoBundle 'kana/vim-textobj-user'
+"NeoBundle 'osyo-manga/vim-textobj-multiblock'
+"NeoBundle 'osyo-manga/shabadou.vim'
+"NeoBundle 'osyo-manga/vim-watchdogs'
+"NeoBundle 'scrooloose/nerdcommenter'
+"NeoBundle 'majutsushi/tagbar'
+"NeoBundle 'airblade/vim-gitgutter'
+"NeoBundle 'tpope/vim-fugitive'
+"NeoBundle 'tpope/vim-surround'
+"NeoBundle 'godlygeek/tabular'
+""file-typeとか
+"NeoBundle 'lervag/vimtex'
+"NeoBundle 'neovimhaskell/haskell-vim'
+"NeoBundle 'dag/vim2hs'
+"NeoBundle 'rust-lang/rust.vim'
+"NeoBundle 'racer-rust/vim-racer'
+"NeoBundle 'derekelkins/agda-vim'
+"NeoBundle 'rhysd/vim-llvm'
+""Motion
+"NeoBundle 'Lokaltog/vim-easymotion'
+"NeoBundle 'rhysd/clever-f.vim'
+""Haskell
+"NeoBundle 'thinca/vim-ref'
+"NeoBundle 'ujihisa/ref-hoogle'
+"NeoBundle 'eagletmt/unite-haddock'
+"NeoBundle 'eagletmt/neco-ghc'
+"NeoBundle 'eagletmt/ghcmod-vim'
+"NeoBundle 'vim-scripts/alex.vim'
+"NeoBundle 'vim-scripts/happy.vim'
+"NeoBundle 'ujihisa/unite-haskellimport'
+""MarkDown
+"NeoBundle 'Bakudankun/previm'
+"NeoBundle 'tyru/open-browser.vim'
+"NeoBundle 'vim-pandoc/vim-pandoc'
+"NeoBundle 'vim-pandoc/vim-pandoc-syntax'
+""Color Scheme
+"NeoBundle 'zsoltf/vim-maui'
+"NeoBundle 'djjcast/mirodark'
+"NeoBundle 'nanotech/jellybeans.vim'
+"NeoBundle 'w0ng/vim-hybrid'
+"NeoBundle 'miyakogi/seiya.vim'
+"NeoBundle 'tomasr/molokai'
+"NeoBundle 'chriskempson/tomorrow-theme'
+"NeoBundle 'chriskempson/vim-tomorrow-theme'
+"NeoBundle 'djjcast/mirodark'
+"NeoBundle 'sickill/vim-monokai'
+"NeoBundle 'ciaranm/inkpot'
+"NeoBundle 'vim-scripts/pyte'
+""Coq
+"NeoBundle 'jvoorhis/coq.vim'
+"NeoBundle 'eagletmt/coqtop-vim'
+""Scala
+"NeoBundle 'derekwyatt/vim-scala'
+"NeoBundle 'ensime/ensime-vim'
+"NeoBundle 'ktvoelker/sbt-vim'
+"
+"call neobundle#end()
+"
+"filetype plugin indent on
+"filetype indent on
+"syntax on
+"
+"NeoBundleCheck
+""}}}
 
 "各種設定"{{{
 set fileencoding=utf-8
@@ -94,6 +189,8 @@ let &t_ti.="\e[1 q"
 let &t_SI.="\e[5 q"
 let &t_EI.="\e[1 q"
 let &t_te.="\e[0 q"
+"マウス
+set mouse=
 "カラースキーム
 set background=dark
 colorscheme maui
@@ -190,13 +287,25 @@ nnoremap <expr><silent> <C-c>
 \ quickrun#is_running() ?
 \ quickrun#sweep_sessions() :
 \ ":UniteWithBufferDir -buffer-name=files file<CR>"
-
+"""unite map
+autocmd FileType unite call s:unite_my_settings()
+function! s:unite_my_settings()"{{{
+  " Overwrite settings.
+  imap <buffer> jk        <Plug>(unite_insert_leave)
+  imap <buffer> <TAB>     <Plug>(unite_select_next_line)
+  imap <buffer> <S-TAB>   <Plug>(unite_select_previous_line)
+  nmap <buffer> <C-j>     <Plug>(unite_select_next_line)
+  nmap <buffer> <C-k>     <Plug>(unite_select_previous_line)
+endfunction"}}}
 
 "}}}
 
 "Denite"{{{
 "今のところfile_mru以外はuniteでいいかなという気持ち
+"autoload/denite/init.vimを編集する必要があるかも
 hi CursorLine ctermbg=8
+call denite#custom#map('_', "<Tab>", 'move_to_next_line')
+call denite#custom#map('_', "<S-Tab>", 'move_to_prev_line')
 call denite#custom#map('insert', "\<C-j>", 'move_to_next_line')
 call denite#custom#map('insert', "\<C-k>", 'move_to_prev_line')
 call denite#custom#map('insert', "jk", 'enter_mode:normal')
@@ -204,6 +313,11 @@ nnoremap <C-h>
     \ :call denite#start([{'name': 'file_mru', 'args': []}]
     \                    ,{'winheight': 10
     \                     ,'mode': 'normal'})<CR>
+nnoremap <C-u>r
+    \ :call denite#start([{'name': 'file_rec', 'args': []}]
+    \                    ,{'winheight': 10
+    \                     ,'mode': 'normal'})<CR>
+nnoremap <Space>d :Denite -mode=nomal -winheight=10 
 
 "}}}
 
@@ -281,16 +395,6 @@ inoremap <expr><Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr><S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 "BS
 inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
-"Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-\ 'default' : '',
-\ 'vimshell' : $HOME.'/.vimshell_hist',
-\ }
-"Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-let g:neocomplete#keyword_patterns = {}
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-endif
 
 "neosnippet
 imap <C-f> <Plug>(neosnippet_expand_or_jump)
@@ -359,31 +463,48 @@ autocmd FileType c setlocal expandtab tabstop=4
 "}}}
 
 "Haskell"{{{
+"neovimhaskell/haskell-vimのindentファイルは邪悪なので消すべき
+"neovimhaskell/haskell-vimのsyntaxとvim2hsのindentを組み合わせるのが良さげ
 autocmd FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=0 foldmethod=marker
-autocmd FileType haskell nnoremap <buffer> ,t :update!<CR>:GhcModType<CR>
+autocmd FileType haskell nnoremap <buffer> ,t :update!<CR>:NeoGhcModType<CR>
 autocmd FileType haskell nnoremap <buffer> ,T :update!<CR>:GhcModTypeInsert<CR>
 autocmd FileType haskell nnoremap <buffer> ,i :update!<CR>:NeoGhcModInfo<CR>
 autocmd FileType haskell nnoremap <buffer> ,I :update!<CR>:GhcModInfoPreview<CR>
 autocmd FileType haskell nnoremap <buffer> ,w :update!<CR>:NeoGhcModCheck<CR>
 autocmd FileType haskell nnoremap <buffer> ,l :update!<CR>:NeoGhcModLint<CR>
-autocmd FileType haskell nnoremap <buffer> ,h :Unite hoogle<CR>
-autocmd FileType haskell nnoremap <buffer> ,c :noh<CR>:GhcModTypeClear<CR>
+autocmd FileType haskell nnoremap <buffer> ,c :noh<CR>    :NeoGhcModTypeClear<CR>
+autocmd FileType haskell nnoremap <buffer> ,H :Unite hoogle<CR>
+autocmd FileType haskell nnoremap <buffer> ,h :Unite haskellimport<CR>
 autocmd FileType haskell nnoremap <buffer> <Space>t :update!<CR>:QuickRun -exec "fast-tags -R ./"<CR>
 call unite#custom_default_action('source/hoogle', 'preview')
-let g:haskell_conceal       = 0
-let g:haskell_tabular       = 0
-let g:haskell_hsp           = 0
-let g:haskell_quasi         = 0
-let g:haskell_interpolation = 0
-let g:haskell_regex         = 0
-let g:haskell_jmacro        = 0
-let g:haskell_shqq          = 0
-let g:haskell_sql           = 0
-let g:haskell_json          = 0
-let g:haskell_xml           = 0
 autocmd FileType cabal   setlocal expandtab tabstop=4
 au! BufNewFile,BufFilePRe,BufRead *.x set filetype=alex
 au! BufNewFile,BufFilePRe,BufRead *.y set filetype=happy
+"neco-ghc
+let g:necoghc_enable_detailed_browse = 1
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+autocmd FileType haskell inoremap <buffer> <C-o> <C-x><C-o>
+"vim2hs
+let g:haskell_haddock              = 0
+let g:haskell_ffi                  = 0
+let g:haskell_cpp                  = 0
+let g:haskell_th                   = 0
+let g:haskell_quasi                = 0
+let g:haskell_interpolation        = 0
+let g:haskell_regex                = 0
+let g:haskell_jmacro               = 0
+let g:haskell_shqq                 = 0
+let g:haskell_rlangqq              = 0
+let g:haskell_sql                  = 0
+let g:haskell_json                 = 0
+let g:haskell_xml                  = 0
+let g:haskell_hsp                  = 0
+let g:haskell_conceal              = 0
+let g:haskell_conceal_comments     = 0
+let g:haskell_conceal_enumerations = 0
+let g:haskell_conceal_wide         = 0
+let g:haskell_conceal_bad          = 0
+let g:haskell_multiline_strings    = 0
 "}}}
 
 "OCaml"{{{
@@ -464,6 +585,12 @@ let g:rust_fold = 0
 autocmd FileType rust nnoremap <buffer> <C-q> :update!<CR>:RustRun<CR>
 "}}}
 
+"Scala {{{
+autocmd FileType scala nnoremap <buffer>,w    :update!<CR>:EnTypeCheck<CR>
+autocmd FileType scala nnoremap <buffer>,t    :update!<CR>:EnInspectType<CR>
+autocmd FileType scala nnoremap <buffer><C-j> :update!<CR>:EnDeclaration<CR>
+"}}}
+
 "Seiya"{{{
 nnoremap <Space>se :SeiyaEnable<CR>
 nnoremap <Space>sd :SeiyaDisable<CR>
@@ -512,6 +639,7 @@ nnoremap q :q
 "移動
 nnoremap <C-a> I
 nnoremap <C-e> A
+nnoremap gJ J
 noremap J 5j
 noremap K 5k
 noremap H B
@@ -554,7 +682,7 @@ inoremap <C-b> <esc>lBi
 inoremap <expr><C-n> deoplete#mappings#close_popup()."<Esc>lWi"
 inoremap <C-a> <esc>I
 inoremap <C-e> <esc>A
-inoremap <C-o> <esc>o
+"inoremap <C-o> <esc>o
 "コマンドライン上下
 cnoremap <C-j> <down>
 cnoremap <C-k> <up>
@@ -604,6 +732,7 @@ nnoremap ^ :noh<CR>
 "Terminal他"{{{
 nnoremap .. :cd..<CR>
 nnoremap te :vs<CR><C-w>l:te<CR>
+":botright split | resize 15 | te
 nnoremap vs :rightbelow vs<CR>
 tnoremap <Esc> <C-\><C-n>
 tnoremap jk    <C-\><C-n>
@@ -617,18 +746,6 @@ tnoremap <C-j> <Down>
 tnoremap <C-h> <Left>
 tnoremap <C-l> <Right>
 "}}}
-
-let @a = "->"
-let @b = "<-"
-
-let $BASH_ENV='~/.bashenv'
-let g:previm_open_cmd="google-chrome"
-
-command! -nargs=1 MV call system("[ ! -f <args> ]rm ".expand("%")) | :file <args> | :w!
-command! RmTrailingWhiteSpaces %s/\s\+$//g | :noh
-command! GoodMatchParen hi MatchParen ctermfg=253 ctermbg=0
-au VimEnter * GoodMatchParen
-au VimEnter * hi Folded ctermbg=233
 
 "OCamlExpr "{{{
 command! -nargs=? OCamlExpr call OCamlExprFun(<f-args>)
@@ -662,7 +779,7 @@ function! OCamlTopFun(...) abort
   "topcmd
   if strlen(g:ocamltop) == 0
     if !(filereadable(expand('%:h').'/Makefile'))
-      throw "Makefile is not readable"
+      throw "Makefile not found"
     endif
     let makefile = readfile(expand('%:h').'/Makefile')
     let topcmd = ''
@@ -674,7 +791,7 @@ function! OCamlTopFun(...) abort
       endif
     endfor
     if strlen(topcmd) == 0
-        throw "OCamlTopFun: だめ"
+        throw "OCamlTopFun: $RESULT not found in Makefile"
     endif
   else
     let topcmd = g:ocamltop
@@ -689,13 +806,26 @@ function! OCamlTopFun(...) abort
 endfunction
 "}}}
 
+let @a = "->"
+let @b = "<-"
+
+let $BASH_ENV='~/.bashenv'
+let g:previm_open_cmd="google-chrome"
+
+command! -nargs=1 MV call system("[ ! -f <args> ]rm ".expand("%")) | :file <args> | :w!
+command! RmTrailingWhiteSpaces %s/\s\+$//g | :noh
+command! GoodMatchParen hi MatchParen ctermfg=253 ctermbg=0
+au VimEnter * GoodMatchParen
+au VimEnter * hi Folded ctermbg=233
+
 nnoremap ,cl <nop>
+nnoremap Q <nop>
 nnoremap <F8> :TagbarToggle<CR>
 nnoremap <Space>r :RestartNvimhs<CR>
 nnoremap <Space>m :NeomakeSh stack build<CR>
-"nnoremap <Space>m :NeomakeSh cd ~/.nvim/nvim-haskell; stack install > /dev/null<CR>
+nnoremap gs :Gstatus<CR>
 
-let g:ghc_mod_nvim_log_directory = "$HOME/.cache/ghc-mod-nvim"
+let g:ghc_mod_nvim_log_directory = expand('~/.cache/ghc-mod-nvim')
 "nvim-hs
 if has('nvim')
     call jobstart([expand('$HOME/.local/bin/nvim-hs-devel.sh')], {'rpc' : v:true})
@@ -703,10 +833,32 @@ endif
 
 autocmd FileType asm setlocal tabstop=8 shiftwidth=8 softtabstop=8 noexpandtab
 
-"nnoremap <Space>m :NeomakeSh make 1&2> /dev/null<CR>
-nnoremap <Space>m :NeomakeSh make<CR>
-nnoremap <Space>s :NeomakeSh make status<CR>
-nnoremap <Space>c :NeomakeSh make cat > /dev/null<CR>
+
+let g:byobu_exist=0
+let g:byobu_name=""
+let g:byobu_open=0
+
+
+function! ByobuOpen() abort
+  if g:byobu_open "current windowにしないと意味ないよなあ
+    return
+elseif g:byobu_exist
+    botright split g:byobu_name | resize 10
+    let g:byobu_open=1
+  else
+    botright split | resize 10 | te
+    let g:byobu_open=1
+    let g:byobu_exist=1
+    let g:byobu_name=@%
+  endif
+endfunction
+function! ByobuClose() abort
+  if !g:byobu_open
+    return
+  else
+    bdelete g:byobu_name
+  endif
+endfunction
 
 
 "vim: set et ts=2 sts=2 tw=2:

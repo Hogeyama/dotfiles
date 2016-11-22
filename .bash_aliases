@@ -36,12 +36,13 @@ alias csc='ssh csc-lg1.is.s.u-tokyo.ac.jp'
 alias stack-exec='rlwrap stack exec --'
 alias node='nodejs'
 alias :e='nvim'
-alias 殺す='kill'
 alias うおォン='sudo poweroff'
 alias mipsrun='mipsel-none-elf-run'
 alias mipsgcc='mipsel-none-elf-gcc -Tidt.ld'
 alias mars='java -jar ~/apps/Mars4_5.jar'
-#alias python='python3.5'
+alias gs='git status'
+alias vim='nvim'
+alias あなたとJava='echo いますぐダウンロー; echo ド'
 
-fortune | cowsay -n -f tux | cowthink -n
+#fortune | cowsay -n -f tux | cowthink -n
 

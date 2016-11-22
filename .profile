@@ -29,3 +29,5 @@ if [ -f "$HOME/.Xmodmap" ]; then
     xmodmap "$HOME/.Xmodmap"
 fi
 
+export BROWSER="google-chrome %s"
+

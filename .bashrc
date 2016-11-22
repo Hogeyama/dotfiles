@@ -128,6 +128,5 @@ shopt -s autocd
 
 RLWRAP_HOME='$(HOME)/.rlwrap'
 
-
 PATH=~/site/bin:$PATH
 
