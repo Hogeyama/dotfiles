@@ -124,8 +124,10 @@ if [ -f ~/CAD/script.sh ]; then
   . ~/CAD/script.sh /opt/Xilinx/
 fi
 
+# autocd
 shopt -s autocd
 
+# doesn't work :-)
 RLWRAP_HOME='$(HOME)/.rlwrap'
 
 PATH=~/site/bin:$PATH

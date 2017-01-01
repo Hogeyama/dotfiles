@@ -31,3 +31,5 @@ fi
 
 export BROWSER="google-chrome %s"
 
+
+export PATH="$HOME/.cargo/bin:$PATH"

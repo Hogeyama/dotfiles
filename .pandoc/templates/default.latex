@@ -146,7 +146,7 @@
 %%%enumitem
 \setlist{nosep}
 \setlist{labelindent=\parindent} % < Usually a good idea
-\setlist[itemize,1]{label=$$\triangleright$$}
+%\setlist[itemize,1]{label=$$\triangleright$$}
 \setlist[enumerate,1]{label=\arabic*., ref=\arabic*}
 \setlist[enumerate,2]{label=\emph{\alph*}, ref=\theenumi.\emph{\alph*}}
 \setlist[enumerate,3]{label=\roman*, ref=\theenumii.\roman*}
