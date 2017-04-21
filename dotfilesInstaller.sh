@@ -10,7 +10,7 @@ fi
 ln -sf ~/dotfiles/.profile      ~/.profile
 ln -sf ~/dotfiles/.bashrc       ~/.bashrc
 ln -sf ~/dotfiles/.bashenv      ~/.bashenv
-ln -sf ~/dotfiles/.bash_aliases ~/.bash_aliases
+ln -sf ~/dotfiles/.bash_alias   ~/.bash_alias
 ln -sf ~/dotfiles/.zshrc        ~/.zshrc
 ln -sf ~/dotfiles/.zshenv       ~/.zshenv
 ln -sf ~/dotfiles/.zsh_aliases  ~/.zsh_aliases
