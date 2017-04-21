@@ -1,0 +1,49 @@
+
+snippet     def
+options     head
+	${1} :: ${2}
+	$1 ${3}= ${0}
+
+snippet     inline
+abbr        {-# INLINE #-}
+options     head
+	{-# INLINE ${0} #-}
+
+snippet     main
+options     head
+	main :: IO ()
+	main = ${0}
+
+snippet     import
+abbr        import
+options     head
+	import           ${0}
+
+snippet     importOnly
+abbr        import ... (...)
+alias       oimport
+options     head
+	import           ${1} (${2})
+
+snippet     importQualified
+abbr        import qualified
+alias       qimport
+options     head
+	import qualified ${0}
+
+snippet     undefined
+abbr        undefined
+alias       und
+	undefined
+
+snippet     ---
+abbr        ---
+options     head
+	-------------------------------------------------------------------------------
+
+
+snippet     instance
+options     head
+	instance ${1:Class} ${2:Type} where
+		${3:function} ${4:self} = ${0:TARGET}
+

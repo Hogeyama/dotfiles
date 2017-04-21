@@ -6,10 +6,13 @@ set runtimepath+=~/.nvim/dein/repos/github.com/Shougo/dein.vim
 call dein#begin(expand('~/.nvim/dein'))
 call dein#add('repos/github.com/Shougo/dein.vim')
 
+call dein#add('jelera/vim-javascript-syntax')
 "essential
+call dein#add('vim-airline/vim-airline')
+call dein#add('vim-airline/vim-airline-themes')
 call dein#add('Shougo/unite.vim')
 call dein#add('Shougo/denite.nvim')
-call dein#add('Shougo/vimfiler')
+"call dein#add('Shougo/vimfiler')
 call dein#add('Shougo/vimproc')
 call dein#add('Shougo/neomru.vim')
 call dein#add('Shougo/deoplete.nvim')
@@ -31,17 +34,20 @@ call dein#add('osyo-manga/vim-textobj-multiblock')
 call dein#add('osyo-manga/shabadou.vim')
 call dein#add('osyo-manga/vim-watchdogs')
 call dein#add('scrooloose/nerdcommenter')
+call dein#add('scrooloose/nerdtree')
 call dein#add('majutsushi/tagbar')
 call dein#add('bitc/lushtags')
 call dein#add('airblade/vim-gitgutter')
 call dein#add('tpope/vim-fugitive')
 call dein#add('tpope/vim-surround')
-"text-typeとか
-call dein#add('lervag/vimtex')
+"filetypeとか
+"call dein#add('lervag/vimtex')
 call dein#add('neovimhaskell/haskell-vim')
 call dein#add('rust-lang/rust.vim')
 call dein#add('racer-rust/vim-racer')
+call dein#add('phildawes/racer')
 call dein#add('derekelkins/agda-vim')
+call dein#add('raichoo/agda-vim')
 "Motion
 call dein#add('Lokaltog/vim-easymotion')
 call dein#add('rhysd/clever-f.vim')
@@ -61,6 +67,8 @@ call dein#add('derekwyatt/vim-scala')
 call dein#add('ensime/ensime-vim')
 call dein#add('ktvoelker/sbt-vim')
 call dein#add('rhysd/vim-llvm')
+"Idris
+call dein#add('idris-hackers/idris-vim')
 "MarkDown
 call dein#add('Bakudankun/previm')
 call dein#add('tyru/open-browser.vim')
@@ -83,6 +91,10 @@ call dein#add('vim-scripts/pyte')
 call dein#add('jvoorhis/coq.vim')
 call dein#add('eagletmt/coqtop-vim')
 
+"otameshi
+"call dein#add('dannyob/quickfixstatus')
+"call dein#add('jceb/vim-hier')
+
 call dein#end()
 "}}}
 
@@ -101,6 +113,8 @@ let &t_EI.="\e[1 q"
 let &t_te.="\e[0 q"
 "マウス
 set mouse=
+"Unicode文字とか
+set ambiwidth=double
 "カラースキーム
 set background=dark
 colorscheme maui
@@ -126,7 +140,7 @@ set tabstop=4 shiftwidth=4 softtabstop=4
 au FileType vim setlocal et sw=2 sts=2
 "インデントの設定
 set autoindent
-set smartindent
+"set smartindent
 "スワップファイルを作成しない
 set noswapfile
 "バックアップファイルを作成しない
@@ -214,19 +228,38 @@ endfunction"}}}
 "今のところfile_mru以外はuniteでいいかなという気持ち
 "autoload/denite/init.vimを編集する必要があるかも
 hi CursorLine ctermbg=8
-call denite#custom#map('_', "<Tab>", 'move_to_next_line')
-call denite#custom#map('_', "<S-Tab>", 'move_to_prev_line')
-call denite#custom#map('insert', "\<C-j>", 'move_to_next_line')
-call denite#custom#map('insert', "\<C-k>", 'move_to_prev_line')
-call denite#custom#map('insert', "jk", 'enter_mode:normal')
+call denite#custom#map(
+      \ '_',
+      \ "<Tab>",
+      \ '<denite:move_to_next_line>',
+      \ 'noremap'
+      \ )
+call denite#custom#map(
+      \ '_',
+      \ "<S-Tab>",
+      \ '<denite:move_to_prev_line>',
+      \ "noremap"
+      \ )
+call denite#custom#map(
+      \ 'insert',
+      \ '<C-j>',
+      \ '<denite:move_to_next_line>',
+      \ 'noremap'
+      \ )
+call denite#custom#map(
+      \ 'insert',
+      \ '<C-k>',
+      \ '<denite:move_to_previous_line>',
+      \ 'noremap'
+      \ )
 nnoremap <C-h>
     \ :call denite#start([{'name': 'file_mru', 'args': []}]
     \                    ,{'winheight': 10
-    \                     ,'mode': 'normal'})<CR>
+    \                    , 'mode': 'normal'})<CR>
 nnoremap <C-u>r
     \ :call denite#start([{'name': 'file_rec', 'args': []}]
     \                    ,{'winheight': 10
-    \                     ,'mode': 'normal'})<CR>
+    \                    , 'mode': 'normal'})<CR>
 nnoremap <Space>d :Denite -mode=nomal -winheight=10 
 "}}}
 
@@ -239,24 +272,77 @@ exe max([min([line("$")+1, a:maxheight]), a:minheight]) . "wincmd _"
 endfunction
 "}}}
 
-"QuickRun{{{
+"QuickRun, WatchDogs{{{
+
+let s:rust_errorformat =
+  \ '%-Gerror: aborting due to previous error,'.
+  \ '%-Gerror: aborting due to %\\d%\\+ previous errors,'.
+  \ '%-Gerror: Could not compile `%s`.,'.
+  \ '%Eerror[E%n]: %m,'.
+  \ '%Eerror: %m,'.
+  \ '%Wwarning: %m,'.
+  \ '%Inote: %m,'.
+  \ '%-Z\ %#-->\ %f:%l:%c,'.
+  \ '%G\ %#\= %*[^:]: %m,'.
+  \ '%G\ %#|\ %#%\\^%\\+ %m,'.
+  \ '%I%>help:\ %#%m,'.
+  \ '%Z\ %#%m,'
+
 let g:quickrun_config = {
-\ '_' : {
-\ 'runner/vimproc/updatetime' : 40,
-\ 'outputter' : 'quickfix',
-\ 'outputter/quickfix/open_cmd' : 'botright copen',
-\ 'outputter/buffer/split' : ':botright',
-\ 'hook/copen/enable_exit' : 1,
-\ 'hook/copen/hook_command' : ':botright',
-\ 'hook/copen/hook_args' : 'copen',
-\ 'runner' : 'vimproc',
-\ },
-\ 'haskell' : {
-\ 'command' : 'stack',
-\ 'cmdopt' : 'runghc',
-\ 'exec' : '%c %o %s'
-\}
-\}
+  \ '_' : {
+  \   'runner/vimproc/updatetime' : 40,
+  \   'outputter' : 'quickfix',
+  \   'outputter/quickfix/open_cmd' : 'botright copen',
+  \   'outputter/buffer/split' : ':botright',
+  \   'hook/copen/enable_exit' : 1,
+  \   'hook/copen/hook_command' : ':botright',
+  \   'hook/copen/hook_args' : 'copen',
+  \   'runner' : 'vimproc',
+  \   },
+  \ 'watchdogs_checker/_' : {
+  \   'outputter/quickfix/open_cmd' : 'botright copen',
+  \   'outputter/buffer/split' : ':botright',
+  \   'hook/copen/enable_exit' : 1,
+  \   'hook/copen/hook_command' : ':botright',
+  \   'hook/copen/hook_args' : 'copen',
+  \   },
+  \ 'haskell' : {
+  \   'command' : 'stack',
+  \   'cmdopt' : 'runghc',
+  \   'exec' : '%c %o %s',
+  \   },
+  \ 'rust' : {
+  \   'command' : 'cargo',
+  \   'cmdopt' : 'run',
+  \   'exec' : '%c %o',
+  \   "quickfix/errorformat" : s:rust_errorformat
+  \       .'%-G\ %#Compiling%s,'
+  \       .'%-G\ %#Finished%s,'
+  \       .'%-G\ %#Running%s,'
+  \   },
+  \ 'rust/watchdogs_checker' : {
+  \   'command' : 'cargo',
+  \   'cmdopt' : 'build',
+  \   'exec' : '%c %o',
+  \   'hook/copen/hook_command' : ':botright',
+  \   "quickfix/errorformat" : s:rust_errorformat
+  \   },
+  \}
+
+function! TestErrFmt(errfmt,lines)
+  let temp_errorfomat = &errorformat
+  try
+    let &errorformat = a:errfmt
+    cexpr join(a:lines,"\n")
+    copen
+  catch
+    echo v:exception
+    echo v:throwpoint
+  finally
+    let &errorformat = temp_errorfomat
+  endtry
+endfunction
+
 call watchdogs#setup(g:quickrun_config)
 "}}}
 
@@ -277,24 +363,28 @@ let g:neoterm_autoinsert = 0
 nnoremap <F12> :Ttoggle<CR><C-w>ji
 "}}}
 
-"VimFiler{{{
+"""VimFiler{{{
 "safe modeを切る
-let g:vimfiler_safe_mode_by_default = 0
+"let g:vimfiler_safe_mode_by_default = 0
 "デフォルトのエクスプローラーにする
-let g:vimfiler_as_default_explorer = 1
-call vimfiler#custom#profile('default', 'context',
-    \ { 'edit_action' : 'tabopen'
-    \ , 'simple' : 1
-    \ , 'split' : 1
-    \ , 'direction' : 'botright'
-    \ , 'winwidth' : 32
-    \ })
-nnoremap <Space>n :VimFilerCurrentDir<CR>
+"let g:vimfiler_as_default_explorer = 1
+"call vimfiler#custom#profile('default', 'context',
+"    \ { 'edit_action' : 'tabopen'
+"    \ , 'simple' : 1
+"    \ , 'split' : 1
+"    \ , 'direction' : 'botright'
+"    \ , 'winwidth' : 32
+"    \ })
+"nnoremap <Space>n :VimFilerCurrentDir<CR>
 "au FileType vimfiler nmap <buffer> <CR> <Plug>(vimfiler_open_file_in_another_vimfiler)
-au FileType vimfiler nmap <buffer> K    5k
+"au FileType vimfiler nmap <buffer> K    5k
 "}}}
 
 "NERD_tree, NERD_commenter"{{{
+let g:NERDTreeWinPos="right"
+let g:NERDTreeShowLineNumbers=1
+let g:NERDTreeIgnore=['\.bin$']
+nnoremap <Space>n :NERDTreeToggle<CR>
 nmap ,, <plug>NERDCommenterToggle
 vmap ,, <plug>NERDCommenterToggle
 "}}}
@@ -350,23 +440,39 @@ nnoremap [gitgutter]s :GitGutterStageHunk<CR>
 
 "smartinput{{{
 ".dein/autoload/smartinput.vim smartinput#define_default_rules()を編集
+let g:smartinput_no_default_key_mappings=1
 call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
 call smartinput#map_to_trigger('i', '<CR>', '<CR>', '<CR>')
-
+call smartinput#map_to_trigger('i', '(', '(', '(')
+call smartinput#map_to_trigger('i', '{', '{', '{')
 call smartinput#define_rule({
   \   'at'    : '{\%#}',
   \   'char'  : '<CR>',
   \   'input' : '<CR><Left><CR><Tab>',
   \   })
+"call smartinput#define_rule({
+"  \   'at': '\%#',
+"  \   'char': '(',
+"  \   'input': '()<Left>',
+"  \   })
+"  "\   'input': '()<`0`><Left><Left><Left><Left><Left><Left>',
 call smartinput#define_rule({
   \   'at'    : '(\%#)',
   \   'char'  : '<Space>',
   \   'input' : '<Space><Space><Left>',
   \   })
+"call smartinput#define_rule({
+"  \   'at': '\%#',
+"  \   'char': '{',
+"  \   'input': '{}<Left>',
+"  \   })
+  "\   'input': '{}<`0`><Left><Left><Left><Left><Left><Left>',
+inoremap ( (
+inoremap { {
 "}}}
 
 "C"{{{
-au FileType c setlocal expandtab tabstop=4
+au FileType c setlocal expandtab ts=2 sts=2 sw=2
 "}}}
 
 "sh"{{{
@@ -385,7 +491,7 @@ au FileType haskell nnoremap <buffer> ,i :update!<CR>:NeoGhcModInfo<CR>
 au FileType haskell nnoremap <buffer> ,I :update!<CR>:NeoGhcModInfo 
 au FileType haskell nnoremap <buffer> ,w :update!<CR>:NeoGhcModCheck<CR>
 au FileType haskell nnoremap <buffer> ,l :update!<CR>:NeoGhcModLint<CR>
-au FileType haskell nnoremap <buffer> ,c :noh    <CR>:NeoGhcModTypeClear<CR>
+au FileType haskell nnoremap <buffer> ^  :noh    <CR>:NeoGhcModTypeClear<CR>
 au FileType haskell nnoremap <buffer> ,H :Unite hoogle<CR>
 au FileType haskell nnoremap <buffer> ,h :Unite haskellimport<CR>
 au FileType haskell nnoremap <buffer> <Space>t :update!<CR>:QuickRun -exec "fast-tags -R ./"<CR>
@@ -438,7 +544,7 @@ au FileType ocaml nnoremap <buffer> ,y :MerlinYankLatestType<CR>
 "au FileType ocaml nnoremap <buffer> ,o :update!<CR>:MerlinOutline<CR> CtrlPが必要
 au FileType ocaml nnoremap <buffer> ,w :update!<CR>:MerlinErrorCheck<CR>
 au FileType ocaml nnoremap <buffer> <C-j> :update!<CR>:MerlinLocate<CR>
-au FileType ocaml nnoremap <buffer> ,c :noh<CR>a<Esc>
+au FileType ocaml nnoremap <buffer> ^ :noh<CR>a<Esc>
 au FileType ocaml nnoremap <buffer> <C-q> :update!<CR>:OCamlTop2<CR>
 au FileType ocaml setlocal tabstop=2 shiftwidth=2 softtabstop=0
 au FileType ocaml setlocal commentstring=(*%s*)
@@ -450,11 +556,18 @@ execute "helptags " . g:opamshare . "/merlin/vim/doc"
 
 "}}}
 
+"Agda"{{{
+"let maplocalleader="\\"
+au FileType agda setlocal expandtab ts=2 sts=2 sw=2
+"au FileType agda set commentstring=\ --%s
+au FileType agda set commentstring=--%s
+"}}}
+"
 "LaTeX{{{
-let g:vimtex_view_general_viewer = 'apvlv'
 au BufRead,BufNewFile *.tex set filetype=tex
-let g:vimtex_complete_close_braces = 1
-let g:vimtex_latexmk_options = '-xelatex'
+"let g:vimtex_view_general_viewer = 'apvlv'
+"let g:vimtex_complete_close_braces = 1
+"let g:vimtex_latexmk_options = '-xelatex'
 
 "有用そう
 "   <localleader>lY  |<plug>(vimtex-labels-toggle)|        `n`
@@ -478,7 +591,8 @@ let g:pandoc#modules#disabled = ["folding"]
 let g:pandoc_md_out='out.tex'
 command! -nargs=? PandocMd call PandocMdFun(<f-args>)
 function! PandocMdFun(...) abort
-  let s = 'pandoc-md ' . expand('%') . ' -o '. (a:0 == 0? g:pandoc_md_out: a:1)
+  "let s = 'pandoc-md ' . expand('%') . ' -o '. (a:0 == 0? g:pandoc_md_out: a:1)
+  let s = 'pandoc-wrapper ' . expand('%')
   call neomake#Sh(s)
 endfunction
 au FileType pandoc nnoremap <buffer> <C-q> :update!<CR>:PandocMd<CR>
@@ -495,15 +609,25 @@ au! BufNewFile,BufFilePRe,BufRead *.pl set filetype=prolog
 
 "Rust "{{{
 set hidden
-let g:racer_cmd = expand('$HOME/.cargo/bin/racer')
-let $RUST_SRC_PATH='$HOME/apps/rustc-1.11.0/src'
-
-let g:rustfmt_autosave = 0
-"let g:rustfmt_command = '$HOME/.cargo/bin/rustfmt'
-let g:rustc_path = expand('$HOME/.cargo/bin/rustc')
-let g:rust_recommended_style = 1
-let g:rust_fold = 0
-au FileType rust nnoremap <buffer> <C-q> :update!<CR>:RustRun<CR>
+let $RUST_SRC_PATH                 = expand('$HOME/apps/rust-1.15.0/src')
+let g:racer_cmd                    = expand('$HOME/.cargo/bin/racer')
+let g:rustc_path                   = expand('$HOME/.cargo/bin/rustc')
+let g:rustfmt_autosave             = 0
+let g:rust_recommended_style       = 1
+let g:racer_experimental_completer = 1
+let g:rust_fold                    = 0
+let g:racer_insert_paren           = 0
+"au FileType rust nnoremap <buffer> <C-q> :update!<CR>:RustRun<CR>
+"au FileType rust nmap gd <Plug>(rust-def)
+"au FileType rust nmap gs <Plug>(rust-def-split)
+"au FileType rust nmap gx <Plug>(rust-def-vertical)
+"au FileType rust nmap <leader>gd <Plug>(rust-doc)
+au FileType rust nmap <buffer> <C-j> <Plug>RacerGoToDefinitionDrect
+au FileType rust nmap <buffer> gs    <Plug>RacerGoToDefinitionSplit
+au FileType rust nmap <buffer> gv    <Plug>RacerGoToDefinitionVSplit
+au FileType rust nmap <buffer> gK    <Plug>RacerShowDocumentation
+"au FileType rust setlocal foldmethod=marker
+let g:racer_no_default_keymappings=0
 "}}}
 
 "Scala {{{
@@ -627,10 +751,10 @@ nnoremap w W
 nnoremap W w
 nnoremap e E
 nnoremap E e
-inoremap <C-b>   <esc>Bi
-inoremap <C-S-b> <esc>bi
-inoremap <C-w>   <esc>lWi
-inoremap <C-S-w> <esc>lwi
+"inoremap <C-b>   <esc>bi
+"inoremap <C-S-b> <esc>lwi
+inoremap <C-w>   <esc>ldbi
+"inoremap <C-S-w> <esc>ldwi
 """EasyMotion
 "s{char}{char}{label}
 nmap s <Plug>(easymotion-s2)
@@ -646,7 +770,6 @@ vmap e <Plug>(easymotion-bd-e)
 "vmap E <Plug>(easymotion-bd-E)
 "検索
 "nmap <C-g> <Plug>(easymotion-sn)
-nnoremap ,c :noh<CR>
 nnoremap ^ :noh<CR>
 "}}}
 
@@ -727,6 +850,11 @@ function! OCamlTopFun(...) abort
 endfunction
 "}}}
 
+"AirLine"{{{
+"let g:airline_theme='wombat'
+let g:airline_theme='distinguished'
+"}}}
+
 "tab"{{{
 for n in range(1, 9)
   execute 'nnoremap <silent> t'.n  ':<C-u>tabnext'.n.'<CR>'
@@ -753,19 +881,19 @@ command! -nargs=1 MV call system("[ ! -f <args> ]rm ".expand("%")) | :file <args
 command! RmTrailingWhiteSpaces %s/\s\+$//g | :noh
 command! GoodMatchParen hi MatchParen ctermfg=253 ctermbg=0
 au InsertLeave * GoodMatchParen
+au InsertLeave * hi Folded ctermbg=233
 au VimEnter * GoodMatchParen
-au VimEnter * hi Folded ctermbg=233
+au VimEnter * SeiyaEnable
 
-nnoremap ,cl <nop>
-nnoremap Q <nop>
 nnoremap <F8> :TagbarToggle<CR>
 nnoremap <Space>r :RestartNvimhs<CR>
 nnoremap <Space>m :NeomakeSh stack build<CR>
 nnoremap gs :Gstatus<CR>
 vnoremap * "zy:let @/ = @z<CR>n
+vnoremap ,a :Align 
 
 au FileType asm setlocal tabstop=8 shiftwidth=8 softtabstop=8 noexpandtab
-au FileType tex setlocal et sw=2 sts=2
+au FileType tex setlocal et sw=2 sts=2 noautoindent
 "}}}
 
-"vim: set et ts=2 sts=2 tw=2:
+"vim: set et ts=1 sts=2 tw=2:

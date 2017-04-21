@@ -1,0 +1,57 @@
+
+snippet     pubfn
+abbr        pubfn () {}
+options     head
+    pub fn ${1:#:func_name}(${2:#:args}) {
+        ${0:TARGET}
+    }
+
+snippet     pubfn-
+abbr        pubfn () {}
+options     head
+    pub fn ${1:#:func_name}(${2:#:args}) -> ${3:#:()} {
+        ${0:TARGET}
+    }
+
+snippet     pln
+abbr        println!
+    println!("${1:\{:?\}}", ${0:TARGET});
+
+snippet     deriveD
+abbr        #derive[Debug,Clone,Copy]
+options     head
+    #[derive(Debug,Clone,Copy${1:TARGET})]${2}
+
+snippet     panic
+abbr        panic!("")
+    panic!("${1}")${2}
+
+snippet     NotImplemented
+abbr        panic!("Not Implemented")
+    panic!("Not Implemented")
+
+snippet     Impossible
+abbr        panic!("Impossible")
+    panic!("Impossible")
+
+snippet     impl
+abbr        impl
+options     head
+    impl ${1} {
+        ${2}
+    }
+
+snippet     defmacro
+abbr        macro_rules!
+options     head
+	macro_rules! ${1:TARGET} {
+		(${2:TARGET}) => (
+			${3:TARGET}
+		)
+	}
+
+snippet     inline
+abbr        #[inline]
+options     head
+    #[inline]
+

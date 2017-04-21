@@ -1,0 +1,49 @@
+
+include tex.snip
+include markdown.snip
+
+snippet     ---
+options     head
+    ---
+    title: '${1:#:title}'
+    author: '${2:#:author}'
+    date: '${3:#:date}'
+    numbersections: false
+    header-includes: []
+    pandoc_opts_:
+      - -f markdown+lists_without_preceding_blankline+ignore_line_breaks
+      - -t tex
+      - -o out.tex
+    ---
+
+snippet     beamer
+options     head
+    ---
+    title: '${1:#:title}'
+    author: '${2:#:author}'
+    date: '${3:#:date}'
+    numbersections: false
+    header-includes: []
+    fontsize: '13pt'
+    theme: 'Madrid'
+    colorscheme: "seahorse"
+    pandoc_opts_:
+      - -f markdown+lists_without_preceding_blankline+ignore_line_breaks
+      - -t beamer
+      - -o out.tex
+    ---
+
+snippet     unnumbered
+    {-}
+
+# ここにpandocのsyntaxのメモを書きます
+
+# {#hoge} で識別子が付けられる headerとかに
+
+# コードのあれ
+# ~~~~~~ {#mycode .haskell .numberLines startFrom="100"}
+# main :: IO ()
+# main = do
+#   putStrLn "Hello, World!"
+# ~~~~~~
+

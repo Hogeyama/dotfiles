@@ -128,7 +128,8 @@ fi
 shopt -s autocd
 
 # doesn't work :-)
-RLWRAP_HOME='$(HOME)/.rlwrap'
+RLWRAP_HOME='/home/hogeyama/.rlwrap'
 
+RUST_SRC_PATH='/home/hogeyama/apps/rust-1.14.0/src'
 PATH=~/site/bin:$PATH
 

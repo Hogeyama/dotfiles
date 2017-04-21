@@ -4,5 +4,6 @@ alias pandoc-md='pandoc -s -f markdown+tex_math_double_backslash+lists_without_p
 alias open='xdg-open'
 alias node='nodejs'
 alias sbt='$HOME/apps/sbt-launcher-packaging-0.13.13/bin/sbt'
+RUST_SRC_PATH='/home/hogeyama/apps/rust-1.14.0/src'
 
 # vim: et ft=sh
