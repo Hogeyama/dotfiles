@@ -3,99 +3,126 @@
 
 filetype plugin indent on
 set runtimepath+=~/.nvim/dein/repos/github.com/Shougo/dein.vim
-call dein#begin(expand('~/.nvim/dein'))
-call dein#add('repos/github.com/Shougo/dein.vim')
+if dein#load_state(expand('~/.nvim/dein'))
+  call dein#begin(expand('~/.nvim/dein'))
+  """essential
+  "call dein#add('vim-airline/vim-airline')
+  "call dein#add('vim-airline/vim-airline-themes')
+  call dein#add('Shougo/dein.vim')
+  call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
+  call dein#add('Shougo/unite.vim')
+  call dein#add('Shougo/denite.nvim')
+  "call dein#add('Shougo/echodoc.vim')
+  call dein#add('Shougo/neomru.vim')
+  call dein#add('Shougo/deoplete.nvim')
+  call dein#add('Shougo/neosnippet')
+  call dein#add('Shougo/neosnippet-snippets')
+  call dein#add('thinca/vim-quickrun')
+  call dein#add('kana/vim-submode')
+  "call dein#add('kien/ctrlp.vim')
+  call dein#add('benekastah/neomake')
+  call dein#add('kassio/neoterm')
+  "call dein#add('Shougo/vimfiler')
+  """便利
+  call dein#add('Shougo/deol.nvim')
+  call dein#add('vim-scripts/zoom.vim')
+  call dein#add('Shougo/unite-outline')
+  call dein#add('vim-scripts/Align')
+  call dein#add('kana/vim-smartinput')
+  call dein#add('kana/vim-textobj-user')
+  call dein#add('osyo-manga/vim-textobj-multiblock')
+  call dein#add('osyo-manga/shabadou.vim')
+  call dein#add('osyo-manga/vim-watchdogs') "wakaran
+  call dein#add('scrooloose/nerdcommenter')
+  call dein#add('scrooloose/nerdtree')
+  call dein#add('majutsushi/tagbar')
+  call dein#add('bitc/lushtags')
+  call dein#add('airblade/vim-gitgutter')
+  call dein#add('tpope/vim-fugitive')
+  call dein#add('tpope/vim-surround')
+  call dein#add('thinca/vim-ref')
+  """LSP
+  "call dein#add('tjdevries/nvim-langserver-shim')
+  "call dein#add('autozimu/LanguageClient-neovim') "TODO
+  """""filetypeとか
+  """Motion
+  call dein#add('Lokaltog/vim-easymotion')
+  call dein#add('rhysd/clever-f.vim')
+  "call dein#add('mhartington/nvim-typescript')
+  """Haskell
+  call dein#add('neovimhaskell/haskell-vim')
+  call dein#add('ujihisa/ref-hoogle')
+  call dein#add('eagletmt/unite-haddock')
+  "call dein#add('eagletmt/neco-ghc') "ghc-8.2.1を使っている間はおやすみ
 
-call dein#add('jelera/vim-javascript-syntax')
-"essential
-call dein#add('vim-airline/vim-airline')
-call dein#add('vim-airline/vim-airline-themes')
-call dein#add('Shougo/unite.vim')
-call dein#add('Shougo/denite.nvim')
-"call dein#add('Shougo/vimfiler')
-call dein#add('Shougo/vimproc')
-call dein#add('Shougo/neomru.vim')
-call dein#add('Shougo/deoplete.nvim')
-call dein#add('Shougo/neosnippet')
-call dein#add('Shougo/neosnippet-snippets')
-call dein#add('thinca/vim-quickrun')
-call dein#add('kana/vim-submode')
-call dein#add('kien/ctrlp.vim')
-call dein#add('benekastah/neomake')
-call dein#add('kassio/neoterm')
-"便利
-call dein#add('Shougo/deol.nvim')
-call dein#add('vim-scripts/zoom.vim')
-call dein#add('Shougo/unite-outline')
-call dein#add('vim-scripts/Align')
-call dein#add('kana/vim-smartinput')
-call dein#add('kana/vim-textobj-user')
-call dein#add('osyo-manga/vim-textobj-multiblock')
-call dein#add('osyo-manga/shabadou.vim')
-call dein#add('osyo-manga/vim-watchdogs')
-call dein#add('scrooloose/nerdcommenter')
-call dein#add('scrooloose/nerdtree')
-call dein#add('majutsushi/tagbar')
-call dein#add('bitc/lushtags')
-call dein#add('airblade/vim-gitgutter')
-call dein#add('tpope/vim-fugitive')
-call dein#add('tpope/vim-surround')
-"filetypeとか
-"call dein#add('lervag/vimtex')
-call dein#add('neovimhaskell/haskell-vim')
-call dein#add('rust-lang/rust.vim')
-call dein#add('racer-rust/vim-racer')
-call dein#add('phildawes/racer')
-call dein#add('derekelkins/agda-vim')
-call dein#add('raichoo/agda-vim')
-"Motion
-call dein#add('Lokaltog/vim-easymotion')
-call dein#add('rhysd/clever-f.vim')
-"Haskell
-" indentはhaskell-vimから|を消すのがよい
-call dein#add('thinca/vim-ref')
-call dein#add('ujihisa/ref-hoogle')
-call dein#add('eagletmt/unite-haddock')
-call dein#add('eagletmt/neco-ghc')
-"call dein#add('eagletmt/ghcmod-vim')
-call dein#add('vim-scripts/alex.vim')
-call dein#add('vim-scripts/happy.vim')
-call dein#add('neovimhaskell/neovim-ghcmod')
-call dein#add('ujihisa/unite-haskellimport')
-"Scala
-call dein#add('derekwyatt/vim-scala')
-call dein#add('ensime/ensime-vim')
-call dein#add('ktvoelker/sbt-vim')
-call dein#add('rhysd/vim-llvm')
-"Idris
-call dein#add('idris-hackers/idris-vim')
-"MarkDown
-call dein#add('Bakudankun/previm')
-call dein#add('tyru/open-browser.vim')
-call dein#add('vim-pandoc/vim-pandoc')
-call dein#add('vim-pandoc/vim-pandoc-syntax')
-"Color Scheme
-call dein#add('zsoltf/vim-maui')
-call dein#add('djjcast/mirodark')
-call dein#add('nanotech/jellybeans.vim')
-call dein#add('w0ng/vim-hybrid')
-call dein#add('miyakogi/seiya.vim')
-call dein#add('tomasr/molokai')
-call dein#add('chriskempson/tomorrow-theme')
-call dein#add('chriskempson/vim-tomorrow-theme')
-call dein#add('djjcast/mirodark')
-call dein#add('sickill/vim-monokai')
-call dein#add('ciaranm/inkpot')
-call dein#add('vim-scripts/pyte')
-"Coq
-call dein#add('jvoorhis/coq.vim')
-call dein#add('eagletmt/coqtop-vim')
+  call dein#add('vim-scripts/alex.vim')
+  call dein#add('vim-scripts/happy.vim')
+  "call dein#add('neovimhaskell/neovim-ghcmod')
+  call dein#add('ujihisa/unite-haskellimport')
+  """Scala
+  call dein#add('derekwyatt/vim-scala')
+  "call dein#add('ensime/ensime-vim')
+  call dein#add('ktvoelker/sbt-vim')
+  call dein#add('rhysd/vim-llvm')
+  """Idris Agda
+  call dein#add('idris-hackers/idris-vim')
+  call dein#add('raichoo/agda-vim')
+  "call dein#add('derekelkins/agda-vim')
+  """MarkDown
+  call dein#add('Bakudankun/previm')
+  call dein#add('tyru/open-browser.vim')
+  call dein#add('vim-pandoc/vim-pandoc')
+  call dein#add('vim-pandoc/vim-pandoc-syntax')
+  """Coq
+  call dein#add('jvoorhis/coq.vim')
+  call dein#add('eagletmt/coqtop-vim')
+  """Rust
+  call dein#add('rust-lang/rust.vim')
+  call dein#add('racer-rust/vim-racer')
+  call dein#add('phildawes/racer')
+  """Others
+  call dein#add('jelera/vim-javascript-syntax')
+  call dein#add('rgrinberg/vim-ocaml')
+  call dein#add('leafgarland/typescript-vim')
+  "call dein#add('lervag/vimtex')
+  "Color Scheme
+  call dein#add('zsoltf/vim-maui')
+  call dein#add('djjcast/mirodark')
+  call dein#add('nanotech/jellybeans.vim')
+  call dein#add('w0ng/vim-hybrid')
+  call dein#add('miyakogi/seiya.vim')
+  call dein#add('tomasr/molokai')
+  call dein#add('chriskempson/tomorrow-theme')
+  call dein#add('chriskempson/vim-tomorrow-theme')
+  call dein#add('djjcast/mirodark')
+  call dein#add('sickill/vim-monokai')
+  call dein#add('ciaranm/inkpot')
+  call dein#add('vim-scripts/pyte')
+  "otameshi
+  "call dein#add('equalsraf/neovim-gui-shim')
+  call dein#add('losingkeys/vim-niji')
+  call dein#add('luochen1990/rainbow')
+  "call dein#add('dannyob/quickfixstatus')
+  "call dein#add('jceb/vim-hier')
+  call dein#end()
+  call dein#save_state()
 
-"otameshi
-"call dein#add('dannyob/quickfixstatus')
-"call dein#add('jceb/vim-hier')
+  "remove unused plugins
+  let unused = dein#check_clean()
+  if len(unused) > 0
+    echom "unused plugin: " . string(unused)
+    if input("remove all unused plugins? (y/n): ") == "y"
+      call map(dein#check_clean(), "delete(v:val, 'rf')")
+      echom "removed"
+    endif
+  endif
+endif
+"}}}
 
-call dein#end()
+"gonvim"{{{
+if exists('g:GuiLoaded')
+  GuiFont Rounded\ Mgen+\ 1mn\ Medium:h18:b
+endif
 "}}}
 
 "各種設定"{{{
@@ -136,8 +163,8 @@ set guioptions-=b
 set number
 "タブの設定
 set expandtab
-set tabstop=4 shiftwidth=4 softtabstop=4
-au FileType vim setlocal et sw=2 sts=2
+set tabstop=2 shiftwidth=2 softtabstop=2
+au FileType vim setlocal et ts=2 sw=2 sts=2
 "インデントの設定
 set autoindent
 "set smartindent
@@ -151,8 +178,6 @@ set noundofile
 set conceallevel=0
 "ステータスラインを常に表示
 set laststatus=2
-"変更中のファイルでも、保存しないで他のファイルを表示
-set hidden
 "他で書き換えられたら自動で読み直す
 set autoread
 "カーソルの上または下に表示する最小限の行数
@@ -179,6 +204,44 @@ set statusline=\ %f\ %y%m%r%w%q\ %=(%l,%v)[%p%%]\ %{fnamemodify(getcwd(),':~')}\
 set wildmode=longest:full,full
 "}}}
 
+"""echodoc {{{
+"doesn't work ;-)
+inoremap <C-q> <C-e>
+set splitbelow
+set noshowmode
+set cmdheight=2
+let g:echodoc#enable_at_startup=0
+"set completeopt+=noselect
+"set completeopt-=preview
+"autocmd CompleteDone,CursorMovedI * call s:on_cursor_moved()
+set completeopt=menuone,noselect
+"           menu     Use a popup menu to show the possible completions.  The
+"                    menu is only shown when there is more than one match and
+"                    sufficient colors are available.  |ins-completion-menu|
+"
+"           menuone  Use the popup menu also when there is only one match.
+"                    Useful when there is additional information about the
+"                    match, e.g., what file it comes from.
+"
+"           longest  Only insert the longest common text of the matches.  If
+"                    the menu is displayed you can use CTRL-L to add more
+"                    characters.  Whether case is ignored depends on the kind
+"                    of completion.  For buffer text the 'ignorecase' option is
+"                    used.
+"
+"           preview  Show extra information about the currently selected
+"                    completion in the preview window.  Only works in
+"                    combination with "menu" or "menuone".
+"
+"          noinsert  Do not insert any text for a match until the user selects
+"                    a match from the menu. Only works in combination with
+"                    "menu" or "menuone". No effect if "longest" is present.
+"
+"          noselect  Do not select a match in the menu, force the user to
+"                    select one from the menu. Only works in combination with
+"                    "menu" or "menuone".
+"}}}
+
 "Unite{{{
 "設定
 call unite#custom#profile('default', 'context', {
@@ -189,7 +252,7 @@ call unite#custom#profile('default', 'context', {
 \   'prompt_direction' : 'top'
 \ })
 call unite#custom#source('file',
-\   'ignore_pattern','\.\(hi\|o\|log\|gz\|dvi\|aux\|fdb_latexmk\)$')
+\   'ignore_pattern','\.\(hi\|o\|log\|gz\|dvi\|aux\|fdb_latexmk\|cmo\|cmi\|cmx\|cmt\)$')
 "ヤンク履歴許可
 let g:unite_source_history_yank_enable=100
 "ファイル履歴最大
@@ -261,14 +324,23 @@ nnoremap <C-u>r
     \                    ,{'winheight': 10
     \                    , 'mode': 'normal'})<CR>
 nnoremap <Space>d :Denite -mode=nomal -winheight=10 
+
+call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
+      \ [ '.git/', '.ropeproject/', '__pycache__/', '*.cmo*', '*.cmi',
+      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
+call denite#custom#source('file_mru', 'matchers', ['matcher_fuzzy', 'matcher_ignore_globs'])
+call denite#custom#source('file_rec', 'matchers', ['matcher_fuzzy', 'matcher_ignore_globs'])
+
 "}}}
 
+"""{{{
+let g:deol#prompt_pattern=""
+"""}}}
+
 "QuickFix"{{{
-let QFix_Height=5
-"above didn't work
-au FileType qf call AdjustWindowHeight(1, 10)
+au FileType qf call AdjustWindowHeight(1,10)
 function! AdjustWindowHeight(minheight, maxheight)
-exe max([min([line("$")+1, a:maxheight]), a:minheight]) . "wincmd _"
+  exe max([min([line("$")+1, a:maxheight]), a:minheight]) . "wincmd _"
 endfunction
 "}}}
 
@@ -326,6 +398,13 @@ let g:quickrun_config = {
   \   'exec' : '%c %o',
   \   'hook/copen/hook_command' : ':botright',
   \   "quickfix/errorformat" : s:rust_errorformat
+  \   },
+  \ 'pandoc' : {
+  \   'command' : 'pandoc-wrapper',
+  \   'exec' : '%c %s',
+  \   'hook/copen/enable_exit' : 0,
+  \   'hook/close_quickfix/enable_success' : 1,
+  \   'comment' : "成功したときは表示しない"
   \   },
   \}
 
@@ -385,8 +464,19 @@ let g:NERDTreeWinPos="right"
 let g:NERDTreeShowLineNumbers=1
 let g:NERDTreeIgnore=['\.bin$']
 nnoremap <Space>n :NERDTreeToggle<CR>
+nnoremap <Space>N :NERDTreeMirror<CR>
 nmap ,, <plug>NERDCommenterToggle
 vmap ,, <plug>NERDCommenterToggle
+
+"\ :UniteWithBufferDir -buffer-name=files file<CR>
+command! NERDTreeWithBufferDir call NERDTreeWithBufferDirFun()
+function! NERDTreeWithBufferDirFun() abort
+  let dir = fnamemodify(expand('%'),':p:h')
+  echo "NERDTree " . dir
+  exec "NERDTree " . dir
+endfunction
+nnoremap <Space>c :NERDTreeWithBufferDir<CR>
+
 "}}}
 
 "deoplete neosnippet{{{
@@ -399,6 +489,7 @@ inoremap <expr><Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr><S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 "BS
 inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
+
 
 "neosnippet
 imap <C-f> <Plug>(neosnippet_expand_or_jump)
@@ -440,7 +531,7 @@ nnoremap [gitgutter]s :GitGutterStageHunk<CR>
 
 "smartinput{{{
 ".dein/autoload/smartinput.vim smartinput#define_default_rules()を編集
-let g:smartinput_no_default_key_mappings=1
+let g:smartinput_no_default_key_mappings=0
 call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
 call smartinput#map_to_trigger('i', '<CR>', '<CR>', '<CR>')
 call smartinput#map_to_trigger('i', '(', '(', '(')
@@ -450,29 +541,55 @@ call smartinput#define_rule({
   \   'char'  : '<CR>',
   \   'input' : '<CR><Left><CR><Tab>',
   \   })
-"call smartinput#define_rule({
-"  \   'at': '\%#',
-"  \   'char': '(',
-"  \   'input': '()<Left>',
-"  \   })
-"  "\   'input': '()<`0`><Left><Left><Left><Left><Left><Left>',
+call smartinput#define_rule({
+  \   'at': '\%#',
+  \   'char': '(',
+  \   'input': '()<Left>',
+  \   })
 call smartinput#define_rule({
   \   'at'    : '(\%#)',
   \   'char'  : '<Space>',
   \   'input' : '<Space><Space><Left>',
   \   })
-"call smartinput#define_rule({
-"  \   'at': '\%#',
-"  \   'char': '{',
-"  \   'input': '{}<Left>',
-"  \   })
-  "\   'input': '{}<`0`><Left><Left><Left><Left><Left><Left>',
-inoremap ( (
-inoremap { {
+call smartinput#define_rule({
+  \   'at': '\%#',
+  \   'char': '{',
+  \   'input': '{}<Left>',
+  \   })
+"inoremap ( (
+"inoremap { {
 "}}}
 
+"LSP (Haskell, Rust) {{{
+let g:LanguageClient_autoStart = 0
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+    \ 'haskell': ['hie', '--lsp'],
+    \ }
+    "\ 'haskell': ['/home/hogeyama/.local/bin/hie-wrapper/Main.hs'],
+    "\ 'haskell': ['echo.hs'],
+let g:langserver_executables = {
+    \ 'rust': {
+      \ 'name': 'rustup',
+      \ 'cmd': ['rustup', 'run', 'nightly', 'rls'],
+      \ },
+    \ 'haskell': {
+      \ 'name': 'hie',
+      \ 'cmd': ['hie', '--lsp'],
+      \ },
+    \ }
+"QuickFixを開けっ放しにする場合は
+au InsertLeave * let g:airline_disabled = 1
+au FileType qf let g:airline_disabled = 1
+"しとくといいかも
+"}}}
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" FileType
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 "C"{{{
-au FileType c setlocal expandtab ts=2 sts=2 sw=2
+au FileType c setlocal expandtab ts=4 sts=4 sw=4
 "}}}
 
 "sh"{{{
@@ -489,7 +606,7 @@ au FileType haskell nnoremap <buffer> ,t :update!<CR>:NeoGhcModType<CR>
 au FileType haskell nnoremap <buffer> ,T :update!<CR>:GhcModTypeInsert<CR>
 au FileType haskell nnoremap <buffer> ,i :update!<CR>:NeoGhcModInfo<CR>
 au FileType haskell nnoremap <buffer> ,I :update!<CR>:NeoGhcModInfo 
-au FileType haskell nnoremap <buffer> ,w :update!<CR>:NeoGhcModCheck<CR>
+"au FileType haskell nnoremap <buffer> ,W :update!<CR>:NeoGhcModCheck<CR>
 au FileType haskell nnoremap <buffer> ,l :update!<CR>:NeoGhcModLint<CR>
 au FileType haskell nnoremap <buffer> ^  :noh    <CR>:NeoGhcModTypeClear<CR>
 au FileType haskell nnoremap <buffer> ,H :Unite hoogle<CR>
@@ -501,40 +618,42 @@ au! BufNewFile,BufFilePRe,BufRead *.x set filetype=alex
 au! BufNewFile,BufFilePRe,BufRead *.y set filetype=happy
 "neco-ghc
 let g:necoghc_enable_detailed_browse = 1
+let g:necoghc_use_stack = 1
 au FileType haskell setlocal omnifunc=necoghc#omnifunc
 au FileType haskell inoremap <buffer> <C-o> <C-x><C-o>
+au FileType haskell set ambiwidth=single
+"LanguageClient
+"au FileType haskell setlocal omnifunc=LanguageClient#complete
+"au FileType haskell nnoremap <buffer> Q     :call LanguageClient_textDocument_hover()<CR>
+"au FileType haskell nnoremap <silent> gi    :call LanguageClient_textDocument_hover()<CR>
+"au FileType haskell nnoremap <silent> <C-j> :call LanguageClient_textDocument_definition()<CR>
+"au FileType haskell nnoremap <buffer> <C-j> :call LanguageClient_textDocument_definition()<CR>
+"au FileType haskell nnoremap <buffer> <F2>  :call LanguageClient_textDocument_rename()<CR>
+"au FileType haskell inoremap <buffer> <C-o> <C-x><C-o>
 "vim2hs
-let g:haskell_haddock              = 0
-let g:haskell_ffi                  = 0
-let g:haskell_cpp                  = 0
-let g:haskell_th                   = 0
-let g:haskell_quasi                = 0
-let g:haskell_interpolation        = 0
-let g:haskell_regex                = 0
-let g:haskell_jmacro               = 0
-let g:haskell_shqq                 = 0
-let g:haskell_rlangqq              = 0
-let g:haskell_sql                  = 0
-let g:haskell_json                 = 0
-let g:haskell_xml                  = 0
-let g:haskell_hsp                  = 0
-let g:haskell_conceal              = 0
-let g:haskell_conceal_comments     = 0
-let g:haskell_conceal_enumerations = 0
-let g:haskell_conceal_wide         = 0
-let g:haskell_conceal_bad          = 0
-let g:haskell_multiline_strings    = 0
 "haskell-vim
-let g:haskell_indent_if    = 2
-let g:haskell_indent_case  = 2
-let g:haskell_indent_let   = 4
-let g:haskell_indent_where = 2
-let g:haskell_indent_do    = 3
-let g:haskell_indent_in    = 0
-let g:haskell_indent_guard = 2
+"call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
+""
+"let g:haskell_indent_disable = 1
+let g:haskell_indent_if               = 2
+let g:haskell_indent_do               = 3
+let g:haskell_indent_let              = 4
+let g:haskell_indent_let_no_in        = 0
+let g:haskell_indent_in               = 0
+let g:haskell_indent_before_where     = -2
+let g:haskell_indent_case_alternative = 1
+"neovim-ghcmod
+au FileType haskell nnoremap <buffer> ,c :GhcModCaseSplit<CR>
+au FileType haskell nnoremap <buffer> ,d :GhcModAddDecl<CR>
+
+"ghcid-nvim-hs
+au FileType haskell nnoremap <buffer> ,w :update!<CR>:GhcidCheck!<CR>
+au FileType haskell nnoremap <buffer> ,W :update!<CR>:GhcidCheck<CR>
+
 "}}}
 
 "OCaml"{{{
+au FileType ocaml colorscheme hybrid
 au FileType ocaml nnoremap <buffer> ,t :update!<CR>:MerlinTypeOf<CR>
 au FileType ocaml vnoremap <buffer> ,t :MerlinTypeOfSel<CR>
 au FileType ocaml nnoremap <buffer> >  :MerlinGrowEnclosing<CR>
@@ -545,14 +664,16 @@ au FileType ocaml nnoremap <buffer> ,y :MerlinYankLatestType<CR>
 au FileType ocaml nnoremap <buffer> ,w :update!<CR>:MerlinErrorCheck<CR>
 au FileType ocaml nnoremap <buffer> <C-j> :update!<CR>:MerlinLocate<CR>
 au FileType ocaml nnoremap <buffer> ^ :noh<CR>a<Esc>
-au FileType ocaml nnoremap <buffer> <C-q> :update!<CR>:OCamlTop2<CR>
+"au FileType ocaml nnoremap <buffer> <C-q> :update!<CR>:OCamlTop2<CR>
 au FileType ocaml setlocal tabstop=2 shiftwidth=2 softtabstop=0
 au FileType ocaml setlocal commentstring=(*%s*)
 "au FileType ocaml colorscheme hybrid
-au FileType ocaml GoodMatchParen
+au FileType ocaml inoremap <buffer> <C-o> <C-x><C-o>
+let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
 execute "helptags " . g:opamshare . "/merlin/vim/doc"
+execute "set rtp^=" . g:opamshare . "/ocp-indent/vim"
 
 "}}}
 
@@ -579,7 +700,7 @@ au BufRead,BufNewFile *.tex set filetype=tex
 augroup pandoc_syntax
     au! BufNewFile,BufFilePRe,BufRead *.md set filetype=pandoc
 augroup END
-au FileType pandoc setlocal et sw=2 sts=2 foldmethod=marker
+au FileType pandoc setlocal et ts=2 sw=2 sts=2 foldmethod=marker
 au FileType pandoc let &spell = 0
 
 let g:previm_enable_realtime = 1
@@ -587,15 +708,6 @@ let g:vim_markdown_math = 1
 let g:pandoc#folding#mode = 'marker'
 let g:pandoc#syntax#conceal#use = 0
 let g:pandoc#modules#disabled = ["folding"]
-
-let g:pandoc_md_out='out.tex'
-command! -nargs=? PandocMd call PandocMdFun(<f-args>)
-function! PandocMdFun(...) abort
-  "let s = 'pandoc-md ' . expand('%') . ' -o '. (a:0 == 0? g:pandoc_md_out: a:1)
-  let s = 'pandoc-wrapper ' . expand('%')
-  call neomake#Sh(s)
-endfunction
-au FileType pandoc nnoremap <buffer> <C-q> :update!<CR>:PandocMd<CR>
 "}}}
 
 "Scheme{{{
@@ -608,8 +720,7 @@ au! BufNewFile,BufFilePRe,BufRead *.pl set filetype=prolog
 "}}}
 
 "Rust "{{{
-set hidden
-let $RUST_SRC_PATH                 = expand('$HOME/apps/rust-1.15.0/src')
+let $RUST_SRC_PATH                 = expand('$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust')
 let g:racer_cmd                    = expand('$HOME/.cargo/bin/racer')
 let g:rustc_path                   = expand('$HOME/.cargo/bin/rustc')
 let g:rustfmt_autosave             = 0
@@ -626,8 +737,15 @@ au FileType rust nmap <buffer> <C-j> <Plug>RacerGoToDefinitionDrect
 au FileType rust nmap <buffer> gs    <Plug>RacerGoToDefinitionSplit
 au FileType rust nmap <buffer> gv    <Plug>RacerGoToDefinitionVSplit
 au FileType rust nmap <buffer> gK    <Plug>RacerShowDocumentation
+"LanguageClient
+"au FileType rust setlocal omnifunc=LanguageClient#complete
+"au FileType rust nnoremap <buffer> Q     :call LanguageClient_textDocument_hover()<CR>
+"au FileType rust nnoremap <buffer> <C-j> :call LanguageClient_textDocument_definition()<CR>
+"au FileType rust nnoremap <buffer> <F2>  :call LanguageClient_textDocument_rename()<CR>
+"au FileType rust inoremap <buffer> <C-o> <C-x><C-o>
 "au FileType rust setlocal foldmethod=marker
 let g:racer_no_default_keymappings=0
+
 "}}}
 
 "Scala {{{
@@ -636,10 +754,17 @@ au FileType scala nnoremap <buffer>,t    :update!<CR>:EnInspectType<CR>
 au FileType scala nnoremap <buffer><C-j> :update!<CR>:EnDeclaration<CR>
 "}}}
 
-"Seiya"{{{
-nnoremap <Space>se :SeiyaEnable<CR>
-nnoremap <Space>sd :SeiyaDisable<CR>
+"Makefile {{{
+au FileType make setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
 "}}}
+
+"json {{{
+au FileType make setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
+"}}}
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Other Configuration
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "multiblock{{{
 omap ab <Plug>(textobj-multiblock-a)
@@ -674,8 +799,6 @@ nnoremap tg gT
 nnoremap <Space>o  :<C-u>for i in range(v:count1) \| call append(line('.'), '') \| endfor<CR>
 "jkで<esc>
 inoremap jk <Esc>
-nnoremap <C-]> <Esc>
-cnoremap <C-]> <Esc>
 "<Space>\で保存
 nnoremap <C-\> :update!<CR>
 inoremap <C-\> <Esc>:update!<CR>
@@ -775,7 +898,8 @@ nnoremap ^ :noh<CR>
 
 "Terminal他"{{{
 nnoremap .. :cd..<CR>
-nnoremap te :vs<CR><C-w>l:te<CR>
+"nnoremap te :vs<CR><C-w>l:te<CR>
+nnoremap te :vs<CR><C-w>l:Deol zsh_<CR><CR>
 ":botright split | resize 15 | te
 nnoremap vs :rightbelow vs<CR>
 tnoremap <Esc> <C-\><C-n>
@@ -868,9 +992,47 @@ let @b = "<-"
 
 "nvim-hs"{{{
 let g:ghc_mod_nvim_log_directory = expand('~/.cache/ghc-mod-nvim')
-if has('nvim')
-    call jobstart([expand('$HOME/.local/bin/nvim-hs-devel.sh')], {'rpc' : v:true})
+
+if has('nvim') " This way, you can also put this in your plain vim config
+
+  " function which starts a nvim-hs instance with the supplied name
+  function! s:RequireHaskellHost(name)
+    " It is important that the current working directory (cwd) is where
+    " your configuration files are.
+    return jobstart(['stack', 'exec', 'nvim-hs', a:name.name], {'rpc': v:true, 'cwd': expand('$HOME') . '/.config/nvim'})
+  endfunction
+
+  " Register a plugin host that is started when a haskell file is opened
+  call remote#host#Register('haskell', "*.l\?hs", function('s:RequireHaskellHost'))
+
+  " But if you need it for other files as well, you may just start it
+  " forcefully by requiring it
+  let hc=remote#host#Require('haskell')
 endif
+
+"}}}
+
+"Align {{{
+au VimEnter * AlignCtrl W=
+"}}}
+
+"Rainbow {{{
+au FileType lisp nmap <buffer> <F7> :RainbowToggle<CR>
+let g:rainbow_conf = {
+\   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+\   'ctermfgs': ["darkblue", "darkgreen", "red", "yellow"],
+\   'operators': '_,_',
+\   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+\   'separately': {
+\     '*': {},
+\     'tex': {
+\       'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
+\     },
+\   }
+\ }
+"\  'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+"\  'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
+"\       'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
 "}}}
 
 "tmp"{{{
@@ -884,6 +1046,7 @@ au InsertLeave * GoodMatchParen
 au InsertLeave * hi Folded ctermbg=233
 au VimEnter * GoodMatchParen
 au VimEnter * SeiyaEnable
+au VimEnter * hi Folded ctermbg=None
 
 nnoremap <F8> :TagbarToggle<CR>
 nnoremap <Space>r :RestartNvimhs<CR>
@@ -894,6 +1057,15 @@ vnoremap ,a :Align
 
 au FileType asm setlocal tabstop=8 shiftwidth=8 softtabstop=8 noexpandtab
 au FileType tex setlocal et sw=2 sts=2 noautoindent
+
+command! -nargs=+ -complete=command Redir let s:reg = @@ | redir @"> | silent execute <q-args> | redir END | e /tmp/vim_tmp_redir | pu | 1,2d_ | let @@ = s:reg
 "}}}
+
+let g:python3_host_prog = '/usr/bin/python3.5'
+
+map <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+      \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+      \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
 
 "vim: set et ts=1 sts=2 tw=2:

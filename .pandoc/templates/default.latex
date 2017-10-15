@@ -224,11 +224,13 @@ $endif$
   \theoremstyle{plainindent}
   \theorembodyfont{\normalfont}
   \theoremseparator{.}
+    \newtheorem{Problem}{Problem}[section]
     \newtheorem{Definition}{Definition}[section]
     \newtheorem{Theorem}{Theorem}[section]
     \newtheorem{Lemma}{Lemma}[section]
     \newtheorem{Proof}{Proof}[section]
   \theoremseparator{}
+    \renewtheorem*{Problem*}{Problem}[section]
     \renewtheorem*{Definition*}{Definition}[section]
     \renewtheorem*{Theorem*}{Theorem}[section]
     \renewtheorem*{Lemma*}{Lemma}[section]

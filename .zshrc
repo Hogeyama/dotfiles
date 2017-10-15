@@ -1,7 +1,35 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-NVIM_LISTEN_ADDRESS=127.0.0.1:6666
 
+# If you come from bash you might have to change your $PATH.
+export PATH=/usr/local/texlive/2016/bin/x86_64-linux:$PATH
+export PATH=/usr/local/go/bin:$PATH
+
+zstyle ':completion:*:*:nvim:*' file-patterns '^*.(aux|log|pdf|cmo|cmi|cmt|cmx):source-files' '*:all-files'
+
+function countdown(){
+   date1=$((`date +%s` + $1)); 
+   while [ "$date1" -ge `date +%s` ]; do 
+     echo -ne "$(date -u --date @$(($date1 - `date +%s`)) +%H:%M:%S)\r";
+     sleep 0.1
+   done
+}
+
+##############################################
+# directoryのほげ
+##############################################
+
+START_DIRECTORY=`pwd`
+DIRS_HISTORY="$HOME/.dirs_history"
+if [ -f $DIRS_HISTORY ]; then
+  while read line; do
+    pushd $line >& /dev/null
+  done < <(tac "$DIRS_HISTORY")
+fi
+cd $START_DIRECTORY
+function cd_starting_directory() {
+  cd $START_DIRECTORY
+}
+
+##############################################
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -16,7 +44,6 @@ ZSH_THEME="agnoster"
 # Uncomment the following line to use case-sensitive completion.
 CASE_SENSITIVE="true"
 
-# ?
 # Uncomment the following line to use hyphen-insensitive completion. Case
 # sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
@@ -91,5 +118,14 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 source "$HOME/.zsh_alias"
 
+
 # OPAM configuration
 . /home/hogeyama/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+eval `opam config env`
+
+
+# OVERWRITE
+
+#unsetopt AUTOPUSHD
+
+

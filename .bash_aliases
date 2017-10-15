@@ -12,7 +12,7 @@ ls_(){
 	ls $*
 }
 cd-ls(){
-	cd $* && ls -CF
+	\cd $* && ls -CF
 }
 
 alias cd='cd-ls'

@@ -66,11 +66,11 @@ alias   \begin{titlepage} \titlepage
 		${1:TARGET}
 	\end{titlepage}
 
-snippet verbatim
-alias   \begin{verbatim} verb \verbatim
-	\begin{verbatim}
-		${1:TARGET}
-	\end{verbatim}
+#snippet verbatim
+#alias   \begin{verbatim} verb \verbatim
+#	\begin{verbatim}
+#		${1:TARGET}
+#	\end{verbatim}
 
 snippet verbatimtab
 alias   \begin{verbatimtab} \verbatimtab
@@ -157,24 +157,28 @@ alias   \begin{displaymath} \displaymath
 
 snippet abstract
 alias   \begin{abstract} \abstract
+options indent
 	\begin{abstract}
 		${1:TARGET}
 	\end{abstract}
 
 snippet align
 alias   \begin{align} \align
+options indent
 	\begin{align}
 		${1:TARGET}
 	\end{align}
 
 snippet align*
 alias   \begin{align*} \align*
+options indent
 	\begin{align*}
 		${1:TARGET}
 	\end{align*}
 
 snippet eqnarray
 alias   \begin{eqnarray} \eqnarray
+options indent
 	\begin{eqnarray}
 		${1:TARGET}
 	\end{eqnarray}
@@ -213,7 +217,7 @@ snippet figure
 alias   \begin{figure} \figure
 	\begin{figure}[${1}]
 		\centering
-		\includegraphics[${2:width=${3\}}]{${4}}
+			\includegraphics[${2:width=${3\}}]{${4}}
 		\caption{${5}}
 		\label{${6}}
 	\end{figure}
@@ -340,7 +344,7 @@ alias   frac \frac{
 	\frac{${1}}{${2}}${0}
 
 snippet \dfrac
-alias   dfrac \dfrac{
+alias   df dfrac \dfrac{
 options word
 	\dfrac{${1}}{${2}}${0}
 
@@ -592,10 +596,53 @@ abbr        \dint
 
 snippet     includegraphics
 options     head
-    \begin{figure}[htbp]
-      \begin{center}
-        \includegraphics[clip,width=7.0cm]{${1:image}}
-      \end{center}
-    \end{figure}
-    ${0}
+	\begin{figure}[htbp]
+		\begin{center}
+			\includegraphics[clip,width=7.0cm]{${1:image}}
+		\end{center}
+	\end{figure}
+	${0}
+
+snippet     $
+options     word
+	$${1}$${0}
+
+snippet def
+alias   \begin{Definition} Def
+	\begin{Definition}[${1}]
+		${2:TARGET}
+	\end{Definition}
+
+snippet thm
+alias   \begin{Theorem} Thm
+	\begin{Theorem}[${1}]
+		${2:TARGET}
+	\end{Theorem}
+
+snippet lem
+alias   \begin{Lemma} Lem
+	\begin{Lemma}[${1}]
+		${2:TARGET}
+	\end{Lemma}
+
+snippet     fontsize
+options     head
+  \fontsize{9pt}{10pt}\selectfont
+
+snippet     snip
+options     head
+	\fontsize{9pt}{10pt}\selectfont
+	\begin{oframed}
+		\begin{verbatim}
+		\end{verbatim}
+	\end{oframed}
+
+#hogehoge
+snippet     only
+options     head
+	\id{\only<2>{
+		%{{{
+		${0}
+		%}}}
+	}}
 

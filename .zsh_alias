@@ -1,22 +1,26 @@
+
 cd-ls(){
-	cd $* && ls -CF
+  \cd $* && \ls --color=tty -CF
+  dirs -lp | awk '!x[$0]++' | sed "/home\/hogeyama\$/d" > "$HOME/.dirs_history"
+  # awk '!x[$0]++': remove duplicates without sorting
 }
 alias cd='cd-ls'
 alias mkcd='source ~/.local/bin/mkcd.sh'
 alias xelatexmk='latexmk -xelatex'
-alias ocaml='rlwrap ocaml'
+alias ocamlwrap='rlwrap ocaml'
 alias ocamltop='rlwrap ./ocamltop'
 alias csc='ssh csc-lg1.is.s.u-tokyo.ac.jp'
-alias stack-exec='rlwrap stack exec --'
 alias node='nodejs'
 alias v='nvim'
 alias :e='nvim'
+alias vi='nvim'
 alias vim='nvim'
 alias gs='git status'
 alias open='xdg-open'
-alias runghc='stack runghc --'
 alias idrisl='idris -p pruviloj'
 alias pandoc-md='pandoc -s -f markdown+tex_math_double_backslash+lists_without_preceding_blankline+ignore_line_breaks --latex-engine=xelatex --mathjax'
-alias んほおお='sudo poweroff'
-#pdftk 1-1.pdf 1-2.pdf cat output merged.pdf
-
+alias gonvim='~/apps/gonvim/gonvim.sh'
+alias runghc='stack runghc --'
+alias stack-exec='stack exec --'
+alias stack-ghcid='stack exec -- ghcid "--command=stack ghci"'
+alias D='cd_starting_directory'

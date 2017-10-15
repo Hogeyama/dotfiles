@@ -9,12 +9,12 @@
 #umask 022
 
 # if running bash
-if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
-    if [ -f "$HOME/.bashrc" ]; then
-    . "$HOME/.bashrc"
-    fi
-fi
+#if [ -n "$BASH_VERSION" ]; then
+#    # include .bashrc if it exists
+#    if [ -f "$HOME/.bashrc" ]; then
+#    . "$HOME/.bashrc"
+#    fi
+#fi
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/.local/bin" ]; then
@@ -23,7 +23,8 @@ fi
 
 
 # OPAM configuration
-. $HOME/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+. /home/hogeyama/.opam/opam-init/init.sh  > /dev/null 2> /dev/null || true
+
 # xmodmap
 if [ -f "$HOME/.Xmodmap" ]; then
     xmodmap "$HOME/.Xmodmap"
@@ -31,5 +32,5 @@ fi
 
 export BROWSER="google-chrome %s"
 
-
 export PATH="$HOME/.cargo/bin:$PATH"
+
