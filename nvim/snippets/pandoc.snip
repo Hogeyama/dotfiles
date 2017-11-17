@@ -18,7 +18,7 @@ options     head indent
 	pandoc_opts_:
 		- -f markdown+lists_without_preceding_blankline+ignore_line_breaks
 		- --template=xelatex.latex
-		- -o out.pdf
+		- -o out.tex
 	---
 
 snippet     beamer
@@ -45,7 +45,7 @@ options     head indent
 snippet     unnumbered
     {-}
 
-# ここにpandocのsyntaxのメモを書きます
+# ここにpandocのsyntaxのメモを書きます <- なぜここなのですか？
 
 # {#hoge} で識別子が付けられる headerとかに
 

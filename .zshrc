@@ -22,6 +22,7 @@ DIRS_HISTORY="$HOME/.dirs_history"
 if [ -f $DIRS_HISTORY ]; then
   while read line; do
     pushd $line >& /dev/null
+    #pwd
   done < <(tac "$DIRS_HISTORY")
 fi
 cd $START_DIRECTORY
@@ -122,6 +123,7 @@ source "$HOME/.zsh_alias"
 # OPAM configuration
 . /home/hogeyama/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 eval `opam config env`
+unsetopt correct
 
 
 # OVERWRITE

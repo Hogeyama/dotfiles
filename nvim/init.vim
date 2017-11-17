@@ -32,7 +32,7 @@ if dein#load_state(expand('~/.nvim/dein'))
   call dein#add('kana/vim-textobj-user')
   call dein#add('osyo-manga/vim-textobj-multiblock')
   call dein#add('osyo-manga/shabadou.vim')
-  call dein#add('osyo-manga/vim-watchdogs') "wakaran
+  call dein#add('osyo-manga/vim-watchdogs')
   call dein#add('scrooloose/nerdcommenter')
   call dein#add('scrooloose/nerdtree')
   call dein#add('majutsushi/tagbar')
@@ -48,11 +48,11 @@ if dein#load_state(expand('~/.nvim/dein'))
   """Motion
   call dein#add('Lokaltog/vim-easymotion')
   call dein#add('rhysd/clever-f.vim')
-  "call dein#add('mhartington/nvim-typescript')
   """Haskell
   call dein#add('neovimhaskell/haskell-vim')
   call dein#add('ujihisa/ref-hoogle')
   call dein#add('eagletmt/unite-haddock')
+  "call dein#add('itchyny/vim-haskell-indent')
   "call dein#add('eagletmt/neco-ghc') "ghc-8.2.1を使っている間はおやすみ
 
   call dein#add('vim-scripts/alex.vim')
@@ -67,7 +67,6 @@ if dein#load_state(expand('~/.nvim/dein'))
   """Idris Agda
   call dein#add('idris-hackers/idris-vim')
   call dein#add('raichoo/agda-vim')
-  "call dein#add('derekelkins/agda-vim')
   """MarkDown
   call dein#add('Bakudankun/previm')
   call dein#add('tyru/open-browser.vim')
@@ -603,7 +602,7 @@ au FileType bash setlocal expandtab shiftwidth=2
 "やっぱりindentファイルは消そう
 au FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=0 foldmethod=marker
 au FileType haskell nnoremap <buffer> ,t :update!<CR>:NeoGhcModType<CR>
-au FileType haskell nnoremap <buffer> ,T :update!<CR>:GhcModTypeInsert<CR>
+au FileType haskell nnoremap <buffer> ,T :update!<CR>:NeoGhcModType!<CR>
 au FileType haskell nnoremap <buffer> ,i :update!<CR>:NeoGhcModInfo<CR>
 au FileType haskell nnoremap <buffer> ,I :update!<CR>:NeoGhcModInfo 
 "au FileType haskell nnoremap <buffer> ,W :update!<CR>:NeoGhcModCheck<CR>
@@ -634,7 +633,7 @@ au FileType haskell set ambiwidth=single
 "haskell-vim
 "call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
 ""
-"let g:haskell_indent_disable = 1
+let g:haskell_indent_disable = 1
 let g:haskell_indent_if               = 2
 let g:haskell_indent_do               = 3
 let g:haskell_indent_let              = 4
@@ -1059,6 +1058,17 @@ au FileType asm setlocal tabstop=8 shiftwidth=8 softtabstop=8 noexpandtab
 au FileType tex setlocal et sw=2 sts=2 noautoindent
 
 command! -nargs=+ -complete=command Redir let s:reg = @@ | redir @"> | silent execute <q-args> | redir END | e /tmp/vim_tmp_redir | pu | 1,2d_ | let @@ = s:reg
+
+function! CNextRecursive() abort
+  let p0 = getpos('.')
+  let p  = p0
+  while p == p0
+    cnext
+    let p = getpos('.')
+  endwhile
+endfunction
+command! CNextRecursive call CNextRecursive()
+
 "}}}
 
 let g:python3_host_prog = '/usr/bin/python3.5'
@@ -1066,6 +1076,5 @@ let g:python3_host_prog = '/usr/bin/python3.5'
 map <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
       \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
       \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-
 
 "vim: set et ts=1 sts=2 tw=2:

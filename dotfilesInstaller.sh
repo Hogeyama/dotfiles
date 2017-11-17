@@ -3,10 +3,6 @@ if [ ! -d ~/.config/nvim ]; then
     mkdir -p ~/.config/nvim
 fi
 
-if [ ! -d ~/.i3 ]; then
-    mkdir ~/.i3
-fi
-
 ln -sf ~/dotfiles/.profile      ~/.profile
 ln -sf ~/dotfiles/.bashrc       ~/.bashrc
 ln -sf ~/dotfiles/.bashenv      ~/.bashenv

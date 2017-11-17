@@ -608,22 +608,28 @@ options     word
 	$${1}$${0}
 
 snippet def
-alias   \begin{Definition} Def
+alias   \begin{Definition} Def definition Definition
 	\begin{Definition}[${1}]
 		${2:TARGET}
 	\end{Definition}
 
 snippet thm
-alias   \begin{Theorem} Thm
+alias   \begin{Theorem} Thm theorem Theorem
 	\begin{Theorem}[${1}]
 		${2:TARGET}
 	\end{Theorem}
 
 snippet lem
-alias   \begin{Lemma} Lem
+alias   \begin{Lemma} Lem lemma Lemma
 	\begin{Lemma}[${1}]
 		${2:TARGET}
 	\end{Lemma}
+
+snippet prf
+alias   \begin{Proof} Prf proof Proof
+	\begin{Proof}[${1}]
+		${2:TARGET}
+	\end{Proof}
 
 snippet     fontsize
 options     head
