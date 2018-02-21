@@ -19,15 +19,12 @@ fi
 git clone https://github.com/Shougo/dein.vim.git ~/.nvim/dein/repos/github.com/Shougo/dein.vim
 
 #stack
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 575159689BEFB442
-echo 'deb http://download.fpcomplete.com/ubuntu trusty main' | sudo tee /etc/apt/sources.list.d/fpco.list
-sudo apt-get update && sudo apt-get install stack -y
+curl -sSL https://get.haskellstack.org/ | sh
 
 #opam
-sudo add-apt-repository ppa:avsm/ppa
-sudo apt-get update
-sudo apt-get install ocaml ocaml-native-compilers camlp4-extra opam
+sudo apt-get install opam
+opam init
 
 #tex
-sudo apt-get install texlive-xetex
+#sudo apt-get install texlive-xetex
 
