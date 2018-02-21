@@ -6,11 +6,19 @@ snippet     ===
 options     head
   ===============================================================================
 
+snippet     ====
+options     head
+  ${1} <!--{{{-->
+  ===============================================================================
+  \tightdisplayskip
+  ${0}
+  <!--}}}-->
+
 snippet     ---
 options     head indent
 	---
 	title: ${1:#:title}
-	author: 161005 岩山直樹
+	author: 小林研究室 B4 岩山 直樹
 	date: `strftime("%Y年%m月%d日")`
 	numbersections: false
 	header-includes:
@@ -25,11 +33,12 @@ snippet     beamer
 options     head indent
 	---
 	title: ${1:#:title}
-	author: 161005 岩山直樹
+	author: 小林研究室 B4 岩山 直樹
 	date: `strftime("%Y年%m月%d日")`
 	numbersections: false
 	header-includes:
 		- \newcommand{\memo}[1]{}
+		- \newcommand{\tightdisplayskip}{\abovedisplayskip=0pt}
 	fontsize: 13pt
 	fonttheme: serif
 	theme: Boadilla
@@ -44,6 +53,12 @@ options     head indent
 
 snippet     unnumbered
     {-}
+
+snippet     only
+options     head
+	\id{\only<${1}>{ %{{{
+		${0}
+	}} %}}}
 
 # ここにpandocのsyntaxのメモを書きます <- なぜここなのですか？
 

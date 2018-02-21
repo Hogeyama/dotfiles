@@ -1,36 +1,10 @@
 
 # If you come from bash you might have to change your $PATH.
-export PATH=/usr/local/texlive/2016/bin/x86_64-linux:$PATH
-export PATH=/usr/local/go/bin:$PATH
+###########################################################################################
+# ほげ {{{
+###########################################################################################
 
 zstyle ':completion:*:*:nvim:*' file-patterns '^*.(aux|log|pdf|cmo|cmi|cmt|cmx):source-files' '*:all-files'
-
-function countdown(){
-   date1=$((`date +%s` + $1)); 
-   while [ "$date1" -ge `date +%s` ]; do 
-     echo -ne "$(date -u --date @$(($date1 - `date +%s`)) +%H:%M:%S)\r";
-     sleep 0.1
-   done
-}
-
-##############################################
-# directoryのほげ
-##############################################
-
-START_DIRECTORY=`pwd`
-DIRS_HISTORY="$HOME/.dirs_history"
-if [ -f $DIRS_HISTORY ]; then
-  while read line; do
-    pushd $line >& /dev/null
-    #pwd
-  done < <(tac "$DIRS_HISTORY")
-fi
-cd $START_DIRECTORY
-function cd_starting_directory() {
-  cd $START_DIRECTORY
-}
-
-##############################################
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -105,29 +79,60 @@ export EDITOR='nvim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
+# }}}
+
+###########################################################################################
+# personal settings
+###########################################################################################
+
+##############################################
+# Path
+##############################################
+
+export PATH=/usr/local/texlive/2016/bin/x86_64-linux:$PATH
+export PATH=/usr/local/go/bin:$PATH
+
+##############################################
+# directoryのほげ
+##############################################
+
+START_DIRECTORY=`pwd`
+DIRS_HISTORY="$HOME/.dirs_history"
+if [ -f $DIRS_HISTORY ]; then
+  while read line; do
+    pushd $line >& /dev/null
+    #pwd
+  done < <(tac "$DIRS_HISTORY")
+fi
+cd $START_DIRECTORY
+function cd_starting_directory() {
+  cd $START_DIRECTORY
+}
+
+##############################################
+# その他
+##############################################
 
 # ssh
 export SSH_KEY_PATH="~/.ssh/rsa_id"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+# zsh_alias
 source "$HOME/.zsh_alias"
-
 
 # OPAM configuration
 . /home/hogeyama/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 eval `opam config env`
-unsetopt correct
 
+# stack completion
+eval "$(stack --bash-completion-script stack)"
 
-# OVERWRITE
+setopt NO_HUp
+setopt NO_CHECK_JOBS
 
-#unsetopt AUTOPUSHD
+# correct邪魔
+unsetopt correctall
+
+export VTE_CJK_WIDTH=1
+
 
 

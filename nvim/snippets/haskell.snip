@@ -37,9 +37,12 @@ options     head
 	import qualified ${0}
 
 snippet     undefined
-abbr        undefined
 alias       und
 	undefined
+
+snippet     deriving
+alias       der
+	deriving
 
 snippet     ---
 abbr        ---
@@ -56,9 +59,30 @@ options     head
 	instance ${1:Class} ${2:Type} where
 		${3:function} ${4:self} = ${0}
 
-snippet      language
-alias        lang
-abbr         {-# LANGUAGE ... #-}
+snippet     language
+alias       lang
+options     head
+abbr        {-# LANGUAGE ... #-}
 	{-# LANGUAGE ${1} #-}
+
+snippet     options
+alias       option OPTION OPTIONS OPTIONS_GHC
+options     head
+abbr        {-# OPTIONS_GHC ... #-}
+	{-# OPTIONS_GHC ${1} #-}
+
+snippet     Wall
+options     head
+abbr        {-# OPTIONS_GHC -Wall #-}
+	{-# OPTIONS_GHC -Wall #-}
+
+snippet     extentions
+options     head
+	{-# LANGUAGE MultiWayIf             #-}
+	{-# LANGUAGE LambdaCase             #-}
+	{-# LANGUAGE TypeApplications       #-}
+	{-# LANGUAGE ScopedTypeVariables    #-}
+	{-# OPTIONS_GHC -Wall               #-}
+	{-# OPTIONS_GHC -Wno-unused-imports #-}
 
 

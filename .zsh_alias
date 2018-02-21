@@ -1,6 +1,6 @@
 
 cd-ls(){
-  \cd $* && \ls --color=tty -CF
+  \cd $* && \exa --group-directories-first
   dirs -lp | awk '!x[$0]++' | sed "/home\/hogeyama\$/d" > "$HOME/.dirs_history"
   # awk '!x[$0]++': remove duplicates without sorting
 }
@@ -26,3 +26,15 @@ alias stack-ghcid='stack exec -- ghcid "--command=stack ghci"'
 alias D='cd_starting_directory'
 alias jbuilder='nocorrect jbuilder'
 alias ocamlbuild-ocamlfind='ocamlbuild -use-ocamlfind'
+alias primergy='ssh iwayama@primergy.kb.is.s.u-tokyo.ac.jp'
+alias aspell-check='aspell --lang=en -t -c'
+alias stack-which='stack exec -- which'
+alias l='exa -la --group-directories-first'
+alias ls='exa --group-directories-first'
+alias la='exa -a --group-directories-first'
+alias s='exa -a --group-directories-first'
+alias DU='du -hd1 | sort -h'
+alias アバーッ='sudo poweroff'
+alias gvim='nvim-wrapper'
+alias ltxmkp='latexmk -outdir=_build -verbose -file-line-error -synctex=1 -interaction=nonstopmode -pvc'
+alias pdf2png='convert -density 300 -quality 100'

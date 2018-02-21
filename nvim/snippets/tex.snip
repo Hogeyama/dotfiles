@@ -11,19 +11,19 @@ alias   \begin
 	\end{$1}
 
 snippet list
-alias   \begin{list} \list
+alias   \list
 	\begin{list}
 		${1:TARGET}
 	\end{list}
 
 snippet quotation
-alias   \begin{quotation} \quotation
+alias   \quotation
 	\begin{quotation}
 		${1:TARGET}
 	\end{quotation}
 
 snippet description
-alias   \begin{description} \description desc
+alias   \description desc
 	\begin{description}
 		\item[${1}] ${0}
 	\end{description}
@@ -37,61 +37,61 @@ alias   item \item
 	\item ${0}
 
 snippet sloppypar
-alias   \begin{sloppypar} \sloppypar
+alias   \sloppypar
 	\begin{sloppypar}
 		${1:TARGET}
 	\end{sloppypar}
 
 snippet enumerate
-alias   \begin{enumerate} \enumerate enum
+alias   \enumerate enum
 	\begin{enumerate}
 		\item ${1:TARGET}
 	\end{enumerate}
 
 snippet theindex
-alias   \begin{theindex} \theindex
+alias   \\theindex
 	\begin{theindex}
 		${1:TARGET}
 	\end{theindex}
 
 snippet itemize
-alias   \begin{itemize} \itemize
+alias   \itemize
 	\begin{itemize}
 		\item ${1:TARGET}
 	\end{itemize}
 
 snippet titlepage
-alias   \begin{titlepage} \titlepage
+alias   \titlepage
 	\begin{titlepage}
 		${1:TARGET}
 	\end{titlepage}
 
 #snippet verbatim
-#alias   \begin{verbatim} verb \verbatim
+#alias   verb \verbatim
 #	\begin{verbatim}
 #		${1:TARGET}
 #	\end{verbatim}
 
 snippet verbatimtab
-alias   \begin{verbatimtab} \verbatimtab
+alias   \verbatimtab
 	\begin{verbatimtab}[${1:8}]
 		${2:TARGET}
 	\end{verbatim}
 
 snippet trivlist
-alias   \begin{trivlist} \trivlist
+alias   \trivlist
 	\begin{trivlist}
 		${1:TARGET}
 	\end{trivlist}
 
 snippet verse
-alias   \begin{verse} \verse
+alias   \verse
 	\begin{verse}
 		${1:TARGET}
 	\end{verse}
 
 snippet table
-alias   \begin{table} \table
+alias   \table
 	\begin{table}[${1}]
 		\centering
 		\caption{${2}}
@@ -102,119 +102,119 @@ alias   \begin{table} \table
 	\end{table}
 
 snippet thebibliography
-alias   \begin{thebibliography} \thebibliography
+alias   \thebibliography
 	\begin{thebibliography}
 		${1:TARGET}
 	\end{thebibliography}
 
 snippet tabbing
-alias   \begin{tabbing} \tabbing
+alias   \tabbing
 	\begin{tabbing}
 		${1:TARGET}
 	\end{tabbing}
 
 snippet note
-alias   \begin{note} \note
+alias   \note
 	\begin{note}
 		${1:TARGET}
 	\end{note}
 
 snippet tabular
-alias   \begin{tabular} \tabular
+alias   \tabular
 	\begin{tabular}{${1}}
 		${2:TARGET}
 	\end{tabular}
 
 snippet overlay
-alias   \begin{overlay} \overlay
+alias   \overlay
 	\begin{overlay}
 		${1:TARGET}
 	\end{overlay}
 
 snippet array
-alias   \begin{array} \array
+alias   \array
 	\begin{array}{${1}}
 		${2:TARGET}
 	\end{array}
 
 snippet cases
-alias   \begin{cases} \cases
+alias   \cases
 	\begin{cases}{${1}}
 		${2:TARGET}
 	\end{cases}
 
 snippet slide
-alias   \begin{slide} \slide
+alias   \slide
 	\begin{slide}
 		${1:TARGET}
 	\end{slide}
 
 snippet displaymath
-alias   \begin{displaymath} \displaymath
+alias   \displaymath
 	\begin{displaymath}
 		${1:TARGET}
 	\end{displaymath}
 
 snippet abstract
-alias   \begin{abstract} \abstract
+alias   \abstract
 options indent
 	\begin{abstract}
 		${1:TARGET}
 	\end{abstract}
 
 snippet align
-alias   \begin{align} \align
+alias   \align
 options indent
 	\begin{align}
 		${1:TARGET}
 	\end{align}
 
 snippet align*
-alias   \begin{align*} \align*
+alias   \align*
 options indent
 	\begin{align*}
 		${1:TARGET}
 	\end{align*}
 
 snippet eqnarray
-alias   \begin{eqnarray} \eqnarray
+alias   \eqnarray
 options indent
 	\begin{eqnarray}
 		${1:TARGET}
 	\end{eqnarray}
 
 snippet eqnarray*
-alias   \begin{eqnarray*} \eqnarray*
+alias   \eqnarray*
 	\begin{eqnarray*}
 		${1:TARGET}
 	\end{eqnarray*}
 
 snippet equation
-alias   \begin{equation} \equation
+alias   \equation
 	\begin{equation}
 		${1:TARGET}
 	\end{equation}
 
 snippet equation*
-alias   \begin{equation*} \equation*
+alias   \equation*
 	\begin{equation*}
 		${1:TARGET}
 	\end{equation*}
 
 snippet center
-alias   \begin{center} \center
+alias   \center
 	\begin{center}
 		${1:TARGET}
 	\end{center}
 
 snippet document
-alias   \begin{document} \document
+alias   \document
 	\begin{document}
 		${1:TARGET}
 	\end{document}
 
 snippet figure
-alias   \begin{figure} \figure
+alias   \figure
 	\begin{figure}[${1}]
 		\centering
 			\includegraphics[${2:width=${3\}}]{${4}}
@@ -223,79 +223,79 @@ alias   \begin{figure} \figure
 	\end{figure}
 
 snippet filecontents
-alias   \begin{filecontents} \filecontents
+alias   \filecontents
 	\begin{filecontents}
 		${1:TARGET}
 	\end{filecontents}
 
 snippet lrbox
-alias   \begin{lrbox} \lrbox
+alias   \lrbox
 	\begin{lrbox}
 		${1:TARGET}
 	\end{lrbox}
 
 snippet flushleft
-alias   \begin{flushleft} \flushleft
+alias   \flushleft
 	\begin{flushleft}
 		${1:TARGET}
 	\end{flushleft}
 
 snippet flushright
-alias   \begin{flushright} \flushright
+alias   \flushright
 	\begin{flushright}
 		${1:TARGET}
 	\end{flushright}
 
 snippet minipage
-alias   \begin{minipage} \minipage
+alias   \minipage
 	\begin{minipage}
 		${1:TARGET}
 	\end{minipage}
 
 snippet picture
-alias   \begin{picture} \picture
+alias   \picture
 	\begin{picture}
 		${1:TARGET}
 	\end{picture}
 
 snippet quote
-alias   \begin{quote} \quote
+alias   \quote
 	\begin{quote}
 		${1:TARGET}
 	\end{quote}
 
 snippet matrix
-alias   \begin{matrix} \matrix
+alias   \matrix
 	\begin{matrix}
 		${1:TARGET}
 	\end{matrix}
 
 snippet bmatrix
-alias   \begin{bmatrix} \bmatrix
+alias   \bmatrix
 	\begin{bmatrix}
 		${1:TARGET}
 	\end{bmatrix}
 
 snippet pmatrix
-alias   \pegin{bmatrix} \pmatrix
+alias   \pmatrix
 	\begin{pmatrix}
 		${1:TARGET}
 	\end{pmatrix}
 
 snippet vmatrix
-alias   \begin{vmatrix} \vmatrix
+alias   \vmatrix
 	\begin{vmatrix}
 		${1:TARGET}
 	\end{vmatrix}
 
 snippet Bmatrix
-alias   \begin{Bmatrix} \Bmatrix
+alias   \Bmatrix
 	\begin{Bmatrix}
 		${1:TARGET}
 	\end{Bmatrix}
 
 snippet Vmatrix
-alias   \begin{Vmatrix} \Vmatrix
+alias   \Vmatrix
 	\begin{Vmatrix}
 		${1:TARGET}
 	\end{Vmatrix}
@@ -356,55 +356,55 @@ abbr	\left \right
 # ========== FONT ==========
 
 snippet bfseries
-alias   \begin{bfseries} \bfseries
+alias   \bfseries
 	\begin{bfseries}
 		${1:TARGET}
 	\end{bfseries}
 
 snippet mdseries
-alias   \begin{mdseries} \mdseries
+alias   \mdseries
 	\begin{mdseries}
 		${1:TARGET}
 	\end{mdseries}
 
 snippet ttfamily
-alias   \begin{ttfamily} \ttfamily
+alias   \ttfamily
 	\begin{ttfamily}
 		${1:TARGET}
 	\end{ttfamily}
 
 snippet sffamily
-alias   \begin{sffamily} \sffamily
+alias   \sffamily
 	\begin{sffamily}
 		${1:TARGET}
 	\end{sffamily}
 
 snippet rmfamily
-alias   \begin{rmfamily} \rmfamily
+alias   \rmfamily
 	\begin{rmfamily}
 		${1:TARGET}
 	\end{rmfamily}
 
 snippet upshape
-alias   \begin{upshape} \upshape
+alias   \upshape
 	\begin{upshape}
 		${1:TARGET}
 	\end{upshape}
 
 snippet slshape
-alias   \begin{slshape} \slshape
+alias   \slshape
 	\begin{slshape}
 		${1:TARGET}
 	\end{slshape}
 
 snippet scshape
-alias   \begin{scshape} \scshape
+alias   \scshape
 	\begin{scshape}
 		${1:TARGET}
 	\end{scshape}
 
 snippet itshape
-alias   \begin{itshape} \itshape
+alias   \itshape
 	\begin{itshape}
 		${1:TARGET}
 	\end{itshape}
@@ -447,7 +447,7 @@ alias   textit \textit{
 
 # ==== BEAMER ====
 snippet frame
-alias   \begin{frame} \frame
+alias   \frame
 	\begin{frame}{${1:#:frametitle}}
 		${2:TARGET}
 	\end{frame}
@@ -471,7 +471,7 @@ alias   \begin{alertblock}
 	\end{alertblock}
 
 snippet columns
-alias   \begin{columns} \columns
+alias   \columns
 	\begin{columns}
 		\begin{column}{${1:#:width}${2:\\textwidth}}
 			${0:#:body}
@@ -479,7 +479,7 @@ alias   \begin{columns} \columns
 	\end{columns}
 
 snippet column
-alias   \begin{column} \column
+alias   \column
 	\begin{column}{${1:#:width}${2:\\textwidth}}
 		${0:#:body}
 	\end{column}
@@ -558,13 +558,13 @@ alias   \label
 	\label{${1}}${0}
 
 snippet shomonr
-alias   \begin{shomonr} \shomonr
+alias   \shomonr
 	\begin{shomonr}
 		${1:TARGET}
 	\end{shomonr}
 
 snippet shimonr
-alias   \begin{shimonr} \shimonr
+alias   \shimonr
 	\begin{shimonr}
 		${1:TARGET}
 	\end{shimonr}
@@ -608,28 +608,34 @@ options     word
 	$${1}$${0}
 
 snippet def
-alias   \begin{Definition} Def definition Definition
+alias   Def definition Definition
 	\begin{Definition}[${1}]
 		${2:TARGET}
 	\end{Definition}
 
 snippet thm
-alias   \begin{Theorem} Thm theorem Theorem
+alias   Thm theorem Theorem
 	\begin{Theorem}[${1}]
 		${2:TARGET}
 	\end{Theorem}
 
 snippet lem
-alias   \begin{Lemma} Lem lemma Lemma
+alias   Lem lemma Lemma
 	\begin{Lemma}[${1}]
 		${2:TARGET}
 	\end{Lemma}
 
 snippet prf
-alias   \begin{Proof} Prf proof Proof
-	\begin{Proof}[${1}]
+alias   prf proof
+	\begin{proof}[${1}]
 		${2:TARGET}
-	\end{Proof}
+	\end{proof}
+
+snippet prf*
+alias   prf* proof*
+	\begin{proof*}[${1}]
+		${2:TARGET}
+	\end{proof*}
 
 snippet     fontsize
 options     head
@@ -652,3 +658,14 @@ options     head
 		%}}}
 	}}
 
+snippet gather
+alias   \gather
+	\begin{gather}
+		${1:TARGET}
+	\end{gather}
+
+snippet gather*
+alias   \gather*
+	\begin{gather*}
+		${1:TARGET}
+	\end{gather*}

@@ -5,6 +5,7 @@ $endif$
 \setbeamertemplate{caption}[numbered]
 \setbeamertemplate{enumerate items}[default]
 \setbeamertemplate{caption label separator}{: }
+\setbeamertemplate{footline}{}
 \setbeamercolor{caption name}{fg=normal text.fg}
 \beamertemplatenavigationsymbols$if(navigation)$$navigation$$else$empty$endif$
 $if(fontfamily)$
