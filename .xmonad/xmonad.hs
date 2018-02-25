@@ -41,7 +41,7 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , layoutHook         = myLayoutHook
       , startupHook        = mapM_ spawn [ "dropbox start"
                                          , "unity-settings-daemon"
-                                         , "sleep 2 && xmodmap /home/hogeyama/.Xmodmap"
+                                         , "sleep 2 && xmodmap $HOME/.Xmodmap"
                                          ]
       }
 
@@ -99,7 +99,6 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       --, ((mod4Mask .|. controlMask .|. shiftMask, xK_Down ), sendMessage $ Go D)
       --]
 
-
     screenShotName :: String
     screenShotName = "$HOME/Dropbox/ScreenShots/Screenshot%Y-%m-%d-%H:%M:%S.png"
 
@@ -143,26 +142,6 @@ xmobar' = statusBar "xmobar" xmobarPP' toggleStrutsKey
     xmobarPP' = xmobarPP { ppLayout = const "" }
     toggleStrutsKey XConfig{modMask = modm} = (modm, xK_b )
 
--------------------------------------------------------------------------------
--- Layout
--------------------------------------------------------------------------------
-
-type (:$) = ModifiedLayout
-type (:||) = Choose
-infixr 6 :$
-infixr 5 :||
-type SimpleTab = Decoration TabbedDecoration DefaultShrinker :$ Simplest
-
-type MyLayoutHook = Full
-                :|| SimpleTab
-                :|| CombineTwoP (TwoPane ()) SimpleTab SimpleTab
-
-myLayoutHook :: MyLayoutHook Window
-myLayoutHook = Full
-           ||| simpleTabbed
-           ||| combineTwoP (TwoPane (1/50) (1/2))
-                  simpleTabbed simpleTabbed (Title "no title")
-
 -- XState = { windowset :: WindowSet , ...}
 -- WindowSet = StackSet WorkspaceId (Layout Window) Window ScreenId ScreenDetail
 -- StackSet i l a sid sd =
@@ -182,6 +161,26 @@ myLayoutHook = Full
 --    , down  :: [a]
 --    }
 --  WindowはX11で定義されている
+
+-------------------------------------------------------------------------------
+-- Layout
+-------------------------------------------------------------------------------
+
+type (:$) = ModifiedLayout
+type (:||) = Choose
+infixr 6 :$
+infixr 5 :||
+type SimpleTab = Decoration TabbedDecoration DefaultShrinker :$ Simplest
+
+type MyLayoutHook = Full
+                :|| SimpleTab
+                :|| CombineTwoP (TwoPane ()) SimpleTab SimpleTab
+
+myLayoutHook :: MyLayoutHook Window
+myLayoutHook = Full
+           ||| simpleTabbed
+           ||| combineTwoP (TwoPane (1/50) (1/2))
+                  simpleTabbed simpleTabbed (Title "no title")
 
 hoge :: X ()
 hoge = return ()
