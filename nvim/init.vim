@@ -55,10 +55,10 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   """Haskell
   call dein#add('neovimhaskell/haskell-vim')
   call dein#add('eagletmt/unite-haddock')
-  call dein#add('eagletmt/neco-ghc') "ghc-8.2.1を使っている間はおやすみ
+  call dein#add('eagletmt/neco-ghc')
   call dein#add('vim-scripts/alex.vim')
   call dein#add('vim-scripts/happy.vim')
-  call dein#add('ujihisa/unite-haskellimport')
+  call dein#add('Hogeyama/unite-haskellimport')
   """Scala
   call dein#add('derekwyatt/vim-scala')
   "call dein#add('ensime/ensime-vim')
