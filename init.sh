@@ -13,9 +13,7 @@ sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
 sudo update-alternatives --config editor
 
 #dein
-if [ ! -d ~/.nvim/dein/repos/github.com/Shougo/dein.vim ]
-    mkdir -p ~/.nvim/dein/repos/github.com/Shougo/dein.vim
-fi
+mkdir -p ~/.nvim/dein/repos/github.com/Shougo/dein.vim
 git clone https://github.com/Shougo/dein.vim.git ~/.nvim/dein/repos/github.com/Shougo/dein.vim
 
 #stack
