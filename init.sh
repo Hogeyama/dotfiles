@@ -23,6 +23,7 @@ curl -sSL https://get.haskellstack.org/ | sh
 
 #rust
 curl -sSL https://sh.rustup.rs | sh
+cargo install --no-default-features exa
 
 #opam
 sudo apt-get install opam
