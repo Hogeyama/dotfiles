@@ -134,5 +134,3 @@ unsetopt correctall
 
 export VTE_CJK_WIDTH=1
 
-
-

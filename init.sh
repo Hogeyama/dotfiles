@@ -1,8 +1,10 @@
 #!/bin/sh
 
 #neovim
-sudo apt-get install git python-dev python3-dev python-pip python3-pip
+sudo apt-get install git python-dev python3-dev python-pip python3-pip curl xmonad
 sudo add-apt-repository ppa:neovim-ppa/unstable
+sudo pip3 install --upgrade pip
+sudo pip3 install neovim
 sudo apt-get update
 sudo apt-get install neovim
 sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60

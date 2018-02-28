@@ -31,6 +31,7 @@ if [ -f "$HOME/.Xmodmap" ]; then
 fi
 
 export BROWSER="google-chrome %s"
+export SHELL="/usr/bin/zsh"
 
 export PATH="$HOME/.cargo/bin:$PATH"
 

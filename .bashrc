@@ -133,3 +133,4 @@ RLWRAP_HOME='/home/hogeyama/.rlwrap'
 RUST_SRC_PATH='/home/hogeyama/apps/rust-1.14.0/src'
 PATH=~/site/bin:$PATH
 
+zsh
