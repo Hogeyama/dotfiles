@@ -21,6 +21,9 @@ git clone https://github.com/Shougo/dein.vim.git ~/.nvim/dein/repos/github.com/S
 #stack
 curl -sSL https://get.haskellstack.org/ | sh
 
+#rust
+curl -sSL https://sh.rustup.rs | sh
+
 #opam
 sudo apt-get install opam
 opam init

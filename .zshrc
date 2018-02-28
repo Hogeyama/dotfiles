@@ -91,6 +91,7 @@ export EDITOR='nvim'
 
 export PATH=/usr/local/texlive/2016/bin/x86_64-linux:$PATH
 export PATH=/usr/local/go/bin:$PATH
+export PATH=$HOME/apps/sbt-launcher-packaging-0.13.13/bin:$PATH
 
 ##############################################
 # directoryのほげ
