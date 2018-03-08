@@ -45,3 +45,5 @@ alias ghc-mod='stack exec -- ghc-mod'
 alias hlint='stack exec -- hlint'
 alias weeder='stack exec -- weeder'
 alias hoogle='stack exec -- hoogle'
+alias hie='stack exec -- hie'
+alias mochi-fpat="mochi -fpat '-hccs gch'"

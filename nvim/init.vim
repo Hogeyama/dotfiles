@@ -54,10 +54,10 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('rhysd/clever-f.vim')
   """Haskell
   call dein#add('neovimhaskell/haskell-vim')
-  call dein#add('eagletmt/unite-haddock')
   call dein#add('eagletmt/neco-ghc')
   call dein#add('vim-scripts/alex.vim')
   call dein#add('vim-scripts/happy.vim')
+  call dein#add('Hogeyama/unite-haddock')
   call dein#add('Hogeyama/unite-haskellimport')
   """Scala
   call dein#add('derekwyatt/vim-scala')
@@ -308,6 +308,7 @@ function! s:unite_my_settings()"{{{
   nmap <buffer> <C-j>     <Plug>(unite_select_next_line)
   nmap <buffer> <C-k>     <Plug>(unite_select_previous_line)
 endfunction"}}}
+call unite#custom#default_action('haddock', 'browse_remote')
 
 "}}}
 
@@ -666,6 +667,8 @@ au FileType haskell nnoremap <buffer> ,H :Unite hoogle<CR>
 au FileType haskell nnoremap <buffer> ,h :Unite haskellimport<CR>
 au FileType haskell nnoremap <buffer> <Space>t :update!<CR>:QuickRun -exec "fast-tags -R ./"<CR>
 au FileType haskell nnoremap <buffer> <Space>r :GhcidStopAll<CR>
+au FileType haskell setlocal iskeyword=a-z,A-Z,_,.,39
+
 call unite#custom_default_action('source/hoogle', 'preview')
 au FileType cabal   setlocal expandtab tabstop=4
 au! BufNewFile,BufFilePRe,BufRead *.x set filetype=alex
@@ -1054,7 +1057,6 @@ let @b = "<-"
 let g:ghc_mod_nvim_log_directory = expand('~/.cache/ghc-mod-nvim')
 
 if has('nvim') " This way, you can also put this in your plain vim config
-
   " function which starts a nvim-hs instance with the supplied name
   function! s:RequireHaskellHost(name)
     " It is important that the current working directory (cwd) is where

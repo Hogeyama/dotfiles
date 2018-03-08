@@ -26,6 +26,7 @@ import           XMonad.Layout.Tabbed
 --import           XMonad.Layout.Accordion
 --import           XMonad.Layout.ResizableTile
 import           System.Exit                    (exitSuccess)
+import           XMonad.Layout.IndependentScreens
 --
 
 main :: IO ()
@@ -183,5 +184,10 @@ myLayoutHook = Full
                   simpleTabbed simpleTabbed (Title "no title")
 
 hoge :: X ()
-hoge = return ()
+hoge = do
+  n <- countScreens :: X Int
+  log' (show n)
+
+log' :: String -> X ()
+log' s = liftIO $ appendFile "/home/hogeyama/xmonad.mylog" (s ++ "\n")
 

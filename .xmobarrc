@@ -1,5 +1,5 @@
 
-Config { font = "xft:Rounded Mgen+ 1mn:size=14"
+Config { font = "xft:Rounded Mgen+ 1mn:size=12"
        , bgColor = "#1a1e1b"
        , fgColor = "#676767"
        , position = Static { xpos = 0 , ypos = 0, width = 1920, height = 20 }
@@ -49,4 +49,4 @@ Config { font = "xft:Rounded Mgen+ 1mn:size=14"
 
 
 
--- vim:ft=haskell:
+-- vim:ft=haskell:ambiwidth=double:
