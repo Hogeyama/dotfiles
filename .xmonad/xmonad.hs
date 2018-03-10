@@ -67,7 +67,7 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , ("<XF86AudioMute>"         , spawn "amixer -D pulse sset Master 0%" )
       , ("M-<XF86AudioRaiseVolume>", spawn "xbacklight -inc 10")
       , ("M-<XF86AudioLowerVolume>", spawn "xbacklight -dec 10")
-      , ("M-<XF86AudioMute>"       , spawn $ "scrot " ++ screenShotName)
+      , ("M-<XF86AudioMute>"       , spawn $ unwords ["scrot ", screenShotName])
       ]
 
       `additionalKeys`

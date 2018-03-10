@@ -667,7 +667,6 @@ au FileType haskell nnoremap <buffer> ,H :Unite hoogle<CR>
 au FileType haskell nnoremap <buffer> ,h :Unite haskellimport<CR>
 au FileType haskell nnoremap <buffer> <Space>t :update!<CR>:QuickRun -exec "fast-tags -R ./"<CR>
 au FileType haskell nnoremap <buffer> <Space>r :GhcidStopAll<CR>
-au FileType haskell setlocal iskeyword=a-z,A-Z,_,.,39
 
 call unite#custom_default_action('source/hoogle', 'preview')
 au FileType cabal   setlocal expandtab tabstop=4
@@ -962,7 +961,7 @@ nmap <Space>; <Plug>(easymotion-prev)
 "Terminal他"{{{
 "nnoremap .. :cd..<CR>
 "nnoremap te :vs<CR><C-w>l:te<CR>
-nnoremap te :vs<CR><C-w>l:Deol<CR><CR>
+nnoremap te :vs<CR><C-w>l:Deol<CR>
 ":botright split | resize 15 | te
 nnoremap vs :rightbelow vs<CR>
 tnoremap <Esc> <C-\><C-n>
