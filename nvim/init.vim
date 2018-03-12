@@ -866,7 +866,8 @@ nnoremap tg gT
 """<space>oで改行
 nnoremap <Space>o  :<C-u>for i in range(v:count1) \| call append(line('.'), '') \| endfor<CR>
 "jkで<esc>
-inoremap jk <Esc>
+"inoremap jk <Esc>
+inoremap jk <Esc>:w<CR>
 inoremap <C-j><C-k> <Esc>:w<CR>
 """<Space>\で保存
 nnoremap <C-\> :update!<CR>
