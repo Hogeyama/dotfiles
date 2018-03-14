@@ -7,6 +7,7 @@ import Neovim
 
 import qualified Neovim.GhcModNvim   as GhcModNvim
 import qualified Neovim.Ghcid.Simple as GhcidSimple
+import qualified Neovim.LSP          as LSP
 import           Sample
 
 main :: IO ()
@@ -15,6 +16,7 @@ main =
     plugins defaultConfig ++
     [ GhcModNvim.plugin
     , GhcidSimple.plugin
+    , LSP.plugin
     , samplePlugin
     ]
   }

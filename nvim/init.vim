@@ -44,7 +44,10 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('thinca/vim-ref')
   """LSP
   "call dein#add('tjdevries/nvim-langserver-shim') "だめ
-  "call dein#add('autozimu/LanguageClient-neovim') "割と動くがrlsのundoが効かない
+  call dein#add('autozimu/LanguageClient-neovim', {
+    \ 'rev': 'next',
+    \ 'build': 'bash install.sh',
+    \ })
   call dein#add('prabirshrestha/vim-lsp')
   call dein#add('prabirshrestha/async.vim')
   "call dein#add('natebosch/vim-lsc')              "これから試す
@@ -54,7 +57,7 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('rhysd/clever-f.vim')
   """Haskell
   call dein#add('neovimhaskell/haskell-vim')
-  call dein#add('eagletmt/neco-ghc')
+  "call dein#add('eagletmt/neco-ghc')
   call dein#add('vim-scripts/alex.vim')
   call dein#add('vim-scripts/happy.vim')
   call dein#add('Hogeyama/unite-haddock')
@@ -357,7 +360,7 @@ call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
 "}}}
 
 "QuickFix"{{{
-au FileType qf call AdjustWindowHeight(1,10)
+au FileType qf call AdjustWindowHeight(7,7)
 function! AdjustWindowHeight(minheight, maxheight)
   exe max([min([line("$")+1, a:maxheight]), a:minheight]) . "wincmd _"
 endfunction
@@ -563,13 +566,13 @@ call smartinput#define_rule({
 
 "LSP (Haskell, Rust) {{{
 """ 'autozimu/LanguageClient-neovim'
-"let g:LanguageClient_autoStart = 0
-"let g:LanguageClient_serverCommands = {
-"    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-"    \ 'haskell': ['hie', '--lsp'],
-"    \ }
-"    "\ 'haskell': ['/home/hogeyama/.local/bin/hie-wrapper/Main.hs'],
-"    "\ 'haskell': ['echo.hs'],
+let g:LanguageClient_autoStart = 0
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+    \ 'haskell': ['stack', 'exec', '--', 'hie', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
+    \ }
+    "\ 'haskell': ['/home/hogeyama/.local/bin/hie-wrapper/Main.hs'],
+    "\ 'haskell': ['echo.hs'],
 "let g:langserver_executables = {
 "    \ 'rust': {
 "      \ 'name': 'rustup',
@@ -1071,6 +1074,15 @@ if has('nvim') " This way, you can also put this in your plain vim config
   " forcefully by requiring it
   let hc=remote#host#Require('haskell')
 endif
+"}}}
+
+" nvim-hs-lsp {{{
+nnoremap [nvim-hs-lsp] <nop>
+nmap     <C-l> [nvim-hs-lsp]
+nnoremap [nvim-hs-lsp]i :NvimHsLspInitialize<CR>
+nnoremap [nvim-hs-lsp]o :NvimHsLspOpenBuffer<CR>
+nnoremap [nvim-hs-lsp]c :NvimHsLspChangeBuffer<CR>
+nnoremap [nvim-hs-lsp]h :NvimHsLspHoverRequest<CR>
 
 "}}}
 
