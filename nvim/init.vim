@@ -1082,6 +1082,8 @@ nmap     <C-l> [nvim-hs-lsp]
 nnoremap [nvim-hs-lsp]i :NvimHsLspInitialize<CR>
 nnoremap [nvim-hs-lsp]o :NvimHsLspOpenBuffer<CR>
 nnoremap [nvim-hs-lsp]c :NvimHsLspChangeBuffer<CR>
+nnoremap [nvim-hs-lsp]C :NvimHsLspCloseBuffer<CR>
+nnoremap [nvim-hs-lsp]e :NvimHsLspExit<CR>
 nnoremap [nvim-hs-lsp]h :NvimHsLspHoverRequest<CR>
 
 "}}}
