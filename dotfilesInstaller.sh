@@ -11,7 +11,7 @@ ln -s ~/dotfiles/.zshrc                ~/.zshrc
 ln -s ~/dotfiles/.zshenv               ~/.zshenv
 ln -s ~/dotfiles/.zsh_alias            ~/.zsh_alias
 
-ln -s ~/.config/nvim                   ~/.nvim
+#ln -s ~/.config/nvim                   ~/.nvim
 ln -s ~/dotfiles/nvim/init.vim         ~/.config/nvim/init.vim
 ln -s ~/dotfiles/nvim/ginit.vim        ~/.config/nvim/ginit.vim
 ln -s ~/dotfiles/nvim/indent           ~/.config/nvim/indent
