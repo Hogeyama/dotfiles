@@ -26,7 +26,6 @@ import           XMonad.Layout.Tabbed
 --import           XMonad.Layout.Accordion
 --import           XMonad.Layout.ResizableTile
 import           System.Exit                    (exitSuccess)
-import           XMonad.Layout.IndependentScreens
 --
 
 main :: IO ()
@@ -51,7 +50,7 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , ("M-S-g"        , spawn "vivaldi"       )
       , ("M-p"          , spawn "gmrun"         )
       , ("M-S-p"        , spawn "dmenu_run"     )
-      , ("M-S-q"        , kill                  )
+      , ("M-S-q"        , kill )
       , ("M-S-C-q"      , io exitSuccess        )
       , ("M-x"          , spawn "slock"         )
       , ("M-<Return>"   , forcusNextScreen      )
@@ -101,7 +100,7 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       --]
 
     screenShotName :: String
-    screenShotName = "$HOME/Dropbox/ScreenShots/Screenshot%Y-%m-%d-%H:%M:%S.png"
+    screenShotName = "$HOME/Dropbox/ScreenShots/Screenshot%Y-%m-%d-%H-%M-%S.png"
 
     myWorkspaces :: [String]
     myWorkspaces = map show [1..9 :: Int]
@@ -184,10 +183,11 @@ myLayoutHook = Full
                   simpleTabbed simpleTabbed (Title "no title")
 
 hoge :: X ()
-hoge = do
-  n <- countScreens :: X Int
-  log' (show n)
+hoge = log' "fugafuga"
+
+  --n <- countScreens :: X Int
+  --log' (show n)
 
 log' :: String -> X ()
-log' s = liftIO $ appendFile "/home/hogeyama/xmonad.mylog" (s ++ "\n")
+log' s = spawn $ "echo " ++ show s ++ " >> /home/hoegyama/xmonad.mylog"
 
