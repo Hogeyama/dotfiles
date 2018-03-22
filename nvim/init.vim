@@ -571,8 +571,7 @@ let g:LanguageClient_serverCommands = {
     \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
     \ 'haskell': ['stack', 'exec', '--', 'hie', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
     \ }
-    "\ 'haskell': ['/home/hogeyama/.local/bin/hie-wrapper/Main.hs'],
-    "\ 'haskell': ['echo.hs'],
+let g:LanguageClient_loggingLevel = 'DEBUG'
 "let g:langserver_executables = {
 "    \ 'rust': {
 "      \ 'name': 'rustup',
@@ -584,13 +583,13 @@ let g:LanguageClient_serverCommands = {
 "      \ },
 "    \ }
 "
-"au FileType haskell setlocal omnifunc=LanguageClient#complete
-"au FileType haskell nnoremap <buffer> Q     :call LanguageClient_textDocument_hover()<CR>
-"au FileType haskell nnoremap <silent> gi    :call LanguageClient_textDocument_hover()<CR>
-"au FileType haskell nnoremap <silent> <C-j> :call LanguageClient_textDocument_definition()<CR>
-"au FileType haskell nnoremap <buffer> <C-j> :call LanguageClient_textDocument_definition()<CR>
-"au FileType haskell nnoremap <buffer> <F2>  :call LanguageClient_textDocument_rename()<CR>
-"au FileType haskell inoremap <buffer> <C-o> <C-x><C-o>
+au FileType haskell setlocal omnifunc=LanguageClient#complete
+au FileType haskell nnoremap <buffer> Q     :call LanguageClient_textDocument_hover()<CR>
+au FileType haskell nnoremap <silent> gi    :call LanguageClient_textDocument_hover()<CR>
+au FileType haskell nnoremap <silent> <C-j> :call LanguageClient_textDocument_definition()<CR>
+au FileType haskell nnoremap <buffer> <C-j> :call LanguageClient_textDocument_definition()<CR>
+au FileType haskell nnoremap <buffer> <F2>  :call LanguageClient_textDocument_rename()<CR>
+au FileType haskell inoremap <buffer> <C-o> <C-x><C-o>
 "au FileType rust setlocal omnifunc=LanguageClient#complete
 "au FileType rust nnoremap <buffer> Q     :call LanguageClient_textDocument_hover()<CR>
 "au FileType rust nnoremap <buffer> <C-j> :call LanguageClient_textDocument_definition()<CR>
@@ -1084,7 +1083,9 @@ nnoremap [nvim-hs-lsp]o :NvimHsLspOpenBuffer<CR>
 nnoremap [nvim-hs-lsp]c :NvimHsLspChangeBuffer<CR>
 nnoremap [nvim-hs-lsp]C :NvimHsLspCloseBuffer<CR>
 nnoremap [nvim-hs-lsp]e :NvimHsLspExit<CR>
-nnoremap [nvim-hs-lsp]h :NvimHsLspHoverRequest<CR>
+nnoremap [nvim-hs-lsp]h :NvimHsLspHover<CR>
+nnoremap [nvim-hs-lsp]j :NvimHsLspDefinition<CR>
+nnoremap [nvim-hs-lsp]a :NvimHsLspApplyRefactOne<CR>
 nnoremap [nvim-hs-lsp]R :NvimHsLspExit<CR>:NvimHsLspInitialize<CR>
 
 "}}}
