@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 #neovim
-sudo apt-get install git python-dev python3-dev python-pip python3-pip curl xmonad opam m4
+sudo apt-get install git python-dev python3-dev python-pip python3-pip curl xmonad opam m4 fonts-powerline
 sudo add-apt-repository ppa:neovim-ppa/unstable
 sudo pip3 install --upgrade pip
 sudo pip3 install neovim
