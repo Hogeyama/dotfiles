@@ -1,7 +1,7 @@
 #!/bin/sh
-
+set -eu
 #neovim
-sudo apt-get install git python-dev python3-dev python-pip python3-pip curl xmonad
+sudo apt-get install git python-dev python3-dev python-pip python3-pip curl xmonad opam m4
 sudo add-apt-repository ppa:neovim-ppa/unstable
 sudo pip3 install --upgrade pip
 sudo pip3 install neovim
@@ -15,7 +15,7 @@ sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
 sudo update-alternatives --config editor
 
 #dein
-mkdir -p ~/.nvim/dein/repos/github.com/Shougo/dein.vim
+mkdir -p ~/.config/nvim/dein/repos/github.com/Shougo/dein.vim
 git clone https://github.com/Shougo/dein.vim.git ~/.nvim/dein/repos/github.com/Shougo/dein.vim
 
 #stack
@@ -26,7 +26,6 @@ curl -sSL https://sh.rustup.rs | sh
 cargo install --no-default-features exa
 
 #opam
-sudo apt-get install opam
 opam init
 
 #tex

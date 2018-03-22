@@ -1,9 +1,11 @@
 
 # If you come from bash you might have to change your $PATH.
-###########################################################################################
+################################################################################
 # ほげ {{{
-###########################################################################################
+################################################################################
 
+autoload bashcompinit
+bashcompinit
 zstyle ':completion:*:*:nvim:*' file-patterns '^*.(aux|log|pdf|cmo|cmi|cmt|cmx):source-files' '*:all-files'
 
 # Path to your oh-my-zsh installation.
@@ -58,7 +60,14 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(
+  git
+  bundler
+  dotenv
+  rake
+  rbenv
+  ruby
+  )
 
 source $ZSH/oh-my-zsh.sh
 
@@ -81,9 +90,9 @@ export EDITOR='nvim'
 # export ARCHFLAGS="-arch x86_64"
 # }}}
 
-###########################################################################################
+################################################################################
 # personal settings
-###########################################################################################
+################################################################################
 
 ##############################################
 # Path
@@ -91,7 +100,6 @@ export EDITOR='nvim'
 
 export PATH=/usr/local/texlive/2016/bin/x86_64-linux:$PATH
 export PATH=/usr/local/go/bin:$PATH
-export PATH=$HOME/apps/sbt-launcher-packaging-0.13.13/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 
 ##############################################
@@ -126,6 +134,8 @@ source "$HOME/.zsh_alias"
 eval `opam config env`
 
 # stack completion
+autoload bashcompinit
+
 eval "$(stack --bash-completion-script stack)"
 
 setopt NO_HUp
