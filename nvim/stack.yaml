@@ -1,21 +1,16 @@
 
 resolver: lts-10.0
 
-# 動く
-#######################################
-
-
 packages:
 - .
 - location: ./nvim-hs-libs/ghc-mod-nvim
   extra-dep: true
-- location: ./nvim-hs-libs/ghcid-nvim-simple-0.2.0.0
+- location: ./nvim-hs-libs/ghcid-nvim-simple
   extra-dep: true
 - location: ./nvim-hs-libs/nvim-hs-lsp
-  extra-dep: true
-- location: /home/hogeyama/apps/haskell/ghcid
   extra-dep: true
 
 extra-deps:
 - nvim-hs-0.2.5
+- xformat-0.1.2.1
 

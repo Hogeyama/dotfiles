@@ -41,7 +41,8 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , layoutHook         = myLayoutHook
       , startupHook        = mapM_ spawn [ "dropbox start"
                                          , "unity-settings-daemon"
-                                         , "sleep 2 && xmodmap $HOME/.Xmodmap"
+                                         , "feh --bg-scale $HOME/Dropbox/WallPapers/tmp/PrincessPrincipalOST-screen.jpg"
+                                         , "compton -CG --active-opacity 1.0 --shadow-ignore-shaped"
                                          ]
       }
 
