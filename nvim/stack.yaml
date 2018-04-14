@@ -1,16 +1,19 @@
 
-resolver: lts-10.0
+resolver: lts-11.0
 
 packages:
 - .
-- location: ./nvim-hs-libs/ghc-mod-nvim
-  extra-dep: true
-- location: ./nvim-hs-libs/ghcid-nvim-simple
-  extra-dep: true
-- location: ./nvim-hs-libs/nvim-hs-lsp
-  extra-dep: true
 
 extra-deps:
-- nvim-hs-0.2.5
+- nvim-hs-1.0.0.0
+- nvim-hs-contrib-1.0.0.0
 - xformat-0.1.2.1
+- extensible-0.4.7
+- github: Hogeyama/ghc-mod-nvim
+  commit: c8350e3
+- github: Hogeyama/ghcid-nvim-simple
+  commit: 21ca24a
+- ./nvim-hs-libs/nvim-hs-lsp
+  #- github: Hogeyama/nvim-hs-lsp
+  #  commit: 293dabb
 

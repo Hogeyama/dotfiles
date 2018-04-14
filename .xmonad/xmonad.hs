@@ -41,7 +41,7 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , layoutHook         = myLayoutHook
       , startupHook        = mapM_ spawn [ "dropbox start"
                                          , "unity-settings-daemon"
-                                         , "feh --bg-scale $HOME/Dropbox/WallPapers/tmp/PrincessPrincipalOST-screen.jpg"
+                                         , "feh --bg-scale /home/hogeyama/Dropbox/WallPapers/PrincessPrincipalOST-screen.jpg"
                                          , "compton -CG --active-opacity 1.0 --shadow-ignore-shaped"
                                          ]
       }
@@ -190,5 +190,5 @@ hoge = log' "fugafuga"
   --log' (show n)
 
 log' :: String -> X ()
-log' s = spawn $ "echo " ++ show s ++ " >> /home/hoegyama/xmonad.mylog"
+log' s = spawn $ "echo " ++ show s ++ " >> /home/hogeyama/xmonad.mylog"
 

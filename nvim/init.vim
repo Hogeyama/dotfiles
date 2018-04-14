@@ -57,9 +57,10 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('rhysd/clever-f.vim')
   """Haskell
   call dein#add('neovimhaskell/haskell-vim')
-  "call dein#add('eagletmt/neco-ghc')
   call dein#add('vim-scripts/alex.vim')
   call dein#add('vim-scripts/happy.vim')
+  call dein#add('Hogeyama/nvim-hs-lsp')
+  call dein#add('Hogeyama/ghc-mod-deoplete')
   call dein#add('Hogeyama/unite-haddock')
   call dein#add('Hogeyama/unite-haskellimport')
   """Scala
@@ -81,10 +82,9 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   """Rust
   call dein#add('rust-lang/rust.vim')
   call dein#add('racer-rust/vim-racer')
-  call dein#add('phildawes/racer')
   """Others
   call dein#add('jelera/vim-javascript-syntax')
-  call dein#add('rgrinberg/vim-ocaml')
+  "call dein#add('rgrinberg/vim-ocaml')
   call dein#add('leafgarland/typescript-vim')
   call dein#add('Hogeyama/vimtex')
   "call dein#add('donRaphaco/neotex')
@@ -220,6 +220,7 @@ set nobackup
 set noundofile
 set conceallevel=0
 set laststatus=2
+set completeopt=menuone,noselect,preview,noinsert
 "set autoread
 set scrolloff=5
 set history=100
@@ -347,7 +348,7 @@ nnoremap [unite]d :Denite -auto-resume -mode=normal -winheight=10
 nnoremap [unite]g :DeniteGrep<CR>
 nnoremap [unite]n :DeniteNext<CR>
 nnoremap [unite]p :DenitePrevious<CR>
-nnoremap <C-h>    :Denite -auto-resume -mode=normal -winheight=10 file_mru<CR>
+nnoremap [unite]h :Denite -auto-resume -mode=normal -winheight=10 file_mru<CR>
 nnoremap <C-c>    :DeniteBufferDir -mode=normal -winheight=10 file<CR>
 "nnoremap <Space>c :Denite -auto-resume -mode=normal -winheight=10 file<CR>
 "TODO outline, output
@@ -360,7 +361,7 @@ call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
 "}}}
 
 "QuickFix"{{{
-au FileType qf call AdjustWindowHeight(7,7)
+au FileType qf call AdjustWindowHeight(5,5)
 function! AdjustWindowHeight(minheight, maxheight)
   exe max([min([line("$")+1, a:maxheight]), a:minheight]) . "wincmd _"
 endfunction
@@ -485,15 +486,16 @@ endfunction
 
 "deoplete neosnippet{{{
 " Use deoplete.
-let g:deoplete#enable_at_startup = 1
-" Use smartcase.
-let g:deoplete#enable_smart_case = 1
+let g:deoplete#enable_at_startup  = v:true
+call deoplete#custom#option('ignore_case', v:false)
+call deoplete#custom#option('camel_case', v:true)
 " <Tab>で選ぶ
 inoremap <expr><Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr><S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 "BS
-inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
-
+inoremap <expr><BS>  deoplete#mappings#smart_close_popup()."\<BS>"
+"cancel completion
+inoremap <C-c> <C-e>
 
 "neosnippet
 imap <C-f> <Plug>(neosnippet_expand_or_jump)
@@ -564,55 +566,66 @@ call smartinput#define_rule({
 "inoremap { {
 "}}}
 
-"LSP (Haskell, Rust) {{{
+"LSP {{{
+let use_nvim_hs_lsp           = 1
+let use_LanguageClient_neovim = 0
+let use_vim_lsp               = 0
+
+""" 'Hogeyama/nvim-hs-lsp'
+if use_nvim_hs_lsp
+  let g:NvimHsLsp_serverCommands = {
+      \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+      \ 'ocaml': ['ocaml-language-server', '--stdio'],
+      \ 'haskell': ['stack', 'exec', '--', 'hie', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
+      \ }
+  nnoremap [nvim-hs-lsp] <nop>
+  nmap     <C-l> [nvim-hs-lsp]
+  nnoremap [nvim-hs-lsp]i :NvimHsLspInitialize<CR>
+  nnoremap [nvim-hs-lsp]h :NvimHsLspInfo<CR>
+  nnoremap [nvim-hs-lsp]H :NvimHsLspHover<CR>
+  nnoremap [nvim-hs-lsp]j :NvimHsLspDefinition<CR>
+endif
+
 """ 'autozimu/LanguageClient-neovim'
-let g:LanguageClient_autoStart = 0
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-    \ 'haskell': ['stack', 'exec', '--', 'hie', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
-    \ }
-let g:LanguageClient_loggingLevel = 'DEBUG'
-"let g:langserver_executables = {
-"    \ 'rust': {
-"      \ 'name': 'rustup',
-"      \ 'cmd': ['rustup', 'run', 'nightly', 'rls'],
-"      \ },
-"    \ 'haskell': {
-"      \ 'name': 'hie',
-"      \ 'cmd': ['hie', '--lsp'],
-"      \ },
-"    \ }
-"
-au FileType haskell setlocal omnifunc=LanguageClient#complete
-au FileType haskell nnoremap <buffer> Q     :call LanguageClient_textDocument_hover()<CR>
-au FileType haskell nnoremap <silent> gi    :call LanguageClient_textDocument_hover()<CR>
-au FileType haskell nnoremap <silent> <C-j> :call LanguageClient_textDocument_definition()<CR>
-au FileType haskell nnoremap <buffer> <C-j> :call LanguageClient_textDocument_definition()<CR>
-au FileType haskell nnoremap <buffer> <F2>  :call LanguageClient_textDocument_rename()<CR>
-au FileType haskell inoremap <buffer> <C-o> <C-x><C-o>
-"au FileType rust setlocal omnifunc=LanguageClient#complete
-"au FileType rust nnoremap <buffer> Q     :call LanguageClient_textDocument_hover()<CR>
-"au FileType rust nnoremap <buffer> <C-j> :call LanguageClient_textDocument_definition()<CR>
-"au FileType rust nnoremap <buffer> <F2>  :call LanguageClient_textDocument_rename()<CR>
-"au FileType rust inoremap <buffer> <C-o> <C-x><C-o>
-"au FileType rust setlocal foldmethod=marker
+if use_LanguageClient_neovim
+  let g:LanguageClient_autoStart = 0
+  let g:LanguageClient_serverCommands = {
+      \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+      \ 'ocaml': ['ocaml-language-server', '--stdio'],
+      \ 'haskell': ['stack', 'exec', '--', 'hie', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
+      \ }
+  let g:LanguageClient_loggingLevel = 'DEBUG'
+  au FileType haskell setlocal omnifunc=LanguageClient#complete
+  au FileType haskell nnoremap <buffer> gi    :call LanguageClient_textDocument_hover()<CR>
+  au FileType haskell nnoremap <buffer> <C-j> :call LanguageClient_textDocument_definition()<CR>
+  au FileType haskell nnoremap <buffer> <F2>  :call LanguageClient_textDocument_rename()<CR>
+  au FileType haskell inoremap <buffer> <C-o> <C-x><C-o>
+  au FileType rust setlocal omnifunc=LanguageClient#complete
+  au FileType rust nnoremap <buffer> Q     :call LanguageClient_textDocument_hover()<CR>
+  au FileType rust nnoremap <buffer> <C-j> :call LanguageClient_textDocument_definition()<CR>
+  au FileType rust nnoremap <buffer> <F2>  :call LanguageClient_textDocument_rename()<CR>
+  au FileType rust inoremap <buffer> <C-o> <C-x><C-o>
+  au FileType rust setlocal foldmethod=marker
+endif
 
 """ 'prabirshrestha/vim-lsp'
-" general
-let g:lsp_async_completion  = 1
-let g:lsp_log_verbose       = 1
-let g:lsp_log_file          = expand('/tmp/vim-lsp.log')
-let g:asyncomplete_log_file = expand('/tmp/asyncomplete.log')
-" haskell
-if 0
-  if executable('hie') "0にすると無効になるよ
-      au User lsp_setup call lsp#register_server({
-          \ 'name': 'hie',
-          \ 'cmd': {server_info->['hie', '--lsp', '-l', '/tmp/LanguageServer.log']},
-          \ 'whitelist': ['haskell'],
-          \ })
-  endif
-  "autocmd FileType haskell setlocal omnifunc=lsp#complete
+if use_vim_lsp
+  let g:lsp_auto_enable       = 1
+  let g:lsp_async_completion  = 1
+  let g:lsp_log_verbose       = 1
+  let g:lsp_log_file          = '/tmp/vim-lsp.log'
+  let g:asyncomplete_log_file = '/tmp/vim-lsp-asyncomplete.log'
+  au User lsp_setup call lsp#register_server({
+      \ 'name': 'hie',
+      \ 'cmd': {server_info->['stack', 'exec', '--', 'hie', '--lsp', '-d', '-l', '/tmp/LanguageServer.log']},
+      \ 'whitelist': ['haskell'],
+      \ })
+  au User lsp_setup call lsp#register_server({
+      \ 'name': 'rls',
+      \ 'cmd': {server_info->['rustup', 'run', 'nightly', 'rls']},
+      \ 'whitelist': ['rust'],
+      \ })
+  autocmd FileType haskell setlocal omnifunc=lsp#complete
   autocmd FileType haskell nnoremap <buffer> Q        :LspHover<CR>
   autocmd FileType haskell nnoremap <buffer> gi       :LspHover<CR>
   autocmd FileType haskell nnoremap <buffer> <C-j>    :LspDefinition<CR>
@@ -620,15 +633,6 @@ if 0
   autocmd FileType haskell nnoremap <buffer> <Space>w :update!<CR>:LspDocumentDiagnostics<CR>
   autocmd FileType haskell inoremap <buffer> <C-o> <C-x><C-o>
 endif
-" rust
-if executable('rls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'rls',
-        \ 'cmd': {server_info->['rustup', 'run', 'nightly', 'rls']},
-        \ 'whitelist': ['rust'],
-        \ })
-endif
-
 
 "QuickFixを開けっ放しにする場合は
 au InsertLeave * let g:airline_disabled = 1
@@ -655,72 +659,66 @@ au FileType bash setlocal expandtab shiftwidth=2
 "}}}
 
 "Haskell"{{{
-"neovimhaskell/haskell-vimのindentファイルは邪悪なので消すべき
-"neovimhaskell/haskell-vimのsyntaxとvim2hsのindentを組み合わせるのが良さげ
-"やっぱりindentファイルは消そう
-au FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=0
+""general
+au FileType haskell inoremap <buffer> <C-o> <C-x><C-o>
+au FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=0 ambiwidth=single
+""nvim_hs_lsp
+if use_nvim_hs_lsp
+  au FileType haskell setlocal omnifunc=NvimHsLspComplete
+  au FileType haskell nnoremap <buffer> [nvim-hs-lsp]a :NvimHsLspApplyRefactOne<CR>
+  au FileType haskell nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
+  au FileType haskell nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
+endif
+""ghc-mod-nvim
 au FileType haskell nnoremap <buffer> ,t :update!<CR>:NeoGhcModType<CR>
 au FileType haskell nnoremap <buffer> ,T :update!<CR>:NeoGhcModType!<CR>
 au FileType haskell nnoremap <buffer> ,i :update!<CR>:NeoGhcModInfo<CR>
 au FileType haskell nnoremap <buffer> ,I :update!<CR>:NeoGhcModInfo 
 au FileType haskell nnoremap <buffer> ,l :update!<CR>:NeoGhcModLintAll<CR>
 au FileType haskell nnoremap <buffer> ^  :noh    <CR>:NeoGhcModTypeClear<CR>
+""hoogle
+call unite#custom_default_action('source/hoogle', 'preview')
 au FileType haskell nnoremap <buffer> ,H :Unite hoogle<CR>
 au FileType haskell nnoremap <buffer> ,h :Unite haskellimport<CR>
+""fast-tags
 au FileType haskell nnoremap <buffer> <Space>t :update!<CR>:QuickRun -exec "fast-tags -R ./"<CR>
+""neovim-ghcmod
+au FileType haskell nnoremap <buffer> ,c :GhcModCaseSplit<CR>
+au FileType haskell nnoremap <buffer> ,d :GhcModAddDecl<CR>
+""ghcid-nvim-hs
+au FileType haskell nnoremap <buffer> ,w :update!<CR>:GhcidCheck!<CR>
+au FileType haskell nnoremap <buffer> ,W :update!<CR>:GhcidCheck<CR>
 au FileType haskell nnoremap <buffer> <Space>r :GhcidStopAll<CR>
-
-call unite#custom_default_action('source/hoogle', 'preview')
+""other file type
 au FileType cabal   setlocal expandtab tabstop=4
 au! BufNewFile,BufFilePRe,BufRead *.x set filetype=alex
 au! BufNewFile,BufFilePRe,BufRead *.y set filetype=happy
-"neco-ghc
-"let g:necoghc_disable                = 1
-  "次をautoload/necoghc.vimに
-  "if get(g:, 'necoghc_disable', 0)
-  "  return
-  "endif
-let g:necoghc_use_stack              = 1
-let g:necoghc_enable_detailed_browse = 1
-au FileType haskell setlocal omnifunc=necoghc#omnifunc
-au FileType haskell inoremap <buffer> <C-o> <C-x><C-o>
-au FileType haskell set ambiwidth=single
-"LanguageClientの設定はLanguageClientを見て
-""
-let g:haskell_indent_disable = 1
-let g:haskell_indent_if               = 2
-let g:haskell_indent_do               = 3
-let g:haskell_indent_let              = 4
-let g:haskell_indent_let_no_in        = 0
-let g:haskell_indent_in               = 0
-let g:haskell_indent_before_where     = -2
-let g:haskell_indent_case_alternative = 1
-"neovim-ghcmod
-au FileType haskell nnoremap <buffer> ,c :GhcModCaseSplit<CR>
-au FileType haskell nnoremap <buffer> ,d :GhcModAddDecl<CR>
-
-"ghcid-nvim-hs
-au FileType haskell nnoremap <buffer> ,w :update!<CR>:GhcidCheck!<CR>
-au FileType haskell nnoremap <buffer> ,W :update!<CR>:GhcidCheck<CR>
+""neco-ghc (currently not used)
+"let g:necoghc_use_stack              = 1
+"let g:necoghc_enable_detailed_browse = 1
 
 "}}}
 
 "OCaml"{{{
+""general
+au FileType ocaml inoremap <buffer> <C-o> <C-x><C-o>
+au FileType ocaml setlocal tabstop=2 shiftwidth=2 softtabstop=0 commentstring=(*%s*)
+""merlin
 au FileType ocaml nnoremap <buffer> ,t :update!<CR>:MerlinTypeOf<CR>
 au FileType ocaml vnoremap <buffer> ,t :MerlinTypeOfSel<CR>
 au FileType ocaml nnoremap <buffer> >  :MerlinGrowEnclosing<CR>
 au FileType ocaml nnoremap <buffer> <  :MerlinShrinkEnclosing<CR>
 au FileType ocaml nnoremap <buffer> ,y :MerlinYankLatestType<CR>
-
-"au FileType ocaml nnoremap <buffer> ,o :update!<CR>:MerlinOutline<CR> CtrlPが必要
 au FileType ocaml nnoremap <buffer> ,w :update!<CR>:MerlinErrorCheck<CR>
 au FileType ocaml nnoremap <buffer> <C-j> :update!<CR>:MerlinLocate<CR>
 au FileType ocaml nnoremap <buffer> ^ :noh<CR>a<Esc>
-"au FileType ocaml nnoremap <buffer> <C-q> :update!<CR>:OCamlTop2<CR>
-au FileType ocaml setlocal tabstop=2 shiftwidth=2 softtabstop=0
-au FileType ocaml setlocal commentstring=(*%s*)
-au FileType ocaml inoremap <buffer> <C-o> <C-x><C-o>
-let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+""nvim_hs_lsp
+if use_nvim_hs_lsp
+  au FileType ocaml setlocal omnifunc=NvimHsLspComplete
+  au FileType ocaml nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
+  au FileType ocaml nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
+endif
+"config for merlin and ocp-indent
 let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
 execute "helptags " . g:opamshare . "/merlin/vim/doc"
@@ -799,24 +797,23 @@ au! BufNewFile,BufFilePRe,BufRead *.pl set filetype=prolog
 
 "Rust "{{{
 let $RUST_SRC_PATH                 = expand('$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust')
-let g:racer_cmd                    = expand('$HOME/.cargo/bin/racer')
-let g:rustc_path                   = expand('$HOME/.cargo/bin/rustc')
 let g:rustfmt_autosave             = 0
 let g:rust_recommended_style       = 1
-let g:racer_experimental_completer = 1
+let g:racer_experimental_completer = 0
 let g:rust_fold                    = 0
 let g:racer_insert_paren           = 0
-"au FileType rust nnoremap <buffer> <C-q> :update!<CR>:RustRun<CR>
-"au FileType rust nmap gd <Plug>(rust-def)
-"au FileType rust nmap gs <Plug>(rust-def-split)
-"au FileType rust nmap gx <Plug>(rust-def-vertical)
-"au FileType rust nmap <leader>gd <Plug>(rust-doc)
-au FileType rust nmap <buffer> <C-j> <Plug>RacerGoToDefinitionDrect
-au FileType rust nmap <buffer> gs    <Plug>RacerGoToDefinitionSplit
-au FileType rust nmap <buffer> gv    <Plug>RacerGoToDefinitionVSplit
-au FileType rust nmap <buffer> gK    <Plug>RacerShowDocumentation
-"LanguageClientの設定はLanguageClientを見て
+au FileType rust nmap <buffer> <C-j> <Plug>(rust-def)
+au FileType rust nmap <buffer> gs    <Plug>(rust-def-split)
+au FileType rust nmap <buffer> gv    <Plug>(rust-def-vertical)
+au FileType rust nmap <buffer> gK    <Plug>(rust-doc)
 let g:racer_no_default_keymappings=0
+""nvim_hs_lsp
+if use_nvim_hs_lsp
+  au FileType rust setlocal omnifunc=NvimHsLspComplete
+  au FileType rust nnoremap <buffer> <C-l>a :NvimHsLspApplyRefactOne<CR>
+  au FileType rust nnoremap <buffer> <C-j>  :NvimHsLspDefinition<CR>
+endif
+
 
 "}}}
 
@@ -980,65 +977,6 @@ tnoremap <C-h> <Left>
 tnoremap <C-l> <Right>
 "}}}
 
-"OCamlExpr "{{{
-command! -nargs=? OCamlExpr call OCamlExprFun(<f-args>)
-function! OCamlExprFun(...) abort
-  let tmp_init  = '/tmp/ocamlexpr_init'
-  let pwd_init  = expand('%:h').'/.ocamlinit'
-  let home_init = expand('~/.ocamlinit')
-
-  call writefile([], tmp_init)
-  if filereadable(pwd_init)
-    call writefile(readfile(pwd_init), tmp_init, 'a')
-  elseif filereadable(home_init)
-    call writefile(readfile(home_init), tmp_init, 'a')
-  endif
-  call writefile(readfile(expand('%')), tmp_init, 'a')
-
-  let tmp_source = '/tmp/ocamlexpr_source'
-  let expr = a:0==0? '': a:1
-  call writefile([expr.';;'], tmp_source)
-
-  let cmd = "cat ".tmp_source." | "."ocaml -init ".tmp_init
-  call neomake#Sh(cmd)
-endfunction
-"}}}
-
-" OCamlTop {{{
-let g:ocamltop = ''
-let g:ocamlmktop_cmd = "make top"
-command! -nargs=? OCamlTop2 call OCamlTopFun(<f-args>)
-function! OCamlTopFun(...) abort
-  "topcmd
-  if strlen(g:ocamltop) == 0
-    if !(filereadable(expand('%:h').'/Makefile'))
-      throw "Makefile not found"
-    endif
-    let makefile = readfile(expand('%:h').'/Makefile')
-    let topcmd = ''
-    for line in makefile
-      let result = substitute(line, '^RESULT\s*=\s*\(.*\)\s*$', '\1', '')
-      if strlen(result) != strlen(line)
-        let topcmd = result . '.top'
-        break
-      endif
-    endfor
-    if strlen(topcmd) == 0
-        throw "OCamlTopFun: $RESULT not found in Makefile"
-    endif
-  else
-    let topcmd = g:ocamltop
-  endif
-
-  let open_module_name = substitute(expand('%:t:r'), '^.', '\u&', '')
-  echo open_module_name
-
-  let cmd = g:ocamlmktop_cmd . ' 1> /dev/null' . ' && ' .
-          \ 'rlwrap ./' . topcmd . ' -open ' . open_module_name
-  exe 'rightbelow vs | te ' . cmd
-endfunction
-"}}}
-
 "AirLine"{{{
 "let g:airline_theme='wombat'
 let g:airline_theme='distinguished'
@@ -1063,7 +1001,7 @@ if has('nvim') " This way, you can also put this in your plain vim config
   function! s:RequireHaskellHost(name)
     " It is important that the current working directory (cwd) is where
     " your configuration files are.
-    return jobstart(['stack', 'exec', 'nvim-hs', a:name.name], {'rpc': v:true, 'cwd': expand('$HOME') . '/.config/nvim'})
+    return jobstart(['stack', 'exec', '--', 'nvim-hs', '-l', '/tmp/nvim-hs.log', '-v', 'DEBUG', a:name.name], {'rpc': v:true, 'cwd': expand('$HOME') . '/.config/nvim'})
   endfunction
 
   " Register a plugin host that is started when a haskell file is opened
@@ -1073,21 +1011,6 @@ if has('nvim') " This way, you can also put this in your plain vim config
   " forcefully by requiring it
   let hc=remote#host#Require('haskell')
 endif
-"}}}
-
-" nvim-hs-lsp {{{
-nnoremap [nvim-hs-lsp] <nop>
-nmap     <C-l> [nvim-hs-lsp]
-nnoremap [nvim-hs-lsp]i :NvimHsLspInitialize<CR>
-nnoremap [nvim-hs-lsp]o :NvimHsLspOpenBuffer<CR>
-nnoremap [nvim-hs-lsp]c :NvimHsLspChangeBuffer<CR>
-nnoremap [nvim-hs-lsp]C :NvimHsLspCloseBuffer<CR>
-nnoremap [nvim-hs-lsp]e :NvimHsLspExit<CR>
-nnoremap [nvim-hs-lsp]h :NvimHsLspHover<CR>
-nnoremap [nvim-hs-lsp]j :NvimHsLspDefinition<CR>
-nnoremap [nvim-hs-lsp]a :NvimHsLspApplyRefactOne<CR>
-nnoremap [nvim-hs-lsp]R :NvimHsLspExit<CR>:NvimHsLspInitialize<CR>
-
 "}}}
 
 "Align {{{
@@ -1167,10 +1090,5 @@ function! PandocSel() range
   call writefile(lines, tmp.".md")
   execute "!pandoc " . g:pandoc_sel_option . tmp.".md " . "-o " . tmp."tex"
 endfunction
-
-"TODO
-"https://github.com/donRaphaco/neotex
-"LaTeXのlive preview
-"びみょいかも
 
 "vim: set et ts=1 sts=2 tw=2:

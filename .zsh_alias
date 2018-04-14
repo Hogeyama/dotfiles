@@ -6,6 +6,7 @@ cd-ls(){
   # awk '!x[$0]++': remove duplicates without sorting
 }
 alias cd='cd-ls'
+alias dc='cd-ls'
 alias mkcd='source ~/.local/bin/mkcd.sh'
 alias xelatexmk='latexmk -xelatex'
 alias ocamlwrap='rlwrap ocaml'
@@ -35,6 +36,7 @@ alias アバーッ='sudo poweroff'
 alias gvim='nvim-wrapper'
 alias ltxmkp='latexmk -outdir=_build -verbose -file-line-error -synctex=1 -interaction=nonstopmode -pvc'
 alias pdf2png='convert -density 300 -quality 100'
+alias gpom='git push origin master'
 
 # Haskell
 alias runghc='stack runghc --'
@@ -46,4 +48,6 @@ alias hlint='stack exec -- hlint'
 alias weeder='stack exec -- weeder'
 alias hoogle='stack exec -- hoogle'
 alias hie='stack exec -- hie'
+
 alias mochi-fpat="mochi -fpat '-hccs gch'"
+alias todo="cat ~/TODO | sed '/^\s*--/d'"
