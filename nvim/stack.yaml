@@ -9,11 +9,12 @@ extra-deps:
 - nvim-hs-contrib-1.0.0.0
 - xformat-0.1.2.1
 - extensible-0.4.7
+- rio-0.1.2.0
+- typed-process-0.2.2.0
+- unliftio-0.2.7.0
 - github: Hogeyama/ghc-mod-nvim
   commit: c8350e3
 - github: Hogeyama/ghcid-nvim-simple
   commit: 21ca24a
 - ./nvim-hs-libs/nvim-hs-lsp
-  #- github: Hogeyama/nvim-hs-lsp
-  #  commit: 293dabb
 

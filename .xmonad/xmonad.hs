@@ -47,18 +47,19 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       }
 
       `additionalKeysP`
-      [ ("M-g"          , spawn "google-chrome" )
-      , ("M-S-g"        , spawn "vivaldi"       )
-      , ("M-p"          , spawn "gmrun"         )
-      , ("M-S-p"        , spawn "dmenu_run"     )
-      , ("M-S-q"        , kill )
-      , ("M-S-C-q"      , io exitSuccess        )
-      , ("M-x"          , spawn "slock"         )
-      , ("M-<Return>"   , forcusNextScreen      )
-      , ("M-C-<Return>" , shiftNextScreen       )
-      , ("M-s"          , swapScreen            )
+      [ ("M-g"          , spawn "google-chrome")
+      , ("M-S-g"        , spawn "vivaldi")
+      , ("M-p"          , spawn "gmrun")
+      , ("M-S-p"        , spawn "dmenu_run")
+      , ("M-S-q"        , kill)
+      , ("M-S-C-q"      , io exitSuccess)
+      , ("M-x"          , spawn "slock")
+      , ("M-S-x"        , spawn "systemctl suspend")
+      , ("M-<Return>"   , forcusNextScreen)
+      , ("M-C-<Return>" , shiftNextScreen)
+      , ("M-s"          , swapScreen)
       , ("M-a"          , sendMessage SwapWindow)
-      , ("M-S-a"        , hoge                  ) -- なんか動作の確認に
+      , ("M-S-a"        , hoge) -- なんか動作の確認に
       ]
 
       `additionalKeysP`

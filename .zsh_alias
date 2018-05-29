@@ -5,6 +5,15 @@ cd-ls(){
   dirs -lp | awk '!x[$0]++' | sed "/home\/hogeyama\$/d" > "$HOME/.dirs_history"
   # awk '!x[$0]++': remove duplicates without sorting
 }
+
+function dune () {
+  if [ $# = "0" ]; then
+      jbuilder build
+  else
+      jbuilder $*
+  fi
+}
+
 alias cd='cd-ls'
 alias dc='cd-ls'
 alias mkcd='source ~/.local/bin/mkcd.sh'
@@ -14,9 +23,15 @@ alias ocamltop='rlwrap ./ocamltop'
 alias csc='ssh csc-lg1.is.s.u-tokyo.ac.jp'
 alias node='nodejs'
 alias v='nvim'
-alias :e='nvim'
 alias vi='nvim'
 alias vim='nvim'
+
+alias :e='nvr -l'
+alias :edit='nvr -l'
+alias nvr-l='nvr -l'
+alias :tabedit='nvr -p'
+alias nvr-tab='nvr -p'
+
 alias gs='git status'
 alias open='xdg-open'
 alias idrisl='idris -p pruviloj'
@@ -49,5 +64,5 @@ alias weeder='stack exec -- weeder'
 alias hoogle='stack exec -- hoogle'
 alias hie='stack exec -- hie'
 
-alias mochi-fpat="mochi -fpat '-hccs gch'"
+alias mochi-fpat="mochi -fpat '-hccs gch -wp-max 2'"
 alias todo="cat ~/TODO | sed '/^\s*--/d'"

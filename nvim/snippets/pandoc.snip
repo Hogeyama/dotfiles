@@ -2,6 +2,11 @@
 include tex.snip
 include markdown.snip
 
+snippet     anchor
+abbr        anch
+options     head
+  <a name = "${1}"></a>
+
 snippet     ===
 options     head
   ===============================================================================
@@ -18,7 +23,7 @@ snippet     ---
 options     head indent
 	---
 	title: ${1:#:title}
-	author: 小林研究室 M1 岩山 直樹
+	author: 岩山 直樹
 	date: `strftime("%Y年%m月%d日")`
 	numbersections: false
 	header-includes:

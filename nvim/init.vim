@@ -84,10 +84,9 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('racer-rust/vim-racer')
   """Others
   call dein#add('jelera/vim-javascript-syntax')
-  "call dein#add('rgrinberg/vim-ocaml')
+  call dein#add('rgrinberg/vim-ocaml')
   call dein#add('leafgarland/typescript-vim')
   call dein#add('Hogeyama/vimtex')
-  "call dein#add('donRaphaco/neotex')
   """Color Scheme
   call dein#add('joshdick/onedark.vim')
   call dein#add('zsoltf/vim-maui')
@@ -106,6 +105,7 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('chriskempson/base16-vim')
   call dein#add('mhartington/oceanic-next') "OceanicNext
   """otameshi
+  call dein#add('Yggdroot/indentLine')
   call dein#add('fholgado/minibufexpl.vim')
   "call dein#add('equalsraf/neovim-gui-shim')
   call dein#add('losingkeys/vim-niji')
@@ -578,12 +578,14 @@ if use_nvim_hs_lsp
       \ 'ocaml': ['ocaml-language-server', '--stdio'],
       \ 'haskell': ['stack', 'exec', '--', 'hie', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
       \ }
+  let g:NvimHsLsp_autoLoadQuickfix = 1
   nnoremap [nvim-hs-lsp] <nop>
   nmap     <C-l> [nvim-hs-lsp]
   nnoremap [nvim-hs-lsp]i :NvimHsLspInitialize<CR>
   nnoremap [nvim-hs-lsp]h :NvimHsLspInfo<CR>
   nnoremap [nvim-hs-lsp]H :NvimHsLspHover<CR>
   nnoremap [nvim-hs-lsp]j :NvimHsLspDefinition<CR>
+  nnoremap [nvim-hs-lsp]w :NvimHsLspLoadQuickfix<CR>
 endif
 
 """ 'autozimu/LanguageClient-neovim'
@@ -645,6 +647,11 @@ let g:miniBufExplorerAutoStart = 0
 let g:miniBufExplBRSplit = 0
 "}}}
 
+" indentLine {{{
+let g:indentLine_char = '⁞' "U+205E VERTICAL FOUR DOTS
+let g:indentLine_char = '⏐' "U+23D0 VERTICAL LINE EXTENSION
+"}}}
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" FileType
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -668,6 +675,7 @@ if use_nvim_hs_lsp
   au FileType haskell nnoremap <buffer> [nvim-hs-lsp]a :NvimHsLspApplyRefactOne<CR>
   au FileType haskell nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
   au FileType haskell nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
+  au FileType haskell nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
 endif
 ""ghc-mod-nvim
 au FileType haskell nnoremap <buffer> ,t :update!<CR>:NeoGhcModType<CR>
@@ -812,6 +820,7 @@ if use_nvim_hs_lsp
   au FileType rust setlocal omnifunc=NvimHsLspComplete
   au FileType rust nnoremap <buffer> <C-l>a :NvimHsLspApplyRefactOne<CR>
   au FileType rust nnoremap <buffer> <C-j>  :NvimHsLspDefinition<CR>
+  au FileType rust nnoremap <buffer> <C-h>  :NvimHsLspInfo<CR>
 endif
 
 
@@ -1072,6 +1081,8 @@ let g:init_vim = $XDG_CONFIG_HOME != ""
 command! EditInitVim   execute "e " .  g:init_vim
 command! SourceInitVim execute "so " .  g:init_vim
 "}}}
+
+nmap ,o <Plug>(openbrowser-open)
 
 let g:python3_host_prog = '/usr/bin/python3.5'
 
