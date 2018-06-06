@@ -154,4 +154,4 @@ xmodmap $HOME/.Xmodmap 2> /dev/null; :
 export OCAMLFIND_IGNORE_DUPS_IN=$HOME/.opam/4.03.0/lib/ocaml/compiler-libs
 export RUST_BACKTRACE=1
 
-fortune | cowsay | lolcat
+curl parrot.live

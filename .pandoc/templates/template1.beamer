@@ -14,6 +14,7 @@ $if(beamer)$
 \setbeamertemplate{caption}[numbered]
 \setbeamertemplate{caption label separator}{: }
 \setbeamercolor{caption name}{fg=normal text.fg}
+\setbeamertemplate{footline}{}
 \beamertemplatenavigationsymbols$if(navigation)$$navigation$$else$empty$endif$
 $endif$
 $if(beamerarticle)$
@@ -40,12 +41,12 @@ $if(mathspec)$
   \ifxetex
     \usepackage{mathspec}
   \else
-    \usepackage{unicode-math}
+    %\usepackage{unicode-math} %I don't prefer unicode-math
   \fi
 $else$
-  \usepackage{unicode-math}
+  %\usepackage{unicode-math} %I don't prefer unicode-math
 $endif$
-  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+  %\defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
 $for(fontfamilies)$
   \newfontfamily{$fontfamilies.name$}[$fontfamilies.options$]{$fontfamilies.font$}
 $endfor$

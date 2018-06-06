@@ -42,18 +42,19 @@ options     head indent
 	date: `strftime("%Y年%m月%d日")`
 	numbersections: false
 	header-includes:
-		- \newcommand{\memo}[1]{}
-		- \newcommand{\tightdisplayskip}{\abovedisplayskip=0pt}
+		- \setbeamertemplate{footline}{}
 	fontsize: 13pt
 	fonttheme: serif
 	theme: Boadilla
 	colorscheme: seahorse
 	classoption:
 		- t
+	mathspec: true
 	pandoc_opts_:
 		- -f markdown+lists_without_preceding_blankline+ignore_line_breaks
 		- -t beamer
 		- -o out.tex
+		- --template=template1.beamer
 	---
 
 snippet     unnumbered
