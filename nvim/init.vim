@@ -112,6 +112,7 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('luochen1990/rainbow')
   "call dein#add('dannyob/quickfixstatus')
   "call dein#add('jceb/vim-hier')
+  call dein#add('vimlab/split-term.vim')
   call dein#end()
   call dein#save_state()
 
@@ -168,6 +169,7 @@ au InsertLeave * GoodMatchParen
 
 " terminal color
 if has("nvim") "{{{
+  "base16-spacemacsから
   let g:terminal_color_0 =  "#1f2022"
   let g:terminal_color_1 =  "#f2241f"
   let g:terminal_color_2 =  "#67b11d"
@@ -219,6 +221,7 @@ set noswapfile
 set nobackup
 set noundofile
 set conceallevel=0
+set concealcursor=
 set laststatus=2
 set completeopt=menuone,noselect,preview,noinsert
 "set autoread
@@ -235,7 +238,8 @@ set backspace=indent,eol,start
 au QuickFixCmdPost *grep* cwindow
 au FileType vim setlocal et ts=2 sw=2 sts=2
 
-set statusline=\ %f\ %y%m%r%w%q\ %=(%l,%v)[%p%%]\ %{fnamemodify(getcwd(),':~')}\ \ \ 
+"set statusline=\ %f\ %y%m%r%w%q\ %=(%l,%v)[%p%%]\ %{fnamemodify(getcwd(),':~')}\ \ \ 
+set statusline=\ %{fnamemodify(getcwd(),':~')}\ %=%f\ %y%m%r%w%q\ (%l,%v)\ \ 
 "}}}
 
 """echodoc {{{
@@ -466,7 +470,7 @@ nnoremap <F12> :Ttoggle<CR><C-w>ji
 "}}}
 
 "NERD_tree, NERD_commenter"{{{
-let g:NERDTreeWinPos="right"
+let g:NERDTreeWinPos="left"
 let g:NERDTreeShowLineNumbers=1
 let g:NERDTreeIgnore=['\.bin$']
 nnoremap <Space>n :NERDTreeToggle<CR>
@@ -648,6 +652,7 @@ let g:miniBufExplBRSplit = 0
 "}}}
 
 " indentLine {{{
+let g:indentLine_enabled = 0
 let g:indentLine_char = '⁞' "U+205E VERTICAL FOUR DOTS
 let g:indentLine_char = '⏐' "U+23D0 VERTICAL LINE EXTENSION
 "}}}

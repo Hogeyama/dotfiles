@@ -57,6 +57,8 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , ("M-S-x"        , spawn "systemctl suspend")
       , ("M-<Return>"   , forcusNextScreen)
       , ("M-C-<Return>" , shiftNextScreen)
+      --, ("M-S-<Return>" , spawn "nvim-wrapper")
+      --, ("M-S-s"        , spawn "gnome-terminal")
       , ("M-s"          , swapScreen)
       , ("M-a"          , sendMessage SwapWindow)
       , ("M-S-a"        , hoge) -- なんか動作の確認に
