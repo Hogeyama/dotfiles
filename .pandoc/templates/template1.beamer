@@ -1,7 +1,17 @@
 $if(COMMENT)$
   %日本語を打てるように次の2行を追加した
-  %\usepackage{zxjatype}
-  %\usepackage[ipaex]{zxjafont}
+  %   \usepackage{zxjatype}
+  %   \usepackage[ipaex]{zxjafont}
+  %displayskipを0に
+  %   \usepackage{etoolbox}
+  %   \newcommand{\zerodisplayskips}{%
+  %       \setlength{\abovedisplayskip}{0pt}
+  %       \setlength{\belowdisplayskip}{0pt}
+  %       \setlength{\abovedisplayshortskip}{0pt}
+  %       \setlength{\belowdisplayshortskip}{0pt}}
+  %   \appto{\normalsize}{\zerodisplayskips}
+  %   \appto{\small}{\zerodisplayskips}
+  %   \appto{\footnotesize}{\zerodisplayskips}
 $endif$
 \PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
 \PassOptionsToPackage{hyphens}{url}
@@ -318,9 +328,19 @@ $for(bibliography)$
 $endfor$
 $endif$
 
-%%%日本語
+%%% 日本語
 \usepackage{zxjatype}
 \usepackage[ipaex]{zxjafont}
+%%% remove displayskip
+\usepackage{etoolbox}
+\newcommand{\zerodisplayskips}{%
+    \setlength{\abovedisplayskip}{0pt}
+    \setlength{\belowdisplayskip}{0pt}
+    \setlength{\abovedisplayshortskip}{0pt}
+    \setlength{\belowdisplayshortskip}{0pt}}
+%\appto{\normalsize}{\zerodisplayskips}
+%\appto{\small}{\zerodisplayskips}
+%\appto{\footnotesize}{\zerodisplayskips}
 %%%
 
 $if(title)$
@@ -346,6 +366,7 @@ $if(logo)$
 \logo{\includegraphics{$logo$}}
 $endif$
 $endif$
+
 
 \begin{document}
 $if(title)$

@@ -146,7 +146,7 @@ unsetopt correctall
 
 export VTE_CJK_WIDTH=1
 
-# mochi 上の方は微妙
+# for mochi
 export LD_LIBRARY_PATH=/usr/lib:/usr/local/lib:$LD_LIBRARY_PATH
 
 xmodmap $HOME/.Xmodmap 2> /dev/null; :
@@ -154,4 +154,4 @@ xmodmap $HOME/.Xmodmap 2> /dev/null; :
 export OCAMLFIND_IGNORE_DUPS_IN=$HOME/.opam/4.03.0/lib/ocaml/compiler-libs
 export RUST_BACKTRACE=1
 
-curl parrot.live
+#curl parrot.live

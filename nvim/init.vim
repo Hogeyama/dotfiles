@@ -63,6 +63,8 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('Hogeyama/ghc-mod-deoplete')
   call dein#add('Hogeyama/unite-haddock')
   call dein#add('Hogeyama/unite-haskellimport')
+  """Elm
+  call dein#add('ElmCast/elm-vim')
   """Scala
   call dein#add('derekwyatt/vim-scala')
   "call dein#add('ensime/ensime-vim')
@@ -105,6 +107,8 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('chriskempson/base16-vim')
   call dein#add('mhartington/oceanic-next') "OceanicNext
   """otameshi
+  "call dein#add('vmchale/vim-twitter', { 'build' : 'stack install'})
+  call dein#add('vmchale/vim-twitter')
   call dein#add('Yggdroot/indentLine')
   call dein#add('fholgado/minibufexpl.vim')
   "call dein#add('equalsraf/neovim-gui-shim')
@@ -712,6 +716,14 @@ au! BufNewFile,BufFilePRe,BufRead *.y set filetype=happy
 
 "}}}
 
+"Elm{{{
+let g:elm_jump_to_error = 0
+let g:elm_make_output_file = "elm.js"
+let g:elm_browser_command = 'google-chrome'
+"let g:elm_format_autosave = 0
+let g:elm_format_fail_silently = 1
+"}}}
+
 "OCaml"{{{
 ""general
 au FileType ocaml inoremap <buffer> <C-o> <C-x><C-o>
@@ -727,6 +739,7 @@ au FileType ocaml nnoremap <buffer> <C-j> :update!<CR>:MerlinLocate<CR>
 au FileType ocaml nnoremap <buffer> ^ :noh<CR>a<Esc>
 ""nvim_hs_lsp
 if use_nvim_hs_lsp
+  au FileType ocaml let g:NvimHsLsp_autoLoadQuickfix = 0
   au FileType ocaml setlocal omnifunc=NvimHsLspComplete
   au FileType ocaml nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
   au FileType ocaml nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
@@ -745,7 +758,11 @@ au FileType agda setlocal expandtab ts=2 sts=2 sw=2
 "au FileType agda set commentstring=\ --%s
 au FileType agda set commentstring=--%s
 "}}}
-"
+
+"Elm{{{
+au FileType elm nnoremap <buffer> ,w :ElmMake<CR>
+"}}}
+
 "LaTeX{{{
 au FileType tex setlocal et sw=2 sts=2 noautoindent
 au BufRead,BufNewFile *.tex setlocal filetype=tex
@@ -879,8 +896,8 @@ nnoremap tg gT
 """<space>oで改行
 nnoremap <Space>o  :<C-u>for i in range(v:count1) \| call append(line('.'), '') \| endfor<CR>
 "jkで<esc>
-"inoremap jk <Esc>
-inoremap jk <Esc>:w<CR>
+inoremap jk <Esc>
+"inoremap jk <Esc>:w<CR>
 inoremap <C-j><C-k> <Esc>:w<CR>
 """<Space>\で保存
 nnoremap <C-\> :update!<CR>

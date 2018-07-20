@@ -6,52 +6,51 @@ cd-ls(){
   # awk '!x[$0]++': remove duplicates without sorting
 }
 
-function dune () {
-  if [ $# = "0" ]; then
-      jbuilder build
-  else
-      jbuilder $*
-  fi
-}
+#function dune () {
+  #if [ $# = "0" ]; then
+      #jbuilder build
+  #else
+      #jbuilder $*
+  #fi
+#}
 
+# cd, mv, ...
 alias cd='cd-ls'
 alias dc='cd-ls'
 alias mkcd='source ~/.local/bin/mkcd.sh'
-alias xelatexmk='latexmk -xelatex'
-alias ocamlwrap='rlwrap ocaml'
-alias ocamltop='rlwrap ./ocamltop'
-alias csc='ssh csc-lg1.is.s.u-tokyo.ac.jp'
-alias node='nodejs'
-alias v='nvim'
-alias vi='nvim'
-alias vim='nvim'
-
-alias :e='nvr -l'
-alias :edit='nvr -l'
-alias nvr-l='nvr -l'
-alias :tabedit='nvr -p'
-alias nvr-tab='nvr -p'
-
-alias gs='git status'
-alias open='xdg-open'
-alias idrisl='idris -p pruviloj'
-alias pandoc-md='pandoc -s -f markdown+tex_math_double_backslash+lists_without_preceding_blankline+ignore_line_breaks --latex-engine=xelatex --mathjax'
-alias gonvim='~/apps/gonvim/gonvim.sh'
-alias D='cd_starting_directory'
-alias jbuilder='nocorrect jbuilder'
-alias ocamlbuild-ocamlfind='ocamlbuild -use-ocamlfind'
-alias primergy='ssh iwayama@primergy.kb.is.s.u-tokyo.ac.jp'
-alias aspell-check='aspell --lang=en -t -c'
+alias mv='mv -i'
+alias cp='cp -i'
 alias l='exa -la --group-directories-first'
 alias ls='exa --group-directories-first'
 alias la='exa -a --group-directories-first'
 alias s='exa -a --group-directories-first'
 alias DU='du -hd1 | sort -h'
-alias アバーッ='sudo poweroff'
-alias gvim='nvim-wrapper'
-alias ltxmkp='latexmk -outdir=_build -verbose -file-line-error -synctex=1 -interaction=nonstopmode -pvc'
-alias pdf2png='convert -density 300 -quality 100'
+alias open='xdg-open'
+
+# latex
+alias latexmk='latexmk -interaction=nonstopmode -halt-on-error'
+alias xelatexmk='latexmk -xelatex -interaction=nonstopmode -halt-on-error'
+alias ocamlwrap='rlwrap ocaml'
+alias ocamltop='rlwrap ./ocamltop'
+
+# git
+alias gs='git status'
 alias gpom='git push origin master'
+
+# vim
+alias v='nvim'
+alias vi='nvim'
+alias vim='nvim'
+alias :e='nvr -l'
+alias :edit='nvr -l'
+alias nvr-l='nvr -l'
+alias :tabedit='nvr -p'
+alias nvr-tab='nvr -p'
+alias gvim='nvim-wrapper'
+
+# ssh
+alias csc='ssh csc-lg1.is.s.u-tokyo.ac.jp'
+alias primergy='ssh iwayama@primergy.kb.is.s.u-tokyo.ac.jp'
 
 # Haskell
 alias runghc='stack runghc --'
@@ -64,5 +63,14 @@ alias weeder='stack exec -- weeder'
 alias hoogle='stack exec -- hoogle'
 alias hie='stack exec -- hie'
 
+# ocaml
+alias jbuilder='nocorrect jbuilder'
+alias ocamlbuild-ocamlfind='ocamlbuild -use-ocamlfind'
+
+# other
+alias アバーッ='sudo poweroff'
 alias mochi-fpat="mochi -fpat '-hccs gch -wp-max 2'"
 alias todo="cat ~/TODO | sed '/^\s*--/d'"
+alias node='nodejs'
+alias aspell-check='aspell --lang=en -t -c'
+
