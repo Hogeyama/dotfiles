@@ -1,15 +1,18 @@
 
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE TypeOperators    #-}
-{-# LANGUAGE LambdaCase       #-}
-{-# OPTIONS_GHC -Wall         #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE FlexibleContexts  #-}
+{-# LANGUAGE TypeOperators     #-}
+{-# LANGUAGE LambdaCase        #-}
+{-# OPTIONS_GHC -Wall          #-}
 
 module Main where
 
+import           RIO
 import           XMonad
 import           XMonad.Config.Prime            (io)
 import           XMonad.Hooks.EwmhDesktops      (ewmh)
-import           XMonad.Hooks.DynamicLog        --(PP(..), xmobar, statusBar, xmobarPP)
+import           XMonad.Hooks.DynamicLog        (PP(..), statusBar, xmobarPP)
 import           XMonad.Hooks.ManageDocks       (AvoidStruts, manageDocks)
 import           XMonad.Operations              (kill)
 import qualified XMonad.StackSet                as W
@@ -26,6 +29,8 @@ import           XMonad.Layout.Tabbed
 --import           XMonad.Layout.Accordion
 --import           XMonad.Layout.ResizableTile
 import           System.Exit                    (exitSuccess)
+--import           System.Process.Typed
+import           XMonad.Util.Run
 --
 
 main :: IO ()
@@ -62,6 +67,10 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , ("M-s"          , swapScreen)
       , ("M-a"          , sendMessage SwapWindow)
       , ("M-S-a"        , hoge) -- なんか動作の確認に
+      , ("M-S-k"        , spawn "amixer -D pulse sset Master 2%+")
+      , ("M-S-j"        , spawn "amixer -D pulse sset Master 2%-")
+      , ("M-S-o"        , spawn "amixer -D pulse sset Master 0%")
+      , ("M-m"          , toggleTouchPad)
       ]
 
       `additionalKeysP`
@@ -133,6 +142,34 @@ swapScreen = windows $ \stack -> case W.visible stack of
                     , W.visible = x { W.workspace = W.workspace y } : rest
                     }
                 where y = W.current stack
+
+setTouchPad :: Bool -> X ()
+setTouchPad b =
+    safeSpawn "gsettings"
+      [ "set"
+      , "org.gnome.desktop.peripherals.touchpad"
+      , "send-events"
+      , if b then "enabled" else "disabled"
+      ]
+
+toggleTouchPad :: X ()
+toggleTouchPad = do
+    out <- runProcessWithInput "gsettings"
+              ["get"
+              , "org.gnome.desktop.peripherals.touchpad"
+              , "send-events"
+              ]
+              ""
+    case out of
+      "'enabled'\n"  -> setTouchPad False
+      "'disabled'\n" -> setTouchPad True
+      _ -> error' $ "toggleTouchPad: unknown input: " <> show out
+  where
+    error' s = log' s >> error s
+
+-- touchpad =$(gsettings list-schemas | grep touchpad)
+-- gsettings list-keys $touchpad
+-- gsettings range $touchpad some-key
 
 -------------------------------------------------------------------------------
 --

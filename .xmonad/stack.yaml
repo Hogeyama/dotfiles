@@ -1,2 +1,5 @@
 resolver: lts-11.0
-#resolver: lts-8.6
+extra-deps:
+- rio-0.1.4.0
+- typed-process-0.2.2.0
+- unliftio-0.2.7.0

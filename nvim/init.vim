@@ -1,4 +1,8 @@
 
+"General{{{
+let g:python3_host_prog = '/usr/bin/python3.6'
+"}}}
+
 "dein {{{
 
 filetype plugin indent on
@@ -12,6 +16,7 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
   call dein#add('Shougo/unite.vim')
   call dein#add('Shougo/denite.nvim')
+  call dein#add('Shougo/defx.nvim')
   "call dein#add('Shougo/echodoc.vim')
   call dein#add('Shougo/neomru.vim')
   call dein#add('Shougo/deoplete.nvim')
@@ -23,6 +28,10 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('benekastah/neomake')
   call dein#add('kassio/neoterm')
   "call dein#add('Shougo/vimfiler')
+  """ Git
+  call dein#add('airblade/vim-gitgutter')
+  call dein#add('tpope/vim-fugitive')
+  call dein#add('jreybert/vimagit')
   """便利
   call dein#add('Shougo/deol.nvim')
   "call dein#add('vim-scripts/zoom.vim')
@@ -37,19 +46,17 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('scrooloose/nerdtree')
   call dein#add('majutsushi/tagbar')
   call dein#add('bitc/lushtags')
-  call dein#add('airblade/vim-gitgutter')
-  call dein#add('tpope/vim-fugitive')
   call dein#add('tpope/vim-surround')
   call dein#add('lambdalisue/gina.vim')
   call dein#add('thinca/vim-ref')
   """LSP
   "call dein#add('tjdevries/nvim-langserver-shim') "だめ
-  call dein#add('autozimu/LanguageClient-neovim', {
-    \ 'rev': 'next',
-    \ 'build': 'bash install.sh',
-    \ })
-  call dein#add('prabirshrestha/vim-lsp')
-  call dein#add('prabirshrestha/async.vim')
+  "call dein#add('autozimu/LanguageClient-neovim', {
+  "  \ 'rev': 'next',
+  "  \ 'build': 'bash install.sh',
+  "  \ })
+  "call dein#add('prabirshrestha/vim-lsp')
+  "call dein#add('prabirshrestha/async.vim')
   "call dein#add('natebosch/vim-lsc')              "これから試す
   """""filetypeとか
   """Motion
@@ -65,6 +72,8 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('Hogeyama/unite-haskellimport')
   """Elm
   call dein#add('ElmCast/elm-vim')
+  """Dhall
+  call dein#add('vmchale/dhall-vim')
   """Scala
   call dein#add('derekwyatt/vim-scala')
   "call dein#add('ensime/ensime-vim')
@@ -74,7 +83,7 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('idris-hackers/idris-vim')
   call dein#add('raichoo/agda-vim')
   """MarkDown
-  call dein#add('Bakudankun/previm')
+  "call dein#add('Bakudankun/previm')
   call dein#add('tyru/open-browser.vim')
   call dein#add('vim-pandoc/vim-pandoc')
   call dein#add('vim-pandoc/vim-pandoc-syntax')
@@ -107,8 +116,6 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('chriskempson/base16-vim')
   call dein#add('mhartington/oceanic-next') "OceanicNext
   """otameshi
-  "call dein#add('vmchale/vim-twitter', { 'build' : 'stack install'})
-  call dein#add('vmchale/vim-twitter')
   call dein#add('Yggdroot/indentLine')
   call dein#add('fholgado/minibufexpl.vim')
   "call dein#add('equalsraf/neovim-gui-shim')
@@ -324,7 +331,7 @@ call unite#custom#default_action('haddock', 'browse_remote')
 
 "}}}
 
-"Denite"{{{
+"Denite{{{
 hi CursorLine ctermbg=8
 call denite#custom#map('normal', 'd'    , '<denite:do_action:delete>'     , 'nowait')
 call denite#custom#map('insert', '<C-j>', '<denite:move_to_next_line>'    ,         )
@@ -366,6 +373,25 @@ call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
       \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'
       \ ])
 
+"}}}
+
+"defx{{{
+autocmd FileType defx call s:defx_my_settings()
+function! s:defx_my_settings() abort
+  " Define mappings
+  nnoremap <silent><buffer><expr><CR>
+    \ defx#do_action('open')
+  nnoremap <silent><buffer><expr>K
+    \ defx#do_action('new_directory')
+  nnoremap <silent><buffer><expr>N
+    \ defx#do_action('new_file')
+  nnoremap <silent><buffer><expr>..
+    \ defx#do_action('cd', ['..'])
+  nnoremap <silent><buffer><expr>~
+    \ defx#do_action('cd')
+  nnoremap <silent><buffer><expr><Space>
+    \ defx#do_action('toggle_select') . 'j'
+endfunction
 "}}}
 
 "QuickFix"{{{
@@ -656,7 +682,7 @@ let g:miniBufExplBRSplit = 0
 "}}}
 
 " indentLine {{{
-let g:indentLine_enabled = 0
+let g:indentLine_enabled = 1
 let g:indentLine_char = '⁞' "U+205E VERTICAL FOUR DOTS
 let g:indentLine_char = '⏐' "U+23D0 VERTICAL LINE EXTENSION
 "}}}
@@ -748,7 +774,7 @@ endif
 let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
 execute "helptags " . g:opamshare . "/merlin/vim/doc"
-execute "set rtp^=" . g:opamshare . "/ocp-indent/vim"
+"execute "set rtp^=" . g:opamshare . "/ocp-indent/vim"
 
 "}}}
 
@@ -826,26 +852,25 @@ au! BufNewFile,BufFilePRe,BufRead *.pl set filetype=prolog
 "}}}
 
 "Rust "{{{
-let $RUST_SRC_PATH                 = expand('$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust')
-let g:rustfmt_autosave             = 0
-let g:rust_recommended_style       = 1
-let g:racer_experimental_completer = 0
-let g:rust_fold                    = 0
-let g:racer_insert_paren           = 0
+let g:racer_cmd = "/home/hogeyama/.cargo/bin/racer"
+"let g:rustfmt_autosave             = 0
+"let g:rust_recommended_style       = 1
+"let g:racer_experimental_completer = 0
+"let g:rust_fold                    = 0
+"let g:racer_insert_paren           = 0
 au FileType rust nmap <buffer> <C-j> <Plug>(rust-def)
 au FileType rust nmap <buffer> gs    <Plug>(rust-def-split)
 au FileType rust nmap <buffer> gv    <Plug>(rust-def-vertical)
 au FileType rust nmap <buffer> gK    <Plug>(rust-doc)
-let g:racer_no_default_keymappings=0
+"let g:racer_no_default_keymappings=0
 ""nvim_hs_lsp
 if use_nvim_hs_lsp
   au FileType rust setlocal omnifunc=NvimHsLspComplete
-  au FileType rust nnoremap <buffer> <C-l>a :NvimHsLspApplyRefactOne<CR>
-  au FileType rust nnoremap <buffer> <C-j>  :NvimHsLspDefinition<CR>
-  au FileType rust nnoremap <buffer> <C-h>  :NvimHsLspInfo<CR>
+  au FileType rust nnoremap <buffer> [nvim-hs-lsp]a :NvimHsLspApplyRefactOne<CR>
+  au FileType rust nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
+  au FileType rust nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
+  au FileType rust nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
 endif
-
-
 "}}}
 
 "Scala {{{
@@ -896,8 +921,8 @@ nnoremap tg gT
 """<space>oで改行
 nnoremap <Space>o  :<C-u>for i in range(v:count1) \| call append(line('.'), '') \| endfor<CR>
 "jkで<esc>
-inoremap jk <Esc>
-"inoremap jk <Esc>:w<CR>
+"inoremap jk <Esc>
+inoremap jk <Esc>:w<CR>
 inoremap <C-j><C-k> <Esc>:w<CR>
 """<Space>\で保存
 nnoremap <C-\> :update!<CR>
@@ -1105,8 +1130,6 @@ command! SourceInitVim execute "so " .  g:init_vim
 "}}}
 
 nmap ,o <Plug>(openbrowser-open)
-
-let g:python3_host_prog = '/usr/bin/python3.5'
 
 map <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
       \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"

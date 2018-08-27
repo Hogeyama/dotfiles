@@ -17,22 +17,22 @@ snippet     pln
 abbr        println!
     println!("${1:\{:?\}}", ${0:TARGET});
 
-snippet     deriveD
-abbr        #derive[Debug,Clone,Copy]
+snippet     derive
+abbr        #derive[Debug,Clone]
 options     head
-    #[derive(Debug,Clone,Copy${1:TARGET})]${2}
+    #[derive(${1:#:Debug,Clone})]
 
 snippet     panic
 abbr        panic!("")
-    panic!("${1}")${2}
+    panic!("${1}")${0}
 
-snippet     NotImplemented
-abbr        panic!("Not Implemented")
-    panic!("Not Implemented")
+snippet     unimplemented
+abbr        unimplemented!();
+    unimplemented!();
 
-snippet     Impossible
-abbr        panic!("Impossible")
-    panic!("Impossible")
+snippet     unreachable
+abbr        unreachable!();
+    unreachable!();
 
 snippet     impl
 abbr        impl
