@@ -1,0 +1,16 @@
+
+snippet     SPEC
+options     head
+	(*{SPEC}
+	${1}
+	{SPEC}*)
+
+
+snippet     todo
+alias       TODO
+	assert false${1: (* TODO *)}${0}
+
+
+snippet     debug
+	Format.printf "${1:%a@.}" ${0}
+
