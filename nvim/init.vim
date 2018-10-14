@@ -610,8 +610,10 @@ if use_nvim_hs_lsp
   let g:NvimHsLsp_serverCommands = {
       \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
       \ 'ocaml': ['ocaml-language-server', '--stdio'],
-      \ 'haskell': ['stack', 'exec', '--', 'hie', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
+      \ 'haskell': ['stack', 'exec', '--', 'hie-wrapper', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
+      \ 'c': ['cquery', '--log-file', '/tmp/LanguageServer.log']
       \ }
+      "\ 'c': ['clangd-6.0']
   let g:NvimHsLsp_autoLoadQuickfix = 1
   nnoremap [nvim-hs-lsp] <nop>
   nmap     <C-l> [nvim-hs-lsp]
@@ -682,7 +684,7 @@ let g:miniBufExplBRSplit = 0
 "}}}
 
 " indentLine {{{
-let g:indentLine_enabled = 1
+let g:indentLine_enabled = 0
 let g:indentLine_char = '⁞' "U+205E VERTICAL FOUR DOTS
 let g:indentLine_char = '⏐' "U+23D0 VERTICAL LINE EXTENSION
 "}}}
@@ -693,6 +695,13 @@ let g:indentLine_char = '⏐' "U+23D0 VERTICAL LINE EXTENSION
 
 "C"{{{
 au FileType c setlocal expandtab ts=4 sts=4 sw=4
+if use_nvim_hs_lsp
+  au FileType c setlocal omnifunc=NvimHsLspComplete
+  au FileType c nnoremap <buffer> [nvim-hs-lsp]a :NvimHsLspApplyRefactOne<CR>
+  au FileType c nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
+  au FileType c nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
+  au FileType c nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
+endif
 "}}}
 
 "sh"{{{
@@ -1090,6 +1099,11 @@ let g:rainbow_conf = {
 "\  'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
 "\  'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
 "\       'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
+"}}}
+
+"fzf{{{
+set rtp+=~/.fzf
+" TODO deinでやる
 "}}}
 
 "tmp"{{{

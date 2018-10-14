@@ -100,7 +100,8 @@ export EDITOR='nvim'
 ##############################################
 
 export PATH=/usr/local/texlive/2016/bin/x86_64-linux:$PATH
-export PATH=/usr/local/go/bin:$PATH
+export PATH=/usr/lib/go-1.9/bin:$PATH
+export PATH=$HOME/go/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 
 ##############################################
@@ -155,6 +156,19 @@ xmodmap $HOME/.Xmodmap 2> /dev/null; :
 export OCAMLFIND_IGNORE_DUPS_IN=$HOME/.opam/4.03.0/lib/ocaml/compiler-libs
 export RUST_BACKTRACE=1
 
-#newgrp docker
+# autojump
+[[ -s /home/hogeyama/.autojump/etc/profile.d/autojump.sh ]] \
+  && source /home/hogeyama/.autojump/etc/profile.d/autojump.sh
+autoload -U compinit && compinit -u
 
-#curl parrot.live
+# fzf config
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+#export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(nvr {})+abort'"
+
+#echo "DOKKERN = $DOKKERN"
+#if [ -z $DOKKERN ]; then
+  #export DOKKERN="done"
+  #newgrp docker
+#fi
+
+

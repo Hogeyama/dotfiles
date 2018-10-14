@@ -55,7 +55,6 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       [ ("M-g"          , spawn "google-chrome")
       , ("M-S-g"        , spawn "vivaldi")
       , ("M-p"          , spawn "gmrun")
-      , ("M-S-p"        , spawn "dmenu_run")
       , ("M-S-q"        , kill)
       , ("M-S-C-q"      , io exitSuccess)
       , ("M-x"          , spawn "slock")
@@ -63,7 +62,7 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , ("M-<Return>"   , forcusNextScreen)
       , ("M-C-<Return>" , shiftNextScreen)
       --, ("M-S-<Return>" , spawn "nvim-wrapper")
-      --, ("M-S-s"        , spawn "gnome-terminal")
+      , ("M-S-s"        , spawn "gnome-terminal")
       , ("M-s"          , swapScreen)
       , ("M-a"          , sendMessage SwapWindow)
       , ("M-S-a"        , hoge) -- なんか動作の確認に
@@ -224,7 +223,10 @@ myLayoutHook = Full
                   simpleTabbed simpleTabbed (Title "no title")
 
 hoge :: X ()
-hoge = log' "fugafuga"
+hoge = do
+  log' "fugafuga"
+  log' $ show xK_F8
+  log' $ show xK_P
 
   --n <- countScreens :: X Int
   --log' (show n)

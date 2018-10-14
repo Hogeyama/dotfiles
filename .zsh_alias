@@ -62,7 +62,11 @@ alias ocamlbuild-ocamlfind='ocamlbuild -use-ocamlfind'
 # other
 alias アバーッ='sudo poweroff'
 alias mochi-fpat="mochi -fpat '-hccs gch -wp-max 2'"
+alias mochi_="mochi -fpat '-hccs gch -wp-max 2' -make-ext-fun-before-encode"
 alias todo="cat ~/TODO | sed '/^\s*--/d'"
 alias node='nodejs'
 alias aspell-check='aspell --lang=en -t -c'
+alias preview="fzf --preview 'bat --color \"always\" {}'"
+alias vimf='fzf | xargs nvr'
+
 
