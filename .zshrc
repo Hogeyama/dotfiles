@@ -103,6 +103,8 @@ export PATH=/usr/local/texlive/2016/bin/x86_64-linux:$PATH
 export PATH=/usr/lib/go-1.9/bin:$PATH
 export PATH=$HOME/go/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
+export PATH=$HOME/.npm/bin:$PATH
+export PATH=$HOME/.node_modules/bin:$PATH
 
 ##############################################
 # directoryのほげ
@@ -149,7 +151,7 @@ unsetopt correctall
 export VTE_CJK_WIDTH=1
 
 # for mochi
-export LD_LIBRARY_PATH=/usr/lib:/usr/local/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$HOME/.opam/4.03.0/lib/z3:/usr/lib:/usr/local/lib:$LD_LIBRARY_PATH
 
 xmodmap $HOME/.Xmodmap 2> /dev/null; :
 

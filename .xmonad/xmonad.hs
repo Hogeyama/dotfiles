@@ -16,7 +16,7 @@ import           XMonad.Hooks.DynamicLog        (PP(..), statusBar, xmobarPP)
 import           XMonad.Hooks.ManageDocks       (AvoidStruts, manageDocks)
 import           XMonad.Operations              (kill)
 import qualified XMonad.StackSet                as W
-import           XMonad.Util.EZConfig           (additionalKeys, additionalKeysP)
+import           XMonad.Util.EZConfig           (additionalKeys, additionalKeysP, removeKeysP)
 import           XMonad.Layout                  (Choose, Full(..), (|||))
 import           XMonad.Layout.Decoration       (Decoration, DefaultShrinker)
 import           XMonad.Layout.LayoutModifier   (ModifiedLayout)
@@ -53,8 +53,7 @@ main = xmonad =<< xmobar' (ewmh myConfig)
 
       `additionalKeysP`
       [ ("M-g"          , spawn "google-chrome")
-      , ("M-S-g"        , spawn "vivaldi")
-      , ("M-p"          , spawn "gmrun")
+      , ("M-p"          , spawn "ulauncher")
       , ("M-S-q"        , kill)
       , ("M-S-C-q"      , io exitSuccess)
       , ("M-x"          , spawn "slock")
@@ -85,6 +84,9 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       [((m .|. mod4Mask, k), windows $ f i)
       | (i, k) <- zip myWorkspaces [xK_1 .. xK_9]
       , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+
+      `removeKeysP`
+      [ "S-C-n" ]
 
       --`additionalKeysP`
       --[ ("M-<Right>", sendMessage $ Move R)

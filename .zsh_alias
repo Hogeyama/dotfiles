@@ -1,4 +1,8 @@
 
+\$(){
+  $*
+}
+
 cd-ls(){
   \cd $* && \ls --group-directories-first --color=tty
   #\cd $* && \exa --group-directories-first
@@ -68,5 +72,7 @@ alias node='nodejs'
 alias aspell-check='aspell --lang=en -t -c'
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 alias vimf='fzf | xargs nvr'
+alias clean-mochi-out='bash -c "rm -f *.hors *.horsat_out *.dot *.annot *.hrs *.sol *.smt2"'
+alias XMODMAP='xmodmap ~/.Xmodmap'
 
 

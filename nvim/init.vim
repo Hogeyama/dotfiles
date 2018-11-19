@@ -17,7 +17,7 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('Shougo/unite.vim')
   call dein#add('Shougo/denite.nvim')
   call dein#add('Shougo/defx.nvim')
-  "call dein#add('Shougo/echodoc.vim')
+  call dein#add('Shougo/echodoc.vim')
   call dein#add('Shougo/neomru.vim')
   call dein#add('Shougo/deoplete.nvim')
   call dein#add('Shougo/neosnippet')
@@ -28,27 +28,29 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('benekastah/neomake')
   call dein#add('kassio/neoterm')
   "call dein#add('Shougo/vimfiler')
-  """ Git
+  """ Git TODO 整理
   call dein#add('airblade/vim-gitgutter')
   call dein#add('tpope/vim-fugitive')
   call dein#add('jreybert/vimagit')
+  call dein#add('lambdalisue/gina.vim')
   """便利
   call dein#add('Shougo/deol.nvim')
   "call dein#add('vim-scripts/zoom.vim')
   call dein#add('Shougo/unite-outline')
   call dein#add('vim-scripts/Align')
+  call dein#add('junegunn/vim-easy-align')
   call dein#add('kana/vim-smartinput')
   call dein#add('kana/vim-textobj-user')
   call dein#add('osyo-manga/vim-textobj-multiblock')
   call dein#add('osyo-manga/shabadou.vim')
   call dein#add('osyo-manga/vim-watchdogs')
-  call dein#add('scrooloose/nerdcommenter')
+  "call dein#add('scrooloose/nerdcommenter') "TODO config見直すか別の入れるか
+  call dein#add('tomtom/tcomment_vim')
   call dein#add('scrooloose/nerdtree')
-  call dein#add('majutsushi/tagbar')
-  call dein#add('bitc/lushtags')
-  call dein#add('tpope/vim-surround')
-  call dein#add('lambdalisue/gina.vim')
-  call dein#add('thinca/vim-ref')
+  "call dein#add('majutsushi/tagbar')
+  "call dein#add('bitc/lushtags')
+  call dein#add('tpope/vim-surround') "TODO config見直すか別の入れるか
+  call dein#add('itchyny/lightline.vim')
   """LSP
   "call dein#add('tjdevries/nvim-langserver-shim') "だめ
   "call dein#add('autozimu/LanguageClient-neovim', {
@@ -57,7 +59,7 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   "  \ })
   "call dein#add('prabirshrestha/vim-lsp')
   "call dein#add('prabirshrestha/async.vim')
-  "call dein#add('natebosch/vim-lsc')              "これから試す
+  "call dein#add('natebosch/vim-lsc')
   """""filetypeとか
   """Motion
   call dein#add('Lokaltog/vim-easymotion')
@@ -72,6 +74,9 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('Hogeyama/unite-haskellimport')
   """Elm
   call dein#add('ElmCast/elm-vim')
+  """PureScript
+  call dein#add('purescript-contrib/purescript-vim')
+  call dein#add('FrigoEU/psc-ide-vim')
   """Dhall
   call dein#add('vmchale/dhall-vim')
   """Scala
@@ -94,14 +99,13 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('rust-lang/rust.vim')
   call dein#add('racer-rust/vim-racer')
   """Others
+  call dein#add('bohlender/vim-smt2')
   call dein#add('jelera/vim-javascript-syntax')
   call dein#add('rgrinberg/vim-ocaml')
   call dein#add('leafgarland/typescript-vim')
-  call dein#add('Hogeyama/vimtex')
+  call dein#add('lervag/vimtex')
   """Color Scheme
   call dein#add('joshdick/onedark.vim')
-  call dein#add('zsoltf/vim-maui')
-  call dein#add('djjcast/mirodark')
   call dein#add('nanotech/jellybeans.vim')
   call dein#add('w0ng/vim-hybrid')
   call dein#add('miyakogi/seiya.vim')
@@ -116,17 +120,16 @@ if dein#load_state(expand('~/.config/nvim/dein'))
   call dein#add('chriskempson/base16-vim')
   call dein#add('mhartington/oceanic-next') "OceanicNext
   """otameshi
+  call dein#add('dhruvasagar/vim-table-mode')
+  call dein#add('machakann/vim-highlightedyank')
   call dein#add('Yggdroot/indentLine')
-  call dein#add('fholgado/minibufexpl.vim')
-  "call dein#add('equalsraf/neovim-gui-shim')
+  "call dein#add('fholgado/minibufexpl.vim')
   call dein#add('losingkeys/vim-niji')
   call dein#add('luochen1990/rainbow')
-  "call dein#add('dannyob/quickfixstatus')
-  "call dein#add('jceb/vim-hier')
   call dein#add('vimlab/split-term.vim')
+
   call dein#end()
   call dein#save_state()
-
   "remove unused plugins
   let unused = dein#check_clean()
   if len(unused) > 0
@@ -140,9 +143,9 @@ endif
 "}}}
 
 "gonvim"{{{
-if exists('g:GuiLoaded')
-  GuiFont Rounded\ Mgen+\ 1mn\ Medium:h18:b
-endif
+"if exists('g:GuiLoaded')
+"  GuiFont Rounded\ Mgen+\ 1mn\ Medium:h18:b
+"endif
 "}}}
 
 "Color"{{{
@@ -250,7 +253,25 @@ au QuickFixCmdPost *grep* cwindow
 au FileType vim setlocal et ts=2 sw=2 sts=2
 
 "set statusline=\ %f\ %y%m%r%w%q\ %=(%l,%v)[%p%%]\ %{fnamemodify(getcwd(),':~')}\ \ \ 
-set statusline=\ %{fnamemodify(getcwd(),':~')}\ %=%f\ %y%m%r%w%q\ (%l,%v)\ \ 
+"set statusline=\ %{fnamemodify(getcwd(),':~')}\ %=%f\ %y%m%r%w%q\ (%l,%v)\ \ 
+let g:lightline = {
+  \     'active': {
+  \         'left': [['mode', 'paste' ], ['readonly', 'relativepath', 'modified']],
+  \         'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding']]
+  \     }
+  \ }
+function! SetLightlineConfig() abort
+  augroup lightline
+    autocmd!
+    "autocmd WinEnter,BufWinEnter,FileType,SessionLoadPost * call lightline#update()
+    autocmd WinEnter,SessionLoadPost * call lightline#update()
+    autocmd SessionLoadPost * call lightline#highlight()
+    autocmd ColorScheme * if !has('vim_starting') || expand('<amatch>') !=# 'macvim'
+          \ | call lightline#update() | call lightline#highlight() | endif
+    autocmd CursorMoved,BufUnload * call lightline#update_once()
+  augroup END
+endfunction
+au VimEnter * call SetLightlineConfig()
 "}}}
 
 """echodoc {{{
@@ -259,7 +280,7 @@ inoremap <C-q> <C-e>
 set splitbelow
 set noshowmode
 set cmdheight=2
-let g:echodoc#enable_at_startup=0
+let g:echodoc#enable_at_startup=1
 "set completeopt+=noselect
 "set completeopt-=preview
 "autocmd CompleteDone,CursorMovedI * call s:on_cursor_moved()
@@ -333,6 +354,12 @@ call unite#custom#default_action('haddock', 'browse_remote')
 
 "Denite{{{
 hi CursorLine ctermbg=8
+call denite#custom#var('grep', 'command', ['ag'])
+call denite#custom#var('grep', 'default_opts', ['-i', '--vimgrep'])
+call denite#custom#var('grep', 'recursive_opts', [])
+call denite#custom#var('grep', 'pattern_opt', [])
+call denite#custom#var('grep', 'separator', ['--'])
+call denite#custom#var('grep', 'final_opts', [])
 call denite#custom#map('normal', 'd'    , '<denite:do_action:delete>'     , 'nowait')
 call denite#custom#map('insert', '<C-j>', '<denite:move_to_next_line>'    ,         )
 call denite#custom#map('insert', '<C-k>', '<denite:move_to_previous_line>',         )
@@ -348,8 +375,7 @@ call denite#custom#map('normal', 'zt'   , '<denite:wincmd:t>', 'nowait'   ,     
 call denite#custom#map('normal', 'zb'   , '<denite:wincmd:b>', 'nowait'   ,         )
 call denite#custom#map('normal', 'zp'   , '<denite:wincmd:p>', 'nowait'   ,         )
 call denite#custom#map('normal', '..'   , '<denite:move_up_path>', 'nowait')
-call denite#custom#map('normal', 'tt'   ,
-  \ '<denite:toggle_matchers:matcher_regexp>', 'nowait')
+call denite#custom#map('normal', 'tt'   , '<denite:toggle_matchers:matcher_regexp>', 'nowait')
 
 call denite#custom#source('_', 'matchers', ['matcher_substring', 'matcher_ignore_globs'])
 command! DeniteNext     Denite -resume -cursor-pos=+1 -immediately
@@ -364,13 +390,13 @@ nnoremap [unite]g :DeniteGrep<CR>
 nnoremap [unite]n :DeniteNext<CR>
 nnoremap [unite]p :DenitePrevious<CR>
 nnoremap [unite]h :Denite -auto-resume -mode=normal -winheight=10 file_mru<CR>
-nnoremap <C-c>    :DeniteBufferDir -mode=normal -winheight=10 file<CR>
-"nnoremap <Space>c :Denite -auto-resume -mode=normal -winheight=10 file<CR>
+nnoremap [unite]c :DeniteBufferDir -mode=normal -winheight=10 file<CR>
+nnoremap <C-c>    :Denite -auto-resume -winheight=10 file/rec<CR>
 "TODO outline, output
 
 call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
       \ [ '.git/', '.ropeproject/', '__pycache__/', '*.cmo*', '*.cmi',
-      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'
+      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/', '.stack-work/', '_build/'
       \ ])
 
 "}}}
@@ -440,14 +466,15 @@ let g:quickrun_config = {
   \   'cmdopt' : 'runghc',
   \   'exec' : '%c %o %s',
   \   },
-  \ 'rust' : {
-  \   'command' : 'cargo',
-  \   'cmdopt' : 'run',
+  \ 'purescript' : {
+  \   'command' : 'pulp',
+  \   'cmdopt' : 'build',
   \   'exec' : '%c %o',
-  \   "quickfix/errorformat" : s:rust_errorformat
-  \       .'%-G\ %#Compiling%s,'
-  \       .'%-G\ %#Finished%s,'
-  \       .'%-G\ %#Running%s,'
+  \   },
+  \ 'rust' : {
+  \   'command' : 'dune',
+  \   'cmdopt' : 'build',
+  \   'exec' : '%c %o main.exe',
   \   },
   \ 'rust/watchdogs_checker' : {
   \   'command' : 'cargo',
@@ -455,6 +482,10 @@ let g:quickrun_config = {
   \   'exec' : '%c %o',
   \   'hook/copen/hook_command' : ':botright',
   \   "quickfix/errorformat" : s:rust_errorformat
+  \   },
+  \ 'ocaml/watchdogs_checker' : {
+  \   'command' : 'cargo',
+  \   'exec' : '%c %o',
   \   },
   \ 'pandoc' : {
   \   'command' : 'pandoc-wrapper',
@@ -491,6 +522,16 @@ let g:neomake_haskell_hlint_remove_invalid_entries=1
 let g:neomake_haskell_ghcmod_remove_invalid_entries=1
 let g:neomake_haskell_runghc_remove_invalid_entries=1
 nnoremap ! :NeomakeSh 
+
+
+let g:neomake_ocaml_maker = {
+    \ 'exe': 'dune',
+    \ 'args': ['build', 'main.exe'],
+    \ 'errorformat': 'File "%f"\, line %l\, characters %c%m',
+    \ }
+"|| File "setqueue.ml", line 5, characters 4-11:
+    "\ 'errorformat': 'File %f, line %l, characters %c: %m',
+
 "}}}
 
 "neoterm{{{
@@ -499,22 +540,28 @@ let g:neoterm_autoinsert = 0
 nnoremap <F12> :Ttoggle<CR><C-w>ji
 "}}}
 
-"NERD_tree, NERD_commenter"{{{
+"NERD_tree"{{{
 let g:NERDTreeWinPos="left"
 let g:NERDTreeShowLineNumbers=1
 let g:NERDTreeIgnore=['\.bin$']
 nnoremap <Space>n :NERDTreeToggle<CR>
 nnoremap <Space>N :NERDTreeMirror<CR>
-nmap ,, <plug>NERDCommenterToggle
-vmap ,, <plug>NERDCommenterToggle
 
-command! NERDTreeWithBufferDir call NERDTreeWithBufferDirFun()
-function! NERDTreeWithBufferDirFun() abort
-  let dir = fnamemodify(expand('%'),':p:h')
-  echo "NERDTree " . dir
-  exec "NERDTree " . dir
-endfunction
-"nnoremap <Space>c :NERDTreeWithBufferDir<CR>
+nmap ,, <Plug>TComment_gcc
+vmap ,, <Plug>TComment_gc
+vmap ,l <Plug>TComment_,_r
+"vmap ,b <Plug>TComment_,_b
+"vmap ,i <Plug>TComment_,_i
+vmap ,b :TCommentRight!<CR>
+vmap ,i :TCommentInline!<CR>
+
+"let g:NERDDefaultAlign='left'
+"let g:NERDAllowAnyVisualDelims=1
+"let NERDCommentWholeLinesInVMode=1
+"nmap ,, <plug>NERDCommenterToggle
+"vmap ,, <plug>NERDCommenterToggle
+"au FileType haskell vmap ,, <plug>NERDCommenterMinimal
+"au FileType ocaml   vmap ,, <plug>NERDCommenterMinimal
 
 "}}}
 
@@ -523,6 +570,7 @@ endfunction
 let g:deoplete#enable_at_startup  = v:true
 call deoplete#custom#option('ignore_case', v:false)
 call deoplete#custom#option('camel_case', v:true)
+
 " <Tab>で選ぶ
 inoremap <expr><Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr><S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
@@ -611,9 +659,9 @@ if use_nvim_hs_lsp
       \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
       \ 'ocaml': ['ocaml-language-server', '--stdio'],
       \ 'haskell': ['stack', 'exec', '--', 'hie-wrapper', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
-      \ 'c': ['cquery', '--log-file', '/tmp/LanguageServer.log']
+      \ 'c': ['clangd-6.0']
       \ }
-      "\ 'c': ['clangd-6.0']
+      "\ 'c': ['cquery', '--log-file', '/tmp/LanguageServer.log']
   let g:NvimHsLsp_autoLoadQuickfix = 1
   nnoremap [nvim-hs-lsp] <nop>
   nmap     <C-l> [nvim-hs-lsp]
@@ -622,6 +670,10 @@ if use_nvim_hs_lsp
   nnoremap [nvim-hs-lsp]H :NvimHsLspHover<CR>
   nnoremap [nvim-hs-lsp]j :NvimHsLspDefinition<CR>
   nnoremap [nvim-hs-lsp]w :NvimHsLspLoadQuickfix<CR>
+  nnoremap [nvim-hs-lsp]r :NvimHsLspReferences<CR>
+  nnoremap [nvim-hs-lsp]f :NvimHsLspFormatting!<CR>
+  vnoremap [nvim-hs-lsp]f :NvimHsLspFormatting<CR>
+  nnoremap [nvim-hs-lsp]a :NvimHsLspCodeAction<CR>
 endif
 
 """ 'autozimu/LanguageClient-neovim'
@@ -679,12 +731,16 @@ au FileType qf let g:airline_disabled = 1
 "}}}
 
 "MiniBufExpr{{{
+"なんかバグってるっぽい
 let g:miniBufExplorerAutoStart = 0
-let g:miniBufExplBRSplit = 0
+"let g:miniBufExplBRSplit = 0
+"nnoremap GT :MBEbn<CR>
+"nnoremap TG :MBEbp<CR>
 "}}}
 
+
 " indentLine {{{
-let g:indentLine_enabled = 0
+let g:indentLine_enabled = 1
 let g:indentLine_char = '⁞' "U+205E VERTICAL FOUR DOTS
 let g:indentLine_char = '⏐' "U+23D0 VERTICAL LINE EXTENSION
 "}}}
@@ -697,7 +753,6 @@ let g:indentLine_char = '⏐' "U+23D0 VERTICAL LINE EXTENSION
 au FileType c setlocal expandtab ts=4 sts=4 sw=4
 if use_nvim_hs_lsp
   au FileType c setlocal omnifunc=NvimHsLspComplete
-  au FileType c nnoremap <buffer> [nvim-hs-lsp]a :NvimHsLspApplyRefactOne<CR>
   au FileType c nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
   au FileType c nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
   au FileType c nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
@@ -716,18 +771,18 @@ au FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=0 ambiwidth=sing
 ""nvim_hs_lsp
 if use_nvim_hs_lsp
   au FileType haskell setlocal omnifunc=NvimHsLspComplete
-  au FileType haskell nnoremap <buffer> [nvim-hs-lsp]a :NvimHsLspApplyRefactOne<CR>
+  "au FileType haskell nnoremap <buffer> [nvim-hs-lsp]a :NvimHsLspApplyRefactOne<CR>
   au FileType haskell nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
   au FileType haskell nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
   au FileType haskell nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
 endif
 ""ghc-mod-nvim
-au FileType haskell nnoremap <buffer> ,t :update!<CR>:NeoGhcModType<CR>
-au FileType haskell nnoremap <buffer> ,T :update!<CR>:NeoGhcModType!<CR>
-au FileType haskell nnoremap <buffer> ,i :update!<CR>:NeoGhcModInfo<CR>
-au FileType haskell nnoremap <buffer> ,I :update!<CR>:NeoGhcModInfo 
-au FileType haskell nnoremap <buffer> ,l :update!<CR>:NeoGhcModLintAll<CR>
-au FileType haskell nnoremap <buffer> ^  :noh    <CR>:NeoGhcModTypeClear<CR>
+"au FileType haskell nnoremap <buffer> ,t :update!<CR>:NeoGhcModType<CR>
+"au FileType haskell nnoremap <buffer> ,T :update!<CR>:NeoGhcModType!<CR>
+"au FileType haskell nnoremap <buffer> ,i :update!<CR>:NeoGhcModInfo<CR>
+"au FileType haskell nnoremap <buffer> ,I :update!<CR>:NeoGhcModInfo 
+"au FileType haskell nnoremap <buffer> ,l :update!<CR>:NeoGhcModLintAll<CR>
+"au FileType haskell nnoremap <buffer> ^  :noh    <CR>:NeoGhcModTypeClear<CR>
 ""hoogle
 call unite#custom_default_action('source/hoogle', 'preview')
 au FileType haskell nnoremap <buffer> ,H :Unite hoogle<CR>
@@ -759,6 +814,12 @@ let g:elm_browser_command = 'google-chrome'
 let g:elm_format_fail_silently = 1
 "}}}
 
+"PureScript{{{
+let g:psc_ide_syntastic_mode=1
+au FileType purescript nnoremap <buffer> <C-H> :Ptype<CR>
+au FileType purescript nnoremap <buffer> ,w :Prebuild<CR>
+"}}}
+
 "OCaml"{{{
 ""general
 au FileType ocaml inoremap <buffer> <C-o> <C-x><C-o>
@@ -783,7 +844,7 @@ endif
 let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
 execute "helptags " . g:opamshare . "/merlin/vim/doc"
-"execute "set rtp^=" . g:opamshare . "/ocp-indent/vim"
+execute "set rtp^=" . g:opamshare . "/ocp-indent/vim"
 
 "}}}
 
@@ -875,7 +936,6 @@ au FileType rust nmap <buffer> gK    <Plug>(rust-doc)
 ""nvim_hs_lsp
 if use_nvim_hs_lsp
   au FileType rust setlocal omnifunc=NvimHsLspComplete
-  au FileType rust nnoremap <buffer> [nvim-hs-lsp]a :NvimHsLspApplyRefactOne<CR>
   au FileType rust nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
   au FileType rust nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
   au FileType rust nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
@@ -932,6 +992,7 @@ nnoremap <Space>o  :<C-u>for i in range(v:count1) \| call append(line('.'), '') 
 "jkで<esc>
 "inoremap jk <Esc>
 inoremap jk <Esc>:w<CR>
+"inoremap kj <Esc>:w<CR>
 inoremap <C-j><C-k> <Esc>:w<CR>
 """<Space>\で保存
 nnoremap <C-\> :update!<CR>
@@ -1119,6 +1180,8 @@ command! -nargs=+ -complete=command Redir let s:reg = @@ | redir @"> | silent ex
 
 command! RmTrailingWhiteSpaces %s/\s\+$//g | :noh
 
+command! LNextRecursive call CRecursive("lnext")
+command! LPreviousRecursive call CRecursive("lprevious")
 command! CNextRecursive call CRecursive("cnext")
 command! CPreviousRecursive call CRecursive("cprevious")
 function! CRecursive(cmd) abort "{{{
@@ -1135,6 +1198,8 @@ function! CRecursive(cmd) abort "{{{
 endfunction "}}}
 nnoremap <C-n> :CNextRecursive<CR>
 nnoremap <C-p> :CPreviousRecursive<CR>
+nnoremap <C-n> :LNextRecursive<CR>
+nnoremap <C-p> :LPreviousRecursive<CR>
 
 let g:init_vim = $XDG_CONFIG_HOME != ""
                   \ ? $XDG_CONFIG_HOME   . "/nvim/init.vim"
@@ -1156,9 +1221,22 @@ let g:pandoc_sel_option = '-fmarkdown+lists_without_preceding_blankline+ignore_l
                       \ . '-t latex --listings '
 function! PandocSel() range
   let lines = getline(a:firstline, a:lastline)
-  let tmp = tempname()
+  let tmp   = tempname()
   call writefile(lines, tmp.".md")
   execute "!pandoc " . g:pandoc_sel_option . tmp.".md " . "-o " . tmp."tex"
 endfunction
+
+"nnoremap E :e scp://u00159@157.82.22.26/parallel-distributed-handson/
+nnoremap E0 :e scp://u00159@157.82.22.26/parallel-distributed-handson/00slurm/
+nnoremap E1 :e scp://u00159@157.82.22.26/parallel-distributed-handson/01hello/
+nnoremap E2 :e scp://u00159@157.82.22.26/parallel-distributed-handson/02hello_gpu/
+nnoremap E3 :e scp://u00159@157.82.22.26/parallel-distributed-handson/03spmv/
+nnoremap E4 :e scp://u00159@157.82.22.26/parallel-distributed-handson/04udr/
+nnoremap E5 :e scp://u00159@157.82.22.26/parallel-distributed-handson/05simd/
+nnoremap E6 :e scp://u00159@157.82.22.26/parallel-distributed-handson/06axpy/
+nnoremap E7 :e scp://u00159@157.82.22.26/parallel-distributed-handson/07mmk/
+
+let g:niji_matching_filetypes = ['lisp', 'smt2']
+
 
 "vim: set et ts=1 sts=2 tw=2:
