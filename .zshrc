@@ -85,6 +85,7 @@ export LANG=ja_JP.UTF-8
 # else
 #   export EDITOR='mvim'
 # fi
+# export EDITOR='nvr -p'
 export EDITOR='nvim'
 
 # Compilation flags
@@ -145,7 +146,6 @@ eval "$(stack --bash-completion-script stack)"
 setopt NO_HUp
 setopt NO_CHECK_JOBS
 
-# correct邪魔
 unsetopt correctall
 
 export VTE_CJK_WIDTH=1
@@ -165,12 +165,9 @@ autoload -U compinit && compinit -u
 
 # fzf config
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-#export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(nvr {})+abort'"
+export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(nvr {})+abort'"
 
-#echo "DOKKERN = $DOKKERN"
-#if [ -z $DOKKERN ]; then
-  #export DOKKERN="done"
-  #newgrp docker
-#fi
+export SLACK_NOTIFY_URL="https://hooks.slack.com/services/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"
 
-
+# haskell-ide-engine
+export cabal_helper_libexecdir=$HOME/.local/bin

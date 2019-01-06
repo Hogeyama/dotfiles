@@ -57,7 +57,7 @@ alias ghc-mod='stack exec -- ghc-mod'
 alias hlint='stack exec -- hlint'
 alias weeder='stack exec -- weeder'
 alias hoogle='stack exec -- hoogle'
-alias hie='stack exec -- hie'
+#alias hie='stack exec -- hie'
 
 # ocaml
 alias jbuilder='nocorrect jbuilder'
@@ -72,7 +72,7 @@ alias node='nodejs'
 alias aspell-check='aspell --lang=en -t -c'
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 alias vimf='fzf | xargs nvr'
-alias clean-mochi-out='bash -c "rm -f *.hors *.horsat_out *.dot *.annot *.hrs *.sol *.smt2"'
+alias clean-mochi-out='bash -c "rm -f *.hors *.horsat_out *.dot *.annot *.hrs *.sol *.smt2 *.status"'
 alias XMODMAP='xmodmap ~/.Xmodmap'
 
 
