@@ -1,8 +1,0 @@
-resolver: lts-12.20
-extra-deps:
-- github: Hogeyama/ghc-mod-nvim
-  commit: c8350e3
-- ./nvim-hs-libs/ghcid-nvim-simple
-- ./nvim-hs-libs/nvim-hs-lsp
-- /home/hogeyama/Repos/extensible
-- winery-0.3.1

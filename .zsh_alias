@@ -74,5 +74,5 @@ alias preview="fzf --preview 'bat --color \"always\" {}'"
 alias vimf='fzf | xargs nvr'
 alias clean-mochi-out='bash -c "rm -f *.hors *.horsat_out *.dot *.annot *.hrs *.sol *.smt2 *.status"'
 alias XMODMAP='xmodmap ~/.Xmodmap'
-
+alias CAPSLOC="python -c 'from ctypes import *; X11 = cdll.LoadLibrary(\"libX11.so.6\"); display = X11.XOpenDisplay(None); X11.XkbLockModifiers(display, c_uint(0x0100), c_uint(2), c_uint(0)); X11.XCloseDisplay(display)'"
 

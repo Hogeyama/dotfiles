@@ -2,6 +2,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+return
 
 "Plug{{{
 call plug#begin('~/.config/nvim/plugged')
@@ -102,6 +103,8 @@ Plug 'dhruvasagar/vim-table-mode'
 Plug 'machakann/vim-highlightedyank'
 Plug 'Yggdroot/indentLine'
 Plug 'losingkeys/vim-niji'
+Plug 'neovim/node-host', { 'do': 'npm install -g neovim' }
+Plug 'euclio/vim-markdown-composer', { 'do': 'cargo build --release' }
 call plug#end()
 "}}}
 
@@ -221,6 +224,8 @@ autocmd VimEnter * call SetLightlineConfig()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" Plugin
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+return
 
 "nvim-hs {{{
 " if has('nvim') " This way, you can also put this in your plain vim config
@@ -448,7 +453,7 @@ let g:neomake_echo_current_error=0
 let g:neomake_haskell_hlint_remove_invalid_entries=1
 let g:neomake_haskell_ghcmod_remove_invalid_entries=1
 let g:neomake_haskell_runghc_remove_invalid_entries=1
-nnoremap ! :NeomakeSh
+nnoremap ! :NeomakeSh 
 
 let g:neomake_ocaml_maker = {
     \ 'exe': 'dune',
@@ -594,8 +599,9 @@ if use_nvim_hs_lsp
   nnoremap [nvim-hs-lsp]r :NvimHsLspReferences<CR>
   nnoremap [nvim-hs-lsp]f :NvimHsLspFormatting!<CR>
   xnoremap [nvim-hs-lsp]f :NvimHsLspFormatting<CR>
-  nnoremap [nvim-hs-lsp]a :execute "NvimHsLspCodeAction" <bar>
-                         \ execute "Denite -no-empty -auto-resize -mode=normal nvim_hs_lsp"<CR>
+  nnoremap [nvim-hs-lsp]a :NvimHsLspCodeAction<CR>
+  " nnoremap [nvim-hs-lsp]a :execute "NvimHsLspCodeAction" <bar>
+  "                        \ execute "Denite -no-empty -auto-resize -mode=normal nvim_hs_lsp"<CR>
 
 endif
 
@@ -721,7 +727,6 @@ let g:haskell_backpack = 1
 ""nvim_hs_lsp
 if use_nvim_hs_lsp
   autocmd FileType haskell setlocal omnifunc=NvimHsLspComplete
-  autocmd FileType haskell nnoremap <buffer> <C-q> :GhcidExec main
   autocmd FileType haskell nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
   autocmd FileType haskell nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
   autocmd FileType haskell nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
@@ -741,9 +746,20 @@ autocmd FileType haskell nnoremap <buffer> ,H :Unite hoogle<CR>
 autocmd FileType haskell nnoremap <buffer> ,h :Unite haskellimport<CR>
 
 ""ghcid-nvim-hs
-autocmd FileType haskell nnoremap <buffer> ,w :update!<CR>:GhcidCheck!<CR>
-autocmd FileType haskell nnoremap <buffer> ,W :update!<CR>:GhcidCheck<CR>
-autocmd FileType haskell nnoremap <buffer> <Space>r :GhcidStopAll<CR>
+function! GhcidExecMain() abort
+  let l:lines = getline(1, line('$'))
+  let l:moduleLine = matchstr(l:lines, '^module')
+  let l:mModuleName = matchlist(l:moduleLine, '^module\s\+\(\S*\)')
+  let l:moduleName = len(l:mModuleName) is 0 ? "Main" : l:mModuleName[1]
+  execute "GhcidExec " . l:moduleName . ".main"
+endfunction
+autocmd FileType haskell nnoremap <buffer> <leader>w :update!<CR>:GhcidCheck!<CR>
+autocmd FileType haskell nnoremap <buffer> <leader>W :update!<CR>:GhcidCheck<CR>
+autocmd FileType haskell nnoremap <buffer> <leader>r :GhcidStopAll<CR>
+autocmd FileType haskell nnoremap <buffer> <leader>q :GhcidExec 
+autocmd FileType haskell nnoremap <buffer> <leader>t :GhcidType 
+autocmd FileType haskell nnoremap <buffer> <C-S-q>   :GhcidExec main<CR>
+autocmd FileType haskell nnoremap <buffer> <C-q>     :call GhcidExecMain()<CR>
 
 ""other filetype
 autocmd FileType cabal   setlocal expandtab tabstop=4
@@ -852,9 +868,17 @@ autocmd FileType pandoc let &spell = 0
 
 let g:previm_enable_realtime = 1
 let g:vim_markdown_math = 1
+let g:pandoc#syntax#codeblocks#embeds#use=1
+let g:pandoc#syntax#codeblocks#embeds#langs=["ocaml","haskell"]
 let g:pandoc#folding#mode = 'marker'
 let g:pandoc#syntax#conceal#use = 0
 let g:pandoc#modules#disabled = ["folding", "chdir"]
+
+"markdown-composer
+let g:markdown_composer_open_browser = 0
+"let g:markdown_composer_autostart = 0
+"let g:markdown_composer_external_renderer =
+"    \ 'pandoc -s -f markdown+lists_without_preceding_blankline+ignore_line_breaks -t html'
 "}}}
 
 "Scheme{{{
