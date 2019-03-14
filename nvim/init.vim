@@ -2,53 +2,52 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-return
+
+"TODO https://bluz71.github.io/2017/05/21/vim-plugins-i-like.html
 
 "Plug{{{
 call plug#begin('~/.config/nvim/plugged')
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'Shougo/vimproc.vim', {'do' : 'make'} " いずれ消したい
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/denite.nvim'
-Plug 'Shougo/neoyank.vim'
+Plug 'Shougo/deol.nvim'
 Plug 'Shougo/defx.nvim'
-Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/deoplete.nvim'
-Plug 'junegunn/fzf.vim'
-"Plug 'Shougo/deoplete-tabnine', {'do' : './install.sh'}
-"Plug 'zxqfl/tabnine-vim'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
-Plug 'thinca/vim-quickrun'
 Plug 'kana/vim-submode'
 Plug 'benekastah/neomake'
 Plug 'kassio/neoterm'
-""" Git TODO 整理
+"""便利
+Plug 'vim-scripts/Align'
+Plug 'junegunn/vim-easy-align'
+Plug 'kana/vim-smartinput'
+Plug 'thinca/vim-quickrun'      " TODO neomakeに乗り換え
+Plug 'osyo-manga/shabadou.vim'  " 同上
+Plug 'osyo-manga/vim-watchdogs' " 同上
+Plug 'tomtom/tcomment_vim'
+Plug 'scrooloose/nerdtree'
+Plug 'machakann/vim-sandwich'
+Plug 'itchyny/lightline.vim'
+Plug 'AndrewRadev/linediff.vim'
+Plug 'machakann/vim-highlightedyank'
+Plug 'Yggdroot/indentLine'
+Plug 'losingkeys/vim-niji'
+""Git TODO 整理
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'jreybert/vimagit'
 Plug 'lambdalisue/gina.vim'
-"""便利
-Plug 'Shougo/deol.nvim'
-Plug 'vim-scripts/Align'
-Plug 'junegunn/vim-easy-align'
-Plug 'kana/vim-smartinput'
-Plug 'kana/vim-textobj-user'
-Plug 'osyo-manga/vim-textobj-multiblock'
-Plug 'osyo-manga/shabadou.vim'
-Plug 'osyo-manga/vim-watchdogs'
-Plug 'tomtom/tcomment_vim'
-Plug 'scrooloose/nerdtree'
-Plug 'tpope/vim-surround'
-Plug 'itchyny/lightline.vim'
+""Motion
+Plug 'Lokaltog/vim-easymotion'
+Plug 'rhysd/clever-f.vim'
 """nvim-hs
 Plug 'neovimhaskell/nvim-hs.vim'
 Plug '~/.config/nvim/nvim-hs-libs/nvim-hs-lsp'
 Plug '~/.config/nvim/nvim-hs-libs/ghc-mod-nvim'
+"Plug '~/.config/nvim/nvim-hs-libs/nvim-hs-hhp'
 Plug '~/.config/nvim/nvim-hs-libs/ghcid-nvim-simple'
-"""Motion
-Plug 'Lokaltog/vim-easymotion'
-Plug 'rhysd/clever-f.vim'
 """filetype
 ""Haskell
 Plug 'neovimhaskell/haskell-vim'
@@ -58,7 +57,6 @@ Plug 'Hogeyama/ghc-mod-deoplete'
 Plug 'Hogeyama/unite-haddock'
 Plug 'Hogeyama/unite-haskellimport'
 ""Elm
-"Plug 'ElmCast/elm-vim'
 Plug 'carmonw/elm-vim'
 Plug 'w0rp/ale'
 ""PureScript
@@ -66,16 +64,19 @@ Plug 'purescript-contrib/purescript-vim'
 Plug 'FrigoEU/psc-ide-vim'
 ""Dhall
 Plug 'vmchale/dhall-vim'
+"""Python
+Plug 'numirias/semshi'
+Plug 'vim-python/python-syntax'
 ""Scala
 Plug 'derekwyatt/vim-scala'
 "Plug 'ensime/ensime-vim'
 "Plug 'ktvoelker/sbt-vim'
-Plug 'rhysd/vim-llvm'
 ""Idris Agda
 Plug 'idris-hackers/idris-vim'
 Plug 'raichoo/agda-vim'
+""Erlang
+Plug 'vim-erlang/vim-erlang-runtime'
 ""MarkDown
-"Plug 'Bakudankun/previm'
 Plug 'tyru/open-browser.vim'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
@@ -84,7 +85,6 @@ Plug 'jvoorhis/coq.vim'
 Plug 'eagletmt/coqtop-vim'
 ""Rust
 Plug 'rust-lang/rust.vim'
-Plug 'racer-rust/vim-racer'
 ""Others
 Plug 'bohlender/vim-smt2'
 Plug 'jelera/vim-javascript-syntax'
@@ -96,13 +96,11 @@ Plug 'zsoltf/vim-maui'
 Plug 'rakr/vim-one'
 Plug 'w0ng/vim-hybrid'
 Plug 'tyrannicaltoucan/vim-deep-space'
-"true_color
-Plug 'chriskempson/base16-vim'
+Plug 'chriskempson/base16-vim' "true_color
 """otameshi
+Plug 'vim-scripts/paredit.vim'
+Plug 'tomtom/tlib_vim'
 Plug 'dhruvasagar/vim-table-mode'
-Plug 'machakann/vim-highlightedyank'
-Plug 'Yggdroot/indentLine'
-Plug 'losingkeys/vim-niji'
 Plug 'neovim/node-host', { 'do': 'npm install -g neovim' }
 Plug 'euclio/vim-markdown-composer', { 'do': 'cargo build --release' }
 call plug#end()
@@ -111,8 +109,8 @@ call plug#end()
 "Color"{{{
 syntax on
 set background=dark
-"colorscheme deep-space
-colorscheme maui
+colorscheme deep-space
+" colorscheme maui
 
 if 1 "true color
   set termguicolors
@@ -178,8 +176,10 @@ set autoindent
 set linebreak
 set breakindent
 set breakindentopt=shift:0
-"set sbr=\ \ >\
-set sbr=
+set showbreak=..
+" set showbreak=\ \ 
+" set showbreak=\ \ >\
+" set showbreak=
 set noswapfile
 set nobackup
 set noundofile
@@ -225,29 +225,21 @@ autocmd VimEnter * call SetLightlineConfig()
 "" Plugin
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-return
-
-"nvim-hs {{{
-" if has('nvim') " This way, you can also put this in your plain vim config
-"  " function which starts a nvim-hs instance with the supplied name
-"  function! s:RequireHaskellHost(name)
-"    " It is important that the current working directory (cwd) is where
-"    " your configuration files are.
-"    return jobstart(['stack', 'exec', '--', 'nvim-hs', '-l', '/tmp/nvim-hs.log', '-v', 'DEBUG', a:name.name], {'rpc': v:true, 'cwd': expand('$HOME') . '/.config/nvim'})
-"  endfunction
-"
-"  " Register a plugin host that is started when a haskell file is opened
-"  call remote#host#Register('haskell', "*.l\?hs", function('s:RequireHaskellHost'))
-"
-"  " But if you need it for other files as well, you may just start it
-"  " forcefully by requiring it
-"  let hc=remote#host#Require('haskell')
-" endif
+"おためし{{{
+nmap s <nop>
+xmap s <nop>
 "}}}
+
 
 "ale{{{
 let g:ale_enabled = 0
-let g:ale_pattern_options = {'\.elm$': {'ale_enabled': 1}}
+let g:ale_set_quickfix = 1
+let g:ale_open_list = 1
+let g:ale_keep_list_window_open = 1
+let g:ale_pattern_options = {
+  \ '\.elm$': {'ale_enabled': 1},
+  \ }
+  "\ '\.py$': {'ale_enabled': 1}
 "autocmd FileType elm let b:ale_enabled = 1 "あれこれどうして駄目なの
 "}}}
 
@@ -399,6 +391,11 @@ let g:quickrun_config = {
   \   'cmdopt' : 'runghc',
   \   'exec' : '%c %o %s',
   \   },
+  \ 'python' : {
+  \   'command' : 'python3',
+  \   'cmdopt' : '',
+  \   'exec' : '%c %o %s',
+  \   },
   \ 'purescript' : {
   \   'command' : 'pulp',
   \   'cmdopt' : 'build',
@@ -463,7 +460,8 @@ let g:neomake_ocaml_maker = {
 "}}}
 
 "neoterm{{{
-let g:neoterm_size       = 10
+let g:neoterm_default_mod = "botright"
+let g:neoterm_size = 10
 let g:neoterm_autoinsert = 0
 nnoremap <F12> :Ttoggle<CR><C-w>ji
 "}}}
@@ -540,7 +538,6 @@ nnoremap [gitgutter]s :GitGutterStageHunk<CR>
 "}}}
 
 "smartinput{{{
-".dein/autoload/smartinput.vim smartinput#define_default_rules()を編集
 let g:smartinput_no_default_key_mappings=0
 call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
 call smartinput#map_to_trigger('i', '<CR>', '<CR>', '<CR>')
@@ -577,20 +574,61 @@ let use_vim_lsp               = 0
 
 """ 'Hogeyama/nvim-hs-lsp'
 if use_nvim_hs_lsp
-  let g:NvimHsLsp_serverCommands = {
-      \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-      \ 'ocaml': ['ocaml-language-server', '--stdio'],
-      \ 'haskell': ['hie-wrapper', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
-      \ 'elm' : [ 'elm-language-server', '-l', '/tmp/LanguageServer.log'],
-      \ 'purescript': ["purescript-language-server", "--stdio"],
-      \ 'c': ['clangd-6.0']
-      \ }
-  let g:NvimHsLsp_autoLoadQuickfix = 1
-  let g:nvim_hs_lsp_denite_enable = 1
+  " g:NvimHsLsp_languageConfig {{{
+  let g:NvimHsLsp_languageConfig = {
+        \   '_': {
+        \     'settingsPath': expand("$HOME/.config/nvim/settings.json"),
+        \     'autoloadQuickfix': v:true,
+        \   },
+        \   'haskell': {
+        \     'serverCommand':
+        \       ['hie-wrapper', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
+        \     'formattingOptions': {
+        \       'tabSize': 2,
+        \       'insertSpaces': v:true,
+        \     },
+        \   },
+        \   'rust': {
+        \     'serverCommand':
+        \       ['rustup', 'run', 'stable', 'rls'],
+        \     'formattingOptions': {
+        \       'tabSize': 4,
+        \       'insertSpaces': v:true,
+        \     },
+        \   },
+        \   'ocaml': {
+        \     'serverCommand':
+        \       ['ocaml-language-server', '--stdio'],
+        \     'formattingOptions': {
+        \       'tabSize': 2,
+        \       'insertSpaces': v:true,
+        \     },
+        \   },
+        \   'elm': {
+        \     'serverCommand':
+        \       [ 'elm-language-server', '-l', '/tmp/LanguageServer.log'],
+        \     'formattingOptions': {
+        \       'tabSize': 2,
+        \       'insertSpaces': v:true,
+        \     },
+        \   },
+        \   'python': {
+        \     'serverCommand':
+        \       ['pyls', '-v', '--log-file', '/tmp/pyls.log'],
+        \     'formattingOptions': {
+        \       'tabSize': 4,
+        \       'insertSpaces': v:true,
+        \     },
+        \   },
+        \ }
+  "}}}
   nnoremap [nvim-hs-lsp] <nop>
+  xnoremap [nvim-hs-lsp] <nop>
   nmap     <C-l> [nvim-hs-lsp]
   xmap     <C-l> [nvim-hs-lsp]
   nnoremap [nvim-hs-lsp]i :NvimHsLspInitialize<CR>
+  nnoremap [nvim-hs-lsp]s :NvimHsLspStartServer<CR>
+  nnoremap [nvim-hs-lsp]q :NvimHsLspStopServer<CR>
   nnoremap [nvim-hs-lsp]h :NvimHsLspInfo<CR>
   nnoremap <C-h>          :NvimHsLspInfo<CR>
   nnoremap [nvim-hs-lsp]H :NvimHsLspHover<CR>
@@ -600,9 +638,8 @@ if use_nvim_hs_lsp
   nnoremap [nvim-hs-lsp]f :NvimHsLspFormatting!<CR>
   xnoremap [nvim-hs-lsp]f :NvimHsLspFormatting<CR>
   nnoremap [nvim-hs-lsp]a :NvimHsLspCodeAction<CR>
-  " nnoremap [nvim-hs-lsp]a :execute "NvimHsLspCodeAction" <bar>
-  "                        \ execute "Denite -no-empty -auto-resize -mode=normal nvim_hs_lsp"<CR>
-
+  nnoremap <F2>           :NvimHsLspRename 
+  inoremap <C-o>          <C-x><C-o>
 endif
 
 """ 'autozimu/LanguageClient-neovim'
@@ -660,16 +697,16 @@ autocmd FileType qf let g:airline_disabled = 1
 "}}}
 
 " indentLine {{{
-let g:indentLine_enabled = 1
+let g:indentLine_enabled = 0
 let g:indentLine_char = '⁞' "U+205E VERTICAL FOUR DOTS
 let g:indentLine_char = '⏐' "U+23D0 VERTICAL LINE EXTENSION
 "}}}
 
 "multiblock{{{
-omap ab <Plug>(textobj-multiblock-a)
-omap ib <Plug>(textobj-multiblock-i)
-vmap ab <Plug>(textobj-multiblock-a)
-vmap ib <Plug>(textobj-multiblock-i)
+" omap ab <Plug>(textobj-multiblock-a)
+" omap ib <Plug>(textobj-multiblock-i)
+" vmap ab <Plug>(textobj-multiblock-a)
+" vmap ib <Plug>(textobj-multiblock-i)
 "}}}
 
 "EasyMotion{{{
@@ -685,7 +722,8 @@ let g:clever_f_smart_case = 1
 "}}}
 
 "vim-niji{{{
-let g:niji_matching_filetypes = ['lisp', 'smt2']
+let g:niji_matching_filetypes = ['lisp', 'smt2', 'python']
+autocmd FileType smt2 call PareditInitBuffer()
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -746,6 +784,13 @@ autocmd FileType haskell nnoremap <buffer> ,H :Unite hoogle<CR>
 autocmd FileType haskell nnoremap <buffer> ,h :Unite haskellimport<CR>
 
 ""ghcid-nvim-hs
+" TODO ghcidのautoreload
+function! GhcidAutoReload() abort
+  augroup ghcid_autoreload
+    autocmd!
+    autocmd InsertLeave *.hs GhcidCheck
+  augroup END
+endfunction
 function! GhcidExecMain() abort
   let l:lines = getline(1, line('$'))
   let l:moduleLine = matchstr(l:lines, '^module')
@@ -763,8 +808,8 @@ autocmd FileType haskell nnoremap <buffer> <C-q>     :call GhcidExecMain()<CR>
 
 ""other filetype
 autocmd FileType cabal   setlocal expandtab tabstop=4
-au! BufNewFile,BufFilePRe,BufRead *.x set filetype=alex
-au! BufNewFile,BufFilePRe,BufRead *.y set filetype=happy
+autocmd! BufNewFile,BufFilePRe,BufRead *.x set filetype=alex
+autocmd! BufNewFile,BufFilePRe,BufRead *.y set filetype=happy
 "}}}
 
 "OCaml"{{{
@@ -852,6 +897,7 @@ let g:vimtex_compiler_latexmk      = {
 let g:vimtex_quickfix_latexlog = { 'overfull' : 0 }
 let g:vimtex_index_split_pos   = 'vert botright'
 let g:vimtex_index_split_width = 40
+let g:vimtex_compiler_progname = 'nvr'
 
 "有用そう
 "   <localleader>lY  |<plug>(vimtex-labels-toggle)|        `n`
@@ -861,15 +907,23 @@ let g:vimtex_index_split_width = 40
 
 "MarkDown/Pandoc{{{
 augroup pandoc_syntax
-  au! BufNewFile,BufFilePRe,BufRead *.md set filetype=pandoc
+  autocmd! BufNewFile,BufFilePRe,BufRead *.md set filetype=pandoc
 augroup END
 autocmd FileType pandoc setlocal et ts=2 sw=2 sts=2 foldmethod=marker
 autocmd FileType pandoc let &spell = 0
+" TODO errorformat
+let g:neomake_pandoc_maker = {
+    \ 'exe': 'pandoc-wrapper',
+    \ 'args': ['%t'],
+    \ 'errorformat': '',
+    \ 'process_output': {-> []},
+    \ }
+"autocmd InsertLeave *.md Neomake pandoc
 
 let g:previm_enable_realtime = 1
 let g:vim_markdown_math = 1
-let g:pandoc#syntax#codeblocks#embeds#use=1
-let g:pandoc#syntax#codeblocks#embeds#langs=["ocaml","haskell"]
+let g:pandoc#syntax#codeblocks#embeds#use = 1
+let g:pandoc#syntax#codeblocks#embeds#langs = ["ocaml","haskell"]
 let g:pandoc#folding#mode = 'marker'
 let g:pandoc#syntax#conceal#use = 0
 let g:pandoc#modules#disabled = ["folding", "chdir"]
@@ -887,20 +941,20 @@ autocmd FileType scheme setlocal et ts=2 sts=2 sw=2
 "}}}
 
 "Prolog{{{
-au! BufNewFile,BufFilePRe,BufRead *.pl set filetype=prolog
+autocmd! BufNewFile,BufFilePRe,BufRead *.pl set filetype=prolog
 "}}}
 
 "Rust "{{{
-let g:racer_cmd = "~/.cargo/bin/racer"
+"let g:racer_cmd = "~/.cargo/bin/racer"
 "let g:rustfmt_autosave             = 0
 "let g:rust_recommended_style       = 1
 "let g:racer_experimental_completer = 0
 "let g:rust_fold                    = 0
 "let g:racer_insert_paren           = 0
-autocmd FileType rust nmap <buffer> <C-j> <Plug>(rust-def)
-autocmd FileType rust nmap <buffer> gs    <Plug>(rust-def-split)
-autocmd FileType rust nmap <buffer> gv    <Plug>(rust-def-vertical)
-autocmd FileType rust nmap <buffer> gK    <Plug>(rust-doc)
+"autocmd FileType rust nmap <buffer> <C-j> <Plug>(rust-def)
+"autocmd FileType rust nmap <buffer> gs    <Plug>(rust-def-split)
+"autocmd FileType rust nmap <buffer> gv    <Plug>(rust-def-vertical)
+"autocmd FileType rust nmap <buffer> gK    <Plug>(rust-doc)
 "let g:racer_no_default_keymappings=0
 ""nvim_hs_lsp
 if use_nvim_hs_lsp
@@ -942,6 +996,25 @@ let g:rainbow_conf = {
 "\  'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
 "\  'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
 "\       'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
+"}}}
+
+" Python{{{
+let g:python_highlight_all = 1
+let g:ale_python_autopep8_executable = ''
+autocmd FileType python Python3Syntax
+function! NvimHsLspFormattingPython3() abort
+  NvimHsLspFormatting!
+  Python3Syntax
+endfunction
+autocmd FileType python nnoremap [nvim_hs_lsp]f call NvimHsLspFormattingPython3()
+autocmd InsertLeave,BufNewFile,BufFilePRe,BufRead *.py Python3Syntax
+if use_nvim_hs_lsp
+  autocmd FileType python setlocal omnifunc=NvimHsLspComplete
+  autocmd FileType python inoremap <buffer> <C-o> <C-x><C-o>
+  autocmd FileType python nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
+  autocmd FileType python nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
+  autocmd FileType python nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
+endif
 "}}}
 
 "fzf{{{
@@ -1046,7 +1119,7 @@ nnoremap B b
 nnoremap e E
 nnoremap E e
 """easymotion
-nmap s <Plug>(easymotion-s2)
+"nmap s <Plug>(easymotion-s2)
 "nmap / <Plug>(easymotion-sn)
 nmap w <Plug>(easymotion-bd-w)
 nmap W <Plug>(easymotion-bd-W)
@@ -1121,8 +1194,8 @@ function! CRecursive(cmd) abort "{{{
 endfunction "}}}
 nnoremap <C-n> :CNextRecursive<CR>
 nnoremap <C-p> :CPreviousRecursive<CR>
-nnoremap <C-n> :LNextRecursive<CR>
-nnoremap <C-p> :LPreviousRecursive<CR>
+" nnoremap <C-n> :LNextRecursive<CR>
+" nnoremap <C-p> :LPreviousRecursive<CR>
 
 let g:init_vim = $XDG_CONFIG_HOME != ""
                   \ ? $XDG_CONFIG_HOME   . "/nvim/init.vim"

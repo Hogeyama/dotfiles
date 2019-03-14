@@ -1,4 +1,10 @@
 
+snippet     parser
+options     head
+    fn ${1:func}<'b>(&'b self${2:args}) -> impl Parser<Input=I,Output=${3:O}> + Captures<'a> + 'b {
+        ${0:body}
+    }
+
 snippet     pubfn
 abbr        pubfn () {}
 options     head

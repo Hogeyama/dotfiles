@@ -1,9 +1,7 @@
-
 Config { font = "xft:Rounded Mgen+ 1mn:size=12"
        , bgColor = "#1a1e1b"
        , fgColor = "#676767"
-       -- , position = Static { xpos = 0 , ypos = 720, width = 1920, height = 20 }
-       , position = Static { xpos = 0 , ypos = 0, width = 1920, height = 20 }
+       , position = Static { xpos = 1920 , ypos = 0, width = 1920, height = 20 }
        , lowerOnStart = True
        , commands = [ Run Network "wlan0" [ "-t"       , " ↓<rx> : ↑<tx> (Kb/s)"
                                           , "-L"       , "40"
@@ -45,9 +43,6 @@ Config { font = "xft:Rounded Mgen+ 1mn:size=12"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %StdinReader% }{≫%wlan0%  ≫%cpu%  ≫%memory%  ≫Dropbox: %dropbox%  ≫%volume%  ≫%battery%  <fc=#c7a273>%date%</fc> "
+       , template = " %StdinReader% }{≫%cpu%  ≫%memory%  ≫Dropbox: %dropbox%  ≫%volume%  ≫%battery%  <fc=#c7a273>%date%</fc> "
        }
-
-
-
 -- vim:ft=haskell:ambiwidth=double:

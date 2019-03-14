@@ -128,46 +128,82 @@ function cd_starting_directory() {
 # その他
 ##############################################
 
+# opt
+setopt NO_HUp
+setopt NO_CHECK_JOBS
+unsetopt correctall
+
 # ssh
 export SSH_KEY_PATH="~/.ssh/rsa_id"
 
 # zsh_alias
 source "$HOME/.zsh_alias"
 
-# OPAM configuration
-. /home/hogeyama/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-eval `opam config env`
-
 # stack completion
 autoload bashcompinit
-
 eval "$(stack --bash-completion-script stack)"
-
-setopt NO_HUp
-setopt NO_CHECK_JOBS
-
-unsetopt correctall
 
 export VTE_CJK_WIDTH=1
 
 # for mochi
 export LD_LIBRARY_PATH=$HOME/.opam/4.03.0/lib/z3:/usr/lib:/usr/local/lib:$LD_LIBRARY_PATH
 
+# xmodmap
 xmodmap $HOME/.Xmodmap 2> /dev/null; :
-
-export OCAMLFIND_IGNORE_DUPS_IN=$HOME/.opam/4.03.0/lib/ocaml/compiler-libs
-export RUST_BACKTRACE=1
 
 # autojump
 [[ -s /home/hogeyama/.autojump/etc/profile.d/autojump.sh ]] \
   && source /home/hogeyama/.autojump/etc/profile.d/autojump.sh
 autoload -U compinit && compinit -u
 
+# wine
+export WINEPREFIX="$HOME/.wine"
+
 # fzf config
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(nvr {})+abort'"
 
-export SLACK_NOTIFY_URL="https://hooks.slack.com/services/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"
+# Haskell
+#########
+
+# ghcup
+source $HOME/.ghcup/env
 
 # haskell-ide-engine
 export cabal_helper_libexecdir=$HOME/.local/bin
+
+# OCaml
+#######
+
+# OPAM configuration
+. /home/hogeyama/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+eval `opam config env`
+export OCAMLFIND_IGNORE_DUPS_IN=$HOME/.opam/4.03.0/lib/ocaml/compiler-libs
+
+# rust
+######
+
+export RUST_BACKTRACE=1
+
+# Erlang
+########
+
+source $HOME/.evm/scripts/evm
+
+################################################################################
+# その他
+################################################################################
+
+# ディスプレイ繋いだ時に画面がバグる対策
+if [ -f $HOME/.fehbg ]
+then
+  $HOME/.fehbg
+fi
+
+################################################################################
+# bindkey
+################################################################################
+
+bindkey "^K" up-line-or-history
+bindkey "^J" down-line-or-history
+

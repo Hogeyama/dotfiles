@@ -249,6 +249,8 @@ $endif$
 \setlength{\abovedisplayskip}{0pt}
 $if(title)$
 \maketitle
+\newpage
+\bibliography{mybib}
 $endif$
 $if(abstract)$
 \begin{abstract}

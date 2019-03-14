@@ -247,7 +247,7 @@ $endif$
 \begin{document}%{{{
 \setlength{\abovedisplayskip}{0pt}
 $if(title)$
-\maketitle
+\maketitle\newpage
 $endif$
 $if(abstract)$
 \begin{abstract}
