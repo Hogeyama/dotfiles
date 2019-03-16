@@ -568,127 +568,80 @@ call smartinput#define_rule({
 "}}}
 
 "LSP {{{
-let use_nvim_hs_lsp           = 1
-let use_LanguageClient_neovim = 0
-let use_vim_lsp               = 0
-
 """ 'Hogeyama/nvim-hs-lsp'
-if use_nvim_hs_lsp
-  " g:NvimHsLsp_languageConfig {{{
-  let g:NvimHsLsp_languageConfig = {
-        \   '_': {
-        \     'settingsPath': expand("$HOME/.config/nvim/settings.json"),
-        \     'autoloadQuickfix': v:true,
-        \   },
-        \   'haskell': {
-        \     'serverCommand':
-        \       ['hie-wrapper', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
-        \     'formattingOptions': {
-        \       'tabSize': 2,
-        \       'insertSpaces': v:true,
-        \     },
-        \   },
-        \   'rust': {
-        \     'serverCommand':
-        \       ['rustup', 'run', 'stable', 'rls'],
-        \     'formattingOptions': {
-        \       'tabSize': 4,
-        \       'insertSpaces': v:true,
-        \     },
-        \   },
-        \   'ocaml': {
-        \     'serverCommand':
-        \       ['ocaml-language-server', '--stdio'],
-        \     'formattingOptions': {
-        \       'tabSize': 2,
-        \       'insertSpaces': v:true,
-        \     },
-        \   },
-        \   'elm': {
-        \     'serverCommand':
-        \       [ 'elm-language-server', '-l', '/tmp/LanguageServer.log'],
-        \     'formattingOptions': {
-        \       'tabSize': 2,
-        \       'insertSpaces': v:true,
-        \     },
-        \   },
-        \   'python': {
-        \     'serverCommand':
-        \       ['pyls', '-v', '--log-file', '/tmp/pyls.log'],
-        \     'formattingOptions': {
-        \       'tabSize': 4,
-        \       'insertSpaces': v:true,
-        \     },
-        \   },
-        \ }
-  "}}}
-  nnoremap [nvim-hs-lsp] <nop>
-  xnoremap [nvim-hs-lsp] <nop>
-  nmap     <C-l> [nvim-hs-lsp]
-  xmap     <C-l> [nvim-hs-lsp]
-  nnoremap [nvim-hs-lsp]i :NvimHsLspInitialize<CR>
-  nnoremap [nvim-hs-lsp]s :NvimHsLspStartServer<CR>
-  nnoremap [nvim-hs-lsp]q :NvimHsLspStopServer<CR>
-  nnoremap [nvim-hs-lsp]h :NvimHsLspInfo<CR>
-  nnoremap <C-h>          :NvimHsLspInfo<CR>
-  nnoremap [nvim-hs-lsp]H :NvimHsLspHover<CR>
-  nnoremap [nvim-hs-lsp]j :NvimHsLspDefinition<CR>
-  nnoremap [nvim-hs-lsp]w :NvimHsLspLoadQuickfix<CR>
-  nnoremap [nvim-hs-lsp]r :NvimHsLspReferences<CR>
-  nnoremap [nvim-hs-lsp]f :NvimHsLspFormatting!<CR>
-  xnoremap [nvim-hs-lsp]f :NvimHsLspFormatting<CR>
-  nnoremap [nvim-hs-lsp]a :NvimHsLspCodeAction<CR>
-  nnoremap <F2>           :NvimHsLspRename 
-  inoremap <C-o>          <C-x><C-o>
-endif
-
-""" 'autozimu/LanguageClient-neovim'
-if use_LanguageClient_neovim
-  let g:LanguageClient_autoStart = 0
-  let g:LanguageClient_serverCommands = {
-      \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-      \ 'ocaml': ['ocaml-language-server', '--stdio'],
-      \ 'haskell': ['stack', 'exec', '--', 'hie', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
+" g:NvimHsLsp_languageConfig {{{
+let g:NvimHsLsp_languageConfig = {}
+let g:NvimHsLsp_languageConfig['_'] = {
+      \   'settingsPath': expand("$HOME/.config/nvim/settings.json"),
+      \   'autoloadQuickfix': v:true,
       \ }
-  let g:LanguageClient_loggingLevel = 'DEBUG'
-  autocmd FileType haskell setlocal omnifunc=LanguageClient#complete
-  autocmd FileType haskell nnoremap <buffer> gi    :call LanguageClient_textDocument_hover()<CR>
-  autocmd FileType haskell nnoremap <buffer> <C-j> :call LanguageClient_textDocument_definition()<CR>
-  autocmd FileType haskell nnoremap <buffer> <F2>  :call LanguageClient_textDocument_rename()<CR>
-  autocmd FileType haskell inoremap <buffer> <C-o> <C-x><C-o>
-  autocmd FileType rust setlocal omnifunc=LanguageClient#complete
-  autocmd FileType rust nnoremap <buffer> Q     :call LanguageClient_textDocument_hover()<CR>
-  autocmd FileType rust nnoremap <buffer> <C-j> :call LanguageClient_textDocument_definition()<CR>
-  autocmd FileType rust nnoremap <buffer> <F2>  :call LanguageClient_textDocument_rename()<CR>
-  autocmd FileType rust inoremap <buffer> <C-o> <C-x><C-o>
-  autocmd FileType rust setlocal foldmethod=marker
-endif
-
-""" 'prabirshrestha/vim-lsp'
-if use_vim_lsp
-  let g:lsp_auto_enable       = 1
-  let g:lsp_async_completion  = 1
-  let g:lsp_log_verbose       = 1
-  let g:lsp_log_file          = '/tmp/vim-lsp.log'
-  let g:asyncomplete_log_file = '/tmp/vim-lsp-asyncomplete.log'
-  autocmd User lsp_setup call lsp#register_server({
-      \ 'name': 'hie',
-      \ 'cmd': {server_info->['stack', 'exec', '--', 'hie', '--lsp', '-d', '-l', '/tmp/LanguageServer.log']},
-      \ 'whitelist': ['haskell'],
-      \ })
-  autocmd User lsp_setup call lsp#register_server({
-      \ 'name': 'rls',
-      \ 'cmd': {server_info->['rustup', 'run', 'nightly', 'rls']},
-      \ 'whitelist': ['rust'],
-      \ })
-  autocmd FileType haskell setlocal omnifunc=lsp#complete
-  autocmd FileType haskell nnoremap <buffer> Q        :LspHover<CR>
-  autocmd FileType haskell nnoremap <buffer> gi       :LspHover<CR>
-  autocmd FileType haskell nnoremap <buffer> <C-j>    :LspDefinition<CR>
-  autocmd FileType haskell nnoremap <buffer> <F2>     :LspReferences<CR>
-  autocmd FileType haskell nnoremap <buffer> <Space>w :update!<CR>:LspDocumentDiagnostics<CR>
-  autocmd FileType haskell inoremap <buffer> <C-o> <C-x><C-o>
-endif
+let g:NvimHsLsp_languageConfig['haskell'] = {
+      \ 'serverCommand':
+      \     ['hie-wrapper', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
+      \ 'formattingOptions': {
+      \     'tabSize': 2,
+      \     'insertSpaces': v:true,
+      \   },
+      \ }
+let g:NvimHsLsp_languageConfig['rust'] = {
+      \ 'serverCommand':
+      \     ['rustup', 'run', 'stable', 'rls'],
+      \ 'formattingOptions': {
+      \     'tabSize': 4,
+      \     'insertSpaces': v:true,
+      \   },
+      \ }
+let g:NvimHsLsp_languageConfig['ocaml'] = {
+      \ 'serverCommand':
+      \     ['ocaml-language-server', '--stdio'],
+      \ 'formattingOptions': {
+      \     'tabSize': 2,
+      \     'insertSpaces': v:true,
+      \   },
+      \ }
+let g:NvimHsLsp_languageConfig['elm'] = {
+      \ 'serverCommand':
+      \   [ 'elm-language-server', '-l', '/tmp/LanguageServer.log'],
+      \ 'formattingOptions': {
+      \   'tabSize': 2,
+      \   'insertSpaces': v:true,
+      \   },
+      \ }
+let g:NvimHsLsp_languageConfig['python'] = {
+      \ 'serverCommand':
+      \     ['pyls', '-v', '--log-file', '/tmp/pyls.log'],
+      \ 'formattingOptions': {
+      \     'tabSize': 4,
+      \     'insertSpaces': v:true,
+      \   },
+      \ }
+let g:NvimHsLsp_languageConfig['erlang'] = {
+      \ 'serverCommand':
+      \     ['erlang_ls', '-t', 'stdio', '-v', '10'],
+      \ 'formattingOptions': {
+      \     'tabSize': 2,
+      \     'insertSpaces': v:true,
+      \   },
+      \ }
+"}}}
+nnoremap [nvim-hs-lsp] <nop>
+xnoremap [nvim-hs-lsp] <nop>
+nmap     <C-l> [nvim-hs-lsp]
+xmap     <C-l> [nvim-hs-lsp]
+nnoremap [nvim-hs-lsp]i :NvimHsLspInitialize<CR>
+nnoremap [nvim-hs-lsp]s :NvimHsLspStartServer<CR>
+nnoremap [nvim-hs-lsp]q :NvimHsLspStopServer<CR>
+nnoremap [nvim-hs-lsp]h :NvimHsLspInfo<CR>
+nnoremap <C-h>          :NvimHsLspInfo<CR>
+nnoremap [nvim-hs-lsp]H :NvimHsLspHover<CR>
+nnoremap [nvim-hs-lsp]j :NvimHsLspDefinition<CR>
+nnoremap [nvim-hs-lsp]w :NvimHsLspLoadQuickfix<CR>
+nnoremap [nvim-hs-lsp]r :NvimHsLspReferences<CR>
+nnoremap [nvim-hs-lsp]f :NvimHsLspFormatting!<CR>
+xnoremap [nvim-hs-lsp]f :NvimHsLspFormatting<CR>
+nnoremap [nvim-hs-lsp]a :NvimHsLspCodeAction<CR>
+nnoremap <F2>           :NvimHsLspRename 
+inoremap <C-o>          <C-x><C-o>
 
 "QuickFixを開けっ放しにする場合は
 autocmd InsertLeave * let g:airline_disabled = 1
@@ -732,12 +685,10 @@ autocmd FileType smt2 call PareditInitBuffer()
 
 "C"{{{
 autocmd FileType c setlocal expandtab ts=4 sts=4 sw=4
-if use_nvim_hs_lsp
-  autocmd FileType c setlocal omnifunc=NvimHsLspComplete
-  autocmd FileType c nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
-  autocmd FileType c nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
-  autocmd FileType c nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
-endif
+autocmd FileType c setlocal omnifunc=NvimHsLspComplete
+autocmd FileType c nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
+autocmd FileType c nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
+autocmd FileType c nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
 "}}}
 
 "sh"{{{
@@ -763,12 +714,10 @@ let g:haskell_backpack = 1
 "let g:haskell_indent_disable = 1
 
 ""nvim_hs_lsp
-if use_nvim_hs_lsp
-  autocmd FileType haskell setlocal omnifunc=NvimHsLspComplete
-  autocmd FileType haskell nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
-  autocmd FileType haskell nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
-  autocmd FileType haskell nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
-endif
+autocmd FileType haskell setlocal omnifunc=NvimHsLspComplete
+autocmd FileType haskell nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
+autocmd FileType haskell nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
+autocmd FileType haskell nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
 
 ""ghc-mod-nvim
 "autocmd FileType haskell nnoremap <buffer> ,t :update!<CR>:NeoGhcModType<CR>
@@ -826,12 +775,10 @@ autocmd FileType ocaml nnoremap <buffer> ,w :update!<CR>:MerlinErrorCheck<CR>
 autocmd FileType ocaml nnoremap <buffer> <C-j> :update!<CR>:MerlinLocate<CR>
 autocmd FileType ocaml nnoremap <buffer> ^ :noh<CR>a<Esc>
 ""nvim_hs_lsp
-if use_nvim_hs_lsp
-  autocmd FileType ocaml let g:NvimHsLsp_autoLoadQuickfix = 0
-  autocmd FileType ocaml setlocal omnifunc=NvimHsLspComplete
-  autocmd FileType ocaml nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
-  autocmd FileType ocaml nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
-endif
+autocmd FileType ocaml let g:NvimHsLsp_autoLoadQuickfix = 0
+autocmd FileType ocaml setlocal omnifunc=NvimHsLspComplete
+autocmd FileType ocaml nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
+autocmd FileType ocaml nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
 "config for merlin and ocp-indent
 let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
@@ -957,12 +904,10 @@ autocmd! BufNewFile,BufFilePRe,BufRead *.pl set filetype=prolog
 "autocmd FileType rust nmap <buffer> gK    <Plug>(rust-doc)
 "let g:racer_no_default_keymappings=0
 ""nvim_hs_lsp
-if use_nvim_hs_lsp
-  autocmd FileType rust setlocal omnifunc=NvimHsLspComplete
-  autocmd FileType rust nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
-  autocmd FileType rust nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
-  autocmd FileType rust nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
-endif
+autocmd FileType rust setlocal omnifunc=NvimHsLspComplete
+autocmd FileType rust nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
+autocmd FileType rust nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
+autocmd FileType rust nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
 "}}}
 
 "Scala {{{
@@ -1008,13 +953,11 @@ function! NvimHsLspFormattingPython3() abort
 endfunction
 autocmd FileType python nnoremap [nvim_hs_lsp]f call NvimHsLspFormattingPython3()
 autocmd InsertLeave,BufNewFile,BufFilePRe,BufRead *.py Python3Syntax
-if use_nvim_hs_lsp
-  autocmd FileType python setlocal omnifunc=NvimHsLspComplete
-  autocmd FileType python inoremap <buffer> <C-o> <C-x><C-o>
-  autocmd FileType python nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
-  autocmd FileType python nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
-  autocmd FileType python nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
-endif
+autocmd FileType python setlocal omnifunc=NvimHsLspComplete
+autocmd FileType python inoremap <buffer> <C-o> <C-x><C-o>
+autocmd FileType python nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
+autocmd FileType python nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
+autocmd FileType python nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
 "}}}
 
 "fzf{{{
