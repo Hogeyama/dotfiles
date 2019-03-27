@@ -1,4 +1,4 @@
-resolver: lts-12.25
+resolver: lts-12.26
 extra-deps:
 - rio-0.1.5.0
 - xmonad-0.15@sha256:db671d78ecd66f39f23decf60974a3e078525ec9d2be68a3946b0cfb4d3954fa

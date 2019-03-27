@@ -69,7 +69,7 @@ Plug 'numirias/semshi'
 Plug 'vim-python/python-syntax'
 ""Scala
 Plug 'derekwyatt/vim-scala'
-"Plug 'ensime/ensime-vim'
+Plug 'ensime/ensime-vim', { 'do': ':UpdateRemotePlugins' }
 "Plug 'ktvoelker/sbt-vim'
 ""Idris Agda
 Plug 'idris-hackers/idris-vim'
@@ -198,6 +198,7 @@ set list
 set listchars=tab:>.,trail:_
 set whichwrap =b,s,h,l,<,>,[,]
 set backspace=indent,eol,start
+set wildoptions=pum
 autocmd QuickFixCmdPost *grep* cwindow
 autocmd FileType vim setlocal et ts=2 sw=2 sts=2
 
@@ -506,17 +507,6 @@ let g:neosnippet#enable_conceal_markers = 0
 let g:neosnippet#snippets_directory = '~/.config/nvim/snippets'
 "}}}
 
-"submode{{{
-call submode#enter_with('winsize', 'n', '', 'z>', '<C-w>>')
-call submode#enter_with('winsize', 'n', '', 'z<', '<C-w><')
-call submode#enter_with('winsize', 'n', '', 'z+', '<C-w>-')
-call submode#enter_with('winsize', 'n', '', 'z-', '<C-w>+')
-call submode#map('winsize', 'n', '', '>', '<C-w>>')
-call submode#map('winsize', 'n', '', '<', '<C-w><')
-call submode#map('winsize', 'n', '', '+', '<C-w>-')
-call submode#map('winsize', 'n', '', '-', '<C-w>+')
-"}}}
-
 "git-gutter {{{
 let g:gitgutter_map_keys = 0
 let g:gitgutter_signs = 0
@@ -535,6 +525,11 @@ nnoremap [gitgutter]s :GitGutterStageHunk<CR>
 " l:1447 pedit -> vertical pedit
 " wincmd P -> wincmd P | vertical resize 40
 " と書き換えるとgStatusが見やすい
+"}}}
+
+"submode{{{
+let g:submode_always_show_submode = 1
+let g:submode_timeout = 0
 "}}}
 
 "smartinput{{{
@@ -623,7 +618,18 @@ let g:NvimHsLsp_languageConfig['erlang'] = {
       \     'insertSpaces': v:true,
       \   },
       \ }
+let g:NvimHsLsp_languageConfig['scala'] = {
+      \ 'serverCommand':
+      \     ['metals'],
+      \ 'formattingOptions': {
+      \     'tabSize': 2,
+      \     'insertSpaces': v:true,
+      \   },
+      \ }
+      " \     ['node',  expand('~/.local/bin/sbt-server-stdio.js')],
+      " \     ['sbt', 'server'],
 "}}}
+" let g:NvimHsLsp_logFile = "/tmp/nvim-hs-lsp.log"
 nnoremap [nvim-hs-lsp] <nop>
 xnoremap [nvim-hs-lsp] <nop>
 nmap     <C-l> [nvim-hs-lsp]
@@ -911,9 +917,13 @@ autocmd FileType rust nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
 "}}}
 
 "Scala {{{
-autocmd FileType scala nnoremap <buffer>,w    :update!<CR>:EnTypeCheck<CR>
+autocmd FileType scala nnoremap <buffer><C-h> :update!<CR>:EnTypeCheck<CR>
 autocmd FileType scala nnoremap <buffer>,t    :update!<CR>:EnInspectType<CR>
 autocmd FileType scala nnoremap <buffer><C-j> :update!<CR>:EnDeclaration<CR>
+" autocmd FileType scala setlocal omnifunc=NvimHsLspComplete
+" autocmd FileType scala nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
+" autocmd FileType scala nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
+" autocmd FileType scala nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
 "}}}
 
 "Makefile {{{
@@ -1009,6 +1019,14 @@ nnoremap cj <C-w>j:q<CR><C-w>k
 nnoremap ck <C-w>k:q<CR><C-w>j
 nnoremap ch <C-w>h:q<CR><C-w>l
 nnoremap cl <C-w>l:q<CR><C-w>h
+call submode#enter_with('winsize', 'n', '', 'z>', '<C-w>>')
+call submode#enter_with('winsize', 'n', '', 'z<', '<C-w><')
+call submode#enter_with('winsize', 'n', '', 'z+', '<C-w>-')
+call submode#enter_with('winsize', 'n', '', 'z-', '<C-w>+')
+call submode#map('winsize', 'n', '', '>', '<C-w>>')
+call submode#map('winsize', 'n', '', '<', '<C-w><')
+call submode#map('winsize', 'n', '', '+', '<C-w>-')
+call submode#map('winsize', 'n', '', '-', '<C-w>+')
 """折りたたみ
 nnoremap zn za
 """paste mode
@@ -1137,8 +1155,9 @@ function! CRecursive(cmd) abort "{{{
 endfunction "}}}
 nnoremap <C-n> :CNextRecursive<CR>
 nnoremap <C-p> :CPreviousRecursive<CR>
-" nnoremap <C-n> :LNextRecursive<CR>
-" nnoremap <C-p> :LPreviousRecursive<CR>
+call submode#enter_with('lnext', 'n', '', '<Space>l', ':LNextRecursive<CR>')
+call submode#map('lnext', 'n', '', '<C-n>', ':LNextRecursive<CR>')
+call submode#map('lnext', 'n', '', '<C-p>', ':LPreviousRecursive<CR>')
 
 let g:init_vim = $XDG_CONFIG_HOME != ""
                   \ ? $XDG_CONFIG_HOME   . "/nvim/init.vim"
@@ -1162,15 +1181,6 @@ function! PandocSel() range
   call writefile(lines, tmp.".md")
   execute "!pandoc " . g:pandoc_sel_option . tmp.".md " . "-o " . tmp."tex"
 endfunction
-
-nnoremap E0 :e scp://u00159@157.82.22.26/parallel-distributed-handson/00slurm/
-nnoremap E1 :e scp://u00159@157.82.22.26/parallel-distributed-handson/01hello/
-nnoremap E2 :e scp://u00159@157.82.22.26/parallel-distributed-handson/02hello_gpu/
-nnoremap E3 :e scp://u00159@157.82.22.26/parallel-distributed-handson/03spmv/
-nnoremap E4 :e scp://u00159@157.82.22.26/parallel-distributed-handson/04udr/
-nnoremap E5 :e scp://u00159@157.82.22.26/parallel-distributed-handson/05simd/
-nnoremap E6 :e scp://u00159@157.82.22.26/parallel-distributed-handson/06axpy/
-nnoremap E7 :e scp://u00159@157.82.22.26/parallel-distributed-handson/07mmk/
 
 set conceallevel=0
 

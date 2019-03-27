@@ -68,6 +68,7 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , ("M-S-k"        , spawn "amixer -D pulse sset Master 2%+")
       , ("M-S-j"        , spawn "amixer -D pulse sset Master 2%-")
       , ("M-S-o"        , spawn "amixer -D pulse sset Master 0%")
+      , ("M-S-s"        , spawn $ unwords ["scrot ", screenShotName])
       , ("M-m"          , toggleTouchPad)
       ]
 
@@ -77,7 +78,6 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , ("<XF86AudioMute>"         , spawn "amixer -D pulse sset Master 0%" )
       , ("M-<XF86AudioRaiseVolume>", spawn "xbacklight -inc 10")
       , ("M-<XF86AudioLowerVolume>", spawn "xbacklight -dec 10")
-      , ("M-<XF86AudioMute>"       , spawn $ unwords ["scrot ", screenShotName])
       ]
 
       `additionalKeys`
