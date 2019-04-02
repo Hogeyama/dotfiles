@@ -44,9 +44,9 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'rhysd/clever-f.vim'
 """nvim-hs
 Plug 'neovimhaskell/nvim-hs.vim'
-Plug '~/.config/nvim/nvim-hs-libs/nvim-hs-lsp'
+Plug 'Hogeyama/nvim-hs-lsp'
+"Plug '~/.config/nvim/nvim-hs-libs/nvim-hs-lsp'
 Plug '~/.config/nvim/nvim-hs-libs/ghc-mod-nvim'
-"Plug '~/.config/nvim/nvim-hs-libs/nvim-hs-hhp'
 Plug '~/.config/nvim/nvim-hs-libs/ghcid-nvim-simple'
 """filetype
 ""Haskell
@@ -202,12 +202,12 @@ set wildoptions=pum
 autocmd QuickFixCmdPost *grep* cwindow
 autocmd FileType vim setlocal et ts=2 sw=2 sts=2
 
-let g:lightline = {
-  \     'active': {
-  \         'left': [['mode', 'paste' ], ['readonly', 'relativepath', 'modified']],
-  \         'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding']]
-  \     }
-  \ }
+" TODO ftとか表示したさisある
+let g:lightline = {}
+let g:lightline['active'] = {
+      \ 'left': [['mode', 'paste' ], ['readonly', 'relativepath', 'modified']],
+      \ 'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding']]
+      \}
 function! SetLightlineConfig() abort
   augroup lightline
     autocmd!
@@ -238,10 +238,10 @@ let g:ale_set_quickfix = 1
 let g:ale_open_list = 1
 let g:ale_keep_list_window_open = 1
 let g:ale_pattern_options = {
-  \ '\.elm$': {'ale_enabled': 1},
-  \ }
-  "\ '\.py$': {'ale_enabled': 1}
-"autocmd FileType elm let b:ale_enabled = 1 "あれこれどうして駄目なの
+      \ '\.elm$': {'ale_enabled': 1},
+      \ '\.py$': {'ale_enabled': 1},
+      \}
+"autocmd FileType elm let b:ale_enabled = 1 "does not work ;-)
 "}}}
 
 """echodoc {{{
@@ -315,7 +315,7 @@ call unite#custom#profile('default', 'context', {
       \ 'winwidth': 40,
       \ 'direction': 'botright',
       \ 'prompt_direction' : 'top'
-      \ })
+      \})
 call unite#custom#source('file',
 \   'ignore_pattern','\.\(hi\|o\|log\|gz\|dvi\|aux\|fdb_latexmk\|cmo\|cmi\|cmx\|cmt\)$')
 "ファイル履歴最大
@@ -356,75 +356,75 @@ endfunction
 "}}}
 
 "QuickFix"{{{
-autocmd FileType qf wincmd J
+"autocmd FileType qf wincmd J
 autocmd FileType qf 5 wincmd _
 "}}}
 
 "QuickRun, WatchDogs{{{
+"{{{ g:quickrun_config
+let g:quickrun_config = {}
+let g:quickrun_config['_'] = {
+      \ 'runner/vimproc/updatetime' : 40,
+      \ 'outputter' : 'quickfix',
+      \ 'outputter/quickfix/open_cmd' : 'copen',
+      \ 'hook/copen/enable_exit' : 1,
+      \ 'runner' : 'vimproc',
+      \}
+let g:quickrun_config['watchdogs_checker/_'] = {
+      \ 'outputter/quickfix/open_cmd' : 'copen',
+      \ 'hook/copen/enable_exit' : 1,
+      \}
+let g:quickrun_config['haskell'] = {
+      \ 'command' : 'stack',
+      \ 'cmdopt' : 'runghc',
+      \ 'exec' : '%c %o %s',
+      \}
+let g:quickrun_config['python'] = {
+      \ 'command' : 'python3',
+      \ 'cmdopt' : '',
+      \ 'exec' : '%c %o %s',
+      \}
+let g:quickrun_config['purescript'] = {
+      \ 'command' : 'pulp',
+      \ 'cmdopt' : 'build',
+      \ 'exec' : '%c %o',
+      \}
+let g:quickrun_config['rust'] = {
+      \ 'command' : 'dune',
+      \ 'cmdopt' : 'build',
+      \ 'exec' : '%c %o main.exe',
+      \}
 let s:rust_errorformat =
-  \ '%-Gerror: aborting due to previous error,'.
-  \ '%-Gerror: aborting due to %\\d%\\+ previous errors,'.
-  \ '%-Gerror: Could not compile `%s`.,'.
-  \ '%Eerror[E%n]: %m,'.
-  \ '%Eerror: %m,'.
-  \ '%Wwarning: %m,'.
-  \ '%Inote: %m,'.
-  \ '%-Z\ %#-->\ %f:%l:%c,'.
-  \ '%G\ %#\= %*[^:]: %m,'.
-  \ '%G\ %#|\ %#%\\^%\\+ %m,'.
-  \ '%I%>help:\ %#%m,'.
-  \ '%Z\ %#%m,'
-
-let g:quickrun_config = {
-  \ '_' : {
-  \   'runner/vimproc/updatetime' : 40,
-  \   'outputter' : 'quickfix',
-  \   'outputter/quickfix/open_cmd' : 'copen',
-  \   'hook/copen/enable_exit' : 1,
-  \   'runner' : 'vimproc',
-  \   },
-  \ 'watchdogs_checker/_' : {
-  \   'outputter/quickfix/open_cmd' : 'copen',
-  \   'hook/copen/enable_exit' : 1,
-  \   },
-  \ 'haskell' : {
-  \   'command' : 'stack',
-  \   'cmdopt' : 'runghc',
-  \   'exec' : '%c %o %s',
-  \   },
-  \ 'python' : {
-  \   'command' : 'python3',
-  \   'cmdopt' : '',
-  \   'exec' : '%c %o %s',
-  \   },
-  \ 'purescript' : {
-  \   'command' : 'pulp',
-  \   'cmdopt' : 'build',
-  \   'exec' : '%c %o',
-  \   },
-  \ 'rust' : {
-  \   'command' : 'dune',
-  \   'cmdopt' : 'build',
-  \   'exec' : '%c %o main.exe',
-  \   },
-  \ 'rust/watchdogs_checker' : {
-  \   'command' : 'cargo',
-  \   'cmdopt' : 'build',
-  \   'exec' : '%c %o',
-  \   "quickfix/errorformat" : s:rust_errorformat
-  \   },
-  \ 'ocaml/watchdogs_checker' : {
-  \   'command' : 'cargo',
-  \   'exec' : '%c %o',
-  \   },
-  \ 'pandoc' : {
-  \   'command' : 'pandoc-wrapper',
-  \   'exec' : '%c %s',
-  \   'hook/copen/enable_exit' : 0,
-  \   'hook/close_quickfix/enable_success' : 1,
-  \   'comment' : "成功したときは表示しない"
-  \   },
-  \}
+      \ '%-Gerror: aborting due to previous error,'.
+      \ '%-Gerror: aborting due to %\\d%\\+ previous errors,'.
+      \ '%-Gerror: Could not compile `%s`.,'.
+      \ '%Eerror[E%n]: %m,'.
+      \ '%Eerror: %m,'.
+      \ '%Wwarning: %m,'.
+      \ '%Inote: %m,'.
+      \ '%-Z\ %#-->\ %f:%l:%c,'.
+      \ '%G\ %#\= %*[^:]: %m,'.
+      \ '%G\ %#|\ %#%\\^%\\+ %m,'.
+      \ '%I%>help:\ %#%m,'.
+      \ '%Z\ %#%m,'
+let g:quickrun_config['rust/watchdogs_checker'] = {
+      \ 'command' : 'cargo',
+      \ 'cmdopt' : 'build',
+      \ 'exec' : '%c %o',
+      \ "quickfix/errorformat" : s:rust_errorformat
+      \}
+let g:quickrun_config['ocaml/watchdogs_checker'] = {
+      \ 'command' : 'cargo',
+      \ 'exec' : '%c %o',
+      \}
+let g:quickrun_config['pandoc'] = {
+      \ 'command' : 'pandoc-wrapper',
+      \ 'exec' : '%c %s',
+      \ 'hook/copen/enable_exit' : 0,
+      \ 'hook/close_quickfix/enable_success' : 1,
+      \}
+      "成功したときは表示しない"
+"}}}
 
 function! TestErrFmt(errfmt,lines)
   let temp_errorfomat = &errorformat
@@ -454,10 +454,10 @@ let g:neomake_haskell_runghc_remove_invalid_entries=1
 nnoremap ! :NeomakeSh 
 
 let g:neomake_ocaml_maker = {
-    \ 'exe': 'dune',
-    \ 'args': ['build', 'main.exe'],
-    \ 'errorformat': 'File "%f"\, line %l\, characters %c%m',
-    \ }
+      \ 'exe': 'dune',
+      \ 'args': ['build', 'main.exe'],
+      \ 'errorformat': 'File "%f"\, line %l\, characters %c%m',
+      \}
 "}}}
 
 "neoterm{{{
@@ -539,25 +539,25 @@ call smartinput#map_to_trigger('i', '<CR>', '<CR>', '<CR>')
 call smartinput#map_to_trigger('i', '(', '(', '(')
 call smartinput#map_to_trigger('i', '{', '{', '{')
 call smartinput#define_rule({
-  \   'at'    : '{\%#}',
-  \   'char'  : '<CR>',
-  \   'input' : '<CR><Left><CR><Tab>',
-  \   })
+      \ 'at'    : '{\%#}',
+      \ 'char'  : '<CR>',
+      \ 'input' : '<CR><Left><CR><Tab>',
+      \})
 call smartinput#define_rule({
-  \   'at': '\%#',
-  \   'char': '(',
-  \   'input': '()<Left>',
-  \   })
+      \ 'at': '\%#',
+      \ 'char': '(',
+      \ 'input': '()<Left>',
+      \})
 call smartinput#define_rule({
-  \   'at'    : '(\%#)',
-  \   'char'  : '<Space>',
-  \   'input' : '<Space><Space><Left>',
-  \   })
+      \ 'at'    : '(\%#)',
+      \ 'char'  : '<Space>',
+      \ 'input' : '<Space><Space><Left>',
+      \})
 call smartinput#define_rule({
-  \   'at': '\%#',
-  \   'char': '{',
-  \   'input': '{}<Left>',
-  \   })
+      \ 'at': '\%#',
+      \ 'char': '{',
+      \ 'input': '{}<Left>',
+      \})
 "inoremap ( (
 "inoremap { {
 "}}}
@@ -567,9 +567,9 @@ call smartinput#define_rule({
 " g:NvimHsLsp_languageConfig {{{
 let g:NvimHsLsp_languageConfig = {}
 let g:NvimHsLsp_languageConfig['_'] = {
-      \   'settingsPath': expand("$HOME/.config/nvim/settings.json"),
-      \   'autoloadQuickfix': v:true,
-      \ }
+      \ 'settingsPath': expand("$HOME/.config/nvim/settings.json"),
+      \ 'autoloadQuickfix': v:true,
+      \}
 let g:NvimHsLsp_languageConfig['haskell'] = {
       \ 'serverCommand':
       \     ['hie-wrapper', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
@@ -577,7 +577,7 @@ let g:NvimHsLsp_languageConfig['haskell'] = {
       \     'tabSize': 2,
       \     'insertSpaces': v:true,
       \   },
-      \ }
+      \}
 let g:NvimHsLsp_languageConfig['rust'] = {
       \ 'serverCommand':
       \     ['rustup', 'run', 'stable', 'rls'],
@@ -649,10 +649,9 @@ nnoremap [nvim-hs-lsp]a :NvimHsLspCodeAction<CR>
 nnoremap <F2>           :NvimHsLspRename 
 inoremap <C-o>          <C-x><C-o>
 
-"QuickFixを開けっ放しにする場合は
+"QuickFixを開けっ放しにする
 autocmd InsertLeave * let g:airline_disabled = 1
 autocmd FileType qf let g:airline_disabled = 1
-"しとくといいかも
 "}}}
 
 " indentLine {{{
@@ -743,7 +742,7 @@ autocmd FileType haskell nnoremap <buffer> ,h :Unite haskellimport<CR>
 function! GhcidAutoReload() abort
   augroup ghcid_autoreload
     autocmd!
-    autocmd InsertLeave *.hs GhcidCheck
+    "autocmd BufWrite *.hs GhcidCheck
   augroup END
 endfunction
 function! GhcidExecMain() abort
@@ -834,19 +833,19 @@ let g:vimtex_indent_enabled        = 1
 let g:vimtex_quickfix_method       = 'latexlog'
 let g:vimtex_quickfix_mode         = 2
 let g:vimtex_compiler_latexmk      = {
-  \ 'backend'    : 'nvim',
-  \ 'background' : 1,
-  \ 'build_dir'  : '_build',
-  \ 'callback'   : 1,
-  \ 'continuous' : 1,
-  \ 'executable' : 'latexmk',
-  \ 'options'    : [
-  \   '-verbose',
-  \   '-file-line-error',
-  \   '-synctex=1',
-  \   '-interaction=nonstopmode',
-  \ ],
-  \}
+      \ 'backend'    : 'nvim',
+      \ 'background' : 1,
+      \ 'build_dir'  : '_build',
+      \ 'callback'   : 1,
+      \ 'continuous' : 1,
+      \ 'executable' : 'latexmk',
+      \ 'options'    : [
+      \   '-verbose',
+      \   '-file-line-error',
+      \   '-synctex=1',
+      \   '-interaction=nonstopmode',
+      \ ],
+      \}
 let g:vimtex_quickfix_latexlog = { 'overfull' : 0 }
 let g:vimtex_index_split_pos   = 'vert botright'
 let g:vimtex_index_split_width = 40
