@@ -70,7 +70,7 @@ alias jbuilder='nocorrect jbuilder'
 alias ocamlbuild-ocamlfind='ocamlbuild -use-ocamlfind'
 
 # xmonad & xmobar
-alias xmonad-restart="(cd $HOME/.xmonad; ./restart)"
+alias xmonad-restart="(\cd $HOME/.xmonad; ./restart)"
 alias xmobar-single="\cp $HOME/.xmobar/xmobarrc-single $HOME/.xmobarrc -f; xmonad-restart"
 alias xmobar-home="\cp $HOME/.xmobar/xmobarrc-home $HOME/.xmobarrc -f; xmonad-restart"
 alias xmobar-lab="\cp $HOME/.xmobar/xmobarrc-lab $HOME/.xmobarrc -f; xmonad-restart"
@@ -88,4 +88,6 @@ alias clean-mochi-out='bash -c "rm -f *.hors *.horsat_out *.dot *.annot *.hrs *.
 alias XMODMAP='xmodmap ~/.Xmodmap'
 alias CAPSLOC="python -c 'from ctypes import *; X11 = cdll.LoadLibrary(\"libX11.so.6\"); display = X11.XOpenDisplay(None); X11.XkbLockModifiers(display, c_uint(0x0100), c_uint(2), c_uint(0)); X11.XCloseDisplay(display)'"
 alias stack-sukkiri="stack exec ghc-pkg -- check -v0 | while read pkg; do; stack exec ghc-pkg -- unregister $pkg --force; done"
+alias nihongoutenai='ibus restart'
+#alias otodenai='alsactl restore'
 

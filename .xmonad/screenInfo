@@ -1,2 +1,0 @@
-#!/bin/sh
-stack ghc -- -e "Graphics.X11.openDisplay [] >>= Graphics.X11.Xinerama.getScreenInfo"

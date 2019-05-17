@@ -19,6 +19,8 @@ Plug 'Shougo/neosnippet-snippets'
 Plug 'kana/vim-submode'
 Plug 'benekastah/neomake'
 Plug 'kassio/neoterm'
+"Plug 'editorconfig/editorconfig-vim'
+"Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 """便利
 Plug 'vim-scripts/Align'
 Plug 'junegunn/vim-easy-align'
@@ -44,12 +46,13 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'rhysd/clever-f.vim'
 """nvim-hs
 Plug 'neovimhaskell/nvim-hs.vim'
-Plug 'Hogeyama/nvim-hs-lsp'
-"Plug '~/.config/nvim/nvim-hs-libs/nvim-hs-lsp'
+"Plug 'Hogeyama/nvim-hs-lsp'
+Plug '~/.config/nvim/nvim-hs-libs/nvim-hs-lsp'
 Plug '~/.config/nvim/nvim-hs-libs/ghc-mod-nvim'
 Plug '~/.config/nvim/nvim-hs-libs/ghcid-nvim-simple'
 """filetype
 ""Haskell
+Plug 'parsonsmatt/intero-neovim'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'vim-scripts/alex.vim'
 Plug 'vim-scripts/happy.vim'
@@ -199,14 +202,26 @@ set listchars=tab:>.,trail:_
 set whichwrap =b,s,h,l,<,>,[,]
 set backspace=indent,eol,start
 set wildoptions=pum
+set showtabline=2
 autocmd QuickFixCmdPost *grep* cwindow
 autocmd FileType vim setlocal et ts=2 sw=2 sts=2
 
 " TODO ftとか表示したさisある
 let g:lightline = {}
-let g:lightline['active'] = {
-      \ 'left': [['mode', 'paste' ], ['readonly', 'relativepath', 'modified']],
-      \ 'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding']]
+let g:lightline.active = {
+      \ 'left':  [['mode', 'paste'], ['readonly', 'relativepath', 'filetype', 'modified']],
+      \ 'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding', 'example']]
+      \}
+let g:lightline.inactive = {
+      \ 'left':  [['filename']],
+      \ 'right': [['lineinfo'], ['percent']]
+      \}
+let g:lightline.tabline = {
+      \ 'left':  [['tabs']],
+      \ 'right': [['cwd']]
+      \}
+let g:lightline.component = {
+      \ 'cwd': '%{fnamemodify(getcwd(), ":~")}',
       \}
 function! SetLightlineConfig() abort
   augroup lightline
@@ -229,10 +244,8 @@ autocmd VimEnter * call SetLightlineConfig()
 "おためし{{{
 nmap s <nop>
 xmap s <nop>
-"}}}
-
-
-"ale{{{
+let g:intero_start_immediately = 0
+let g:EditorConfig_max_line_indicator = 'exceeding'
 let g:ale_enabled = 0
 let g:ale_set_quickfix = 1
 let g:ale_open_list = 1
@@ -241,8 +254,10 @@ let g:ale_pattern_options = {
       \ '\.elm$': {'ale_enabled': 1},
       \ '\.py$': {'ale_enabled': 1},
       \}
-"autocmd FileType elm let b:ale_enabled = 1 "does not work ;-)
+set completeopt+=preview
+set pumblend=15
 "}}}
+
 
 """echodoc {{{
 "inoremap <C-q> <C-e>
@@ -282,22 +297,22 @@ call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
                           \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
 
 call denite#custom#source('_', 'matchers', ['matcher_substring', 'matcher_ignore_globs'])
-command! DeniteNext     Denite -resume -cursor-pos=+1 -immediately
-command! DenitePrevious Denite -resume -cursor-pos=-1 -immediately
+command! DeniteNext     Denite -resume -cursor-pos=+1 -immediately -split=floating
+command! DenitePrevious Denite -resume -cursor-pos=-1 -immediately -split=floating
 command! DeniteGrep     Denite -auto-resume -mode=normal -winheight=10 -no-quit grep
 
 nnoremap [denite] <nop>
 nmap <C-u> [denite]
 nnoremap [denite]r :Denite -resume<CR>
-nnoremap [denite]y :Denite -auto-resume -mode=normal -winheight=10 neoyank<CR>
-nnoremap [denite]b :Denite -auto-resume -mode=normal -winheight=10 buffer<CR>
-nnoremap [denite]d :Denite -auto-resume -mode=normal -winheight=10
+nnoremap [denite]y :Denite -split=floating -auto-resume -mode=normal -winheight=10 neoyank<CR>
+nnoremap [denite]b :Denite -split=floating -auto-resume -mode=normal -winheight=10 buffer<CR>
+nnoremap [denite]d :Denite -split=floating -auto-resume -mode=normal -winheight=10
 nnoremap [denite]g :DeniteGrep<CR>
 nnoremap [denite]n :DeniteNext<CR>
 nnoremap [denite]p :DenitePrevious<CR>
-nnoremap [denite]h :Denite -auto-resume -mode=normal -winheight=10 file_mru<CR>
-nnoremap [denite]c :DeniteBufferDir -mode=normal -winheight=10 file<CR>
-nnoremap <C-c>     :Denite -auto-resume -winheight=10 file/rec<CR>
+nnoremap [denite]h :Denite -split=floating -auto-resume -mode=normal -winheight=10 file_mru<CR>
+nnoremap [denite]c :DeniteBufferDir -split=floating -mode=normal -winheight=10 file<CR>
+nnoremap <C-c>     :Denite -split=floating -auto-resume -winheight=10 file/rec<CR>
 "TODO outline, output
 
 call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
@@ -341,7 +356,9 @@ autocmd FileType defx call s:defx_my_settings()
 function! s:defx_my_settings() abort
   " Define mappings
   nnoremap <silent><buffer><expr><CR>
-    \ defx#do_action('open')
+    \ defx#do_action('drop', 'rightbelow vsplit')
+  nnoremap <silent><buffer><expr>tt
+    \ defx#do_action('drop', 'tabnew')
   nnoremap <silent><buffer><expr>K
     \ defx#do_action('new_directory')
   nnoremap <silent><buffer><expr>N
@@ -351,12 +368,13 @@ function! s:defx_my_settings() abort
   nnoremap <silent><buffer><expr>~
     \ defx#do_action('cd')
   nnoremap <silent><buffer><expr><Space>
-    \ defx#do_action('toggle_select') . 'j'
+    \ defx#do_action('open_or_close_tree')
+    " \ defx#do_action('toggle_select') . 'j'
 endfunction
 "}}}
 
 "QuickFix"{{{
-"autocmd FileType qf wincmd J
+autocmd FileType qf wincmd J
 autocmd FileType qf 5 wincmd _
 "}}}
 
@@ -593,6 +611,7 @@ let g:NvimHsLsp_languageConfig['ocaml'] = {
       \     'tabSize': 2,
       \     'insertSpaces': v:true,
       \   },
+      \ 'autoloadQuickfix': v:false,
       \ }
 let g:NvimHsLsp_languageConfig['elm'] = {
       \ 'serverCommand':
@@ -634,20 +653,39 @@ nnoremap [nvim-hs-lsp] <nop>
 xnoremap [nvim-hs-lsp] <nop>
 nmap     <C-l> [nvim-hs-lsp]
 xmap     <C-l> [nvim-hs-lsp]
-nnoremap [nvim-hs-lsp]i :NvimHsLspInitialize<CR>
-nnoremap [nvim-hs-lsp]s :NvimHsLspStartServer<CR>
-nnoremap [nvim-hs-lsp]q :NvimHsLspStopServer<CR>
-nnoremap [nvim-hs-lsp]h :NvimHsLspInfo<CR>
-nnoremap <C-h>          :NvimHsLspInfo<CR>
-nnoremap [nvim-hs-lsp]H :NvimHsLspHover<CR>
-nnoremap [nvim-hs-lsp]j :NvimHsLspDefinition<CR>
-nnoremap [nvim-hs-lsp]w :NvimHsLspLoadQuickfix<CR>
-nnoremap [nvim-hs-lsp]r :NvimHsLspReferences<CR>
-nnoremap [nvim-hs-lsp]f :NvimHsLspFormatting!<CR>
-xnoremap [nvim-hs-lsp]f :NvimHsLspFormatting<CR>
-nnoremap [nvim-hs-lsp]a :NvimHsLspCodeAction<CR>
-nnoremap <F2>           :NvimHsLspRename 
-inoremap <C-o>          <C-x><C-o>
+
+let use_nvim_hs_lsp = 1
+
+if use_nvim_hs_lsp
+  nnoremap [nvim-hs-lsp]i :NvimHsLspInitialize<CR>
+  nnoremap [nvim-hs-lsp]s :NvimHsLspStartServer<CR>
+  nnoremap [nvim-hs-lsp]q :NvimHsLspStopServer<CR>
+  nnoremap [nvim-hs-lsp]h :NvimHsLspInfo<CR>
+  nnoremap <C-h>          :NvimHsLspHoverFloat<CR>
+  nnoremap [nvim-hs-lsp]H :NvimHsLspHover<CR>
+  nnoremap [nvim-hs-lsp]j :NvimHsLspDefinition<CR>
+  nnoremap [nvim-hs-lsp]w :NvimHsLspLoadQuickfix<CR>
+  nnoremap [nvim-hs-lsp]r :NvimHsLspReferences<CR>
+  nnoremap [nvim-hs-lsp]f :NvimHsLspFormatting!<CR>
+  xnoremap [nvim-hs-lsp]f :NvimHsLspFormatting<CR>
+  nnoremap [nvim-hs-lsp]a :NvimHsLspCodeAction<CR>
+  nnoremap <F2>           :NvimHsLspRename 
+  inoremap <C-o>          <C-x><C-o>
+else
+  nmap [nvim-hs-lsp]j <Plug>(coc-definition)
+  nmap <C-j>          <Plug>(coc-definition)
+  nmap [nvim-hs-lsp]r <Plug>(coc-references)
+  nmap [nvim-hs-lsp]f <Plug>(coc-format)
+  xmap [nvim-hs-lsp]f <Plug>(coc-format-selected)
+  nmap [nvim-hs-lsp]a <Plug>(coc-codeaction)
+  nmap <F2>           <Plug>(coc-rename)
+  nnoremap <C-h>      :call CocAction('doHover')<CR>
+  " diagnosticsがカーソルの下に出るのいいな．<Plug>(coc-diagnostic-info)を見ればいいのかしら
+  " <Plug>(coc-openlink)は普通に便利そう
+  " <Plug>(coc-fix-current)とcodeactionの違いはなんだろう
+  " completionのconfigさえしたら完璧ではこれ．悔しいな
+endif
+nmap [nvim-hs-lsp]l <Plug>(coc-openlink)
 
 "QuickFixを開けっ放しにする
 autocmd InsertLeave * let g:airline_disabled = 1
@@ -690,10 +728,13 @@ autocmd FileType smt2 call PareditInitBuffer()
 
 "C"{{{
 autocmd FileType c setlocal expandtab ts=4 sts=4 sw=4
-autocmd FileType c setlocal omnifunc=NvimHsLspComplete
-autocmd FileType c nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
-autocmd FileType c nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
-autocmd FileType c nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
+if use_nvim_hs_lsp
+  autocmd FileType c setlocal omnifunc=NvimHsLspComplete
+  autocmd FileType c nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
+  autocmd FileType c nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
+else
+  autocmd FileType c nnoremap <buffer> <C-j> <Plug>(coc-definition)
+endif
 "}}}
 
 "sh"{{{
@@ -719,10 +760,11 @@ let g:haskell_backpack = 1
 "let g:haskell_indent_disable = 1
 
 ""nvim_hs_lsp
-autocmd FileType haskell setlocal omnifunc=NvimHsLspComplete
-autocmd FileType haskell nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
-autocmd FileType haskell nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
-autocmd FileType haskell nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
+if use_nvim_hs_lsp
+  autocmd FileType haskell setlocal omnifunc=NvimHsLspComplete
+  autocmd FileType haskell nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
+  autocmd FileType haskell nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
+endif
 
 ""ghc-mod-nvim
 "autocmd FileType haskell nnoremap <buffer> ,t :update!<CR>:NeoGhcModType<CR>
@@ -764,6 +806,13 @@ autocmd FileType haskell nnoremap <buffer> <C-q>     :call GhcidExecMain()<CR>
 autocmd FileType cabal   setlocal expandtab tabstop=4
 autocmd! BufNewFile,BufFilePRe,BufRead *.x set filetype=alex
 autocmd! BufNewFile,BufFilePRe,BufRead *.y set filetype=happy
+
+""intero
+let g:use_intero = 0
+if g:use_intero
+  autocmd FileType haskell nnoremap <buffer> <C-j> :InteroGoToDef<CR>
+  autocmd FileType haskell nnoremap <buffer> <C-h> :InteroGenericType<CR>
+endif
 "}}}
 
 "OCaml"{{{
@@ -779,11 +828,12 @@ autocmd FileType ocaml nnoremap <buffer> ,y :MerlinYankLatestType<CR>
 autocmd FileType ocaml nnoremap <buffer> ,w :update!<CR>:MerlinErrorCheck<CR>
 autocmd FileType ocaml nnoremap <buffer> <C-j> :update!<CR>:MerlinLocate<CR>
 autocmd FileType ocaml nnoremap <buffer> ^ :noh<CR>a<Esc>
-""nvim_hs_lsp
-autocmd FileType ocaml let g:NvimHsLsp_autoLoadQuickfix = 0
-autocmd FileType ocaml setlocal omnifunc=NvimHsLspComplete
-autocmd FileType ocaml nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
-autocmd FileType ocaml nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
+""nvim-hs-lsp
+if use_nvim_hs_lsp
+  autocmd FileType ocaml let g:NvimHsLsp_autoLoadQuickfix = 0
+  autocmd FileType ocaml setlocal omnifunc=NvimHsLspComplete
+  autocmd FileType ocaml nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
+endif
 "config for merlin and ocp-indent
 let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
@@ -908,11 +958,12 @@ autocmd! BufNewFile,BufFilePRe,BufRead *.pl set filetype=prolog
 "autocmd FileType rust nmap <buffer> gv    <Plug>(rust-def-vertical)
 "autocmd FileType rust nmap <buffer> gK    <Plug>(rust-doc)
 "let g:racer_no_default_keymappings=0
-""nvim_hs_lsp
-autocmd FileType rust setlocal omnifunc=NvimHsLspComplete
-autocmd FileType rust nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
-autocmd FileType rust nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
-autocmd FileType rust nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
+""nvim-hs-lsp
+if use_nvim_hs_lsp
+  autocmd FileType rust setlocal omnifunc=NvimHsLspComplete
+  autocmd FileType rust nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
+  autocmd FileType rust nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
+endif
 "}}}
 
 "Scala {{{
@@ -962,11 +1013,12 @@ function! NvimHsLspFormattingPython3() abort
 endfunction
 autocmd FileType python nnoremap [nvim_hs_lsp]f call NvimHsLspFormattingPython3()
 autocmd InsertLeave,BufNewFile,BufFilePRe,BufRead *.py Python3Syntax
-autocmd FileType python setlocal omnifunc=NvimHsLspComplete
-autocmd FileType python inoremap <buffer> <C-o> <C-x><C-o>
-autocmd FileType python nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
-autocmd FileType python nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
-autocmd FileType python nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
+if use_nvim_hs_lsp
+  autocmd FileType python setlocal omnifunc=NvimHsLspComplete
+  autocmd FileType python inoremap <buffer> <C-o> <C-x><C-o>
+  autocmd FileType python nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
+  autocmd FileType python nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
+endif
 "}}}
 
 "fzf{{{
@@ -986,7 +1038,7 @@ nnoremap <silent> tt  :<C-u>tabe<CR>
 """tgで前のタブ
 nnoremap tg gT
 """<space>oで改行
-nnoremap <Space>o  :<C-u>for i in range(v:count1) \| call append(line('.'), '') \| endfor<CR>
+"nnoremap <Space>o  :<C-u>for i in range(v:count1) \| call append(line('.'), '') \| endfor<CR>
 "jkで<esc>
 "inoremap jk <Esc>
 inoremap jk <Esc>:w<CR>
@@ -1049,7 +1101,7 @@ nnoremap <Space>cd :cd %:h<CR>
 nnoremap <C-q> :update!<CR>:QuickRun<CR>
 nnoremap ,w    :update!<CR>:WatchdogsRun<CR>
 """ctag
-nnoremap <C-j> <C-]>
+"nnoremap <C-j> <C-]>
 """ noh
 nnoremap ^ :noh<CR>
 """移動
@@ -1091,7 +1143,7 @@ vmap e <Plug>(easymotion-bd-e)
 vmap E <Plug>(easymotion-bd-E)
 nmap r <Plug>(easymotion-repeat)
 nmap ; <Plug>(easymotion-next)
-nmap <Space>; <Plug>(easymotion-prev)
+"nmap <Space>; <Plug>(easymotion-prev)
 "}}}
 
 "Terminal他"{{{

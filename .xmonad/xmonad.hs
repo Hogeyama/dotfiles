@@ -1,38 +1,51 @@
 
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE TypeOperators     #-}
 {-# LANGUAGE LambdaCase        #-}
+{-# LANGUAGE NamedFieldPuns    #-}
 {-# OPTIONS_GHC -Wall          #-}
 
 module Main where
 
-import           RIO
 import           XMonad
-import           XMonad.Config.Prime            (io)
-import           XMonad.Hooks.EwmhDesktops      (ewmh)
-import           XMonad.Hooks.DynamicLog        (PP(..), statusBar, xmobarPP)
-import           XMonad.Hooks.ManageDocks       (AvoidStruts, manageDocks)
-import           XMonad.Operations              (kill)
-import qualified XMonad.StackSet                as W
-import           XMonad.Util.EZConfig           (additionalKeys, additionalKeysP, removeKeysP)
-import           XMonad.Layout                  (Choose, Full(..), (|||))
-import           XMonad.Layout.Decoration       (Decoration, DefaultShrinker)
-import           XMonad.Layout.LayoutModifier   (ModifiedLayout)
---import           XMonad.Layout.WindowNavigation (Navigate(..))
-import           XMonad.Layout.Simplest         (Simplest)
---import           XMonad.Layout.Combo
-import           XMonad.Layout.ComboP
-import           XMonad.Layout.TwoPane
-import           XMonad.Layout.Tabbed
---import           XMonad.Layout.Accordion
---import           XMonad.Layout.ResizableTile
-import           System.Exit                    (exitSuccess)
---import           System.Process.Typed
-import           XMonad.Util.Run
---
-
+import           XMonad.Config.Prime            ( io )
+import           XMonad.Hooks.EwmhDesktops      ( ewmh )
+import           XMonad.Hooks.DynamicLog        ( PP(..)
+                                                , statusBar
+                                                , xmobarPP
+                                                )
+import           XMonad.Hooks.ManageDocks       ( AvoidStruts
+                                                , manageDocks
+                                                )
+import           XMonad.Operations              ( kill )
+import qualified XMonad.StackSet               as W
+import           XMonad.Util.EZConfig           ( additionalKeys
+                                                , additionalKeysP
+                                                , removeKeysP
+                                                )
+import           XMonad.Layout                  ( Choose
+                                                , Full(..)
+                                                , (|||)
+                                                )
+import           XMonad.Layout.Decoration       ( Decoration
+                                                , DefaultShrinker
+                                                )
+import           XMonad.Layout.LayoutModifier   ( ModifiedLayout )
+import           XMonad.Layout.Simplest         ( Simplest )
+import           XMonad.Layout.ComboP           ( CombineTwoP
+                                                , SwapWindow(..)
+                                                , Property(..)
+                                                , combineTwoP
+                                                )
+import           XMonad.Layout.TwoPane          ( TwoPane(..) )
+import           XMonad.Layout.Tabbed           ( TabbedDecoration
+                                                , simpleTabbed
+                                                )
+import           System.Exit                    ( exitSuccess )
+import           XMonad.Util.Run                ( safeSpawn
+                                                , runProcessWithInput
+                                                )
 main :: IO ()
 main = xmonad =<< xmobar' (ewmh myConfig)
   where
@@ -60,8 +73,6 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , ("M-S-x"        , spawn "systemctl suspend")
       , ("M-<Return>"   , forcusNextScreen)
       , ("M-C-<Return>" , shiftNextScreen)
-      --, ("M-S-<Return>" , spawn "nvim-wrapper")
-      , ("M-S-s"        , spawn "gnome-terminal")
       , ("M-s"          , swapScreen)
       , ("M-a"          , sendMessage SwapWindow)
       , ("M-S-a"        , hoge) -- なんか動作の確認に
@@ -70,6 +81,7 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , ("M-S-o"        , spawn "amixer -D pulse sset Master 0%")
       , ("M-S-s"        , spawn $ unwords ["scrot ", screenShotName])
       , ("M-m"          , toggleTouchPad)
+      , ("M-S-m"        , log' $ unwords ["scrot", screenShotName])
       ]
 
       `additionalKeysP`
@@ -127,8 +139,8 @@ main = xmonad =<< xmobar' (ewmh myConfig)
 -- headではなくlastをとったほうがいいかも(3スクリーン以上でないと確かめられない)
 withNextScreen :: (WorkspaceId -> WindowSet -> WindowSet) -> X ()
 withNextScreen func = gets (W.visible . windowset) >>= \case
-  [] -> return ()
-  next : _ -> windows $ func $ W.tag $ W.workspace next
+    [] -> return ()
+    next : _ -> windows $ func $ W.tag $ W.workspace next
 
 forcusNextScreen :: X ()
 forcusNextScreen = withNextScreen W.view
@@ -138,11 +150,11 @@ shiftNextScreen = withNextScreen W.shift
 
 swapScreen :: X ()
 swapScreen = windows $ \stack -> case W.visible stack of
-  [] -> stack
-  x : rest -> stack { W.current = y { W.workspace = W.workspace x }
-                    , W.visible = x { W.workspace = W.workspace y } : rest
-                    }
-                where y = W.current stack
+    [] -> stack
+    x : rest -> stack { W.current = y { W.workspace = W.workspace x }
+                      , W.visible = x { W.workspace = W.workspace y } : rest
+                      }
+                  where y = W.current stack
 
 setTouchPad :: Bool -> X ()
 setTouchPad b =
@@ -168,7 +180,7 @@ toggleTouchPad = do
   where
     error' s = log' s >> error s
 
--- touchpad =$(gsettings list-schemas | grep touchpad)
+-- touchpad=$(gsettings list-schemas | grep touchpad)
 -- gsettings list-keys $touchpad
 -- gsettings range $touchpad some-key
 
@@ -179,17 +191,19 @@ toggleTouchPad = do
 -- xmobarにLayout名を表示しない
 xmobar' :: LayoutClass l Window
         => XConfig l -> IO (XConfig (ModifiedLayout AvoidStruts l))
-xmobar' = statusBar "xmobar" xmobarPP' toggleStrutsKey
+xmobar' = statusBar cmd xmobarPP' toggleStrutsKey
   where
+    -- TODO __FILE__とか使おう．面倒になったので今度で
+    cmd = "(cd $HOME/.xmonad; stack exec -- xmobar xmobar.hs)"
     xmobarPP' = xmobarPP { ppLayout = const "" }
-    toggleStrutsKey XConfig{modMask = modm} = (modm, xK_b )
+    toggleStrutsKey XConfig{modMask} = (modMask, xK_b )
 
 -- XState = { windowset :: WindowSet , ...}
 -- WindowSet = StackSet WorkspaceId (Layout Window) Window ScreenId ScreenDetail
 -- StackSet i l a sid sd =
 --    { current  ::  Screen i l a sid sd  -- forcused workspace
 --    , visible  :: [Screen i l a sid sd] -- 別のスクリーンに写ってる
---    , hidden   :: [Workspace i l a ]    -- 別のスクリーンに写ってる
+--    , hidden   :: [Workspace i l a ]    -- その他
 --    , floating :: Map a RationalRect
 --    }
 -- Workspace i l a =

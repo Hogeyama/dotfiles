@@ -1,6 +1,9 @@
-resolver: lts-12.26
+resolver: lts-13.12
 extra-deps:
-- rio-0.1.5.0
-- xmonad-0.15@sha256:db671d78ecd66f39f23decf60974a3e078525ec9d2be68a3946b0cfb4d3954fa
-- xmonad-contrib-0.15@sha256:3400e314505eb9887944df064c8a200d278f4ce884745b7ac3bff4181ea4e0b2
-- parsec-numbers-0.1.0@sha256:60fa05b1c16050dffd0e28cecb682a021eeec1be6f34dc9d901a38c90182f289
+- xmonad-0.15
+- xmonad-contrib-0.15
+- iwlib-0.1.0
+- xmobar-0.29.5
+flags:
+  xmobar:
+    all_extensions: true
