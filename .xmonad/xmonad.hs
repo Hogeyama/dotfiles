@@ -8,15 +8,22 @@
 
 module Main where
 
+import           RIO
+import System.IO.Unsafe (unsafePerformIO)
+import System.IO (hPutStrLn)
+
 import           XMonad
 import           XMonad.Config.Prime            ( io )
 import           XMonad.Hooks.EwmhDesktops      ( ewmh )
 import           XMonad.Hooks.DynamicLog        ( PP(..)
-                                                , statusBar
                                                 , xmobarPP
+                                                , dynamicLogWithPP
                                                 )
 import           XMonad.Hooks.ManageDocks       ( AvoidStruts
                                                 , manageDocks
+                                                , docks
+                                                , avoidStruts
+                                                , ToggleStruts(..)
                                                 )
 import           XMonad.Operations              ( kill )
 import qualified XMonad.StackSet               as W
@@ -44,8 +51,10 @@ import           XMonad.Layout.Tabbed           ( TabbedDecoration
                                                 )
 import           System.Exit                    ( exitSuccess )
 import           XMonad.Util.Run                ( safeSpawn
+                                                , spawnPipe
                                                 , runProcessWithInput
                                                 )
+
 main :: IO ()
 main = xmonad =<< xmobar' (ewmh myConfig)
   where
@@ -56,6 +65,7 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , borderWidth        = 5
       , focusedBorderColor = "#00bfff"
       , manageHook         = manageDocks <+> manageHook def
+      --, logHook            = myLogHook
       , layoutHook         = myLayoutHook
       , startupHook        = mapM_ spawn [ "dropbox start"
                                          , "unity-settings-daemon"
@@ -78,10 +88,12 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , ("M-S-a"        , hoge) -- なんか動作の確認に
       , ("M-S-k"        , spawn "amixer -D pulse sset Master 2%+")
       , ("M-S-j"        , spawn "amixer -D pulse sset Master 2%-")
-      , ("M-S-o"        , spawn "amixer -D pulse sset Master 0%")
+      , ("M-S-o"        , spawn "amixer -D pulse sset Master mute")
+      , ("M-S-t"        , spawn "amixer -D pulse sset Master toggle")
       , ("M-S-s"        , spawn $ unwords ["scrot ", screenShotName])
       , ("M-m"          , toggleTouchPad)
       , ("M-S-m"        , log' $ unwords ["scrot", screenShotName])
+      , ("M-b"          , sendMessage ToggleStruts) -- xmobar
       ]
 
       `additionalKeysP`
@@ -165,8 +177,8 @@ setTouchPad b =
       , if b then "enabled" else "disabled"
       ]
 
-toggleTouchPad :: X ()
-toggleTouchPad = do
+isTouchPadEnabled :: X Bool
+isTouchPadEnabled = do
     out <- runProcessWithInput "gsettings"
               ["get"
               , "org.gnome.desktop.peripherals.touchpad"
@@ -174,11 +186,14 @@ toggleTouchPad = do
               ]
               ""
     case out of
-      "'enabled'\n"  -> setTouchPad False
-      "'disabled'\n" -> setTouchPad True
+      "'enabled'\n"  -> return True
+      "'disabled'\n" -> return False
       _ -> error' $ "toggleTouchPad: unknown input: " <> show out
   where
     error' s = log' s >> error s
+
+toggleTouchPad :: X ()
+toggleTouchPad = setTouchPad . not =<< isTouchPadEnabled
 
 -- touchpad=$(gsettings list-schemas | grep touchpad)
 -- gsettings list-keys $touchpad
@@ -191,12 +206,24 @@ toggleTouchPad = do
 -- xmobarにLayout名を表示しない
 xmobar' :: LayoutClass l Window
         => XConfig l -> IO (XConfig (ModifiedLayout AvoidStruts l))
-xmobar' = statusBar cmd xmobarPP' toggleStrutsKey
+xmobar' = statusBar' cmd xmobarPP'
   where
     -- TODO __FILE__とか使おう．面倒になったので今度で
     cmd = "(cd $HOME/.xmonad; stack exec -- xmobar xmobar.hs)"
     xmobarPP' = xmobarPP { ppLayout = const "" }
-    toggleStrutsKey XConfig{modMask} = (modMask, xK_b )
+
+statusBar' :: LayoutClass l Window
+           => String    -- ^ the command line to launch the status bar
+           -> PP        -- ^ the pretty printing options
+           -> XConfig l -- ^ the base config
+           -> IO (XConfig (ModifiedLayout AvoidStruts l))
+statusBar' cmd pp conf = do
+    h <- spawnPipe cmd
+    return $ docks $ conf
+        { layoutHook = avoidStruts (layoutHook conf)
+        , logHook = do logHook conf
+                       dynamicLogWithPP pp { ppOutput = hPutStrLn h }
+        }
 
 -- XState = { windowset :: WindowSet , ...}
 -- WindowSet = StackSet WorkspaceId (Layout Window) Window ScreenId ScreenDetail
@@ -217,6 +244,31 @@ xmobar' = statusBar cmd xmobarPP' toggleStrutsKey
 --    , down  :: [a]
 --    }
 --  WindowはX11で定義されている
+
+-------------------------------------------------------------------------------
+-- LogHook
+-------------------------------------------------------------------------------
+
+myLogHook :: X ()
+myLogHook = do
+    oldScreenNum <- getScreenNum
+    screenNum <- gets (windowset >>> W.visible >>> length >>> (+1))
+    when (oldScreenNum /= screenNum) $ do
+      setScreenNum screenNum
+      restartXmobar
+
+restartXmobar :: X ()
+restartXmobar = undefined
+
+screenNumRef :: IORef Int
+screenNumRef = unsafePerformIO $ newIORef 0
+{-# NOINLINE screenNumRef #-}
+
+getScreenNum :: MonadIO m => m Int
+getScreenNum = liftIO $ readIORef screenNumRef
+
+setScreenNum :: MonadIO m => Int -> m ()
+setScreenNum x = liftIO $ writeIORef screenNumRef x
 
 -------------------------------------------------------------------------------
 -- Layout
