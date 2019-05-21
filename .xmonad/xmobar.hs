@@ -46,6 +46,7 @@ config = defaultConfig
                                                 , "-i" , "<left>%"
                                           ] 50
                  , Run $ Com "xmobar-volume" [] "volume" 10
+                 , Run $ Volume "pulse" "Master" ["--", "-O", "[on]"] 10
                  , Run $ Com "dropbox" ["status"] "dropbox" 50
                  , Run $ Date "%a %m/%d %H:%M" "date" 10
                  , Run StdinReader
@@ -60,7 +61,8 @@ config = defaultConfig
           , "%cpu%"
           , "%memory%"
           , "Dropbox: %dropbox%"
-          , "%volume%"
+          --, "%volume%"
+          , "%pulse:Master%"
           , "%battery%"
           ]
           <> " <fc=#c7a273>%date%</fc> "
@@ -75,13 +77,16 @@ isSingle :: [X.Rectangle] -> Bool
 isSingle rs = rs ==
   [ Rectangle {rect_x = 0, rect_y = 0, rect_width = 1920, rect_height = 1080} ]
 
-main :: IO ()
-main = do
-  display <- X.openDisplay ""
+run :: X.Display -> IO ()
+run display = do
   rs <- X.getScreenInfo display
   let config'
         | isLab rs    = config { position = Static { xpos = 1920, ypos = 0  , width = 1920, height = 20 } }
         | isSingle rs = config { position = Static { xpos = 0   , ypos = 0  , width = 1920, height = 20 } }
-        | otherwise   = config { position = Static { xpos = 0   , ypos = 720, width = 1920, height = 20 } }
+        -- | otherwise   = config { position = Static { xpos = 15   , ypos = 10  , width = 1245, height = 20 } } -- 小さいdisplay
+        | otherwise   = config { position = Static { xpos = 0   , ypos = 720, width = 1920, height = 20 } } -- laptopのdisplay
   xmobar config'
+
+main :: IO ()
+main = Main.run =<< X.openDisplay ""
 
