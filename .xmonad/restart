@@ -1,2 +1,3 @@
 #!/bin/sh
-stack install --silent --local-bin-path ./ && xmonad --restart
+# stack install --silent --local-bin-path ./ && xmonad --restart
+stack install --local-bin-path ./ && xmonad --restart

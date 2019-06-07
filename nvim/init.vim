@@ -4,6 +4,8 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "TODO https://bluz71.github.io/2017/05/21/vim-plugins-i-like.html
+"nvim-hs-lspをcoc.nvimと同じくらい便利にしたいホトトギス
+"TODO NvimHsLsp_languageConfigのkeyにあるものについては<C-j>をNvimHsLspDefinitionにしたい
 
 "Plug{{{
 call plug#begin('~/.config/nvim/plugged')
@@ -11,7 +13,7 @@ Plug 'Shougo/vimproc.vim', {'do' : 'make'} " いずれ消したい
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/denite.nvim'
 Plug 'Shougo/deol.nvim'
-Plug 'Shougo/defx.nvim'
+Plug 'Shougo/defx.nvim', {'branch' : 'session'}
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/deoplete.nvim'
 Plug 'Shougo/neosnippet'
@@ -79,6 +81,8 @@ Plug 'idris-hackers/idris-vim'
 Plug 'raichoo/agda-vim'
 ""Erlang
 Plug 'vim-erlang/vim-erlang-runtime'
+""SATySFi
+Plug 'qnighy/satysfi.vim'
 ""MarkDown
 Plug 'tyru/open-browser.vim'
 Plug 'vim-pandoc/vim-pandoc'
@@ -397,6 +401,11 @@ let g:quickrun_config['haskell'] = {
       \ 'cmdopt' : 'runghc',
       \ 'exec' : '%c %o %s',
       \}
+let g:quickrun_config['ocaml'] = {
+      \ 'command' : 'dune',
+      \ 'cmdopt' : 'b',
+      \ 'exec' : '%c %o %s',
+      \}
 let g:quickrun_config['python'] = {
       \ 'command' : 'python3',
       \ 'cmdopt' : '',
@@ -466,14 +475,15 @@ let g:neomake_airline=1
 let g:neomake_open_list=1
 let g:neomake_place_signs=0
 let g:neomake_echo_current_error=0
-let g:neomake_haskell_hlint_remove_invalid_entries=1
-let g:neomake_haskell_ghcmod_remove_invalid_entries=1
-let g:neomake_haskell_runghc_remove_invalid_entries=1
+let g:neomake_virtualtext_current_error=0
+" let g:neomake_haskell_hlint_remove_invalid_entries=1
+" let g:neomake_haskell_ghcmod_remove_invalid_entries=1
+" let g:neomake_haskell_runghc_remove_invalid_entries=1
 nnoremap ! :NeomakeSh 
 
 let g:neomake_ocaml_maker = {
       \ 'exe': 'dune',
-      \ 'args': ['build', 'main.exe'],
+      \ 'args': ['build'],
       \ 'errorformat': 'File "%f"\, line %l\, characters %c%m',
       \}
 "}}}
@@ -611,7 +621,7 @@ let g:NvimHsLsp_languageConfig['ocaml'] = {
       \     'tabSize': 2,
       \     'insertSpaces': v:true,
       \   },
-      \ 'autoloadQuickfix': v:false,
+      \ 'autoloadQuickfix': v:true,
       \ }
 let g:NvimHsLsp_languageConfig['elm'] = {
       \ 'serverCommand':
@@ -645,8 +655,14 @@ let g:NvimHsLsp_languageConfig['scala'] = {
       \     'insertSpaces': v:true,
       \   },
       \ }
-      " \     ['node',  expand('~/.local/bin/sbt-server-stdio.js')],
-      " \     ['sbt', 'server'],
+let g:NvimHsLsp_languageConfig['typescript'] = {
+      \ 'serverCommand':
+      \     ['typescript-language-server', '--stdio'],
+      \ 'formattingOptions': {
+      \     'tabSize': 2,
+      \     'insertSpaces': v:true,
+      \   },
+      \ }
 "}}}
 " let g:NvimHsLsp_logFile = "/tmp/nvim-hs-lsp.log"
 nnoremap [nvim-hs-lsp] <nop>
@@ -839,7 +855,7 @@ let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
 execute "helptags " . g:opamshare . "/merlin/vim/doc"
 execute "set rtp^=" . g:opamshare . "/ocp-indent/vim"
-
+execute "set rtp^=" . g:opamshare . "/ocp-index/vim"
 "}}}
 
 "Elm{{{
@@ -854,6 +870,10 @@ let g:elm_format_fail_silently = 1
 let g:psc_ide_syntastic_mode=1
 autocmd FileType purescript nnoremap <buffer> <C-h> :Ptype<CR>
 autocmd FileType purescript nnoremap <buffer> ,w :Prebuild<CR>
+"}}}
+
+"TypeScript{{{
+autocmd FileType typescript nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
 "}}}
 
 "Agda"{{{
@@ -1098,7 +1118,7 @@ cnoremap <C-k> <up>
 """開いているファイルのディレクトリに移動する
 nnoremap <Space>cd :cd %:h<CR>
 """QuickRun関連
-nnoremap <C-q> :update!<CR>:QuickRun<CR>
+nnoremap <C-q> :update!<CR>:Neomake<CR>
 nnoremap ,w    :update!<CR>:WatchdogsRun<CR>
 """ctag
 "nnoremap <C-j> <C-]>

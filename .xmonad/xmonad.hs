@@ -9,8 +9,10 @@
 module Main where
 
 import           RIO
-import System.IO.Unsafe (unsafePerformIO)
-import System.IO (hPutStrLn)
+import           System.Process
+import           System.Environment
+import           System.IO.Unsafe               ( unsafePerformIO )
+import           System.IO                      ( hPutStrLn, hGetContents )
 
 import           XMonad
 import           XMonad.Config.Prime            ( io )
@@ -26,7 +28,7 @@ import           XMonad.Hooks.ManageDocks       ( AvoidStruts
                                                 , ToggleStruts(..)
                                                 )
 import           XMonad.Operations              ( kill )
-import qualified XMonad.StackSet               as W
+import qualified XMonad.StackSet                as W
 import           XMonad.Util.EZConfig           ( additionalKeys
                                                 , additionalKeysP
                                                 , removeKeysP
@@ -69,8 +71,9 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , layoutHook         = myLayoutHook
       , startupHook        = mapM_ spawn [ "dropbox start"
                                          , "unity-settings-daemon"
-                                         , "feh --bg-scale /home/hogeyama/Dropbox/WallPapers/PrincessPrincipalOST-screen.jpg"
                                          , "compton -CG --active-opacity 1.0 --shadow-ignore-shaped"
+                                         , "feh --bg-scale $HOME/Dropbox/WallPapers/PrincessPrincipalOST-screen.jpg"
+                                         , "xmodmap $HOME/.Xmodmap"
                                          ]
       }
 
@@ -86,6 +89,8 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , ("M-s"          , swapScreen)
       , ("M-a"          , sendMessage SwapWindow)
       , ("M-S-a"        , hoge) -- なんか動作の確認に
+      , ("M-S-d"        , killXmobar)
+      , ("M-S-r"        , restart "xmonad" True)
       , ("M-S-k"        , spawn "amixer -D pulse sset Master 2%+")
       , ("M-S-j"        , spawn "amixer -D pulse sset Master 2%-")
       , ("M-S-o"        , spawn "amixer -D pulse sset Master mute")
@@ -206,24 +211,54 @@ toggleTouchPad = setTouchPad . not =<< isTouchPadEnabled
 -- xmobarにLayout名を表示しない
 xmobar' :: LayoutClass l Window
         => XConfig l -> IO (XConfig (ModifiedLayout AvoidStruts l))
-xmobar' = statusBar' cmd xmobarPP'
-  where
-    -- TODO __FILE__とか使おう．面倒になったので今度で
-    cmd = "(cd $HOME/.xmonad; stack exec -- xmobar xmobar.hs)"
-    xmobarPP' = xmobarPP { ppLayout = const "" }
-
-statusBar' :: LayoutClass l Window
-           => String    -- ^ the command line to launch the status bar
-           -> PP        -- ^ the pretty printing options
-           -> XConfig l -- ^ the base config
-           -> IO (XConfig (ModifiedLayout AvoidStruts l))
-statusBar' cmd pp conf = do
-    h <- spawnPipe cmd
+xmobar' conf = do
+    h <- spawnPipe "(cd $HOME/.xmonad; stack exec -- xmobar xmobar.hs)"
+    -- (h,hout,herr,_) <- runXmobar
+    -- hSetBuffering hout NoBuffering
+    -- hSetBuffering herr NoBuffering
+    -- void $ async $ log' =<< hGetContents hout
+    -- void $ async $ log' =<< hGetContents herr
     return $ docks $ conf
         { layoutHook = avoidStruts (layoutHook conf)
         , logHook = do logHook conf
-                       dynamicLogWithPP pp { ppOutput = hPutStrLn h }
+                       dynamicLogWithPP xmobarPP
+                          { ppOutput = hPutStrLn h
+                          , ppLayout = const ""
+                          }
         }
+
+phRef :: IORef (Maybe ProcessHandle)
+phRef = unsafePerformIO $ newIORef Nothing
+
+runXmobar :: IO (Handle, Handle, Handle, ProcessHandle)
+runXmobar = handleAny handler $ do
+    home <- getEnv "HOME"
+    let xmobarProc =
+                     (shell "stack exec -- xmobar xmobar.hs")
+                     -- (proc "stack" ["exec", "--", "xmobar", "xmobar.hs"])
+                     { cwd = Just $ home <> "/.xmonad"
+                     , std_in  = CreatePipe
+                     , std_out = CreatePipe
+                     , std_err = CreatePipe
+                     }
+
+    (Just hin, Just hout, Just herr, ph) <- createProcess_ "xmobar" xmobarProc
+    void $ async $ log' =<< hGetContents hout
+    void $ async $ log' =<< hGetContents herr
+    writeIORef phRef (Just ph)
+    return (hin, hout, herr, ph)
+  where
+    handler e = do
+      liftIO $ appendFile "/tmp/xmomo" (show e <> "\n")
+      error "にゃん"
+
+
+
+killXmobar :: MonadIO m => m ()
+killXmobar = liftIO $ readIORef phRef >>= \case
+  Nothing -> log' "Nothing"
+  Just x -> log' "Just" >> terminateProcess x
+
 
 -- XState = { windowset :: WindowSet , ...}
 -- WindowSet = StackSet WorkspaceId (Layout Window) Window ScreenId ScreenDetail
@@ -290,7 +325,7 @@ myLayoutHook = Full
            ||| combineTwoP (TwoPane (1/50) (1/2))
                   simpleTabbed simpleTabbed (Title "no title")
 
-hoge :: X ()
+hoge :: MonadIO m => m ()
 hoge = do
   log' "fugafuga"
   log' $ show xK_F8
@@ -299,6 +334,6 @@ hoge = do
   --n <- countScreens :: X Int
   --log' (show n)
 
-log' :: String -> X ()
-log' s = spawn $ "echo " ++ show s ++ " >> /home/hogeyama/xmonad.mylog"
+log' :: MonadIO m => String -> m ()
+log' s = liftIO $ appendFile "/home/hogeyama/xmonad.mylog" (s <> "\n")
 

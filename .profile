@@ -27,9 +27,6 @@
 # export PATH=$HOME/.node_modules/bin:$PATH
 # export PATH=/home/hogeyama/.cache/rebar3/bin:$PATH
 
-# OPAM configuration
-. /home/hogeyama/.opam/opam-init/init.sh  > /dev/null 2> /dev/null || true
-
 # xmodmap
 if [ -f "$HOME/.Xmodmap" ]; then
     xmodmap "$HOME/.Xmodmap"

@@ -85,6 +85,7 @@ run display = do
         | isSingle rs = config { position = Static { xpos = 0   , ypos = 0  , width = 1920, height = 20 } }
         -- | otherwise   = config { position = Static { xpos = 15   , ypos = 10  , width = 1245, height = 20 } } -- 小さいdisplay
         | otherwise   = config { position = Static { xpos = 0   , ypos = 720, width = 1920, height = 20 } } -- laptopのdisplay
+
   xmobar config'
 
 main :: IO ()

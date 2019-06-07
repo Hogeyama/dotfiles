@@ -8,7 +8,10 @@ executable xmonad-x86_64-linux
   main-is:             xmonad.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N -O2
   build-depends:       base
+                     , rio
                      , filepath
+                     , process
+                     , containers
                      , xmonad
                      , xmonad-contrib
   default-language:    Haskell2010

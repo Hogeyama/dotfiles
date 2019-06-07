@@ -4,22 +4,25 @@
 }
 
 cd-ls(){
-  \cd $* && \ls --group-directories-first --color=tty
-  #\cd $* && \exa --group-directories-first
+  # \cd $* && \ls --group-directories-first --color=tty
+  \cd $* && \exa --group-directories-first
   dirs -lp | awk '!x[$0]++' | sed "/home\/hogeyama\$/d" > "$HOME/.dirs_history"
   # awk '!x[$0]++': remove duplicates without sorting
 }
 
 hoice-wrapper(){
-  file=$1
-  shift
   cat $1 | sed '/^\s*;/d' > /tmp/hoge.smt2 && hoice /tmp/hoge.smt2
 }
+
+mkcd(){
+  mkdir $1
+  cd $1
+}
+
 
 # cd, mv, ...
 alias cd='cd-ls'
 alias dc='cd-ls'
-alias mkcd='source ~/.local/bin/mkcd.sh'
 alias mv='mv -i'
 alias cp='cp -i'
 alias l='exa -la --group-directories-first'

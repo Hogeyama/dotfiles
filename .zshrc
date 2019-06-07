@@ -16,7 +16,11 @@ export TERM="xterm-256color"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="agnoster"
-#ZSH_THEME="powerlevel9k/powerlevel9k"
+# ZSH_THEME="random"
+# ZSH_THEME="kiwi"
+# ZSH_THEME="nicoulaj"
+# "juanghurtado"
+# "afowler"
 
 # Uncomment the following line to use case-sensitive completion.
 CASE_SENSITIVE="true"
@@ -62,12 +66,13 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  bundler
-  dotenv
-  rake
-  rbenv
-  ruby
-  cargo
+  # bundler
+  # dotenv
+  # rake
+  # rbenv
+  # ruby
+  # cargo
+  # battery
   )
 
 source $ZSH/oh-my-zsh.sh
@@ -169,8 +174,7 @@ export cabal_helper_libexecdir=$HOME/.local/bin
 #######
 
 # OPAM configuration
-. /home/hogeyama/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-eval `opam config env`
+# . /home/hogeyama/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 export OCAMLFIND_IGNORE_DUPS_IN=$HOME/.opam/4.03.0/lib/ocaml/compiler-libs
 
 # rust
