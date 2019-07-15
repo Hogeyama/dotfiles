@@ -64,8 +64,11 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       { modMask            = mod4Mask
       , terminal           = "gnome-terminal"
       , workspaces         = myWorkspaces
-      , borderWidth        = 5
-      , focusedBorderColor = "#00bfff"
+      -- , borderWidth        = 5
+      , borderWidth        = 20
+      -- , focusedBorderColor = "#00bfff"
+      , focusedBorderColor = "#000000"
+      , normalBorderColor  = "#eeeeee"
       , manageHook         = manageDocks <+> manageHook def
       --, logHook            = myLogHook
       , layoutHook         = myLayoutHook
@@ -90,7 +93,7 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , ("M-a"          , sendMessage SwapWindow)
       , ("M-S-a"        , hoge) -- なんか動作の確認に
       , ("M-S-d"        , killXmobar)
-      , ("M-S-r"        , restart "xmonad" True)
+      , ("M-S-r"        , recompile False >> restart "xmonad" True)
       , ("M-S-k"        , spawn "amixer -D pulse sset Master 2%+")
       , ("M-S-j"        , spawn "amixer -D pulse sset Master 2%-")
       , ("M-S-o"        , spawn "amixer -D pulse sset Master mute")
@@ -229,6 +232,7 @@ xmobar' conf = do
 
 phRef :: IORef (Maybe ProcessHandle)
 phRef = unsafePerformIO $ newIORef Nothing
+{-# NOINLINE phRef #-}
 
 runXmobar :: IO (Handle, Handle, Handle, ProcessHandle)
 runXmobar = handleAny handler $ do

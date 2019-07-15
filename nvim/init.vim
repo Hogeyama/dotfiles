@@ -27,9 +27,6 @@ Plug 'kassio/neoterm'
 Plug 'vim-scripts/Align'
 Plug 'junegunn/vim-easy-align'
 Plug 'kana/vim-smartinput'
-Plug 'thinca/vim-quickrun'      " TODO neomakeに乗り換え
-Plug 'osyo-manga/shabadou.vim'  " 同上
-Plug 'osyo-manga/vim-watchdogs' " 同上
 Plug 'tomtom/tcomment_vim'
 Plug 'scrooloose/nerdtree'
 Plug 'machakann/vim-sandwich'
@@ -207,17 +204,18 @@ set whichwrap =b,s,h,l,<,>,[,]
 set backspace=indent,eol,start
 set wildoptions=pum
 set showtabline=2
+set switchbuf="split"
 autocmd QuickFixCmdPost *grep* cwindow
 autocmd FileType vim setlocal et ts=2 sw=2 sts=2
 
-" TODO ftとか表示したさisある
+" TODO ftとか表示したい
 let g:lightline = {}
 let g:lightline.active = {
       \ 'left':  [['mode', 'paste'], ['readonly', 'relativepath', 'filetype', 'modified']],
       \ 'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding', 'example']]
       \}
 let g:lightline.inactive = {
-      \ 'left':  [['filename']],
+      \ 'left':  [['relativepath']],
       \ 'right': [['lineinfo'], ['percent']]
       \}
 let g:lightline.tabline = {
@@ -280,43 +278,43 @@ call denite#custom#var('grep', 'recursive_opts', [])
 call denite#custom#var('grep', 'pattern_opt', [])
 call denite#custom#var('grep', 'separator', ['--'])
 call denite#custom#var('grep', 'final_opts', [])
-call denite#custom#map('normal', 'd'    , '<denite:do_action:delete>'     , 'nowait')
-call denite#custom#map('insert', '<C-j>', '<denite:move_to_next_line>'    ,         )
-call denite#custom#map('insert', '<C-k>', '<denite:move_to_previous_line>',         )
-call denite#custom#map('normal', '<C-j>', '<denite:move_to_next_line>'    ,         )
-call denite#custom#map('normal', '<C-k>', '<denite:move_to_previous_line>',         )
-call denite#custom#map('normal', 'zh'   , '<denite:wincmd:h>', 'nowait'   ,         )
-call denite#custom#map('normal', 'zj'   , '<denite:wincmd:j>', 'nowait'   ,         )
-call denite#custom#map('normal', 'zk'   , '<denite:wincmd:k>', 'nowait'   ,         )
-call denite#custom#map('normal', 'zl'   , '<denite:wincmd:l>', 'nowait'   ,         )
-call denite#custom#map('normal', 'zw'   , '<denite:wincmd:w>', 'nowait'   ,         )
-call denite#custom#map('normal', 'zW'   , '<denite:wincmd:W>', 'nowait'   ,         )
-call denite#custom#map('normal', 'zt'   , '<denite:wincmd:t>', 'nowait'   ,         )
-call denite#custom#map('normal', 'zb'   , '<denite:wincmd:b>', 'nowait'   ,         )
-call denite#custom#map('normal', 'zp'   , '<denite:wincmd:p>', 'nowait'   ,         )
-call denite#custom#map('normal', '..'   , '<denite:move_up_path>', 'nowait')
-call denite#custom#map('normal', 'tt'   , '<denite:toggle_matchers:matcher_regexp>', 'nowait')
+call denite#custom#map('normal', 'd'     , '<denite:do_action:delete>'     , 'nowait')
+call denite#custom#map('insert', '<C-j>' , '<denite:move_to_next_line>'    , 'nowait')
+call denite#custom#map('insert', '<C-k>' , '<denite:move_to_previous_line>', 'nowait')
+call denite#custom#map('normal', '<C-j>' , '<denite:move_to_next_line>'    , 'nowait')
+call denite#custom#map('normal', '<C-k>' , '<denite:move_to_previous_line>', 'nowait')
+call denite#custom#map('normal', '<C-CR>', '<denite:do_action:tabopen>'    , 'nowait')
+call denite#custom#map('normal', '..'    , '<denite:move_up_path>'         , 'nowait')
+call denite#custom#map('normal', 'zh'    , '<denite:wincmd:h>'             , 'nowait')
+call denite#custom#map('normal', 'zj'    , '<denite:wincmd:j>'             , 'nowait')
+call denite#custom#map('normal', 'zk'    , '<denite:wincmd:k>'             , 'nowait')
+call denite#custom#map('normal', 'zl'    , '<denite:wincmd:l>'             , 'nowait')
+call denite#custom#map('normal', 'zw'    , '<denite:wincmd:w>'             , 'nowait')
+call denite#custom#map('normal', 'zW'    , '<denite:wincmd:W>'             , 'nowait')
+call denite#custom#map('normal', 'zt'    , '<denite:wincmd:t>'             , 'nowait')
+call denite#custom#map('normal', 'zb'    , '<denite:wincmd:b>'             , 'nowait')
+call denite#custom#map('normal', 'zp'    , '<denite:wincmd:p>'             , 'nowait')
+" call denite#custom#map('normal', 'tt'   , '<denite:toggle_matchers:matcher_regexp>', 'nowait')
 call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
                           \ [ '.git/', '.ropeproject/', '__pycache__/',
                           \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
 
 call denite#custom#source('_', 'matchers', ['matcher_substring', 'matcher_ignore_globs'])
-command! DeniteNext     Denite -resume -cursor-pos=+1 -immediately -split=floating
-command! DenitePrevious Denite -resume -cursor-pos=-1 -immediately -split=floating
+command! DeniteNext     Denite -resume -cursor-pos=+1 -immediately
+command! DenitePrevious Denite -resume -cursor-pos=-1 -immediately
 command! DeniteGrep     Denite -auto-resume -mode=normal -winheight=10 -no-quit grep
 
 nnoremap [denite] <nop>
 nmap <C-u> [denite]
 nnoremap [denite]r :Denite -resume<CR>
-nnoremap [denite]y :Denite -split=floating -auto-resume -mode=normal -winheight=10 neoyank<CR>
 nnoremap [denite]b :Denite -split=floating -auto-resume -mode=normal -winheight=10 buffer<CR>
 nnoremap [denite]d :Denite -split=floating -auto-resume -mode=normal -winheight=10
 nnoremap [denite]g :DeniteGrep<CR>
 nnoremap [denite]n :DeniteNext<CR>
 nnoremap [denite]p :DenitePrevious<CR>
-nnoremap [denite]h :Denite -split=floating -auto-resume -mode=normal -winheight=10 file_mru<CR>
 nnoremap [denite]c :DeniteBufferDir -split=floating -mode=normal -winheight=10 file<CR>
-nnoremap <C-c>     :Denite -split=floating -auto-resume -winheight=10 file/rec<CR>
+nnoremap [denite]h :Denite          -split=floating -mode=normal -winheight=10 file_mru<CR>
+nnoremap <C-c>     :Denite          -split=floating -mode=normal -winheight=10 file/rec<CR>
 "TODO outline, output
 
 call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
@@ -337,8 +335,6 @@ call unite#custom#profile('default', 'context', {
       \})
 call unite#custom#source('file',
 \   'ignore_pattern','\.\(hi\|o\|log\|gz\|dvi\|aux\|fdb_latexmk\|cmo\|cmi\|cmx\|cmt\)$')
-"ファイル履歴最大
-let g:unite_source_file_mru_limit=100
 
 """map
 """unite map
@@ -379,100 +375,12 @@ endfunction
 
 "QuickFix"{{{
 autocmd FileType qf wincmd J
-autocmd FileType qf 5 wincmd _
-"}}}
-
-"QuickRun, WatchDogs{{{
-"{{{ g:quickrun_config
-let g:quickrun_config = {}
-let g:quickrun_config['_'] = {
-      \ 'runner/vimproc/updatetime' : 40,
-      \ 'outputter' : 'quickfix',
-      \ 'outputter/quickfix/open_cmd' : 'copen',
-      \ 'hook/copen/enable_exit' : 1,
-      \ 'runner' : 'vimproc',
-      \}
-let g:quickrun_config['watchdogs_checker/_'] = {
-      \ 'outputter/quickfix/open_cmd' : 'copen',
-      \ 'hook/copen/enable_exit' : 1,
-      \}
-let g:quickrun_config['haskell'] = {
-      \ 'command' : 'stack',
-      \ 'cmdopt' : 'runghc',
-      \ 'exec' : '%c %o %s',
-      \}
-let g:quickrun_config['ocaml'] = {
-      \ 'command' : 'dune',
-      \ 'cmdopt' : 'b',
-      \ 'exec' : '%c %o %s',
-      \}
-let g:quickrun_config['python'] = {
-      \ 'command' : 'python3',
-      \ 'cmdopt' : '',
-      \ 'exec' : '%c %o %s',
-      \}
-let g:quickrun_config['purescript'] = {
-      \ 'command' : 'pulp',
-      \ 'cmdopt' : 'build',
-      \ 'exec' : '%c %o',
-      \}
-let g:quickrun_config['rust'] = {
-      \ 'command' : 'dune',
-      \ 'cmdopt' : 'build',
-      \ 'exec' : '%c %o main.exe',
-      \}
-let s:rust_errorformat =
-      \ '%-Gerror: aborting due to previous error,'.
-      \ '%-Gerror: aborting due to %\\d%\\+ previous errors,'.
-      \ '%-Gerror: Could not compile `%s`.,'.
-      \ '%Eerror[E%n]: %m,'.
-      \ '%Eerror: %m,'.
-      \ '%Wwarning: %m,'.
-      \ '%Inote: %m,'.
-      \ '%-Z\ %#-->\ %f:%l:%c,'.
-      \ '%G\ %#\= %*[^:]: %m,'.
-      \ '%G\ %#|\ %#%\\^%\\+ %m,'.
-      \ '%I%>help:\ %#%m,'.
-      \ '%Z\ %#%m,'
-let g:quickrun_config['rust/watchdogs_checker'] = {
-      \ 'command' : 'cargo',
-      \ 'cmdopt' : 'build',
-      \ 'exec' : '%c %o',
-      \ "quickfix/errorformat" : s:rust_errorformat
-      \}
-let g:quickrun_config['ocaml/watchdogs_checker'] = {
-      \ 'command' : 'cargo',
-      \ 'exec' : '%c %o',
-      \}
-let g:quickrun_config['pandoc'] = {
-      \ 'command' : 'pandoc-wrapper',
-      \ 'exec' : '%c %s',
-      \ 'hook/copen/enable_exit' : 0,
-      \ 'hook/close_quickfix/enable_success' : 1,
-      \}
-      "成功したときは表示しない"
-"}}}
-
-function! TestErrFmt(errfmt,lines)
-  let temp_errorfomat = &errorformat
-  try
-    let &errorformat = a:errfmt
-    cexpr join(a:lines,"\n")
-    copen
-  catch
-    echo v:exception
-    echo v:throwpoint
-  finally
-    let &errorformat = temp_errorfomat
-  endtry
-endfunction
-
-call watchdogs#setup(g:quickrun_config)
+autocmd FileType qf 3 wincmd _
 "}}}
 
 "{{{Neomake
 let g:neomake_airline=1
-let g:neomake_open_list=1
+let g:neomake_open_list=2
 let g:neomake_place_signs=0
 let g:neomake_echo_current_error=0
 let g:neomake_virtualtext_current_error=0
@@ -480,12 +388,6 @@ let g:neomake_virtualtext_current_error=0
 " let g:neomake_haskell_ghcmod_remove_invalid_entries=1
 " let g:neomake_haskell_runghc_remove_invalid_entries=1
 nnoremap ! :NeomakeSh 
-
-let g:neomake_ocaml_maker = {
-      \ 'exe': 'dune',
-      \ 'args': ['build'],
-      \ 'errorformat': 'File "%f"\, line %l\, characters %c%m',
-      \}
 "}}}
 
 "neoterm{{{
@@ -841,9 +743,17 @@ autocmd FileType ocaml vnoremap <buffer> ,t :MerlinTypeOfSel<CR>
 autocmd FileType ocaml nnoremap <buffer> >  :MerlinGrowEnclosing<CR>
 autocmd FileType ocaml nnoremap <buffer> <  :MerlinShrinkEnclosing<CR>
 autocmd FileType ocaml nnoremap <buffer> ,y :MerlinYankLatestType<CR>
-autocmd FileType ocaml nnoremap <buffer> ,w :update!<CR>:MerlinErrorCheck<CR>
+" autocmd FileType ocaml nnoremap <buffer> ,w :update!<CR>:MerlinErrorCheck<CR>
 autocmd FileType ocaml nnoremap <buffer> <C-j> :update!<CR>:MerlinLocate<CR>
 autocmd FileType ocaml nnoremap <buffer> ^ :noh<CR>a<Esc>
+autocmd FileType ocaml let g:neomake_enabled_makers = ['dune'] "b:だと効かない
+let g:neomake_ocaml_dune_maker = {
+      \ 'exe': 'dune',
+      \ 'args': ['build'],
+      \ 'errorformat':
+      \   join([ "%DEntering directory '%f',"
+      \        , 'File "%f"\, line %l\, characters %c%m,%m']),
+      \}
 ""nvim-hs-lsp
 if use_nvim_hs_lsp
   autocmd FileType ocaml let g:NvimHsLsp_autoLoadQuickfix = 0
@@ -1117,9 +1027,9 @@ cnoremap <C-j> <down>
 cnoremap <C-k> <up>
 """開いているファイルのディレクトリに移動する
 nnoremap <Space>cd :cd %:h<CR>
-"""QuickRun関連
-nnoremap <C-q> :update!<CR>:Neomake<CR>
-nnoremap ,w    :update!<CR>:WatchdogsRun<CR>
+"""Neomake
+nnoremap <C-q> :update!<CR>:Neomake!<CR>
+nnoremap ,w    :update!<CR>:Neomake!<CR>
 """ctag
 "nnoremap <C-j> <C-]>
 """ noh

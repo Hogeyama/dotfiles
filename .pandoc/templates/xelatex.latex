@@ -55,7 +55,7 @@ $endif$
 $if(geometry)$
 \usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
 $endif$
-%\usepackage{hyperref}
+\usepackage{hyperref}
 %\PassOptionsToPackage{usenames,dvipsnames}{color} % color is loaded by hyperref
 %\hypersetup{unicode=true,
 %$if(title-meta)$
@@ -197,7 +197,6 @@ $endif$
 %}}}
 
 %personal settings{{{
-\newcommand{\texorpdfstring}[2]{#1}
 %%%packages
 \usepackage{amssymb}
 \usepackage{ascmac}
