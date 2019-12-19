@@ -7,6 +7,7 @@
 "nvim-hs-lspをcoc.nvimと同じくらい便利にしたいホトトギス
 "TODO NvimHsLsp_languageConfigのkeyにあるものについては<C-j>をNvimHsLspDefinitionにしたい
 
+
 "Plug{{{
 call plug#begin('~/.config/nvim/plugged')
 Plug 'Shougo/vimproc.vim', {'do' : 'make'} " いずれ消したい
@@ -21,8 +22,9 @@ Plug 'Shougo/neosnippet-snippets'
 Plug 'kana/vim-submode'
 Plug 'benekastah/neomake'
 Plug 'kassio/neoterm'
-"Plug 'editorconfig/editorconfig-vim'
+Plug 'editorconfig/editorconfig-vim'
 "Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+"Plug 'gu-fan/riv.vim'
 """便利
 Plug 'vim-scripts/Align'
 Plug 'junegunn/vim-easy-align'
@@ -35,6 +37,7 @@ Plug 'AndrewRadev/linediff.vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'Yggdroot/indentLine'
 Plug 'losingkeys/vim-niji'
+Plug 'mhinz/vim-grepper'
 ""Git TODO 整理
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
@@ -45,13 +48,12 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'rhysd/clever-f.vim'
 """nvim-hs
 Plug 'neovimhaskell/nvim-hs.vim'
-"Plug 'Hogeyama/nvim-hs-lsp'
 Plug '~/.config/nvim/nvim-hs-libs/nvim-hs-lsp'
-Plug '~/.config/nvim/nvim-hs-libs/ghc-mod-nvim'
-Plug '~/.config/nvim/nvim-hs-libs/ghcid-nvim-simple'
+Plug 'Hogeyama/intero-neovim'
+" Plug '~/.config/nvim/nvim-hs-libs/ghc-mod-nvim'
+" Plug '~/.config/nvim/nvim-hs-libs/ghcid-nvim-simple'
 """filetype
 ""Haskell
-Plug 'parsonsmatt/intero-neovim'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'vim-scripts/alex.vim'
 Plug 'vim-scripts/happy.vim'
@@ -60,7 +62,7 @@ Plug 'Hogeyama/unite-haddock'
 Plug 'Hogeyama/unite-haskellimport'
 ""Elm
 Plug 'carmonw/elm-vim'
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 ""PureScript
 Plug 'purescript-contrib/purescript-vim'
 Plug 'FrigoEU/psc-ide-vim'
@@ -119,11 +121,12 @@ colorscheme deep-space
 if 1 "true color
   set termguicolors
   "対応表 http://vim.wikia.com/wiki/Xterm256_color_names_for_console_Vim
-  "hi Normal guibg=#182020
+  hi Normal guibg=#182020
   "hi LineNr guibg=#182020
 endif
 command! GoodMatchParen hi MatchParen ctermfg=253 guifg=#dadada ctermbg=0 guibg=#000000
 GoodMatchParen
+" hi Normal guibg=None
 hi Folded ctermbg=None guibg=None "guifg=#506080
 hi LineNr ctermbg=None guibg=None
 autocmd InsertLeave * GoodMatchParen
@@ -190,7 +193,8 @@ set noundofile
 set conceallevel=0
 set concealcursor=
 set laststatus=2
-set completeopt=menuone,noselect,preview,noinsert
+" set completeopt=menuone,noselect,preview,noinsert
+set completeopt=menuone,noselect,noinsert
 "set autoread
 set scrolloff=5
 set history=100
@@ -246,8 +250,8 @@ autocmd VimEnter * call SetLightlineConfig()
 "おためし{{{
 nmap s <nop>
 xmap s <nop>
-let g:intero_start_immediately = 0
 let g:EditorConfig_max_line_indicator = 'exceeding'
+" let g:EditorConfig_max_line_indicator = 'line'
 let g:ale_enabled = 0
 let g:ale_set_quickfix = 1
 let g:ale_open_list = 1
@@ -256,8 +260,9 @@ let g:ale_pattern_options = {
       \ '\.elm$': {'ale_enabled': 1},
       \ '\.py$': {'ale_enabled': 1},
       \}
-set completeopt+=preview
 set pumblend=15
+let g:grepper = {}
+let g:grepper.quickfix = 0
 "}}}
 
 
@@ -267,7 +272,6 @@ set splitbelow
 set noshowmode
 set cmdheight=2
 let g:echodoc#enable_at_startup=0
-set completeopt=menuone,noselect
 "}}}
 
 "Denite{{{
@@ -294,12 +298,14 @@ call denite#custom#map('normal', 'zW'    , '<denite:wincmd:W>'             , 'no
 call denite#custom#map('normal', 'zt'    , '<denite:wincmd:t>'             , 'nowait')
 call denite#custom#map('normal', 'zb'    , '<denite:wincmd:b>'             , 'nowait')
 call denite#custom#map('normal', 'zp'    , '<denite:wincmd:p>'             , 'nowait')
+call denite#custom#map('normal', 'XX'    , '<denite:choose_action>'             , 'nowait')
 " call denite#custom#map('normal', 'tt'   , '<denite:toggle_matchers:matcher_regexp>', 'nowait')
 call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
                           \ [ '.git/', '.ropeproject/', '__pycache__/',
                           \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
 
 call denite#custom#source('_', 'matchers', ['matcher_substring', 'matcher_ignore_globs'])
+call denite#custom#source('grep', 'args', ['', '', '!'])
 command! DeniteNext     Denite -resume -cursor-pos=+1 -immediately
 command! DenitePrevious Denite -resume -cursor-pos=-1 -immediately
 command! DeniteGrep     Denite -auto-resume -mode=normal -winheight=10 -no-quit grep
@@ -308,7 +314,7 @@ nnoremap [denite] <nop>
 nmap <C-u> [denite]
 nnoremap [denite]r :Denite -resume<CR>
 nnoremap [denite]b :Denite -split=floating -auto-resume -mode=normal -winheight=10 buffer<CR>
-nnoremap [denite]d :Denite -split=floating -auto-resume -mode=normal -winheight=10
+nnoremap [denite]d :Denite -split=floating -auto-resume -mode=normal -winheight=10 
 nnoremap [denite]g :DeniteGrep<CR>
 nnoremap [denite]n :DeniteNext<CR>
 nnoremap [denite]p :DenitePrevious<CR>
@@ -321,6 +327,8 @@ call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
       \ [ '.git/', '.ropeproject/', '__pycache__/', '*.cmo*', '*.cmi',
       \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/', '.stack-work/', '_build/'
       \ ])
+call denite#custom#source('file/rec', 'sorters', ['sorter/word'])
+call denite#custom#source('file', 'sorters', ['sorter/word'])
 
 "}}}
 
@@ -380,7 +388,8 @@ autocmd FileType qf 3 wincmd _
 
 "{{{Neomake
 let g:neomake_airline=1
-let g:neomake_open_list=2
+let g:neomake_open_list=0
+" let g:neomake_open_list=2
 let g:neomake_place_signs=0
 let g:neomake_echo_current_error=0
 let g:neomake_virtualtext_current_error=0
@@ -508,6 +517,8 @@ let g:NvimHsLsp_languageConfig['haskell'] = {
       \     'insertSpaces': v:true,
       \   },
       \}
+      " \     ['stack', 'exec', '--', 'ghcide', '--lsp'],
+      " \     ['hie-wrapper', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
 let g:NvimHsLsp_languageConfig['rust'] = {
       \ 'serverCommand':
       \     ['rustup', 'run', 'stable', 'rls'],
@@ -518,13 +529,16 @@ let g:NvimHsLsp_languageConfig['rust'] = {
       \ }
 let g:NvimHsLsp_languageConfig['ocaml'] = {
       \ 'serverCommand':
-      \     ['ocaml-language-server', '--stdio'],
+      \     ['ocaml_lsp_server'],
       \ 'formattingOptions': {
       \     'tabSize': 2,
       \     'insertSpaces': v:true,
       \   },
       \ 'autoloadQuickfix': v:true,
       \ }
+      " \     ['ocaml_lsp_server'],
+      " \     ['ocamlmerlin-lsp'],
+      " \     ['ocaml-language-server', '--stdio'],
 let g:NvimHsLsp_languageConfig['elm'] = {
       \ 'serverCommand':
       \   [ 'elm-language-server', '-l', '/tmp/LanguageServer.log'],
@@ -637,7 +651,11 @@ let g:clever_f_smart_case = 1
 
 "vim-niji{{{
 let g:niji_matching_filetypes = ['lisp', 'smt2', 'python']
-autocmd FileType smt2 call PareditInitBuffer()
+"}}}
+
+"fzf{{{
+set rtp+=~/.fzf
+" TODO deinでやる
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -679,9 +697,9 @@ let g:haskell_backpack = 1
 
 ""nvim_hs_lsp
 if use_nvim_hs_lsp
-  autocmd FileType haskell setlocal omnifunc=NvimHsLspComplete
-  autocmd FileType haskell nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
-  autocmd FileType haskell nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
+  "autocmd FileType haskell setlocal omnifunc=NvimHsLspComplete
+  "autocmd FileType haskell nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
+  "autocmd FileType haskell nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
 endif
 
 ""ghc-mod-nvim
@@ -726,10 +744,25 @@ autocmd! BufNewFile,BufFilePRe,BufRead *.x set filetype=alex
 autocmd! BufNewFile,BufFilePRe,BufRead *.y set filetype=happy
 
 ""intero
-let g:use_intero = 0
+let g:use_intero = 1
 if g:use_intero
+  let g:intero_start_immediately = 0
+  let g:intero_type_on_hover = 0
+  nnoremap [intero] <nop>
+  autocmd FileType haskell nmap     <buffer> <C-l> [intero]
+  autocmd FileType haskell nnoremap <buffer> [intero]i :InteroOpen<CR>
+  autocmd FileType haskell nnoremap <buffer> [intero]r :InteroRestart<CR>
+  autocmd FileType haskell nnoremap <buffer> [intero]h :InteroGenericType<CR>
+  autocmd FileType haskell nnoremap <buffer> [intero]H :InteroType<CR>
   autocmd FileType haskell nnoremap <buffer> <C-j> :InteroGoToDef<CR>
   autocmd FileType haskell nnoremap <buffer> <C-h> :InteroGenericType<CR>
+  autocmd FileType haskell nnoremap <buffer> <Space>r :InteroReload<CR>
+  autocmd FileType haskell nnoremap <buffer> <Space>t :InteroGenericType<CR>
+  autocmd FileType haskell nnoremap <buffer> <Space>T :InteroType<CR>
+  augroup interoAutoReload
+      autocmd!
+      autocmd BufWrite *.hs InteroReload
+  augroup END
 endif
 "}}}
 
@@ -844,7 +877,8 @@ augroup END
 autocmd FileType pandoc setlocal et ts=2 sw=2 sts=2 foldmethod=marker
 autocmd FileType pandoc let &spell = 0
 " TODO errorformat
-let g:neomake_pandoc_maker = {
+autocmd FileType pandoc let g:neomake_enabled_makers = ['pandoc'] "b:だと効かない
+let g:neomake_pandoc_pandoc_maker = {
     \ 'exe': 'pandoc-wrapper',
     \ 'args': ['%t'],
     \ 'errorformat': '',
@@ -951,9 +985,12 @@ if use_nvim_hs_lsp
 endif
 "}}}
 
-"fzf{{{
-set rtp+=~/.fzf
-" TODO deinでやる
+"smt2{{{
+autocmd FileType smt2 call PareditInitBuffer()
+autocmd FileType smt2 setlocal lisp
+autocmd FileType smt2 setlocal lispwords+=assert,forall,exists
+" あってもなくても良い
+" autocmd bufread,bufnewfile *.smt2,*.scm,*.lisp setlocal equalprg=scmindent
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -970,8 +1007,8 @@ nnoremap tg gT
 """<space>oで改行
 "nnoremap <Space>o  :<C-u>for i in range(v:count1) \| call append(line('.'), '') \| endfor<CR>
 "jkで<esc>
-"inoremap jk <Esc>
-inoremap jk <Esc>:w<CR>
+inoremap jk <Esc>
+" inoremap jk <Esc>:w<CR>
 "inoremap kj <Esc>:w<CR>
 inoremap <C-j><C-k> <Esc>:w<CR>
 """<Space>\で保存
@@ -983,12 +1020,12 @@ nnoremap q :q
 nnoremap dk ddk
 nnoremap dj dd
 nnoremap Y  y$
-nnoremap dw diw
-nnoremap diw dw
-nnoremap cw ciw
-nnoremap ciw cw
-nnoremap yw yiw
-nnoremap yiw yw
+" nnoremap dw diw
+" nnoremap diw dw
+" nnoremap cw ciw
+" nnoremap ciw cw
+" nnoremap yw yiw
+" nnoremap yiw yw
 inoremap <C-w> <esc>ldbi
 """window関連
 nnoremap zh <C-w>h
@@ -1081,6 +1118,7 @@ nmap ; <Plug>(easymotion-next)
 "nnoremap te :vs<CR><C-w>l:te<CR>
 nnoremap te :vs<CR><C-w>l:Deol<CR>
 nnoremap vs :rightbelow vs<CR>
+" nnoremap vs :exec printf(":rightbelow %dvs", winwidth('%')-87)<CR>
 tnoremap <Esc> <C-\><C-n>
 tnoremap jk    <C-\><C-n>
 tnoremap JK    <C-\><C-n><C-w>h
@@ -1136,6 +1174,8 @@ function! CRecursive(cmd) abort "{{{
 endfunction "}}}
 nnoremap <C-n> :CNextRecursive<CR>
 nnoremap <C-p> :CPreviousRecursive<CR>
+nnoremap <M-n> :LNextRecursive<CR>
+nnoremap <M-p> :LPreviousRecursive<CR>
 call submode#enter_with('lnext', 'n', '', '<Space>l', ':LNextRecursive<CR>')
 call submode#map('lnext', 'n', '', '<C-n>', ':LNextRecursive<CR>')
 call submode#map('lnext', 'n', '', '<C-p>', ':LPreviousRecursive<CR>')

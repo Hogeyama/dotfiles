@@ -22,7 +22,7 @@ $if(euro)$
 $endif$
 \else % if luatex or xelatex
   \ifxetex
-    \usepackage{mathspec}
+    % \usepackage{mathspec}
   \else
     \usepackage{fontspec}
   \fi
@@ -235,6 +235,7 @@ $endif$
     \renewtheorem*{Thesis*}{Thesis}[section]
     \renewtheorem*{Lemma*}{Lemma}[section]
     \renewtheorem*{Proof*}{Proof}[section]
+    \newtheorem{Notation}{Notation}[section]
   \theoremstyle{change}
     \newtheorem{Note}{Note}[section]
     \renewtheorem*{Note*}{Note}[section]
@@ -245,7 +246,7 @@ $endif$
 %}}}
 
 \begin{document}%{{{
-\setlength{\abovedisplayskip}{0pt}
+% \setlength{\abovedisplayskip}{0pt}
 $if(title)$
 \maketitle
 \newpage

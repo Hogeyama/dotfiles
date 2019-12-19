@@ -1,7 +1,7 @@
 
 # If you come from bash you might have to change your $PATH.
 ################################################################################
-# ほげ {{{
+# oh-my-zsh {{{
 ################################################################################
 
 autoload bashcompinit
@@ -15,19 +15,16 @@ export TERM="xterm-256color"
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+# ZSH_THEME="bira"
+# ZSH_THEME="gnzh"
 ZSH_THEME="agnoster"
-# ZSH_THEME="random"
-# ZSH_THEME="kiwi"
-# ZSH_THEME="nicoulaj"
-# "juanghurtado"
-# "afowler"
 
 # Uncomment the following line to use case-sensitive completion.
 CASE_SENSITIVE="true"
 
 # Uncomment the following line to use hyphen-insensitive completion. Case
 # sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+# HYPHEN_INSENSITIVE="true"j
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
 DISABLE_AUTO_UPDATE="true"
@@ -66,6 +63,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
+  z
   # bundler
   # dotenv
   # rake
@@ -109,18 +107,18 @@ export EDITOR='nvim'
 # directoryのほげ
 ##############################################
 
-START_DIRECTORY=`pwd`
-DIRS_HISTORY="$HOME/.dirs_history"
-if [ -f $DIRS_HISTORY ]; then
-  while read line; do
-    pushd $line >& /dev/null
-    #pwd
-  done < <(tac "$DIRS_HISTORY")
-fi
-cd $START_DIRECTORY
-function cd_starting_directory() {
-  cd $START_DIRECTORY
-}
+# START_DIRECTORY=`pwd`
+# DIRS_HISTORY="$HOME/.dirs_history"
+# if [ -f $DIRS_HISTORY ]; then
+#   while read line; do
+#     pushd $line >& /dev/null
+#     #pwd
+#   done < <(tac "$DIRS_HISTORY")
+# fi
+# cd $START_DIRECTORY
+# function cd_starting_directory() {
+#   cd $START_DIRECTORY
+# }
 
 ##############################################
 # その他
@@ -150,9 +148,9 @@ export LD_LIBRARY_PATH=$HOME/.opam/4.03.0/lib/z3:/usr/lib:/usr/local/lib:$LD_LIB
 xmodmap $HOME/.Xmodmap 2> /dev/null; :
 
 # autojump
-[[ -s /home/hogeyama/.autojump/etc/profile.d/autojump.sh ]] \
-  && source /home/hogeyama/.autojump/etc/profile.d/autojump.sh
-autoload -U compinit && compinit -u
+# [[ -s /home/hogeyama/.autojump/etc/profile.d/autojump.sh ]] \
+#   && source /home/hogeyama/.autojump/etc/profile.d/autojump.sh
+# autoload -U compinit && compinit -u
 
 # wine
 export WINEPREFIX="$HOME/.wine"
@@ -174,8 +172,7 @@ export cabal_helper_libexecdir=$HOME/.local/bin
 #######
 
 # OPAM configuration
-# . /home/hogeyama/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-export OCAMLFIND_IGNORE_DUPS_IN=$HOME/.opam/4.03.0/lib/ocaml/compiler-libs
+export OCAMLFIND_IGNORE_DUPS_IN=`opam config var lib`/ocaml/compiler-libs
 
 # rust
 ######
@@ -188,19 +185,14 @@ export RUST_BACKTRACE=1
 source $HOME/.evm/scripts/evm
 
 ################################################################################
-# その他
-################################################################################
-
-# ディスプレイ繋いだ時に画面がバグる対策
-if [ -f $HOME/.fehbg ]
-then
-  $HOME/.fehbg
-fi
-
-################################################################################
 # bindkey
 ################################################################################
 
 bindkey "^K" up-line-or-history
 bindkey "^J" down-line-or-history
 
+# powerline
+if [[ -r /usr/local/lib/python3.5/dist-packages/powerline/bindings/zsh/powerline.zsh ]]
+then
+  # source /usr/local/lib/python3.5/dist-packages/powerline/bindings/zsh/powerline.zsh
+fi

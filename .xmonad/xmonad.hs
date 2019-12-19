@@ -1,13 +1,11 @@
-
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE TypeOperators     #-}
 {-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE NamedFieldPuns    #-}
 {-# OPTIONS_GHC -Wall          #-}
-
 module Main where
-
+{- {{{ -}
 import           RIO
 import           System.Process
 import           System.Environment
@@ -56,7 +54,9 @@ import           XMonad.Util.Run                ( safeSpawn
                                                 , spawnPipe
                                                 , runProcessWithInput
                                                 )
-
+import           Graphics.X11.Xinerama          as X
+import           Graphics.X11.Xlib.Display      as X
+{- }}} -}
 main :: IO ()
 main = xmonad =<< xmobar' (ewmh myConfig)
   where
@@ -64,8 +64,7 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       { modMask            = mod4Mask
       , terminal           = "gnome-terminal"
       , workspaces         = myWorkspaces
-      -- , borderWidth        = 5
-      , borderWidth        = 20
+      , borderWidth        = 5
       -- , focusedBorderColor = "#00bfff"
       , focusedBorderColor = "#000000"
       , normalBorderColor  = "#eeeeee"
@@ -75,9 +74,19 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , startupHook        = mapM_ spawn [ "dropbox start"
                                          , "unity-settings-daemon"
                                          , "compton -CG --active-opacity 1.0 --shadow-ignore-shaped"
-                                         , "feh --bg-scale $HOME/Dropbox/WallPapers/PrincessPrincipalOST-screen.jpg"
+                                         , "feh --bg-scale $HOME/Dropbox/WallPapers/Reflexion.jpg"
+                                         -- , "feh --bg-scale $HOME/Dropbox/WallPapers/PrincessPrincipalOST-screen.jpg"
                                          , "xmodmap $HOME/.Xmodmap"
                                          ]
+      , handleExtraArgs    = \xs conf -> do
+          rs <- X.getScreenInfo =<< X.openDisplay ""
+          let atHome = rs == [ Rectangle 0 0   1280 720
+                             , Rectangle 0 720 1920 1080 ]
+              conf'  = if atHome
+                       then conf { borderWidth = 20 }
+                       else conf
+          appendFile "/tmp/hoge" (show rs)
+          handleExtraArgs def xs conf'
       }
 
       `additionalKeysP`

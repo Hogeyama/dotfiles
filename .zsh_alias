@@ -31,6 +31,8 @@ alias la='exa -a --group-directories-first'
 alias s='exa -a --group-directories-first'
 alias DU='du -hd1 | sort -h'
 alias open='xdg-open'
+alias please='sudo'
+alias emacs='emacs -nw'
 
 # latex
 alias latexmk='latexmk -interaction=nonstopmode -halt-on-error'
@@ -39,7 +41,7 @@ alias ocamlwrap='rlwrap ocaml'
 alias ocamltop='rlwrap ./ocamltop'
 
 # git
-alias gs='git status'
+alias gs='git status -s'
 alias gpom='git push origin master'
 
 # vim
@@ -62,11 +64,9 @@ alias runghc='stack runghc --'
 alias stack-exec='stack exec --'
 alias stack-ghcid='stack exec -- ghcid "--command=stack ghci"'
 alias stack-which='stack exec -- which'
-alias ghc-mod='stack exec -- ghc-mod'
 alias hlint='stack exec -- hlint'
 alias weeder='stack exec -- weeder'
 alias hoogle='stack exec -- hoogle'
-#alias hie='stack exec -- hie'
 
 # ocaml
 alias jbuilder='nocorrect jbuilder'
@@ -87,7 +87,7 @@ alias node='nodejs'
 alias aspell-check='aspell --lang=en -t -c'
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 alias vimf='fzf | xargs nvr'
-alias clean-mochi-out='bash -c "rm -f *.hors *.horsat_out *.dot *.annot *.hrs *.sol *.smt2 *.smt2.ans *.status"'
+alias clean-mochi-out='bash -c "rm -f *.hors *.horsat_out *.dot *.annot *.hrs *.sol *.smt2 *.smt2.ans *.status *.json"'
 alias XMODMAP='xmodmap ~/.Xmodmap'
 alias CAPSLOC="python -c 'from ctypes import *; X11 = cdll.LoadLibrary(\"libX11.so.6\"); display = X11.XOpenDisplay(None); X11.XkbLockModifiers(display, c_uint(0x0100), c_uint(2), c_uint(0)); X11.XCloseDisplay(display)'"
 alias stack-sukkiri="stack exec ghc-pkg -- check -v0 | while read pkg; do; stack exec ghc-pkg -- unregister $pkg --force; done"
