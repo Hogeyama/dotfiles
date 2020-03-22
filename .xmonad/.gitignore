@@ -4,3 +4,8 @@ xmonad.errors
 xmonad.state
 xmonad.hi
 xmonad.o
+stack.yaml.lock
+xmobar-x86_64-linux
+xmobar.errors
+xmobar.hi
+xmobar.o
