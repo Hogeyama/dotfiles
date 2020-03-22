@@ -1,7 +1,7 @@
 
 # If you come from bash you might have to change your $PATH.
 ################################################################################
-# oh-my-zsh {{{
+# oh-my-zsh 
 ################################################################################
 
 autoload bashcompinit
@@ -15,9 +15,10 @@ export TERM="xterm-256color"
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-# ZSH_THEME="bira"
+ZSH_THEME="af-magic"
+ZSH_THEME="bira"
 # ZSH_THEME="gnzh"
-ZSH_THEME="agnoster"
+# ZSH_THEME="agnoster"
 
 # Uncomment the following line to use case-sensitive completion.
 CASE_SENSITIVE="true"
@@ -93,32 +94,11 @@ export EDITOR='nvim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
-# }}}
+
 
 ################################################################################
 # personal settings
 ################################################################################
-
-##############################################
-# Path
-##############################################
-
-##############################################
-# directoryのほげ
-##############################################
-
-# START_DIRECTORY=`pwd`
-# DIRS_HISTORY="$HOME/.dirs_history"
-# if [ -f $DIRS_HISTORY ]; then
-#   while read line; do
-#     pushd $line >& /dev/null
-#     #pwd
-#   done < <(tac "$DIRS_HISTORY")
-# fi
-# cd $START_DIRECTORY
-# function cd_starting_directory() {
-#   cd $START_DIRECTORY
-# }
 
 ##############################################
 # その他
