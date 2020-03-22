@@ -3,6 +3,7 @@
 {-# LANGUAGE TypeOperators     #-}
 {-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE NamedFieldPuns    #-}
+{-# LANGUAGE TypeApplications  #-}
 {-# OPTIONS_GHC -Wall          #-}
 module Main where
 {- {{{ -}
@@ -49,7 +50,6 @@ import           XMonad.Layout.TwoPane          ( TwoPane(..) )
 import           XMonad.Layout.Tabbed           ( TabbedDecoration
                                                 , simpleTabbed
                                                 )
-import           System.Exit                    ( exitSuccess )
 import           XMonad.Util.Run                ( safeSpawn
                                                 , spawnPipe
                                                 , runProcessWithInput
@@ -64,7 +64,6 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       { modMask            = mod4Mask
       , terminal           = "gnome-terminal"
       , workspaces         = myWorkspaces
-      , borderWidth        = 5
       -- , focusedBorderColor = "#00bfff"
       , focusedBorderColor = "#000000"
       , normalBorderColor  = "#eeeeee"
@@ -80,12 +79,16 @@ main = xmonad =<< xmobar' (ewmh myConfig)
                                          ]
       , handleExtraArgs    = \xs conf -> do
           rs <- X.getScreenInfo =<< X.openDisplay ""
-          let atHome = rs == [ Rectangle 0 0   1280 720
+          mborder <- tryAnyDeep $ read <$> readFile "/tmp/xmonad_borderwidth"
+          let borderWidth = case mborder of
+                Right x -> x
+                Left _
+                  | atHome    -> 20
+                  | otherwise ->  0
+              atHome = rs == [ Rectangle 0 0   1280 720
                              , Rectangle 0 720 1920 1080 ]
-              conf'  = if atHome
-                       then conf { borderWidth = 20 }
-                       else conf
-          appendFile "/tmp/hoge" (show rs)
+              conf'  = conf { borderWidth }
+          -- appendFile "/tmp/hoge" (show mborder)
           handleExtraArgs def xs conf'
       }
 

@@ -24,7 +24,7 @@ mkcd(){
 alias cd='cd-ls'
 alias dc='cd-ls'
 alias mv='mv -i'
-alias cp='cp -i'
+alias cp='cp -iL'
 alias l='exa -la --group-directories-first'
 alias ls='exa --group-directories-first'
 alias la='exa -a --group-directories-first'
@@ -87,7 +87,8 @@ alias node='nodejs'
 alias aspell-check='aspell --lang=en -t -c'
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 alias vimf='fzf | xargs nvr'
-alias clean-mochi-out='bash -c "rm -f *.hors *.horsat_out *.dot *.annot *.hrs *.sol *.smt2 *.smt2.ans *.status *.json"'
+alias clean-mochi-out='bash -c "rm -f *.hors *.horsat_out *.dot *.annot *.hrs *.sol *.smt2 *.smt2.ans *.status *.json *.trecs_out"'
+alias clean-mochi-out-rec='bash -c "rm -f **/*.hors **/*.horsat_out **/*.dot **/*.annot **/*.hrs **/*.sol **/*.smt2 **/*.smt2.ans **/*.status **/*.trecs_out"'
 alias XMODMAP='xmodmap ~/.Xmodmap'
 alias CAPSLOC="python -c 'from ctypes import *; X11 = cdll.LoadLibrary(\"libX11.so.6\"); display = X11.XOpenDisplay(None); X11.XkbLockModifiers(display, c_uint(0x0100), c_uint(2), c_uint(0)); X11.XCloseDisplay(display)'"
 alias stack-sukkiri="stack exec ghc-pkg -- check -v0 | while read pkg; do; stack exec ghc-pkg -- unregister $pkg --force; done"

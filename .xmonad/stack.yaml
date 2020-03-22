@@ -1,4 +1,4 @@
-resolver: lts-12.26
+resolver: lts-14.5
 extra-deps:
 - xmonad-0.15
 - xmonad-contrib-0.15

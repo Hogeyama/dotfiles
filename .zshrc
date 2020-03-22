@@ -163,7 +163,7 @@ export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(nvr {})+abort'"
 #########
 
 # ghcup
-source $HOME/.ghcup/env
+# source $HOME/.ghcup/env
 
 # haskell-ide-engine
 export cabal_helper_libexecdir=$HOME/.local/bin
@@ -196,3 +196,5 @@ if [[ -r /usr/local/lib/python3.5/dist-packages/powerline/bindings/zsh/powerline
 then
   # source /usr/local/lib/python3.5/dist-packages/powerline/bindings/zsh/powerline.zsh
 fi
+
+# eval "$(starship init zsh)"

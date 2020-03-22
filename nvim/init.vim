@@ -7,7 +7,6 @@
 "nvim-hs-lspをcoc.nvimと同じくらい便利にしたいホトトギス
 "TODO NvimHsLsp_languageConfigのkeyにあるものについては<C-j>をNvimHsLspDefinitionにしたい
 
-
 "Plug{{{
 call plug#begin('~/.config/nvim/plugged')
 Plug 'Shougo/vimproc.vim', {'do' : 'make'} " いずれ消したい
@@ -17,13 +16,13 @@ Plug 'Shougo/deol.nvim'
 Plug 'Shougo/defx.nvim', {'branch' : 'session'}
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete-terminal'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'kana/vim-submode'
 Plug 'benekastah/neomake'
 Plug 'kassio/neoterm'
 Plug 'editorconfig/editorconfig-vim'
-"Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 "Plug 'gu-fan/riv.vim'
 """便利
 Plug 'vim-scripts/Align'
@@ -49,7 +48,7 @@ Plug 'rhysd/clever-f.vim'
 """nvim-hs
 Plug 'neovimhaskell/nvim-hs.vim'
 Plug '~/.config/nvim/nvim-hs-libs/nvim-hs-lsp'
-Plug 'Hogeyama/intero-neovim'
+" Plug 'Hogeyama/intero-neovim'
 " Plug '~/.config/nvim/nvim-hs-libs/ghc-mod-nvim'
 " Plug '~/.config/nvim/nvim-hs-libs/ghcid-nvim-simple'
 """filetype
@@ -109,6 +108,7 @@ Plug 'tomtom/tlib_vim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'neovim/node-host', { 'do': 'npm install -g neovim' }
 Plug 'euclio/vim-markdown-composer', { 'do': 'cargo build --release' }
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 "}}}
 
@@ -232,12 +232,10 @@ let g:lightline.component = {
 function! SetLightlineConfig() abort
   augroup lightline
     autocmd!
-    "autocmd WinEnter,BufWinEnter,FileType,SessionLoadPost * call lightline#update()
     autocmd WinEnter,SessionLoadPost * call lightline#update()
     autocmd SessionLoadPost * call lightline#highlight()
     autocmd ColorScheme * if !has('vim_starting')
           \ | call lightline#update() | call lightline#highlight() | endif
-    autocmd CursorMoved,BufUnload * call lightline#update_once()
   augroup END
 endfunction
 autocmd VimEnter * call SetLightlineConfig()
@@ -263,8 +261,18 @@ let g:ale_pattern_options = {
 set pumblend=15
 let g:grepper = {}
 let g:grepper.quickfix = 0
+command! -nargs=+ -complete=file Ag Grepper -noprompt -tool ag -query <args>
+
+" coc.nvim
+set updatetime=300
 "}}}
 
+"veonim{{{
+if exists('veonim')
+endif
+" set guifont=Rounded\ Mgen+\ 1mn\ Medium
+set guifont=Ubuntu\ Mono\ derivative\ Powerline:h18
+"}}}
 
 """echodoc {{{
 "inoremap <C-q> <C-e>
@@ -276,52 +284,62 @@ let g:echodoc#enable_at_startup=0
 
 "Denite{{{
 hi CursorLine ctermbg=8
+autocmd FileType denite call s:denite_my_settings()
+function! s:denite_my_settings() abort
+  nnoremap <silent><buffer><expr> <CR>    denite#do_map('do_action')
+  nnoremap <silent><buffer><expr> q       denite#do_map('quit')
+  nnoremap <silent><buffer><expr> i       denite#do_map('open_filter_buffer')
+  nnoremap <silent><buffer><expr> d       denite#do_map('do_action', 'delete')
+  nnoremap <silent><buffer><expr> p       denite#do_map('do_action', 'preview')
+  nnoremap <silent><buffer><expr> t       denite#do_map('do_action', 'tabopen')
+  nnoremap <silent><buffer><expr> <Tab>   denite#do_map('choose_action')
+  nnoremap <silent><buffer><expr> <Space> denite#do_map('toggle_select').'j'
+  nnoremap <silent><buffer><expr> ..      denite#do_map('move_up_path') ":move_up_path>
+endfunction
+autocmd FileType denite-filter call s:denite_filter_my_settings()
+function! s:denite_filter_my_settings() abort
+endfunction
+
 call denite#custom#var('grep', 'command', ['ag'])
 call denite#custom#var('grep', 'default_opts', ['-i', '--vimgrep'])
 call denite#custom#var('grep', 'recursive_opts', [])
 call denite#custom#var('grep', 'pattern_opt', [])
+call denite#custom#var('grep', 'separator', [])
+call denite#custom#var('grep', 'final_opts', [])
+
+call denite#custom#var('grep', 'command', ['ack'])
+call denite#custom#var('grep', 'default_opts',
+		\ [ '-H', '-i',
+		\  '--nopager', '--nocolor', '--nogroup', '--column'])
+call denite#custom#var('grep', 'recursive_opts', [])
+call denite#custom#var('grep', 'pattern_opt', ['--match'])
 call denite#custom#var('grep', 'separator', ['--'])
 call denite#custom#var('grep', 'final_opts', [])
-call denite#custom#map('normal', 'd'     , '<denite:do_action:delete>'     , 'nowait')
-call denite#custom#map('insert', '<C-j>' , '<denite:move_to_next_line>'    , 'nowait')
-call denite#custom#map('insert', '<C-k>' , '<denite:move_to_previous_line>', 'nowait')
-call denite#custom#map('normal', '<C-j>' , '<denite:move_to_next_line>'    , 'nowait')
-call denite#custom#map('normal', '<C-k>' , '<denite:move_to_previous_line>', 'nowait')
-call denite#custom#map('normal', '<C-CR>', '<denite:do_action:tabopen>'    , 'nowait')
-call denite#custom#map('normal', '..'    , '<denite:move_up_path>'         , 'nowait')
-call denite#custom#map('normal', 'zh'    , '<denite:wincmd:h>'             , 'nowait')
-call denite#custom#map('normal', 'zj'    , '<denite:wincmd:j>'             , 'nowait')
-call denite#custom#map('normal', 'zk'    , '<denite:wincmd:k>'             , 'nowait')
-call denite#custom#map('normal', 'zl'    , '<denite:wincmd:l>'             , 'nowait')
-call denite#custom#map('normal', 'zw'    , '<denite:wincmd:w>'             , 'nowait')
-call denite#custom#map('normal', 'zW'    , '<denite:wincmd:W>'             , 'nowait')
-call denite#custom#map('normal', 'zt'    , '<denite:wincmd:t>'             , 'nowait')
-call denite#custom#map('normal', 'zb'    , '<denite:wincmd:b>'             , 'nowait')
-call denite#custom#map('normal', 'zp'    , '<denite:wincmd:p>'             , 'nowait')
-call denite#custom#map('normal', 'XX'    , '<denite:choose_action>'             , 'nowait')
-" call denite#custom#map('normal', 'tt'   , '<denite:toggle_matchers:matcher_regexp>', 'nowait')
+
+call denite#custom#var('grep', 'command', ['hoge'])
+
 call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
                           \ [ '.git/', '.ropeproject/', '__pycache__/',
                           \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
-
 call denite#custom#source('_', 'matchers', ['matcher_substring', 'matcher_ignore_globs'])
-call denite#custom#source('grep', 'args', ['', '', '!'])
 command! DeniteNext     Denite -resume -cursor-pos=+1 -immediately
 command! DenitePrevious Denite -resume -cursor-pos=-1 -immediately
-command! DeniteGrep     Denite -auto-resume -mode=normal -winheight=10 -no-quit grep
 
 nnoremap [denite] <nop>
 nmap <C-u> [denite]
 nnoremap [denite]r :Denite -resume<CR>
-nnoremap [denite]b :Denite -split=floating -auto-resume -mode=normal -winheight=10 buffer<CR>
-nnoremap [denite]d :Denite -split=floating -auto-resume -mode=normal -winheight=10 
-nnoremap [denite]g :DeniteGrep<CR>
+nnoremap [denite]b :Denite -auto-resume -winheight=10 buffer<CR>
+nnoremap [denite]d :Denite -auto-resume -winheight=10 
+nnoremap [denite]g :Denite -auto-resume -winheight=10 grep:::<CR>
 nnoremap [denite]n :DeniteNext<CR>
 nnoremap [denite]p :DenitePrevious<CR>
-nnoremap [denite]c :DeniteBufferDir -split=floating -mode=normal -winheight=10 file<CR>
-nnoremap [denite]h :Denite          -split=floating -mode=normal -winheight=10 file_mru<CR>
-nnoremap <C-c>     :Denite          -split=floating -mode=normal -winheight=10 file/rec<CR>
+nnoremap [denite]c :DeniteBufferDir -winheight=10 file<CR>
+nnoremap [denite]h :Denite          -winheight=10 file_mru<CR>
+nnoremap <C-c>     :Denite          -winheight=10 file/rec<CR>
 "TODO outline, output
+"メモ grep:$0:$1:$2は次に展開される
+"  ag -i --vimgrep $1 -- $2 $PWD/$0
+"interactiveに指定する場合，Argumentが$1でPatternが$2に対応するっぽい
 
 call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
       \ [ '.git/', '.ropeproject/', '__pycache__/', '*.cmo*', '*.cmi',
@@ -422,22 +440,6 @@ vmap ,b :TCommentRight!<CR>
 vmap ,i :TCommentInline!<CR>
 "}}}
 
-"deoplete neosnippet{{{
-" Use deoplete.
-let g:deoplete#enable_at_startup  = 1
-call deoplete#custom#option('ignore_case', v:false)
-call deoplete#custom#option('camel_case', v:true)
-call deoplete#custom#option('ignore_sources', {'elm': ['nvim-hs-lsp']})
-
-" <Tab>で選ぶ
-inoremap <expr><Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr><S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-"BS
-inoremap <expr><BS>  deoplete#mappings#smart_close_popup()."\<BS>"
-"cancel completion
-inoremap <C-c> <C-e>
-"}}}
-
 "neosnippet{{{
 imap <C-f> <Plug>(neosnippet_expand_or_jump)
 smap <C-f> <Plug>(neosnippet_expand_or_jump)
@@ -501,6 +503,27 @@ call smartinput#define_rule({
 "inoremap { {
 "}}}
 
+"deoplete neosnippet{{{
+" Use deoplete.
+let g:deoplete#enable_at_startup  = 1
+call deoplete#custom#option('ignore_case', v:false)
+call deoplete#custom#option('camel_case', v:true)
+call deoplete#custom#option('ignore_sources', {'elm': ['nvim-hs-lsp']})
+call deoplete#custom#var('terminal', 'require_same_tab', v:false)
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function() abort
+  return deoplete#close_popup() . "\<CR>"
+endfunction
+
+" <Tab>で選ぶ
+inoremap <expr><Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr><S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+"BS
+inoremap <expr><BS> deoplete#smart_close_popup()."\<C-h>"
+"cancel completion
+inoremap <C-c> <C-e>
+"}}}
+
 "LSP {{{
 """ 'Hogeyama/nvim-hs-lsp'
 " g:NvimHsLsp_languageConfig {{{
@@ -517,8 +540,16 @@ let g:NvimHsLsp_languageConfig['haskell'] = {
       \     'insertSpaces': v:true,
       \   },
       \}
-      " \     ['stack', 'exec', '--', 'ghcide', '--lsp'],
       " \     ['hie-wrapper', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
+      " \     ['stack', 'exec', '--', 'ghcide', '--lsp'],
+let g:NvimHsLsp_languageConfig['tex'] = {
+      \ 'serverCommand':
+      \     ['texlab'],
+      \ 'formattingOptions': {
+      \     'tabSize': 2,
+      \     'insertSpaces': v:true,
+      \   },
+      \}
 let g:NvimHsLsp_languageConfig['rust'] = {
       \ 'serverCommand':
       \     ['rustup', 'run', 'stable', 'rls'],
@@ -697,9 +728,9 @@ let g:haskell_backpack = 1
 
 ""nvim_hs_lsp
 if use_nvim_hs_lsp
-  "autocmd FileType haskell setlocal omnifunc=NvimHsLspComplete
-  "autocmd FileType haskell nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
-  "autocmd FileType haskell nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
+  autocmd FileType haskell setlocal omnifunc=NvimHsLspComplete
+  autocmd FileType haskell nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
+  autocmd FileType haskell nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
 endif
 
 ""ghc-mod-nvim
@@ -744,7 +775,7 @@ autocmd! BufNewFile,BufFilePRe,BufRead *.x set filetype=alex
 autocmd! BufNewFile,BufFilePRe,BufRead *.y set filetype=happy
 
 ""intero
-let g:use_intero = 1
+let g:use_intero = 0
 if g:use_intero
   let g:intero_start_immediately = 0
   let g:intero_type_on_hover = 0
@@ -831,13 +862,14 @@ autocmd FileType elm nnoremap <buffer> ,w :ElmMake<CR>
 "}}}
 
 "LaTeX{{{
-autocmd FileType tex setlocal et sw=2 sts=2 noautoindent
-autocmd BufRead,BufNewFile *.tex setlocal filetype=tex
+let g:tex_flavor = "latex"
+autocmd FileType tex setlocal et sw=2 sts=2
+" autocmd FileType tex setlocal et sw=2 sts=2 noautoindent
+" autocmd BufRead,BufNewFile *.tex setlocal filetype=tex
 autocmd filetype tex nnoremap <buffer> ,w :update!<CR>:VimtexErrors<CR>
 autocmd filetype tex nnoremap <buffer> <C-q>    :update!<CR>:VimtexCompileSS<CR>
 autocmd filetype tex nnoremap <buffer> <F8>     :VimtexTocToggle<CR>
 autocmd filetype tex nnoremap <buffer> <Space>c :VimtexCountWords<CR>
-let g:vimtex_view_general_viewer   = 'evince'
 let g:vimtex_view_general_viewer   = 'evince'
 let g:vimtex_latexmk_options       = ''
 let g:vimtex_complete_close_braces = 1
@@ -863,7 +895,7 @@ let g:vimtex_quickfix_latexlog = { 'overfull' : 0 }
 let g:vimtex_index_split_pos   = 'vert botright'
 let g:vimtex_index_split_width = 40
 let g:vimtex_compiler_progname = 'nvr'
-
+nmap <c-z> /\$<CR>srb\(
 "有用そう
 "   <localleader>lY  |<plug>(vimtex-labels-toggle)|        `n`
 "   <localleader>ll  |<plug>(vimtex-compile-toggle)|       `n`
@@ -889,7 +921,7 @@ let g:neomake_pandoc_pandoc_maker = {
 let g:previm_enable_realtime = 1
 let g:vim_markdown_math = 1
 let g:pandoc#syntax#codeblocks#embeds#use = 1
-let g:pandoc#syntax#codeblocks#embeds#langs = ["ocaml","haskell"]
+let g:pandoc#syntax#codeblocks#embeds#langs = ["ocaml","haskell","python3"]
 let g:pandoc#folding#mode = 'marker'
 let g:pandoc#syntax#conceal#use = 0
 let g:pandoc#modules#disabled = ["folding", "chdir"]
@@ -1014,8 +1046,6 @@ inoremap <C-j><C-k> <Esc>:w<CR>
 """<Space>\で保存
 nnoremap <C-\> :update!<CR>
 inoremap <C-\> <Esc>:update!<CR>
-"""qで閉じる
-nnoremap q :q
 """削除関連
 nnoremap dk ddk
 nnoremap dj dd
@@ -1204,5 +1234,6 @@ function! PandocSel() range
 endfunction
 
 set conceallevel=0
+
 
 "vim: set et ts=1 sts=2 tw=2:
