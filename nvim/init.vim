@@ -68,7 +68,7 @@ Plug 'FrigoEU/psc-ide-vim'
 ""Dhall
 Plug 'vmchale/dhall-vim'
 """Python
-Plug 'numirias/semshi'
+" Plug 'numirias/semshi'
 Plug 'vim-python/python-syntax'
 ""Scala
 Plug 'derekwyatt/vim-scala'
