@@ -117,7 +117,7 @@ source "$HOME/.zsh_alias"
 
 # stack completion
 autoload bashcompinit
-eval "$(stack --bash-completion-script stack)"
+which stack > /dev/null && eval "$(stack --bash-completion-script stack)"
 
 export VTE_CJK_WIDTH=1
 
@@ -158,11 +158,6 @@ export OCAMLFIND_IGNORE_DUPS_IN=`opam config var lib`/ocaml/compiler-libs
 ######
 
 export RUST_BACKTRACE=1
-
-# Erlang
-########
-
-source $HOME/.evm/scripts/evm
 
 ################################################################################
 # bindkey

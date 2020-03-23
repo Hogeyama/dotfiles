@@ -56,7 +56,7 @@ Plug '~/.config/nvim/nvim-hs-libs/nvim-hs-lsp'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'vim-scripts/alex.vim'
 Plug 'vim-scripts/happy.vim'
-Plug 'Hogeyama/ghc-mod-deoplete'
+" Plug 'Hogeyama/ghc-mod-deoplete'
 Plug 'Hogeyama/unite-haddock'
 Plug 'Hogeyama/unite-haskellimport'
 ""Elm
@@ -72,7 +72,7 @@ Plug 'numirias/semshi'
 Plug 'vim-python/python-syntax'
 ""Scala
 Plug 'derekwyatt/vim-scala'
-Plug 'ensime/ensime-vim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'ensime/ensime-vim', { 'do': ':UpdateRemotePlugins' }
 "Plug 'ktvoelker/sbt-vim'
 ""Idris Agda
 Plug 'idris-hackers/idris-vim'
