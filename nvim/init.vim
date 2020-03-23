@@ -108,7 +108,7 @@ Plug 'tomtom/tlib_vim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'neovim/node-host', { 'do': 'npm install -g neovim' }
 Plug 'euclio/vim-markdown-composer', { 'do': 'cargo build --release' }
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 "}}}
 
@@ -505,7 +505,7 @@ call smartinput#define_rule({
 
 "deoplete neosnippet{{{
 " Use deoplete.
-let g:deoplete#enable_at_startup  = 1
+let g:deoplete#enable_at_startup  = 0
 call deoplete#custom#option('ignore_case', v:false)
 call deoplete#custom#option('camel_case', v:true)
 call deoplete#custom#option('ignore_sources', {'elm': ['nvim-hs-lsp']})
@@ -617,7 +617,7 @@ xnoremap [nvim-hs-lsp] <nop>
 nmap     <C-l> [nvim-hs-lsp]
 xmap     <C-l> [nvim-hs-lsp]
 
-let use_nvim_hs_lsp = 1
+let use_nvim_hs_lsp = 0
 
 if use_nvim_hs_lsp
   nnoremap [nvim-hs-lsp]i :NvimHsLspInitialize<CR>
