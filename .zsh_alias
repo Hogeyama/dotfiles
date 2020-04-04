@@ -14,6 +14,15 @@ hoice-wrapper(){
   cat $1 | sed '/^\s*;/d' > /tmp/hoge.smt2 && hoice /tmp/hoge.smt2
 }
 
+xmonad-borderwidth(){
+  if ! [[ "$1" =~ ^[0-9]+$ ]]; then
+    echo "usage: $0 WIDTH"
+  else
+    echo $1 > /tmp/xmonad_borderwidth
+    xmonad --restart
+  fi
+}
+
 mkcd(){
   mkdir $1
   cd $1

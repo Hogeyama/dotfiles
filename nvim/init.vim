@@ -107,7 +107,7 @@ Plug 'vim-scripts/paredit.vim'
 Plug 'tomtom/tlib_vim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'neovim/node-host', { 'do': 'npm install -g neovim' }
-Plug 'euclio/vim-markdown-composer', { 'do': 'cargo build --release' }
+" Plug 'euclio/vim-markdown-composer', { 'do': 'cargo build --release' }
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 "}}}
@@ -611,6 +611,8 @@ let g:NvimHsLsp_languageConfig['typescript'] = {
       \   },
       \ }
 "}}}
+let g:nvimhsPluginStarter=nvimhs#cabal#pluginstarter()
+" let g:nvimhsPluginStarter=nvimhs#stack#pluginstarter()
 " let g:NvimHsLsp_logFile = "/tmp/nvim-hs-lsp.log"
 nnoremap [nvim-hs-lsp] <nop>
 xnoremap [nvim-hs-lsp] <nop>
