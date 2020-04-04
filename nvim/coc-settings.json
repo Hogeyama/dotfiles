@@ -1,0 +1,14 @@
+{
+  "languageserver": {
+    "hie": {
+      "command": "hie-wrapper",
+      "args": [ "--lsp", "-d", "-l", "/tmp/LanguageServer.log"],
+      "filetypes": ["haskell"]
+    },
+    "ocaml-language-server": {
+      "command": "ocaml-language-server",
+      "args": ["--stdio"],
+      "filetypes": ["ocaml"]
+    }
+  }
+}
