@@ -1,5 +1,12 @@
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Configuration
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Either 'nvim-hs-lsp' or 'coc'
+let g:lsp_plugin = 'nvim-hs-lsp'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -9,7 +16,7 @@
 
 "Plug{{{
 call plug#begin('~/.config/nvim/plugged')
-Plug 'Shougo/vimproc.vim', {'do' : 'make'} " いずれ消したい
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/denite.nvim'
 Plug 'Shougo/deol.nvim'
@@ -23,7 +30,6 @@ Plug 'kana/vim-submode'
 Plug 'benekastah/neomake'
 Plug 'kassio/neoterm'
 Plug 'editorconfig/editorconfig-vim'
-"Plug 'gu-fan/riv.vim'
 """便利
 Plug 'vim-scripts/Align'
 Plug 'junegunn/vim-easy-align'
@@ -48,15 +54,13 @@ Plug 'rhysd/clever-f.vim'
 """nvim-hs
 Plug 'neovimhaskell/nvim-hs.vim'
 Plug '~/.config/nvim/nvim-hs-libs/nvim-hs-lsp'
+Plug '~/.config/nvim/nvim-hs-libs/ghcid-nvim-simple'
 " Plug 'Hogeyama/intero-neovim'
-" Plug '~/.config/nvim/nvim-hs-libs/ghc-mod-nvim'
-" Plug '~/.config/nvim/nvim-hs-libs/ghcid-nvim-simple'
 """filetype
 ""Haskell
 Plug 'neovimhaskell/haskell-vim'
 Plug 'vim-scripts/alex.vim'
 Plug 'vim-scripts/happy.vim'
-Plug 'Hogeyama/ghc-mod-deoplete'
 Plug 'Hogeyama/unite-haddock'
 Plug 'Hogeyama/unite-haskellimport'
 ""Elm
@@ -108,7 +112,9 @@ Plug 'tomtom/tlib_vim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'neovim/node-host', { 'do': 'npm install -g neovim' }
 " Plug 'euclio/vim-markdown-composer', { 'do': 'cargo build --release' }
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+if g:lsp_plugin == 'coc'
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+endif
 call plug#end()
 "}}}
 
@@ -212,7 +218,6 @@ set switchbuf="split"
 autocmd QuickFixCmdPost *grep* cwindow
 autocmd FileType vim setlocal et ts=2 sw=2 sts=2
 
-" TODO ftとか表示したい
 let g:lightline = {}
 let g:lightline.active = {
       \ 'left':  [['mode', 'paste'], ['readonly', 'relativepath', 'filetype', 'modified']],
@@ -249,15 +254,6 @@ autocmd VimEnter * call SetLightlineConfig()
 nmap s <nop>
 xmap s <nop>
 let g:EditorConfig_max_line_indicator = 'exceeding'
-" let g:EditorConfig_max_line_indicator = 'line'
-let g:ale_enabled = 0
-let g:ale_set_quickfix = 1
-let g:ale_open_list = 1
-let g:ale_keep_list_window_open = 1
-let g:ale_pattern_options = {
-      \ '\.elm$': {'ale_enabled': 1},
-      \ '\.py$': {'ale_enabled': 1},
-      \}
 set pumblend=15
 let g:grepper = {}
 let g:grepper.quickfix = 0
@@ -272,14 +268,6 @@ if exists('veonim')
 endif
 " set guifont=Rounded\ Mgen+\ 1mn\ Medium
 set guifont=Ubuntu\ Mono\ derivative\ Powerline:h18
-"}}}
-
-"""echodoc {{{
-"inoremap <C-q> <C-e>
-set splitbelow
-set noshowmode
-set cmdheight=2
-let g:echodoc#enable_at_startup=0
 "}}}
 
 "Denite{{{
@@ -308,9 +296,7 @@ call denite#custom#var('grep', 'separator', [])
 call denite#custom#var('grep', 'final_opts', [])
 
 call denite#custom#var('grep', 'command', ['ack'])
-call denite#custom#var('grep', 'default_opts',
-		\ [ '-H', '-i',
-		\  '--nopager', '--nocolor', '--nogroup', '--column'])
+call denite#custom#var('grep', 'default_opts', ['-H','-i','--nopager','--nocolor','--nogroup','--column'])
 call denite#custom#var('grep', 'recursive_opts', [])
 call denite#custom#var('grep', 'pattern_opt', ['--match'])
 call denite#custom#var('grep', 'separator', ['--'])
@@ -461,13 +447,6 @@ nnoremap [gitgutter]d :GitGutterSignsDisable<CR>
 nnoremap [gitgutter]s :GitGutterStageHunk<CR>
 "}}}
 
-"vim-fugitive{{{
-".dein/plugin/fugitive.vim
-" l:1447 pedit -> vertical pedit
-" wincmd P -> wincmd P | vertical resize 40
-" と書き換えるとgStatusが見やすい
-"}}}
-
 "submode{{{
 let g:submode_always_show_submode = 1
 let g:submode_timeout = 0
@@ -525,7 +504,49 @@ inoremap <C-c> <C-e>
 "}}}
 
 "LSP {{{
-""" 'Hogeyama/nvim-hs-lsp'
+nnoremap [lsp] <nop>
+xnoremap [lsp] <nop>
+nmap     <C-l> [lsp]
+xmap     <C-l> [lsp]
+
+function! s:lsp_my_setting() abort
+  if g:lsp_plugin == 'nvim-hs-lsp'
+    setlocal omnifunc=NvimHsLspComplete
+    nnoremap <buffer> [lsp]i :NvimHsLspInitialize<CR>
+    nnoremap <buffer> [lsp]s :NvimHsLspStartServer<CR>
+    nnoremap <buffer> [lsp]q :NvimHsLspStopServer<CR>
+    nnoremap <buffer> <C-j>  :NvimHsLspDefinition<CR>
+    nnoremap <buffer> [lsp]j :NvimHsLspDefinition<CR>
+    nnoremap <buffer> [lsp]h :NvimHsLspInfo<CR>
+    nnoremap <buffer> [lsp]H :NvimHsLspHover<CR>
+    nnoremap <buffer> <C-h>  :NvimHsLspHoverFloat<CR>
+    nnoremap <buffer> [lsp]w :NvimHsLspLoadQuickfix<CR>
+    nnoremap <buffer> [lsp]r :NvimHsLspReferences<CR>
+    nnoremap <buffer> [lsp]f :NvimHsLspFormatting!<CR>
+    xnoremap <buffer> [lsp]f :NvimHsLspFormatting<CR>
+    nnoremap <buffer> [lsp]a :NvimHsLspCodeAction<CR>
+    nnoremap <buffer> [lsp]r :NvimHsLspRename 
+    inoremap <buffer> <C-o>  <C-x><C-o>
+  elseif g:lsp_plugin == 'coc'
+    nmap     <buffer> <C-j>  <Plug>(coc-definition)
+    nmap     <buffer> [lsp]j <Plug>(coc-definition)
+    nmap     <buffer> [lsp]r <Plug>(coc-references)
+    nmap     <buffer> [lsp]f <Plug>(coc-format)
+    xmap     <buffer> [lsp]f <Plug>(coc-format-selected)
+    nmap     <buffer> [lsp]a <Plug>(coc-codeaction)
+    nmap     <buffer> [lsp]r <Plug>(coc-rename)
+    nmap     <buffer> [lsp]l <Plug>(coc-openlink)
+    nnoremap <buffer> [lsp]h :call CocAction('doHover')<CR>
+    nnoremap <buffer> <C-h>  :call CocAction('doHover')<CR>
+    " diagnosticsがカーソルの下に出るのいいな．<Plug>(coc-diagnostic-info)を見ればいいのかしら
+    " <Plug>(coc-openlink)は普通に便利そう
+    " <Plug>(coc-fix-current)とcodeactionの違いはなんだろう
+    " completionのconfigさえしたら完璧ではこれ
+  else
+  endif
+endfunction
+
+" nvim-hs-lsp config"{{{
 " g:NvimHsLsp_languageConfig {{{
 let g:NvimHsLsp_languageConfig = {}
 let g:NvimHsLsp_languageConfig['_'] = {
@@ -560,16 +581,18 @@ let g:NvimHsLsp_languageConfig['rust'] = {
       \ }
 let g:NvimHsLsp_languageConfig['ocaml'] = {
       \ 'serverCommand':
-      \     ['ocaml_lsp_server'],
+      \     ['ocaml-language-server', '--stdio'],
       \ 'formattingOptions': {
       \     'tabSize': 2,
       \     'insertSpaces': v:true,
       \   },
       \ 'autoloadQuickfix': v:true,
       \ }
+      " \     ['ocamllsp'],
       " \     ['ocaml_lsp_server'],
       " \     ['ocamlmerlin-lsp'],
       " \     ['ocaml-language-server', '--stdio'],
+      " \     ['ocamlmerlin-server'],
 let g:NvimHsLsp_languageConfig['elm'] = {
       \ 'serverCommand':
       \   [ 'elm-language-server', '-l', '/tmp/LanguageServer.log'],
@@ -612,45 +635,7 @@ let g:NvimHsLsp_languageConfig['typescript'] = {
       \ }
 "}}}
 let g:nvimhsPluginStarter=nvimhs#cabal#pluginstarter()
-" let g:nvimhsPluginStarter=nvimhs#stack#pluginstarter()
-" let g:NvimHsLsp_logFile = "/tmp/nvim-hs-lsp.log"
-nnoremap [nvim-hs-lsp] <nop>
-xnoremap [nvim-hs-lsp] <nop>
-nmap     <C-l> [nvim-hs-lsp]
-xmap     <C-l> [nvim-hs-lsp]
-
-let use_nvim_hs_lsp = 1
-
-if use_nvim_hs_lsp
-  nnoremap [nvim-hs-lsp]i :NvimHsLspInitialize<CR>
-  nnoremap [nvim-hs-lsp]s :NvimHsLspStartServer<CR>
-  nnoremap [nvim-hs-lsp]q :NvimHsLspStopServer<CR>
-  nnoremap [nvim-hs-lsp]h :NvimHsLspInfo<CR>
-  nnoremap <C-h>          :NvimHsLspHoverFloat<CR>
-  nnoremap [nvim-hs-lsp]H :NvimHsLspHover<CR>
-  nnoremap [nvim-hs-lsp]j :NvimHsLspDefinition<CR>
-  nnoremap [nvim-hs-lsp]w :NvimHsLspLoadQuickfix<CR>
-  nnoremap [nvim-hs-lsp]r :NvimHsLspReferences<CR>
-  nnoremap [nvim-hs-lsp]f :NvimHsLspFormatting!<CR>
-  xnoremap [nvim-hs-lsp]f :NvimHsLspFormatting<CR>
-  nnoremap [nvim-hs-lsp]a :NvimHsLspCodeAction<CR>
-  nnoremap <F2>           :NvimHsLspRename 
-  inoremap <C-o>          <C-x><C-o>
-else
-  nmap [nvim-hs-lsp]j <Plug>(coc-definition)
-  nmap <C-j>          <Plug>(coc-definition)
-  nmap [nvim-hs-lsp]r <Plug>(coc-references)
-  nmap [nvim-hs-lsp]f <Plug>(coc-format)
-  xmap [nvim-hs-lsp]f <Plug>(coc-format-selected)
-  nmap [nvim-hs-lsp]a <Plug>(coc-codeaction)
-  nmap <F2>           <Plug>(coc-rename)
-  nnoremap <C-h>      :call CocAction('doHover')<CR>
-  " diagnosticsがカーソルの下に出るのいいな．<Plug>(coc-diagnostic-info)を見ればいいのかしら
-  " <Plug>(coc-openlink)は普通に便利そう
-  " <Plug>(coc-fix-current)とcodeactionの違いはなんだろう
-  " completionのconfigさえしたら完璧ではこれ．悔しいな
-endif
-nmap [nvim-hs-lsp]l <Plug>(coc-openlink)
+"}}}
 
 "QuickFixを開けっ放しにする
 autocmd InsertLeave * let g:airline_disabled = 1
@@ -663,15 +648,7 @@ let g:indentLine_char = '⁞' "U+205E VERTICAL FOUR DOTS
 let g:indentLine_char = '⏐' "U+23D0 VERTICAL LINE EXTENSION
 "}}}
 
-"multiblock{{{
-" omap ab <Plug>(textobj-multiblock-a)
-" omap ib <Plug>(textobj-multiblock-i)
-" vmap ab <Plug>(textobj-multiblock-a)
-" vmap ib <Plug>(textobj-multiblock-i)
-"}}}
-
 "EasyMotion{{{
-"もっとちゃんと使おう
 let g:EasyMotion_keys='jfkdlamvneioc'
 let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_smartcase = 1
@@ -697,13 +674,9 @@ set rtp+=~/.fzf
 
 "C"{{{
 autocmd FileType c setlocal expandtab ts=4 sts=4 sw=4
-if use_nvim_hs_lsp
-  autocmd FileType c setlocal omnifunc=NvimHsLspComplete
-  autocmd FileType c nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
-  autocmd FileType c nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
-else
-  autocmd FileType c nnoremap <buffer> <C-j> <Plug>(coc-definition)
-endif
+augroup lsp
+  autocmd FileType c call s:lsp_my_setting()
+augroup END
 "}}}
 
 "sh"{{{
@@ -727,13 +700,9 @@ let g:haskell_backpack = 1
 
 ""indent
 "let g:haskell_indent_disable = 1
-
-""nvim_hs_lsp
-if use_nvim_hs_lsp
-  autocmd FileType haskell setlocal omnifunc=NvimHsLspComplete
-  autocmd FileType haskell nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
-  autocmd FileType haskell nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
-endif
+augroup lsp
+  autocmd FileType haskell call s:lsp_my_setting()
+augroup END
 
 ""ghc-mod-nvim
 "autocmd FileType haskell nnoremap <buffer> ,t :update!<CR>:NeoGhcModType<CR>
@@ -821,11 +790,9 @@ let g:neomake_ocaml_dune_maker = {
       \        , 'File "%f"\, line %l\, characters %c%m,%m']),
       \}
 ""nvim-hs-lsp
-if use_nvim_hs_lsp
-  autocmd FileType ocaml let g:NvimHsLsp_autoLoadQuickfix = 0
-  autocmd FileType ocaml setlocal omnifunc=NvimHsLspComplete
-  autocmd FileType ocaml nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
-endif
+augroup lsp
+  autocmd FileType ocaml call s:lsp_my_setting()
+augroup END
 "config for merlin and ocp-indent
 let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
@@ -957,11 +924,9 @@ autocmd! BufNewFile,BufFilePRe,BufRead *.pl set filetype=prolog
 "autocmd FileType rust nmap <buffer> gK    <Plug>(rust-doc)
 "let g:racer_no_default_keymappings=0
 ""nvim-hs-lsp
-if use_nvim_hs_lsp
-  autocmd FileType rust setlocal omnifunc=NvimHsLspComplete
-  autocmd FileType rust nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
-  autocmd FileType rust nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
-endif
+augroup lsp
+  autocmd FileType rust call s:lsp_my_setting()
+augroup END
 "}}}
 
 "Scala {{{
@@ -1009,14 +974,11 @@ function! NvimHsLspFormattingPython3() abort
   NvimHsLspFormatting!
   Python3Syntax
 endfunction
-autocmd FileType python nnoremap [nvim_hs_lsp]f call NvimHsLspFormattingPython3()
+autocmd FileType python nnoremap [lsp]f call NvimHsLspFormattingPython3()
 autocmd InsertLeave,BufNewFile,BufFilePRe,BufRead *.py Python3Syntax
-if use_nvim_hs_lsp
-  autocmd FileType python setlocal omnifunc=NvimHsLspComplete
-  autocmd FileType python inoremap <buffer> <C-o> <C-x><C-o>
-  autocmd FileType python nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
-  autocmd FileType python nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
-endif
+augroup lsp
+  autocmd FileType python call s:lsp_my_setting()
+augroup END
 "}}}
 
 "smt2{{{
