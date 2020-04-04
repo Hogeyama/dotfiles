@@ -20,7 +20,7 @@ Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/denite.nvim'
 Plug 'Shougo/deol.nvim'
-Plug 'Shougo/defx.nvim', {'branch' : 'session'}
+Plug 'Shougo/defx.nvim'
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/deoplete.nvim'
 Plug 'Shougo/deoplete-terminal'
