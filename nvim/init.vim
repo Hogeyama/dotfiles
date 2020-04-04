@@ -52,7 +52,7 @@ Plug 'lambdalisue/gina.vim'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'rhysd/clever-f.vim'
 """nvim-hs
-Plug 'neovimhaskell/nvim-hs.vim'
+Plug 'Hogeyama/nvim-hs.vim'
 Plug '~/.config/nvim/nvim-hs-libs/nvim-hs-lsp'
 Plug '~/.config/nvim/nvim-hs-libs/ghcid-nvim-simple'
 " Plug 'Hogeyama/intero-neovim'
