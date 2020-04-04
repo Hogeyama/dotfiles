@@ -4,8 +4,8 @@
 }
 
 cd-ls(){
-  # \cd $* && \ls --group-directories-first --color=tty
-  \cd $* && \exa --group-directories-first
+  \cd $* && \ls --group-directories-first --color=tty
+  # \cd $* && \exa --group-directories-first
   dirs -lp | awk '!x[$0]++' | sed "/home\/hogeyama\$/d" > "$HOME/.dirs_history"
   # awk '!x[$0]++': remove duplicates without sorting
 }
@@ -34,10 +34,11 @@ alias cd='cd-ls'
 alias dc='cd-ls'
 alias mv='mv -i'
 alias cp='cp -iL'
-alias l='exa -la --group-directories-first'
-alias ls='exa --group-directories-first'
-alias la='exa -a --group-directories-first'
-alias s='exa -a --group-directories-first'
+alias l='ls -CF'
+alias ll='ls -alF'
+alias la='ls -A'
+alias ll_='ls -alF'
+alias la_='ls -A'
 alias DU='du -hd1 | sort -h'
 alias open='xdg-open'
 alias please='sudo'

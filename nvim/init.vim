@@ -72,11 +72,11 @@ Plug 'FrigoEU/psc-ide-vim'
 ""Dhall
 Plug 'vmchale/dhall-vim'
 """Python
-Plug 'numirias/semshi'
+" Plug 'numirias/semshi'
 Plug 'vim-python/python-syntax'
 ""Scala
 Plug 'derekwyatt/vim-scala'
-Plug 'ensime/ensime-vim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'ensime/ensime-vim', { 'do': ':UpdateRemotePlugins' }
 "Plug 'ktvoelker/sbt-vim'
 ""Idris Agda
 Plug 'idris-hackers/idris-vim'
@@ -701,8 +701,9 @@ let g:haskell_backpack = 1
 ""indent
 "let g:haskell_indent_disable = 1
 augroup lsp
-  autocmd FileType haskell call s:lsp_my_setting()
+  " autocmd FileType haskell call s:lsp_my_setting()
 augroup END
+
 
 ""ghc-mod-nvim
 "autocmd FileType haskell nnoremap <buffer> ,t :update!<CR>:NeoGhcModType<CR>
@@ -736,7 +737,7 @@ autocmd FileType haskell nnoremap <buffer> <leader>w :update!<CR>:GhcidCheck!<CR
 autocmd FileType haskell nnoremap <buffer> <leader>W :update!<CR>:GhcidCheck<CR>
 autocmd FileType haskell nnoremap <buffer> <leader>r :GhcidStopAll<CR>
 autocmd FileType haskell nnoremap <buffer> <leader>q :GhcidExec 
-autocmd FileType haskell nnoremap <buffer> <leader>t :GhcidType 
+autocmd FileType haskell nnoremap <buffer> <leader>t :GhcidTypeCurrentWord<CR>
 autocmd FileType haskell nnoremap <buffer> <C-S-q>   :GhcidExec main<CR>
 autocmd FileType haskell nnoremap <buffer> <C-q>     :call GhcidExecMain()<CR>
 
@@ -795,10 +796,13 @@ augroup lsp
 augroup END
 "config for merlin and ocp-indent
 let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
-execute "set rtp+=" . g:opamshare . "/merlin/vim"
-execute "helptags " . g:opamshare . "/merlin/vim/doc"
-execute "set rtp^=" . g:opamshare . "/ocp-indent/vim"
-execute "set rtp^=" . g:opamshare . "/ocp-index/vim"
+try
+  execute "set rtp+=" . g:opamshare . "/merlin/vim"
+  execute "helptags " . g:opamshare . "/merlin/vim/doc"
+  execute "set rtp^=" . g:opamshare . "/ocp-indent/vim"
+  execute "set rtp^=" . g:opamshare . "/ocp-index/vim"
+catch /.*/
+endtry
 "}}}
 
 "Elm{{{
