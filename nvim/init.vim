@@ -10,10 +10,6 @@ let g:lsp_plugin = 'nvim-hs-lsp'
 "" General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"TODO https://bluz71.github.io/2017/05/21/vim-plugins-i-like.html
-"nvim-hs-lspをcoc.nvimと同じくらい便利にしたいホトトギス
-"TODO NvimHsLsp_languageConfigのkeyにあるものについては<C-j>をNvimHsLspDefinitionにしたい
-
 "Plug{{{
 call plug#begin('~/.config/nvim/plugged')
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
@@ -43,6 +39,8 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'Yggdroot/indentLine'
 Plug 'losingkeys/vim-niji'
 Plug 'mhinz/vim-grepper'
+Plug 'wellle/visual-split.vim'
+Plug 'mhinz/vim-startify'
 ""Git TODO 整理
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'

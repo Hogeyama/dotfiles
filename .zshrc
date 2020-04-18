@@ -112,6 +112,10 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # zsh_alias
 source "$HOME/.zsh_alias"
 
+# Java
+export JAVA_HOME=/usr/lib/jvm/jdk-14
+export PATH=$JAVA_HOME/bin:$PATH
+
 # stack completion
 autoload bashcompinit
 which stack > /dev/null && eval "$(stack --bash-completion-script stack)"

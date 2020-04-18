@@ -5,7 +5,6 @@
 
 cd-ls(){
   \cd $* && \ls --group-directories-first --color=tty
-  # \cd $* && \exa --group-directories-first
   dirs -lp | awk '!x[$0]++' | sed "/home\/hogeyama\$/d" > "$HOME/.dirs_history"
   # awk '!x[$0]++': remove duplicates without sorting
 }
@@ -35,14 +34,11 @@ alias dc='cd-ls'
 alias mv='mv -i'
 alias cp='cp -iL'
 alias l='ls -CF'
-alias ll='ls -alF'
+alias ll='ls -ahlF'
 alias la='ls -A'
-alias ll_='ls -alF'
-alias la_='ls -A'
 alias DU='du -hd1 | sort -h'
 alias open='xdg-open'
 alias please='sudo'
-alias emacs='emacs -nw'
 
 # latex
 alias latexmk='latexmk -interaction=nonstopmode -halt-on-error'
@@ -104,4 +100,6 @@ alias CAPSLOC="python -c 'from ctypes import *; X11 = cdll.LoadLibrary(\"libX11.
 alias stack-sukkiri="stack exec ghc-pkg -- check -v0 | while read pkg; do; stack exec ghc-pkg -- unregister $pkg --force; done"
 alias nihongoutenai='ibus restart'
 #alias otodenai='alsactl restore'
+
+alias suspend='sudo pm-suspend'
 
