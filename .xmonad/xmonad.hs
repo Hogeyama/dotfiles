@@ -97,7 +97,7 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , ("M-p"          , spawn "ulauncher")
       , ("M-S-q"        , kill)
       , ("M-S-C-q"      , io exitSuccess)
-      , ("M-x"          , spawn "slock")
+      , ("M-x"          , spawn "sudo pm-suspend")
       , ("M-S-x"        , spawn "systemctl suspend")
       , ("M-<Return>"   , forcusNextScreen)
       , ("M-C-<Return>" , shiftNextScreen)
@@ -246,55 +246,10 @@ phRef :: IORef (Maybe ProcessHandle)
 phRef = unsafePerformIO $ newIORef Nothing
 {-# NOINLINE phRef #-}
 
-runXmobar :: IO (Handle, Handle, Handle, ProcessHandle)
-runXmobar = handleAny handler $ do
-    home <- getEnv "HOME"
-    let xmobarProc =
-                     (shell "stack exec -- xmobar xmobar.hs")
-                     -- (proc "stack" ["exec", "--", "xmobar", "xmobar.hs"])
-                     { cwd = Just $ home <> "/.xmonad"
-                     , std_in  = CreatePipe
-                     , std_out = CreatePipe
-                     , std_err = CreatePipe
-                     }
-
-    (Just hin, Just hout, Just herr, ph) <- createProcess_ "xmobar" xmobarProc
-    void $ async $ log' =<< hGetContents hout
-    void $ async $ log' =<< hGetContents herr
-    writeIORef phRef (Just ph)
-    return (hin, hout, herr, ph)
-  where
-    handler e = do
-      liftIO $ appendFile "/tmp/xmomo" (show e <> "\n")
-      error "にゃん"
-
-
-
 killXmobar :: MonadIO m => m ()
 killXmobar = liftIO $ readIORef phRef >>= \case
   Nothing -> log' "Nothing"
   Just x -> log' "Just" >> terminateProcess x
-
-
--- XState = { windowset :: WindowSet , ...}
--- WindowSet = StackSet WorkspaceId (Layout Window) Window ScreenId ScreenDetail
--- StackSet i l a sid sd =
---    { current  ::  Screen i l a sid sd  -- forcused workspace
---    , visible  :: [Screen i l a sid sd] -- 別のスクリーンに写ってる
---    , hidden   :: [Workspace i l a ]    -- その他
---    , floating :: Map a RationalRect
---    }
--- Workspace i l a =
---    { tag    :: i
---    , layout :: l
---    , stack  :: Maybe (Stack a)
---    }
--- Stack a =
---    { focus :: a
---    , up    :: [a]
---    , down  :: [a]
---    }
---  WindowはX11で定義されている
 
 -------------------------------------------------------------------------------
 -- LogHook
