@@ -1,7 +1,6 @@
 
-# If you come from bash you might have to change your $PATH.
 ################################################################################
-# oh-my-zsh 
+# oh-my-zsh
 ################################################################################
 
 autoload bashcompinit
@@ -105,33 +104,27 @@ export EDITOR='nvim'
 setopt NO_HUp
 setopt NO_CHECK_JOBS
 unsetopt correctall
+autoload bashcompinit
 
 # ssh
 export SSH_KEY_PATH="~/.ssh/rsa_id"
 
 # zsh_aliases
-source "$HOME/.zsh_aliases"
+[ -f ~/.zsh_aliases ] && . ~/.zsh_aliases
+[ -f ~/.zshenv ]      && . ~/.zshenv
 
 # Java
 export JAVA_HOME=/usr/lib/jvm/jdk-14
 export PATH=$JAVA_HOME/bin:$PATH
 
 # stack completion
-autoload bashcompinit
 which stack > /dev/null && eval "$(stack --bash-completion-script stack)"
-
-export VTE_CJK_WIDTH=1
 
 # for mochi
 export LD_LIBRARY_PATH=$HOME/.opam/4.03.0/lib/z3:/usr/lib:/usr/local/lib:$LD_LIBRARY_PATH
 
 # xmodmap
 xmodmap $HOME/.Xmodmap 2> /dev/null; :
-
-# autojump
-# [[ -s /home/hogeyama/.autojump/etc/profile.d/autojump.sh ]] \
-#   && source /home/hogeyama/.autojump/etc/profile.d/autojump.sh
-# autoload -U compinit && compinit -u
 
 # wine
 export WINEPREFIX="$HOME/.wine"
@@ -142,9 +135,6 @@ export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(nvr {})+abort'"
 
 # Haskell
 #########
-
-# ghcup
-# source $HOME/.ghcup/env
 
 # haskell-ide-engine
 export cabal_helper_libexecdir=$HOME/.local/bin
@@ -166,12 +156,6 @@ export RUST_BACKTRACE=1
 
 bindkey "^K" up-line-or-history
 bindkey "^J" down-line-or-history
-
-# powerline
-if [[ -r /usr/local/lib/python3.5/dist-packages/powerline/bindings/zsh/powerline.zsh ]]
-then
-  # source /usr/local/lib/python3.5/dist-packages/powerline/bindings/zsh/powerline.zsh
-fi
 
 # eval "$(starship init zsh)"
 [ -f "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env" ] && source "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env"

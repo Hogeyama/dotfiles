@@ -1,11 +1,11 @@
 
-\$(){
-  $*
-}
+# \$(){
+#   $*
+# }
 
 cd-ls(){
   \cd $* && \ls --group-directories-first --color=tty
-  dirs -lp | awk '!x[$0]++' | sed "/home\/hogeyama\$/d" > "$HOME/.dirs_history"
+  dirs -l -p | awk '!x[$0]++' | sed "/home\/hogeyama\$/d" > "$HOME/.dirs_history"
   # awk '!x[$0]++': remove duplicates without sorting
 }
 
