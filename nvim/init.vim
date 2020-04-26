@@ -4,7 +4,8 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Either 'nvim-hs-lsp' or 'coc'
-let g:lsp_plugin = 'nvim-hs-lsp'
+let g:lsp_plugin = 'coc'
+" let g:lsp_plugin = 'nvim-hs-lsp'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" General
@@ -222,7 +223,7 @@ let g:lightline.active = {
       \ 'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding', 'example']]
       \}
 let g:lightline.inactive = {
-      \ 'left':  [['relativepath']],
+      \ 'left':  [['relativepath', 'modified']],
       \ 'right': [['lineinfo'], ['percent']]
       \}
 let g:lightline.tabline = {
@@ -481,8 +482,7 @@ call smartinput#define_rule({
 "}}}
 
 "deoplete neosnippet{{{
-" Use deoplete.
-let g:deoplete#enable_at_startup  = 1
+let g:deoplete#enable_at_startup  = g:lsp_plugin != 'coc'
 call deoplete#custom#option('ignore_case', v:false)
 call deoplete#custom#option('camel_case', v:true)
 call deoplete#custom#option('ignore_sources', {'elm': ['nvim-hs-lsp']})
@@ -536,10 +536,6 @@ function! s:lsp_my_setting() abort
     nmap     <buffer> [lsp]l <Plug>(coc-openlink)
     nnoremap <buffer> [lsp]h :call CocAction('doHover')<CR>
     nnoremap <buffer> <C-h>  :call CocAction('doHover')<CR>
-    " diagnosticsがカーソルの下に出るのいいな．<Plug>(coc-diagnostic-info)を見ればいいのかしら
-    " <Plug>(coc-openlink)は普通に便利そう
-    " <Plug>(coc-fix-current)とcodeactionの違いはなんだろう
-    " completionのconfigさえしたら完璧ではこれ
   else
   endif
 endfunction
@@ -553,7 +549,7 @@ let g:NvimHsLsp_languageConfig['_'] = {
       \}
 let g:NvimHsLsp_languageConfig['haskell'] = {
       \ 'serverCommand':
-      \     ['hie-wrapper', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
+      \     ['cabal', 'exec', '--', 'ghcide', '--lsp'],
       \ 'formattingOptions': {
       \     'tabSize': 2,
       \     'insertSpaces': v:true,
@@ -699,7 +695,7 @@ let g:haskell_backpack = 1
 ""indent
 "let g:haskell_indent_disable = 1
 augroup lsp
-  " autocmd FileType haskell call s:lsp_my_setting()
+  autocmd FileType haskell call s:lsp_my_setting()
 augroup END
 
 
