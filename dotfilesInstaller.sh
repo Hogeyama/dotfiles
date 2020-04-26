@@ -3,6 +3,12 @@ if [ ! -d ~/.config/nvim ]; then
     mkdir -p ~/.config/nvim
 fi
 
+if [ $SHELL = "/usr/bin/zsh" ]; then # FIXME ガバガバ判定
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+elif [ $SHELL = "/bin/bash" ]; then
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+fi
+
 ln -sf ~/dotfiles/profile                ~/.profile
 ln -sf ~/dotfiles/shenv                  ~/.bashenv
 ln -sf ~/dotfiles/shenv                  ~/.zshenv
