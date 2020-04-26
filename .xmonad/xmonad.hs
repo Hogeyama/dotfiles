@@ -9,12 +9,10 @@ module Main where
 {- {{{ -}
 import           RIO
 import           System.Process
-import           System.Environment
 import           System.IO.Unsafe               ( unsafePerformIO )
-import           System.IO                      ( hPutStrLn, hGetContents )
+import           System.IO                      ( hPutStrLn )
 
 import           XMonad
-import           XMonad.Config.Prime            ( io )
 import           XMonad.Hooks.EwmhDesktops      ( ewmh )
 import           XMonad.Hooks.DynamicLog        ( PP(..)
                                                 , xmobarPP
@@ -26,15 +24,10 @@ import           XMonad.Hooks.ManageDocks       ( AvoidStruts
                                                 , avoidStruts
                                                 , ToggleStruts(..)
                                                 )
-import           XMonad.Operations              ( kill )
 import qualified XMonad.StackSet                as W
 import           XMonad.Util.EZConfig           ( additionalKeys
                                                 , additionalKeysP
                                                 , removeKeysP
-                                                )
-import           XMonad.Layout                  ( Choose
-                                                , Full(..)
-                                                , (|||)
                                                 )
 import           XMonad.Layout.Decoration       ( Decoration
                                                 , DefaultShrinker
@@ -227,12 +220,9 @@ toggleTouchPad = setTouchPad . not =<< isTouchPadEnabled
 xmobar' :: LayoutClass l Window
         => XConfig l -> IO (XConfig (ModifiedLayout AvoidStruts l))
 xmobar' conf = do
-    h <- spawnPipe "(cd $HOME/.xmonad; stack exec -- xmobar xmobar.hs)"
-    -- (h,hout,herr,_) <- runXmobar
-    -- hSetBuffering hout NoBuffering
-    -- hSetBuffering herr NoBuffering
-    -- void $ async $ log' =<< hGetContents hout
-    -- void $ async $ log' =<< hGetContents herr
+    -- h <- spawnPipe "(cd $HOME/.xmonad; cabal exec -- xmobar xmobar.hs)"
+    h <- spawnPipe "xmobar $HOME/.xmonad/xmobar.hs"
+    log' "GABA"
     return $ docks $ conf
         { layoutHook = avoidStruts (layoutHook conf)
         , logHook = do logHook conf
