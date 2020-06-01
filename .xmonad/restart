@@ -1,2 +1,2 @@
 #!/bin/sh
-cabal install --installdir=./ --overwrite-policy=always --install-method=copy && cabal exec -- xmonad --restart
+stack install --local-bin-path ./ && xmonad --restart
