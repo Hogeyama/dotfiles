@@ -1,4 +1,5 @@
 .stack-work/
+dist-newstyle/
 xmonad-x86_64-linux
 xmonad.errors
 xmonad.state
@@ -9,3 +10,4 @@ xmobar-x86_64-linux
 xmobar.errors
 xmobar.hi
 xmobar.o
+xmobar

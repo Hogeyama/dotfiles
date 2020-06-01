@@ -81,10 +81,11 @@ run :: X.Display -> IO ()
 run display = do
   rs <- X.getScreenInfo display
   let config'
-        | isLab rs    = config { position = Static { xpos = 1920, ypos = 0  , width = 1920, height = 20 } }
-        | isSingle rs = config { position = Static { xpos = 0   , ypos = 0  , width = 1920, height = 20 } }
-        | otherwise   = config { position = Static { xpos = 15  , ypos = 10 , width = 1245, height = 20 } } -- 小さいdisplay
-        | otherwise   = config { position = Static { xpos = 0   , ypos = 720, width = 1920, height = 20 } } -- laptopのdisplay
+        = config { position = Static { xpos = 0   , ypos = 0  , width = 1920, height = 20 } }
+        -- | isLab rs    = config { position = Static { xpos = 1920, ypos = 0  , width = 1920, height = 20 } }
+        -- | isSingle rs = config { position = Static { xpos = 0   , ypos = 0  , width = 1920, height = 20 } }
+        -- | otherwise   = config { position = Static { xpos = 15  , ypos = 10 , width = 1245, height = 20 } } -- 小さいdisplay
+        -- | otherwise   = config { position = Static { xpos = 0   , ypos = 720, width = 1920, height = 20 } } -- laptopのdisplay
   xmobar config'
 
 main :: IO ()
