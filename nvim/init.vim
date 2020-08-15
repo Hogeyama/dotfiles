@@ -4,8 +4,8 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Either 'nvim-hs-lsp' or 'coc'
-let g:lsp_plugin = 'coc'
-" let g:lsp_plugin = 'nvim-hs-lsp'
+" let g:lsp_plugin = 'coc'
+let g:lsp_plugin = 'nvim-hs-lsp'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" General
@@ -28,7 +28,7 @@ Plug 'benekastah/neomake'
 Plug 'kassio/neoterm'
 Plug 'editorconfig/editorconfig-vim'
 """便利
-Plug 'vim-scripts/Align'
+"Plug 'vim-scripts/Align'
 Plug 'junegunn/vim-easy-align'
 Plug 'kana/vim-smartinput'
 Plug 'tomtom/tcomment_vim'
@@ -53,7 +53,7 @@ Plug 'rhysd/clever-f.vim'
 """nvim-hs
 Plug 'Hogeyama/nvim-hs.vim', {'branch': 'develop'}
 Plug '~/.config/nvim/nvim-hs-libs/nvim-hs-lsp'
-Plug '~/.config/nvim/nvim-hs-libs/ghcid-nvim-simple'
+"Plug '~/.config/nvim/nvim-hs-libs/ghcid-nvim-simple'
 " Plug 'Hogeyama/intero-neovim'
 """filetype
 ""Haskell
@@ -88,6 +88,7 @@ Plug 'qnighy/satysfi.vim'
 Plug 'tyru/open-browser.vim'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
+Plug 'vim-voom/VOoM'
 ""Coq
 Plug 'jvoorhis/coq.vim'
 Plug 'eagletmt/coqtop-vim'
@@ -176,7 +177,8 @@ let maplocalleader=","
 filetype plugin on
 filetype indent on
 set mouse=
-set ambiwidth=single
+set ambiwidth=double
+"set ambiwidth=single
 set foldmethod=marker
 set visualbell t_vb=
 set hidden
@@ -313,7 +315,7 @@ command! DenitePrevious Denite -resume -cursor-pos=-1 -immediately
 nnoremap [denite] <nop>
 nmap <C-u> [denite]
 nnoremap [denite]r :Denite -resume<CR>
-nnoremap [denite]b :Denite -auto-resume -winheight=10 buffer<CR>
+nnoremap [denite]b :Denite buffer -winheight=10 buffer<CR>
 nnoremap [denite]d :Denite -auto-resume -winheight=10 
 nnoremap [denite]g :Denite -auto-resume -winheight=10 grep:::<CR>
 nnoremap [denite]n :DeniteNext<CR>
@@ -549,13 +551,15 @@ let g:NvimHsLsp_languageConfig['_'] = {
       \}
 let g:NvimHsLsp_languageConfig['haskell'] = {
       \ 'serverCommand':
-      \     ['cabal', 'exec', '--', 'ghcide', '--lsp'],
+      \     ['haskell-language-server-wrapper', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
       \ 'formattingOptions': {
       \     'tabSize': 2,
       \     'insertSpaces': v:true,
       \   },
       \}
+      " \     ['cabal', 'exec', '--', 'ghcide', '--lsp'],
       " \     ['hie-wrapper', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
+      " \     ['haskell-language-server-wrapper', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
       " \     ['stack', 'exec', '--', 'ghcide', '--lsp'],
 let g:NvimHsLsp_languageConfig['tex'] = {
       \ 'serverCommand':
@@ -862,7 +866,7 @@ let g:vimtex_quickfix_latexlog = { 'overfull' : 0 }
 let g:vimtex_index_split_pos   = 'vert botright'
 let g:vimtex_index_split_width = 40
 let g:vimtex_compiler_progname = 'nvr'
-nmap <c-z> /\$<CR>srb\(
+"nmap <c-z> /\$<CR>srb\(
 "有用そう
 "   <localleader>lY  |<plug>(vimtex-labels-toggle)|        `n`
 "   <localleader>ll  |<plug>(vimtex-compile-toggle)|       `n`
@@ -942,7 +946,7 @@ autocmd FileType make setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
 "}}}
 
 "Align {{{
-autocmd VimEnter * AlignCtrl W=
+"autocmd VimEnter * AlignCtrl W=
 "}}}
 
 "Rainbow {{{
@@ -1142,7 +1146,7 @@ let g:previm_open_cmd="google-chrome"
 nnoremap <F8> :TagbarToggle<CR>
 nnoremap gs :Gstatus<CR>
 vnoremap * "zy:let @/ = @z<CR>n
-vnoremap ,a :Align
+"vnoremap ,a :Align
 
 command! -nargs=+ -complete=command Redir let s:reg = @@ | redir @"> | silent execute <q-args> | redir END | e /tmp/vim_tmp_redir | pu | 1,2d_ | let @@ = s:reg
 

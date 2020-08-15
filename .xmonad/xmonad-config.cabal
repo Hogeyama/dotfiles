@@ -23,5 +23,6 @@ executable xmobar-x86_64-linux
   build-depends:       base
                      , xmobar
                      , X11
+                     , rio
   default-language:    Haskell2010
 

@@ -1,15 +1,15 @@
 {
   "languageserver": {
-    //"hie": {
-    //  "command": "hie-wrapper",
-    //  "args": [ "--lsp", "-d", "-l", "/tmp/LanguageServer.log"],
-    //  "filetypes": ["haskell"]
-    //},
-    "ghcide": {
-      "command": "cabal",
-      "args": ["exec", "--", "ghcide", "--lsp"],
+    "hie": {
+      "command": "haskell-language-server-wrapper",
+      "args": [ "--lsp", "-d", "-l", "/tmp/LanguageServer.log"],
       "filetypes": ["haskell"]
     },
+    //"ghcide": {
+    //  "command": "cabal",
+    //  "args": ["exec", "--", "ghcide", "--lsp"],
+    //  "filetypes": ["haskell"]
+    //},
     "ocaml-language-server": {
       "command": "ocaml-language-server",
       "args": ["--stdio"],

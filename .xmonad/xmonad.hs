@@ -40,9 +40,10 @@ import           XMonad.Layout.ComboP           ( CombineTwoP
                                                 , combineTwoP
                                                 )
 import           XMonad.Layout.TwoPane          ( TwoPane(..) )
-import           XMonad.Layout.Tabbed           ( TabbedDecoration
-                                                , simpleTabbed
-                                                )
+import           XMonad.Layout.Tabbed            --( TabbedDecoration
+                                                 --, simpleTabbed
+                                                 --, simpleTabbedBottom
+                                                 --)
 import           XMonad.Util.Run                ( safeSpawn
                                                 , spawnPipe
                                                 , runProcessWithInput
@@ -77,10 +78,10 @@ main = xmonad =<< xmobar' (ewmh myConfig)
                 Right x -> x
                 Left _
                   | atHome    -> 20
-                  | otherwise ->  0
+                  | otherwise -> 10
               atHome = rs == [ Rectangle 0 0   1280 720
                              , Rectangle 0 720 1920 1080 ]
-              conf'  = conf { borderWidth }
+              conf'  = conf {  borderWidth }
           -- appendFile "/tmp/hoge" (show mborder)
           handleExtraArgs def xs conf'
       }
@@ -279,12 +280,14 @@ type SimpleTab = Decoration TabbedDecoration DefaultShrinker :$ Simplest
 type MyLayoutHook = Full
                 :|| SimpleTab
                 :|| CombineTwoP (TwoPane ()) SimpleTab SimpleTab
+                :|| Tall
 
 myLayoutHook :: MyLayoutHook Window
 myLayoutHook = Full
            ||| simpleTabbed
            ||| combineTwoP (TwoPane (1/50) (1/2))
                   simpleTabbed simpleTabbed (Title "no title")
+           ||| Tall 1 (3/100) (1/2)
 
 hoge :: MonadIO m => m ()
 hoge = do
