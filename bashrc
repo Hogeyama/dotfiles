@@ -18,7 +18,7 @@ OSH_THEME="duru"
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
+DISABLE_AUTO_UPDATE="true"
 
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_OSH_DAYS=13
@@ -33,7 +33,7 @@ OSH_THEME="duru"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -167,28 +167,4 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
-# fzf
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(nvr {})+abort'"
-
-# Haskell
-#########
-
-# ghcup
-[ -f "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env" ] && source "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env"
-
-# haskell-ide-engine
-export cabal_helper_libexecdir=$HOME/.local/bin
-
-# OCaml
-#######
-
-# OPAM configuration
-export OCAMLFIND_IGNORE_DUPS_IN=`opam config var lib`/ocaml/compiler-libs
-
-# rust
-######
-
-export RUST_BACKTRACE=1
 
