@@ -1,4 +1,8 @@
 
+if exists('g:vscode')
+  finish
+endif
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" Configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -27,6 +31,8 @@ Plug 'kana/vim-submode'
 Plug 'benekastah/neomake'
 Plug 'kassio/neoterm'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 """便利
 "Plug 'vim-scripts/Align'
 Plug 'junegunn/vim-easy-align'
@@ -178,8 +184,9 @@ filetype plugin on
 filetype indent on
 set mouse=
 set ambiwidth=double
-"set ambiwidth=single
+" set ambiwidth=single
 set foldmethod=marker
+set fillchars=fold:-
 set visualbell t_vb=
 set hidden
 set modeline
@@ -264,13 +271,6 @@ command! -nargs=+ -complete=file Ag Grepper -noprompt -tool ag -query <args>
 set updatetime=300
 "}}}
 
-"veonim{{{
-if exists('veonim')
-endif
-" set guifont=Rounded\ Mgen+\ 1mn\ Medium
-set guifont=Ubuntu\ Mono\ derivative\ Powerline:h18
-"}}}
-
 "Denite{{{
 hi CursorLine ctermbg=8
 autocmd FileType denite call s:denite_my_settings()
@@ -305,9 +305,10 @@ call denite#custom#var('grep', 'final_opts', [])
 
 call denite#custom#var('grep', 'command', ['hoge'])
 
-call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
-                          \ [ '.git/', '.ropeproject/', '__pycache__/',
-                          \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
+call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
+      \ [ '.git/', '.ropeproject/', '__pycache__/', '*.cmo*', '*.cmi',
+      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/', '.stack-work/', '_build/'
+      \ ])
 call denite#custom#source('_', 'matchers', ['matcher_substring', 'matcher_ignore_globs'])
 command! DeniteNext     Denite -resume -cursor-pos=+1 -immediately
 command! DenitePrevious Denite -resume -cursor-pos=-1 -immediately
@@ -315,23 +316,19 @@ command! DenitePrevious Denite -resume -cursor-pos=-1 -immediately
 nnoremap [denite] <nop>
 nmap <C-u> [denite]
 nnoremap [denite]r :Denite -resume<CR>
-nnoremap [denite]b :Denite buffer -winheight=10 buffer<CR>
-nnoremap [denite]d :Denite -auto-resume -winheight=10 
-nnoremap [denite]g :Denite -auto-resume -winheight=10 grep:::<CR>
+nnoremap [denite]b :Denite buffer -winheight=10 -split=floating buffer<CR>
+nnoremap [denite]d :Denite -winheight=10 
+nnoremap [denite]g :Denite -winheight=10 grep:::<CR>
 nnoremap [denite]n :DeniteNext<CR>
-nnoremap [denite]p :DenitePrevious<CR>
-nnoremap [denite]c :DeniteBufferDir -winheight=10 file<CR>
-nnoremap [denite]h :Denite          -winheight=10 file_mru<CR>
-nnoremap <C-c>     :Denite          -winheight=10 file/rec<CR>
+nnoremap [denite]p :DenitePevious<CR>
+nnoremap [denite]c :DeniteBufferDir -winheight=10 -split=floating file<CR>
+nnoremap [denite]h :Denite          -winheight=10 -split=floating file_mru<CR>
+nnoremap <C-c>     :Denite          -winheight=10 -split=floating file/rec<CR>
 "TODO outline, output
 "メモ grep:$0:$1:$2は次に展開される
 "  ag -i --vimgrep $1 -- $2 $PWD/$0
 "interactiveに指定する場合，Argumentが$1でPatternが$2に対応するっぽい
 
-call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
-      \ [ '.git/', '.ropeproject/', '__pycache__/', '*.cmo*', '*.cmi',
-      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/', '.stack-work/', '_build/'
-      \ ])
 call denite#custom#source('file/rec', 'sorters', ['sorter/word'])
 call denite#custom#source('file', 'sorters', ['sorter/word'])
 
@@ -571,12 +568,13 @@ let g:NvimHsLsp_languageConfig['tex'] = {
       \}
 let g:NvimHsLsp_languageConfig['rust'] = {
       \ 'serverCommand':
-      \     ['rustup', 'run', 'stable', 'rls'],
+      \     ['rust-analyzer-linux'],
       \ 'formattingOptions': {
       \     'tabSize': 4,
       \     'insertSpaces': v:true,
       \   },
       \ }
+      " \     ['rustup', 'run', 'stable', 'rls'],
 let g:NvimHsLsp_languageConfig['ocaml'] = {
       \ 'serverCommand':
       \     ['ocaml-language-server', '--stdio'],
@@ -663,7 +661,6 @@ let g:niji_matching_filetypes = ['lisp', 'smt2', 'python']
 
 "fzf{{{
 set rtp+=~/.fzf
-" TODO deinでやる
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

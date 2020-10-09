@@ -102,3 +102,5 @@ alias nihongoutenai='ibus restart'
 
 alias suspend='sudo pm-suspend'
 
+alias myip="curl 'https://api.ipify.org'"
+

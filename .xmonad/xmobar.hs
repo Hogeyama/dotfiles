@@ -1,5 +1,6 @@
 {-# LANGUAGE MultiWayIf #-}
 import RIO
+import RIO.Partial               (fromJust)
 import Xmobar
 import Data.List                 (intercalate)
 import Graphics.X11.Xinerama     as X
@@ -78,7 +79,7 @@ run :: X.Display -> IO ()
 run display = do
   rs <- X.getScreenInfo display
   liftIO $ appendFile "/home/hogeyama/xmonad.mylog" (show rs <> "\n")
-  let width = fromInteger $ toInteger $ rect_width $ rs!!0
+  let width = fromIntegral $ foldl max 0 $ map rect_width rs
       height = case width of
         3840 -> 40
         2560 -> 30
