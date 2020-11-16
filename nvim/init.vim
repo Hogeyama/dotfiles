@@ -172,7 +172,6 @@ endif "}}}
 "}}}
 
 "各種設定"{{{
-let g:python3_host_prog = '/usr/bin/python3.6'
 filetype plugin indent on
 
 set fileencoding=utf-8
