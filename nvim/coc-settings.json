@@ -16,7 +16,8 @@
       "filetypes": ["ocaml"]
     }
   },
-  "diagnostic.virtualText": true,
+  // "diagnostic.virtualText": true,
   "diagnostic.virtualTextPrefix": "-- ",
-  "diagnostic.enableSign": false
+  "diagnostic.enableSign": false,
+  "coc.preferences.useQuickfixForLocations": true
 }

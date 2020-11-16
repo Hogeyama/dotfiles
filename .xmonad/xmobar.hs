@@ -11,7 +11,7 @@ config :: Config
 config = defaultConfig
     -- { font = "xft:Rounded Mgen+ 1mn:size=12"
     -- { font = "xft:Rounded Mgen+ 1mn:size=24"
-    { font = "xft:Rounded Mgen+ 1mn:size=18"
+    { font = "xft:Rounded Mgen+ 1mn:size=16"
     , bgColor = "#1a1e1b"
     , fgColor = "#676767"
     , lowerOnStart = True
@@ -85,7 +85,6 @@ run display = do
         2560 -> 30
         1920 -> 20
       config' = config { position = Static { xpos = 0   , ypos = 0  , width = width, height = height } }
-        -- | otherwise   = config { position = Static { xpos = 15  , ypos = 10 , width = 1245, height = 20 } } -- 小さいdisplay
   xmobar config'
 
 main :: IO ()

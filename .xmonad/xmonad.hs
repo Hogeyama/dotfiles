@@ -16,6 +16,7 @@ import           XMonad
 import           XMonad.Hooks.EwmhDesktops      ( ewmh )
 import           XMonad.Hooks.DynamicLog        ( PP(..)
                                                 , xmobarPP
+                                                -- , xmobar
                                                 , dynamicLogWithPP
                                                 )
 import           XMonad.Hooks.ManageDocks       ( AvoidStruts
@@ -221,9 +222,10 @@ toggleTouchPad = setTouchPad . not =<< isTouchPadEnabled
 xmobar' :: LayoutClass l Window
         => XConfig l -> IO (XConfig (ModifiedLayout AvoidStruts l))
 xmobar' conf = do
-    h <- spawnPipe "(cd $HOME/.xmonad; stack exec -- xmobar xmobar.hs)"
+    --h <- spawnPipe "(cd $HOME/.xmonad; stack exec -- xmobar xmobar.hs)"
     -- h <- spawnPipe "(cd $HOME/.xmonad; cabal exec -- xmobar xmobar.hs)"
-    log' "Hoge"
+    h <- spawnPipe "$HOME/.xmonad/xmobar"
+    -- log' "Hoge"
     return $ docks $ conf
         { layoutHook = avoidStruts (layoutHook conf)
         , logHook = do logHook conf

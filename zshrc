@@ -5,7 +5,6 @@
 
 autoload bashcompinit
 bashcompinit
-zstyle ':completion:*:*:nvim:*' file-patterns '^*.(aux|log|pdf|cmo|cmi|cmt|cmx):source-files' '*:all-files'
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -14,10 +13,6 @@ export TERM="xterm-256color"
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="bira"
-ZSH_THEME="imajes"
-ZSH_THEME="junkfood"
-ZSH_THEME="kardan"
 ZSH_THEME="kphoen"
 
 # Uncomment the following line to use case-sensitive completion.
@@ -40,7 +35,7 @@ DISABLE_AUTO_UPDATE="true"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="true"
+# ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
@@ -95,7 +90,6 @@ export EDITOR='nvim'
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-
 ################################################################################
 # personal settings
 ################################################################################
@@ -107,8 +101,6 @@ export EDITOR='nvim'
 # opt
 setopt NO_HUp
 setopt NO_CHECK_JOBS
-unsetopt correctall
-autoload bashcompinit
 
 # ssh
 export SSH_KEY_PATH="~/.ssh/rsa_id"
@@ -116,10 +108,6 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # zsh_aliases
 [ -f ~/.zsh_aliases ] && . ~/.zsh_aliases
 [ -f ~/.zshenv ]      && . ~/.zshenv
-
-# Java
-export JAVA_HOME=/usr/lib/jvm/jdk-14
-export PATH=$JAVA_HOME/bin:$PATH
 
 # stack completion
 which stack > /dev/null && eval "$(stack --bash-completion-script stack)"
@@ -162,4 +150,8 @@ bindkey "^K" up-line-or-history
 bindkey "^J" down-line-or-history
 
 # eval "$(starship init zsh)"
-[ -f "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env" ] && source "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env"
+[[ -f "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env" ]] && source "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env"
+
+[[ -s "$HOME/.autojump/etc/profile.d/autojump.sh" ]] && source /home/hogeyama/.autojump/etc/profile.d/autojump.sh
+
+

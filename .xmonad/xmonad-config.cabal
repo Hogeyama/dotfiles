@@ -1,4 +1,3 @@
-
 name:                xmonad-config
 version:             0.1.0.0
 build-type:          Simple
@@ -25,4 +24,3 @@ executable xmobar-x86_64-linux
                      , X11
                      , rio
   default-language:    Haskell2010
-

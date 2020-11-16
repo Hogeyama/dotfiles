@@ -8,8 +8,8 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Either 'nvim-hs-lsp' or 'coc'
-" let g:lsp_plugin = 'coc'
-let g:lsp_plugin = 'nvim-hs-lsp'
+let g:lsp_plugin = 'coc'
+" let g:lsp_plugin = 'nvim-hs-lsp'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" General
@@ -20,7 +20,6 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/denite.nvim'
-Plug 'Shougo/deol.nvim'
 Plug 'Shougo/defx.nvim'
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/deoplete.nvim'
@@ -57,10 +56,11 @@ Plug 'lambdalisue/gina.vim'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'rhysd/clever-f.vim'
 """nvim-hs
-Plug 'Hogeyama/nvim-hs.vim', {'branch': 'develop'}
-Plug '~/.config/nvim/nvim-hs-libs/nvim-hs-lsp'
-"Plug '~/.config/nvim/nvim-hs-libs/ghcid-nvim-simple'
-" Plug 'Hogeyama/intero-neovim'
+if g:lsp_plugin == 'nvim-hs-lsp'
+  Plug 'Hogeyama/nvim-hs.vim', {'branch': 'develop'}
+  Plug '~/.config/nvim/nvim-hs-libs/nvim-hs-lsp'
+  "Plug '~/.config/nvim/nvim-hs-libs/ghcid-nvim-simple'
+endif
 """filetype
 ""Haskell
 Plug 'neovimhaskell/haskell-vim'
@@ -331,11 +331,9 @@ nnoremap <C-c>     :Denite          -winheight=10 -split=floating file/rec<CR>
 
 call denite#custom#source('file/rec', 'sorters', ['sorter/word'])
 call denite#custom#source('file', 'sorters', ['sorter/word'])
-
 "}}}
 
 "Unite{{{
-"設定
 call unite#custom#profile('default', 'context', {
       \ 'start_insert': 0,
       \ 'winheight': 10,
@@ -344,10 +342,8 @@ call unite#custom#profile('default', 'context', {
       \ 'prompt_direction' : 'top'
       \})
 call unite#custom#source('file',
-\   'ignore_pattern','\.\(hi\|o\|log\|gz\|dvi\|aux\|fdb_latexmk\|cmo\|cmi\|cmx\|cmt\)$')
-
-"""map
-"""unite map
+      \ 'ignore_pattern', '\.\(hi\|o\|log\|gz\|dvi\|aux\|fdb_latexmk\|cmo\|cmi\|cmx\|cmt\)$')
+"unite map
 autocmd FileType unite call s:unite_my_settings()
 function! s:unite_my_settings()"{{{
   " Overwrite settings.
@@ -356,9 +352,8 @@ function! s:unite_my_settings()"{{{
   imap <buffer> <S-TAB>   <Plug>(unite_select_previous_line)
   nmap <buffer> <C-j>     <Plug>(unite_select_next_line)
   nmap <buffer> <C-k>     <Plug>(unite_select_previous_line)
-endfunction"}}}
+endfunction "}}}
 call unite#custom#default_action('haddock', 'browse_remote')
-
 "}}}
 
 "defx{{{
@@ -630,7 +625,9 @@ let g:NvimHsLsp_languageConfig['typescript'] = {
       \   },
       \ }
 "}}}
-let g:nvimhsPluginStarter=nvimhs#cabal#pluginstarter()
+if g:lsp_plugin == 'nvim-hs-lsp'
+  let g:nvimhsPluginStarter=nvimhs#cabal#pluginstarter()
+endif
 "}}}
 
 "QuickFixを開けっ放しにする
@@ -1007,8 +1004,9 @@ inoremap jk <Esc>
 "inoremap kj <Esc>:w<CR>
 inoremap <C-j><C-k> <Esc>:w<CR>
 """<Space>\で保存
-nnoremap <C-\> :update!<CR>
-inoremap <C-\> <Esc>:update!<CR>
+nnoremap <C-w> :update<CR>
+nnoremap <C-\> :update<CR>
+inoremap <C-\> <Esc>:update<CR>
 """削除関連
 nnoremap dk ddk
 nnoremap dj dd
@@ -1109,7 +1107,7 @@ nmap ; <Plug>(easymotion-next)
 "Terminal他"{{{
 "nnoremap .. :cd..<CR>
 "nnoremap te :vs<CR><C-w>l:te<CR>
-nnoremap te :vs<CR><C-w>l:Deol<CR>
+nnoremap te :te<CR>
 nnoremap vs :rightbelow vs<CR>
 " nnoremap vs :exec printf(":rightbelow %dvs", winwidth('%')-87)<CR>
 tnoremap <Esc> <C-\><C-n>
@@ -1134,6 +1132,7 @@ endfor
 "register"{{{
 let @a = "->"
 let @b = "<-"
+let @t = "……"
 "}}}
 
 "tmp"{{{
