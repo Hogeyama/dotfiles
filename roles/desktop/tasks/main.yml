@@ -1,0 +1,20 @@
+- name: install xfce
+  apt:
+    name:
+    - xfce4
+    - task-japanese
+    - fonts-noto-cjk
+    - fcitx-mozc
+  when: is_debian | default(false)
+
+- name: keyboard mapping
+  lineinfile:
+    dest: /etc/default/keyboard
+    regexp: '^XKBLAYOUT='
+    line: XKBLAYOUT=jp
+
+- name: keyboard mapping
+  lineinfile:
+    dest: /etc/default/keyboard
+    regexp: '^XKBVARIANT='
+    line: XKBVARIANT=OADG109A

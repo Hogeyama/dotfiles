@@ -1,0 +1,39 @@
+cd-ls(){
+  \cd $* && \ls --group-directories-first --color=always
+}
+
+mkcd(){
+  mkdir $1 && cd $1
+}
+
+neovim(){
+  if [[ -z $NVIM_LISTEN_ADDRESS ]]
+  then
+    nvim $*
+  else
+    nvr -p $*
+  fi
+}
+
+# 'with-log' is defined in zshenv
+alias ssh-with-log='with-log ssh ssh'
+alias ssh='ssh-with-log'
+
+# cd, mv, ...
+alias ls='ls --color=always'
+alias cd='cd-ls'
+alias mv='mv -i'
+alias cp='cp -iL'
+alias l='ls -CF'
+alias ll='ls -ahlF'
+alias la='ls -A'
+alias DU='du -hd1 | sort -h'
+
+# git
+alias gs='git status -s'
+
+# vim
+alias v='neovim'
+alias vi='neovim'
+alias vim='neovim'
+alias nvim='neovim'

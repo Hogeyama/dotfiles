@@ -1,0 +1,12 @@
+LOG_BASE_DIR=$HOME/win-home/log # TODO
+with-log() {
+  name=$1
+  shift
+  logdir="${LOG_BASE_DIR}/${name}_session"
+  mkdir -p $logdir
+  logfile="$logdir/`date +'%Y%m%d-%H%M%S'`.log"
+  echo "session log will be saved in $logfile"
+  echo "$ $*" > $logfile
+  $* | tee -a "$logfile"
+  echo "session log saved in $logfile"
+}

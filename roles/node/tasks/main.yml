@@ -1,0 +1,19 @@
+- name: Check whether Node.js is installed
+  shell:
+    cmd: which node
+  register: which_node
+  changed_when: false
+
+- debug:
+    var: which_node
+
+- name: Add Node.js PPA
+  shell:
+    cmd: curl -sL https://deb.nodesource.com/setup_14.x | sh
+    warn: no
+  when: "which_node.rc != 0"
+
+- name: Install Node.js
+  apt:
+    name:
+      - nodejs

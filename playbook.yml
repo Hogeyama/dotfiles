@@ -1,0 +1,18 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - role: devtool
+    - role: desktop
+    - role: python3.8
+      when: false
+    - role: node
+      when: false
+    # non-grobal settings
+    - role: add_user
+    - role: zsh
+    - role: tmux
+    - role: neovim
+    - role: dotfiles
+  vars:
+    is_debian: true
