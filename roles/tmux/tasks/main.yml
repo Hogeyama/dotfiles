@@ -24,21 +24,21 @@
 
 - name: Create ~/Repos
   file:
-    path: /home/cq2n-iwym/Repos
+    path: "/home/{{ user_name }}/Repos"
     state: directory
-    owner: cq2n-iwym
-    group: cq2n-iwym
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
     mode: '0755'
 
 - name: Clone tmux-logging
   git:
     repo: 'https://github.com/tmux-plugins/tmux-logging.git'
-    dest: /home/cq2n-iwym/Repos/tmux-logging
+    dest: "/home/{{ user_name }}/Repos/tmux-logging"
 
 - name: Set .tmux.conf
   copy:
     src: tmux.conf
-    dest: /home/cq2n-iwym/.tmux.conf
-    owner: cq2n-iwym
-    group: cq2n-iwym
+    dest: "/home/{{ user_name }}/.tmux.conf"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
     mode: '0644'

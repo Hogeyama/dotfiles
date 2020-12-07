@@ -16,6 +16,7 @@ let g:python3_host_prog = '/usr/local/bin/python3.8'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 function! MyClipboard(lines,regtype) abort
+  " TODO パス解決
   call writefile(a:lines, "/c/Users/cq2n-iwym/.clipboard")
   call extend(g:, {'my_clipboard': [a:lines, a:regtype]})
 endfunction

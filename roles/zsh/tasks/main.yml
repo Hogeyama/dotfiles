@@ -6,13 +6,13 @@
 - name: Install oh-my-zsh
   git:
     repo: 'https://github.com/ohmyzsh/ohmyzsh.git'
-    dest: /home/cq2n-iwym/.oh-my-zsh
+    dest: "/home/{{ user_name }}/.oh-my-zsh"
 
-- name: Make oh-my-zsh owned by cq2n-iwym
+- name: Make oh-my-zsh owned by {{ user_name }}
   file:
-    path: /home/cq2n-iwym/.oh-my-zsh
-    owner: cq2n-iwym
-    group: cq2n-iwym
+    path: "/home/{{ user_name }}/.oh-my-zsh"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
     state: directory
     recurse: yes
   changed_when: false # TODO

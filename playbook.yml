@@ -15,4 +15,5 @@
     - role: neovim
     - role: dotfiles
   vars:
+    user_name: cq2n-iwym
     is_debian: true

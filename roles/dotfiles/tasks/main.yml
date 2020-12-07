@@ -1,31 +1,31 @@
 - name: Set .profile
   copy:
     src: profile
-    dest: /home/cq2n-iwym/.profile
-    owner: cq2n-iwym
-    group: cq2n-iwym
+    dest: "/home/{{ user_name }}/.profile"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
     mode: '0644'
 
 - name: Set .zshenv
   copy:
     src: zshenv
-    dest: /home/cq2n-iwym/.zshenv
-    owner: cq2n-iwym
-    group: cq2n-iwym
+    dest: "/home/{{ user_name }}/.zshenv"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
     mode: '0644'
 
 - name: Set .zshrc
   copy:
     src: zshrc
-    dest: /home/cq2n-iwym/.zshrc
-    owner: cq2n-iwym
-    group: cq2n-iwym
+    dest: "/home/{{ user_name }}/.zshrc"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
     mode: '0644'
 
 - name: Set .zsh_aliases
   copy:
     src: zsh_aliases
-    dest: /home/cq2n-iwym/.zsh_aliases
-    owner: cq2n-iwym
-    group: cq2n-iwym
+    dest: "/home/{{ user_name }}/.zsh_aliases"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
     mode: '0644'
