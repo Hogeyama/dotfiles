@@ -18,6 +18,22 @@
     group: "{{ user_name }}"
     mode: '0700'
 
+- name: Create ~/.local
+  file:
+    path: "/home/{{ user_name }}/.local"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: '0700'
+
+- name: Create ~/.local/bin
+  file:
+    path: "/home/{{ user_name }}/.local/bin"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: '0700'
+
 - name: Copy ssh public key
   copy:
     src: "/c/Users/{{ user_name }}/.ssh/id_ed25519.pub"

@@ -1,8 +1,3 @@
-- name: Install zsh
-  apt:
-    name:
-    - zsh
-
 - name: Install oh-my-zsh
   git:
     repo: 'https://github.com/ohmyzsh/ohmyzsh.git'

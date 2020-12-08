@@ -15,9 +15,22 @@ neovim(){
   fi
 }
 
+set-sshpass(){
+  read -s SSHPASS
+  export SSHPASS
+}
+sshpass-if-possible(){
+  if [[ -n $SSHPASS ]]; then
+    sshpass -e with-log ssh ssh $@
+  else
+    echo $SSHPASS is not set
+    with-log ssh ssh $@
+  fi
+}
+
 # 'with-log' is defined in zshenv
 alias ssh-with-log='with-log ssh ssh'
-alias ssh='ssh-with-log'
+alias ssh='sshpass-if-possible'
 
 # cd, mv, ...
 alias ls='ls --color=always'
