@@ -113,6 +113,7 @@ eval `dircolors | sed  's/ow=[^:]*:/ow=30;44:/'`
 # bindkey
 bindkey "^K" up-line-or-history
 bindkey "^J" down-line-or-history
+bindkey "^I" expand-or-complete-prefix
 
 # work around for multiline prompt
 # https://superuser.com/questions/382503/how-can-i-put-a-newline-in-my-zsh-prompt-without-causing-terminal-redraw-issues

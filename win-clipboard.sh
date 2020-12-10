@@ -10,6 +10,6 @@ while true; do
     echo "updated @$current"
     cat $CLIPBOARD
     echo "EOF"
-    iconv -f utf-8 -t sjis $CLIPBOARD | clip
+    iconv -c -f utf-8 -t sjis $CLIPBOARD | clip
   fi
 done
