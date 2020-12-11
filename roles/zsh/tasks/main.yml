@@ -18,8 +18,14 @@
     dest: "/home/{{ user_name }}/.fzf"
   register: download_fzf
 
-- debug:
-    var: download_fzf
+- name: Make fzf owned by {{ user_name }}
+  file:
+    path: "/home/{{ user_name }}/.fzf"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    state: directory
+    recurse: yes
+  changed_when: false # TODO
 
 - name: Install fzf
   command:
