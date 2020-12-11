@@ -11,3 +11,20 @@
     state: directory
     recurse: yes
   changed_when: false # TODO
+
+- name: Download fzf
+  git:
+    repo: 'https://github.com/junegunn/fzf.git'
+    dest: "/home/{{ user_name }}/.fzf"
+  register: download_fzf
+
+- debug:
+    var: download_fzf
+
+- name: Install fzf
+  command:
+    cmd: '/home/{{ user_name }}/.fzf/install --key-bindings --completion --no-update-rc'
+  become: yes
+  become_user: '{{ user_name }}'
+  when: download_fzf.changed
+
