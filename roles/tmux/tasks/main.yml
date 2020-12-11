@@ -6,11 +6,13 @@
       - bison
       - libevent-dev
       - xsel
+  when: build_tmux|default(false)
 
 - name: Clone tmux
   git:
     repo: 'https://github.com/tmux/tmux.git'
     dest: /root/tmux
+  when: build_tmux|default(false)
 
 - name: Install tmux
   shell:
@@ -21,19 +23,28 @@
       make -j4
       sudo make install
     creates: /usr/local/bin/tmux
+  when: build_tmux|default(false)
 
-- name: Create ~/Repos
+- name: Install tmux (apt)
+  apt:
+    name:
+      - tmux
+  when: not (build_tmux|default(false))
+
+- name: Download tpm
+  git:
+    repo: 'https://github.com/tmux-plugins/tpm'
+    dest: "/home/{{ user_name }}/.tmux/plugins/tpm"
+  register: download_fzf
+
+- name: Make tpm owned by {{ user_name }}
   file:
-    path: "/home/{{ user_name }}/Repos"
-    state: directory
+    path: "/home/{{ user_name }}/.tpm"
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
-    mode: '0755'
-
-- name: Clone tmux-logging
-  git:
-    repo: 'https://github.com/tmux-plugins/tmux-logging.git'
-    dest: "/home/{{ user_name }}/Repos/tmux-logging"
+    state: directory
+    recurse: yes
+  changed_when: false # TODO
 
 - name: Set .tmux.conf
   copy:

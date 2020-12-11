@@ -2,7 +2,8 @@
 all:
   hosts:
     localhost:
+      ansible_connection: local
       user_name: cq2n-iwym
       is_debian: true
       debian_version: 9
-      ansible_connection: local
+      build_tmux: false
