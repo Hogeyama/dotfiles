@@ -1,2 +1,3 @@
-memo
-nvim/.stack-work
+inventory.yml
+Vagrantfile
+.vagrant
