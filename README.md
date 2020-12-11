@@ -1,9 +1,7 @@
 
 ## Usage
 
-Edit `inventory.yml` and execute:
-
-```
-ANSIBLE_CONFIG=./ansible.cfg ansible-playbook playbook.yml -i inventory.yml
-```
+- `cp example/inventory.yml ./`
+- Edit `inventory.yml`
+- `ANSIBLE_CONFIG=./ansible.cfg ansible-playbook playbook.yml -i inventory.yml`
 
