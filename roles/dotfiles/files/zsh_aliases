@@ -1,3 +1,4 @@
+
 cd-ls(){
   \cd $* && \ls --group-directories-first --color=always
 }
@@ -23,7 +24,7 @@ sshpass-if-possible(){
   if [[ -n $SSHPASS ]]; then
     sshpass -e with-log ssh ssh $@
   else
-    echo $SSHPASS is not set
+    echo \$SSHPASS is not set
     with-log ssh ssh $@
   fi
 }
