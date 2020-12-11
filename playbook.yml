@@ -3,17 +3,34 @@
   become: yes
   roles:
     - role: devtool
+      tags: devtool
+
     - role: desktop
+      tags: desktop
+
     - role: python3.8
-      when: false
+      tags: python3.8
+      when: is_debian|default(false) and debian_version <= 9
+
     - role: node
-      when: false
+      tags: node
+
+    - role: company
+      tags: company
+      when: at_company|default(false)
+
     # non-grobal settings
     - role: add_user
+      tags: add_user
+
     - role: zsh
+      tags: zsh
+
     - role: tmux
+      tags: tmux
+
     - role: neovim
+      tags: neovim
+
     - role: dotfiles
-  vars:
-    user_name: cq2n-iwym
-    is_debian: true
+      tags: dotfiles

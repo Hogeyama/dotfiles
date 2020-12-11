@@ -41,13 +41,11 @@
 - name: Install neovim-remote
   pip:
     name: neovim-remote
-    executable: pip3.8
   ignore_errors: true
 
 - name: Install pynvim
   pip:
     name: pynvim
-    executable: pip3.8
   ignore_errors: true
 
 - name: Install neovim/node-client
