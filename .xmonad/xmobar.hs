@@ -9,9 +9,8 @@ import Graphics.X11.Xlib.Types   as X
 
 config :: Config
 config = defaultConfig
-    -- { font = "xft:Rounded Mgen+ 1mn:size=12"
+    { font = "xft:Rounded Mgen+ 1mn:size=12"
     -- { font = "xft:Rounded Mgen+ 1mn:size=24"
-    { font = "xft:Rounded Mgen+ 1mn:size=16"
     , bgColor = "#1a1e1b"
     , fgColor = "#676767"
     , lowerOnStart = True
@@ -57,7 +56,8 @@ config = defaultConfig
                  ]
     , sepChar = "%"
     , alignSep = "}{"
-    , template = left <> " }{ " <> right    }
+    , template = left <> " }{ " <> right
+    }
   where
     left  = " %StdinReader% "
     right = intercalate "  ≫"
@@ -65,7 +65,6 @@ config = defaultConfig
           , "%cpu%"
           , "%memory%"
           , "Dropbox: %dropbox%"
-          --, "%volume%"
           , "%pulse:Master%"
           , "%battery%"
           ]

@@ -59,8 +59,8 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       { modMask            = mod4Mask
       , terminal           = "gnome-terminal"
       , workspaces         = myWorkspaces
-      -- , focusedBorderColor = "#00bfff"
-      , focusedBorderColor = "#000000"
+      , focusedBorderColor = "#00bfff"
+      -- , focusedBorderColor = "#000000"
       , normalBorderColor  = "#eeeeee"
       , manageHook         = manageDocks <+> manageHook def
       --, logHook            = myLogHook
@@ -99,7 +99,7 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , ("M-s"          , swapScreen)
       , ("M-a"          , sendMessage SwapWindow)
       , ("M-S-a"        , hoge) -- なんか動作の確認に
-      , ("M-S-d"        , killXmobar)
+      -- , ("M-S-d"        , killXmobar)
       , ("M-S-r"        , recompile False >> restart "xmonad" True)
       , ("M-S-k"        , spawn "amixer -D pulse sset Master 2%+")
       , ("M-S-j"        , spawn "amixer -D pulse sset Master 2%-")
@@ -107,7 +107,6 @@ main = xmonad =<< xmobar' (ewmh myConfig)
       , ("M-S-t"        , spawn "amixer -D pulse sset Master toggle")
       , ("M-S-s"        , spawn $ unwords ["scrot ", screenShotName])
       , ("M-m"          , toggleTouchPad)
-      , ("M-S-m"        , log' $ unwords ["scrot", screenShotName])
       , ("M-b"          , sendMessage ToggleStruts) -- xmobar
       ]
 
@@ -163,7 +162,6 @@ main = xmonad =<< xmobar' (ewmh myConfig)
 -- Command
 -------------------------------------------------------------------------------
 
--- headではなくlastをとったほうがいいかも(3スクリーン以上でないと確かめられない)
 withNextScreen :: (WorkspaceId -> WindowSet -> WindowSet) -> X ()
 withNextScreen func = gets (W.visible . windowset) >>= \case
     [] -> return ()
@@ -215,34 +213,22 @@ toggleTouchPad = setTouchPad . not =<< isTouchPadEnabled
 -- gsettings range $touchpad some-key
 
 -------------------------------------------------------------------------------
---
+-- xmobar
 -------------------------------------------------------------------------------
 
 -- xmobarにLayout名を表示しない
 xmobar' :: LayoutClass l Window
         => XConfig l -> IO (XConfig (ModifiedLayout AvoidStruts l))
 xmobar' conf = do
-    --h <- spawnPipe "(cd $HOME/.xmonad; stack exec -- xmobar xmobar.hs)"
-    -- h <- spawnPipe "(cd $HOME/.xmonad; cabal exec -- xmobar xmobar.hs)"
     h <- spawnPipe "$HOME/.xmonad/xmobar"
-    -- log' "Hoge"
     return $ docks $ conf
         { layoutHook = avoidStruts (layoutHook conf)
-        , logHook = do logHook conf
-                       dynamicLogWithPP xmobarPP
-                          { ppOutput = hPutStrLn h
-                          , ppLayout = const ""
-                          }
+        , logHook = logHook conf
+                 <> dynamicLogWithPP xmobarPP
+                      { ppOutput = hPutStrLn h
+                      , ppLayout = const ""
+                      }
         }
-
-phRef :: IORef (Maybe ProcessHandle)
-phRef = unsafePerformIO $ newIORef Nothing
-{-# NOINLINE phRef #-}
-
-killXmobar :: MonadIO m => m ()
-killXmobar = liftIO $ readIORef phRef >>= \case
-  Nothing -> log' "Nothing"
-  Just x -> log' "Just" >> terminateProcess x
 
 -------------------------------------------------------------------------------
 -- LogHook
@@ -293,12 +279,7 @@ myLayoutHook = Full
 
 hoge :: MonadIO m => m ()
 hoge = do
-  log' "fugafuga"
-  log' $ show xK_F8
-  log' $ show xK_P
-
-  --n <- countScreens :: X Int
-  --log' (show n)
+  log' "hoge"
 
 log' :: MonadIO m => String -> m ()
 log' s = liftIO $ appendFile "/home/hogeyama/xmonad.mylog" (s <> "\n")

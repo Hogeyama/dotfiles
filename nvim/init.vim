@@ -9,6 +9,7 @@ endif
 
 " Either 'nvim-hs-lsp' or 'coc'
 let g:lsp_plugin = 'coc'
+let g:python3_host_prog = '/usr/local/bin/python3.9'
 " let g:lsp_plugin = 'nvim-hs-lsp'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -68,6 +69,7 @@ Plug 'vim-scripts/alex.vim'
 Plug 'vim-scripts/happy.vim'
 Plug 'Hogeyama/unite-haddock'
 Plug 'Hogeyama/unite-haskellimport'
+Plug 'LnL7/vim-nix'
 ""Elm
 Plug 'carmonw/elm-vim'
 " Plug 'w0rp/ale'
@@ -100,6 +102,8 @@ Plug 'jvoorhis/coq.vim'
 Plug 'eagletmt/coqtop-vim'
 ""Rust
 Plug 'rust-lang/rust.vim'
+""Toml
+Plug 'cespare/vim-toml'
 ""Others
 Plug 'bohlender/vim-smt2'
 Plug 'jelera/vim-javascript-syntax'
@@ -1106,7 +1110,7 @@ nmap ; <Plug>(easymotion-next)
 "Terminal他"{{{
 "nnoremap .. :cd..<CR>
 "nnoremap te :vs<CR><C-w>l:te<CR>
-nnoremap te :te<CR>
+nnoremap te :te<CR>i
 nnoremap vs :rightbelow vs<CR>
 " nnoremap vs :exec printf(":rightbelow %dvs", winwidth('%')-87)<CR>
 tnoremap <Esc> <C-\><C-n>

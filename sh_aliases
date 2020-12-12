@@ -9,10 +9,6 @@ cd-ls(){
   # awk '!x[$0]++': remove duplicates without sorting
 }
 
-hoice-wrapper(){
-  cat $1 | sed '/^\s*;/d' > /tmp/hoge.smt2 && hoice /tmp/hoge.smt2
-}
-
 xmonad-borderwidth(){
   if ! [[ "$1" =~ ^[0-9]+$ ]]; then
     echo "usage: $0 WIDTH"
