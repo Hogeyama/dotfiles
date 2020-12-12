@@ -37,3 +37,11 @@
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: '0755'
+
+- name: Set ~/local/bin/myclip
+  template:
+    src: myclip.j2
+    dest: "/home/{{ user_name }}/.local/bin/myclip"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: '0755'

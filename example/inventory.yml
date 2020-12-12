@@ -7,3 +7,5 @@ all:
       is_debian: true
       debian_version: 9
       build_tmux: false
+      is_vm: false
+      has_X11: true
