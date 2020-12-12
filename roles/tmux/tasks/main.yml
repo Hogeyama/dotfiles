@@ -35,11 +35,11 @@
   git:
     repo: 'https://github.com/tmux-plugins/tpm'
     dest: "/home/{{ user_name }}/.tmux/plugins/tpm"
-  register: download_fzf
+  register: download_tpm
 
-- name: Make tpm owned by {{ user_name }}
+- name: Make ~/.tmux owned by {{ user_name }}
   file:
-    path: "/home/{{ user_name }}/.tpm"
+    path: "/home/{{ user_name }}/.tmux"
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     state: directory
