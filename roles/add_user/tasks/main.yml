@@ -24,7 +24,7 @@
     state: directory
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
-    mode: '0700'
+    mode: '0755'
 
 - name: Create ~/.local/bin
   file:
@@ -32,7 +32,7 @@
     state: directory
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
-    mode: '0700'
+    mode: '0755'
 
 - name: Copy ssh public key
   copy:
