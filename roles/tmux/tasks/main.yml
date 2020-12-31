@@ -1,0 +1,55 @@
+- name: Install tmux dependencies
+  apt:
+    name:
+      - automake
+      - pkg-config
+      - bison
+      - libevent-dev
+      - xsel
+  when: build_tmux|default(false)
+
+- name: Clone tmux
+  git:
+    repo: 'https://github.com/tmux/tmux.git'
+    dest: /root/tmux
+  when: build_tmux|default(false)
+
+- name: Install tmux
+  shell:
+    chdir: /root/tmux
+    cmd: |
+      ./autogen.sh
+      ./configure
+      make -j4
+      sudo make install
+    creates: /usr/local/bin/tmux
+  when: build_tmux|default(false)
+
+- name: Install tmux (apt)
+  apt:
+    name:
+      - tmux
+  when: not (build_tmux|default(false))
+
+- name: Download tpm
+  git:
+    repo: 'https://github.com/tmux-plugins/tpm'
+    dest: "/home/{{ user_name }}/.tmux/plugins/tpm"
+  register: download_tpm
+
+- name: Make ~/.tmux owned by {{ user_name }}
+  file:
+    path: "/home/{{ user_name }}/.tmux"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    state: directory
+    recurse: yes
+  changed_when: false # TODO
+
+- name: Set .tmux.conf
+  copy:
+    src: tmux.conf
+    dest: "/home/{{ user_name }}/.tmux.conf"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: '0644'

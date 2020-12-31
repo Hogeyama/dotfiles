@@ -1,0 +1,11 @@
+- apt_key:
+    url: "http://debinst.asahi-net.or.jp/spool/keyring/{{ item }}"
+    state: present
+  with_items:
+    - 'asahi-disposable-keyring.gpg'
+    - 'asahi-disposable-keyring-rsa4096.asc'
+- name: set repository
+  apt_repository:
+    repo: 'deb http://debinst.asahi-net.or.jp/spool stretch main asahi non-free'
+    state: present
+

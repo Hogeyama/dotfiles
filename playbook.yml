@@ -1,0 +1,39 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - role: devtool
+      tags: devtool
+
+    - role: desktop
+      tags: desktop
+
+    - role: python
+      tags: python
+      when: is_debian|default(false) and debian_version <= 9
+
+    - role: node
+      tags: node
+
+    - role: company
+      tags: company
+      when: at_company|default(false)
+
+    # non-grobal settings
+    - role: add_user
+      tags: add_user
+
+    - role: zsh
+      tags: zsh
+
+    - role: tmux
+      tags: tmux
+
+    - role: neovim
+      tags: neovim
+
+    - role: dotfiles
+      tags: dotfiles
+
+    - role: xmonad
+      tags: xmonad

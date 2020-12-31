@@ -1,0 +1,14 @@
+- name: Install basic developement tools
+  apt:
+    name:
+    - xmonad
+
+- name: Install .xmonad
+  copy:
+    src: "{{ item }}"
+    dest: "/home/{{ user_name }}/{{ item }}"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: '0755'
+  loop:
+    - .xmonad

@@ -1,0 +1,33 @@
+- name: Install python3.8 dependencies
+  apt:
+    name:
+    - build-essential
+    - zlib1g-dev
+    - libncurses5-dev
+    - libgdbm-dev
+    - libnss3-dev
+    - libssl-dev
+    - libreadline-dev
+    - libffi-dev
+    - wget
+    - curl
+
+- name: Download python3.8 source
+  get_url:
+    url: https://www.python.org/ftp/python/3.8.2/Python-3.8.2.tar.xz
+    dest: /root/Python-3.8.2.tar.xz
+
+- name: Unarchive python3.8 source
+  unarchive:
+    src: /root/Python-3.8.2.tar.xz
+    dest: /root
+    remote_src: yes
+
+- name: Install python3.8
+  shell:
+    chdir: /root/Python-3.8.2
+    cmd: |
+      ./configure --enable-optimizations
+      make -j4
+      sudo make altinstall
+    creates: /usr/local/bin/python3.8

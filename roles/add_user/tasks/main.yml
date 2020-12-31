@@ -1,0 +1,35 @@
+- name: Add the user "{{ user_name }}"
+  user:
+    name: "{{ user_name }}"
+    password: "$6$mysecretsalt$AtKHRdMmHc24tTS6fTA/JslpXufZKYtQQ1JNZyueUJzzSdDsoIZniPEZqOSCRYQ8sPI6Z1Pu4tk8FW5rRykzE."
+    shell: /usr/bin/zsh
+
+- name: Ensure privilege attached to "{{ user_name }}"
+  lineinfile:
+    path: /etc/sudoers
+    line: '{{ user_name }} ALL=(ALL) NOPASSWD:ALL'
+    validate: /usr/sbin/visudo -cf %s
+
+- name: Create ~/.ssh
+  file:
+    path: "/home/{{ user_name }}/.ssh"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: '0700'
+
+- name: Create ~/.local
+  file:
+    path: "/home/{{ user_name }}/.local"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: '0755'
+
+- name: Create ~/.local/bin
+  file:
+    path: "/home/{{ user_name }}/.local/bin"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: '0755'

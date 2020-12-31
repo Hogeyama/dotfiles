@@ -1,0 +1,36 @@
+- name: Install oh-my-zsh
+  git:
+    repo: 'https://github.com/ohmyzsh/ohmyzsh.git'
+    dest: "/home/{{ user_name }}/.oh-my-zsh"
+
+- name: Make oh-my-zsh owned by {{ user_name }}
+  file:
+    path: "/home/{{ user_name }}/.oh-my-zsh"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    state: directory
+    recurse: yes
+  changed_when: false # TODO
+
+- name: Download fzf
+  git:
+    repo: 'https://github.com/junegunn/fzf.git'
+    dest: "/home/{{ user_name }}/.fzf"
+  register: download_fzf
+
+- name: Make fzf owned by {{ user_name }}
+  file:
+    path: "/home/{{ user_name }}/.fzf"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    state: directory
+    recurse: yes
+  changed_when: false # TODO
+
+- name: Install fzf
+  command:
+    cmd: '/home/{{ user_name }}/.fzf/install --key-bindings --completion --no-update-rc'
+  become: yes
+  become_user: '{{ user_name }}'
+  when: download_fzf.changed
+

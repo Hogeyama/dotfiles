@@ -1,0 +1,16 @@
+- name: Set timezone to Asia/Tokyo
+  timezone:
+    name: Asia/Tokyo
+
+- name: Install basic developement tools
+  apt:
+    name:
+    - git
+    - cvs
+    - mercurial
+    - subversion
+    - vim
+    - unzip
+    - dnsutils
+    - zsh
+

@@ -1,0 +1,29 @@
+- name: Set dotfiles
+  copy:
+    src: "{{ item }}"
+    dest: "/home/{{ user_name }}/{{ item }}"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: '0644'
+  loop:
+    - .profile
+    - .zshrc
+    - .zshenv
+    - .zsh_aliases
+    - .Xmodmap
+
+- name: Set ~/local/bin/with-log
+  copy:
+    src: with-log
+    dest: "/home/{{ user_name }}/.local/bin/with-log"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: '0755'
+
+- name: Set ~/local/bin/myclip
+  template:
+    src: myclip.j2
+    dest: "/home/{{ user_name }}/.local/bin/myclip"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: '0755'
