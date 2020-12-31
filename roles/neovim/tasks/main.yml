@@ -22,7 +22,7 @@
     group: "{{ user_name }}"
     mode: '0644'
 
-- name: Install configuration files
+- name: Install .config/nvim
   copy:
     src: "{{ item }}"
     dest: "/home/{{ user_name }}/{{ item }}"

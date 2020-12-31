@@ -3,9 +3,11 @@ all:
   hosts:
     localhost:
       ansible_connection: local
+      #
       user_name: hogeyama
       is_debian: true
       debian_version: 9
       build_tmux: false
       is_vm: false
       has_X11: true
+      install_xmonad: true

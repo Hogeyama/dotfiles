@@ -34,3 +34,6 @@
 
     - role: dotfiles
       tags: dotfiles
+
+    - role: xmonad
+      tags: xmonad
