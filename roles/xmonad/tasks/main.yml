@@ -9,6 +9,6 @@
     dest: "/home/{{ user_name }}/{{ item }}"
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
-    mode: '0755'
+    mode: 'preserve'
   loop:
-    - .xmonad
+    - .xmonad/
