@@ -32,14 +32,6 @@
   loop:
     - .config/nvim
 
-# - name: Install init.vim
-#   copy:
-#     src: init.vim
-#     dest: "/home/{{ user_name }}/.config/nvim/init.vim"
-#     owner: "{{ user_name }}"
-#     group: "{{ user_name }}"
-#     mode: '0644'
-
 - name: Install neovim-remote
   pip:
     name: neovim-remote
