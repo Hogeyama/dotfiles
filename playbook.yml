@@ -8,8 +8,8 @@
     - role: desktop
       tags: desktop
 
-    - role: python3.8
-      tags: python3.8
+    - role: python
+      tags: python
       when: is_debian|default(false) and debian_version <= 9
 
     - role: node

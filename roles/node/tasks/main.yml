@@ -4,9 +4,6 @@
   register: which_node
   changed_when: false
 
-- debug:
-    var: which_node
-
 - name: Add Node.js PPA
   shell:
     cmd: curl -sL https://deb.nodesource.com/setup_14.x | sh

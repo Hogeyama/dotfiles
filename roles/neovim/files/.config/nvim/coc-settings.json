@@ -1,0 +1,18 @@
+{
+  "languageserver": {
+    "hie": {
+      "command": "haskell-language-server-wrapper",
+      "args": [ "--lsp", "-d", "-l", "/tmp/LanguageServer.log"],
+      "filetypes": ["haskell"]
+    },
+    "ocaml-language-server": {
+      "command": "ocamllsp",
+      "args": ["--log-file", "/tmp/LanguageServer.log"],
+      "filetypes": ["ocaml"]
+    }
+  },
+  // "diagnostic.virtualText": true,
+  "diagnostic.virtualTextPrefix": "-- ",
+  "diagnostic.enableSign": false,
+  "coc.preferences.useQuickfixForLocations": true
+}

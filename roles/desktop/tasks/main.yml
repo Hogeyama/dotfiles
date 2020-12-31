@@ -12,9 +12,11 @@
     dest: /etc/default/keyboard
     regexp: '^XKBLAYOUT='
     line: XKBLAYOUT=jp
+  when: false
 
 - name: keyboard mapping
   lineinfile:
     dest: /etc/default/keyboard
     regexp: '^XKBVARIANT='
     line: XKBVARIANT=OADG109A
+  when: false

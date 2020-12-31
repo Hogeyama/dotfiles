@@ -101,9 +101,6 @@ zstyle ':completion:*:*:nvim:*' file-patterns '^*.(aux|log|pdf|cmo|cmi|cmt|cmx):
 # drwxrwxrwxなるディレクトリ(other writable)が見にくいのを直す
 eval `dircolors | sed 's/ow=[^:]*:/ow=01;34:/'` #青背景白文字
 
-# zsh_aliases
-[ -f ~/.zsh_aliases ] && . ~/.zsh_aliases
-
 # bindkey
 bindkey "^K" up-line-or-history
 bindkey "^J" down-line-or-history
@@ -116,4 +113,5 @@ precmd() {
 }
 PROMPT='$ '
 
-LOCAL=$HOME/.zshrc.local; [ -f $LOCAL ] && . $LOCAL
+source-if-exists $HOME/.zsh_aliases
+source-if-exists $HOME/.zshrc.local

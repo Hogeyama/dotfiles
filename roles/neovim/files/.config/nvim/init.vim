@@ -158,7 +158,7 @@ colorscheme deep-space
 if 1 "true color
   set termguicolors
   "対応表 http://vim.wikia.com/wiki/Xterm256_color_names_for_console_Vim
-  hi Normal guibg=#182020
+  "hi Normal guibg=#182020
   "hi LineNr guibg=#182020
 endif
 command! GoodMatchParen hi MatchParen ctermfg=253 guifg=#dadada ctermbg=0 guibg=#000000

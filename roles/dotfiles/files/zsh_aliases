@@ -77,4 +77,4 @@ xmonad-borderwidth(){
   fi
 }
 
-LOCAL=$HOME/.zsh_aliases.local; [ -f $LOCAL ] && . $LOCAL
+source-if-exists $HOME/.zsh_aliases.local
