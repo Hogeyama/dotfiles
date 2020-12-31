@@ -7,9 +7,5 @@
 
 ## TODO
 
-- xmonad
-- nvim
-  - snippetとか
-  - init.vimが汚いのもなんとかしたい
 - rootがない環境で最低限のものを設定する
 

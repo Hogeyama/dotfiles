@@ -28,9 +28,9 @@
     dest: "/home/{{ user_name }}/{{ item }}"
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
-    mode: '0755'
+    mode: 'preserve'
   loop:
-    - .config/nvim
+    - .config/nvim/
 
 - name: Install neovim-remote
   pip:
