@@ -1,34 +1,16 @@
-- name: Set .profile
+- name: Set dotfiles
   copy:
-    src: profile
-    dest: "/home/{{ user_name }}/.profile"
+    src: "{{ item }}"
+    dest: "/home/{{ user_name }}/{{ item }}"
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: '0644'
-
-- name: Set .zshenv
-  copy:
-    src: zshenv
-    dest: "/home/{{ user_name }}/.zshenv"
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: '0644'
-
-- name: Set .zshrc
-  copy:
-    src: zshrc
-    dest: "/home/{{ user_name }}/.zshrc"
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: '0644'
-
-- name: Set .zsh_aliases
-  copy:
-    src: zsh_aliases
-    dest: "/home/{{ user_name }}/.zsh_aliases"
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: '0644'
+  loop:
+    - .profile
+    - .zshrc
+    - .zshenv
+    - .zsh_aliases
+    - .Xmodmap
 
 - name: Set ~/local/bin/with-log
   copy:
