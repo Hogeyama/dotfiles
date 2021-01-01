@@ -113,5 +113,6 @@ precmd() {
 }
 PROMPT='$ '
 
+source-if-exists $HOME/.fzf.zsh
 source-if-exists $HOME/.zsh_aliases
 source-if-exists $HOME/.zshrc.local
