@@ -5,7 +5,7 @@
     - task-japanese
     - fonts-noto-cjk
     - fcitx-mozc
-  when: is_debian | default(false)
+  when: false
 
 - name: keyboard mapping
   lineinfile:
