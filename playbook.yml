@@ -37,3 +37,4 @@
 
     - role: xmonad
       tags: xmonad
+      when: install_xmonad|default(false)
