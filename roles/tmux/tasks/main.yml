@@ -5,6 +5,7 @@
       - pkg-config
       - bison
       - libevent-dev
+      - libncurses-dev
       - xsel
   when: build_tmux|default(false)
 
