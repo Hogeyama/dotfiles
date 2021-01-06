@@ -1,6 +1,8 @@
 ---
 - hosts: all
   become: yes
+  environment:
+    SSL_CERT_DIR: /etc/ssl/certs
   roles:
     - role: devtool
       tags: devtool
@@ -10,7 +12,8 @@
 
     - role: python
       tags: python
-      when: is_debian|default(false) and debian_version <= 9
+      # TODO 専用の変数でやる
+      when: os.dist=="debian" and os.version <= 9
 
     - role: node
       tags: node
@@ -37,4 +40,4 @@
 
     - role: xmonad
       tags: xmonad
-      when: install_xmonad|default(false)
+      when: xmonad.install|default(false)

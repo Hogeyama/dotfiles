@@ -6,9 +6,9 @@
 - name: Install .xmonad
   copy:
     src: "{{ item }}"
-    dest: "/home/{{ user_name }}/{{ item }}"
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
+    dest: "/home/{{ user.name }}/{{ item }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
     mode: 'preserve'
   loop:
     - .xmonad/

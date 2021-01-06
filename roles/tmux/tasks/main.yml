@@ -7,13 +7,14 @@
       - libevent-dev
       - libncurses-dev
       - xsel
-  when: build_tmux|default(false)
+  # TODO meta/main.ymlとかでinstall_method変数を定義する
+  when: tmux.install_method|default("apt") == "build"
 
 - name: Clone tmux
   git:
     repo: 'https://github.com/tmux/tmux.git'
     dest: /root/tmux
-  when: build_tmux|default(false)
+  when: tmux.install_method|default("apt") == "build"
 
 - name: Install tmux
   shell:
@@ -24,25 +25,25 @@
       make -j4
       sudo make install
     creates: /usr/local/bin/tmux
-  when: build_tmux|default(false)
+  when: tmux.install_method|default("apt") == "build"
 
 - name: Install tmux (apt)
   apt:
     name:
       - tmux
-  when: not (build_tmux|default(false))
+  when: tmux.install_method|default("apt") == "apt"
 
 - name: Download tpm
   git:
     repo: 'https://github.com/tmux-plugins/tpm'
-    dest: "/home/{{ user_name }}/.tmux/plugins/tpm"
+    dest: "/home/{{ user.name }}/.tmux/plugins/tpm"
   register: download_tpm
 
-- name: Make ~/.tmux owned by {{ user_name }}
+- name: Make ~/.tmux owned by {{ user.name }}
   file:
-    path: "/home/{{ user_name }}/.tmux"
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
+    path: "/home/{{ user.name }}/.tmux"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
     state: directory
     recurse: yes
   changed_when: false # TODO
@@ -50,7 +51,7 @@
 - name: Set .tmux.conf
   copy:
     src: tmux.conf
-    dest: "/home/{{ user_name }}/.tmux.conf"
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
+    dest: "/home/{{ user.name }}/.tmux.conf"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
     mode: '0644'

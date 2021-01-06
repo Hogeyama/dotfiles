@@ -1,35 +1,35 @@
-- name: Add the user "{{ user_name }}"
+- name: Add the user "{{ user.name }}"
   user:
-    name: "{{ user_name }}"
-    password: "$6$mysecretsalt$AtKHRdMmHc24tTS6fTA/JslpXufZKYtQQ1JNZyueUJzzSdDsoIZniPEZqOSCRYQ8sPI6Z1Pu4tk8FW5rRykzE."
+    name: "{{ user.name }}"
+    password: "{{ user.password }}"
     shell: /usr/bin/zsh
 
-- name: Ensure privilege attached to "{{ user_name }}"
+- name: Ensure privilege attached to "{{ user.name }}"
   lineinfile:
     path: /etc/sudoers
-    line: '{{ user_name }} ALL=(ALL) NOPASSWD:ALL'
+    line: '{{ user.name }} ALL=(ALL) NOPASSWD:ALL'
     validate: /usr/sbin/visudo -cf %s
 
 - name: Create ~/.ssh
   file:
-    path: "/home/{{ user_name }}/.ssh"
+    path: "/home/{{ user.name }}/.ssh"
     state: directory
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
     mode: '0700'
 
 - name: Create ~/.local
   file:
-    path: "/home/{{ user_name }}/.local"
+    path: "/home/{{ user.name }}/.local"
     state: directory
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
     mode: '0755'
 
 - name: Create ~/.local/bin
   file:
-    path: "/home/{{ user_name }}/.local/bin"
+    path: "/home/{{ user.name }}/.local/bin"
     state: directory
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
     mode: '0755'
