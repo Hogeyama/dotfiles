@@ -1,7 +1,14 @@
+
+- name: Check if oh-my-zsh is installed
+  stat:
+    path: "/home/{{ user.name }}/.oh-my-zsh"
+  register: omz
+
 - name: Install oh-my-zsh
   git:
     repo: 'https://github.com/ohmyzsh/ohmyzsh.git'
     dest: "/home/{{ user.name }}/.oh-my-zsh"
+  when: not omz.stat.isdir|default(false)
 
 - name: Make oh-my-zsh owned by {{ user.name }}
   file:
@@ -12,11 +19,17 @@
     recurse: yes
   changed_when: false # TODO
 
+- name: Check if fzf is installed
+  stat:
+    path: "/home/{{ user.name }}/.fzf"
+  register: fzf
+
 - name: Download fzf
   git:
     repo: 'https://github.com/junegunn/fzf.git'
     dest: "/home/{{ user.name }}/.fzf"
   register: download_fzf
+  when: not fzf.stat.isdir|default(false)
 
 - name: Make fzf owned by {{ user.name }}
   file:
@@ -32,5 +45,5 @@
     cmd: '/home/{{ user.name }}/.fzf/install --key-bindings --completion --no-update-rc'
   become: yes
   become_user: '{{ user.name }}'
-  when: download_fzf.changed
+  when: download_fzf.changed|default(false)
 

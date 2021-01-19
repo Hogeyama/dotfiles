@@ -49,20 +49,8 @@ alias nvim='neovim'
 # SSH
 ################################################################################
 
-set-sshpass(){
-  read -s SSHPASS
-  export SSHPASS
-}
-sshpass-if-possible(){
-  if [[ -n $SSHPASS ]]; then
-    sshpass -e with-log ssh ssh $@
-  else
-    echo \$SSHPASS is not set
-    with-log ssh ssh $@
-  fi
-}
 alias ssh-with-log='with-log ssh ssh'
-alias ssh='sshpass-if-possible'
+alias ssh='ssh-with-log'
 
 ################################################################################
 # xmonad
