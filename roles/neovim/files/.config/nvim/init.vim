@@ -141,7 +141,7 @@ Plug 'chriskempson/base16-vim' "true_color
 Plug 'vim-scripts/paredit.vim'
 Plug 'tomtom/tlib_vim'
 Plug 'dhruvasagar/vim-table-mode'
-Plug 'neovim/node-host', { 'do': 'npm install -g neovim' }
+Plug 'neovim/node-host', { 'do': 'npm install neovim' }
 " Plug 'euclio/vim-markdown-composer', { 'do': 'cargo build --release' }
 if g:lsp_plugin == 'coc'
   Plug 'neoclide/coc.nvim', {'branch': 'release'}

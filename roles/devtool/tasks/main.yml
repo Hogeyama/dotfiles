@@ -13,4 +13,5 @@
     - unzip
     - dnsutils
     - zsh
+    - fuse
 

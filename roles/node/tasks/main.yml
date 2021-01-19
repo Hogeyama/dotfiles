@@ -3,11 +3,12 @@
     cmd: which node
   register: which_node
   changed_when: false
+  ignore_errors: true
 
 - name: Add Node.js PPA
   shell:
     cmd: curl -sL https://deb.nodesource.com/setup_14.x | sh
-    warn: no
+    warn: false
   when: "which_node.skipped|default(false) or which_node.rc|default(1) != 0"
 
 - name: Install Node.js

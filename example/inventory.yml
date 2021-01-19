@@ -22,4 +22,3 @@ all:
       tmux:
         # Either "apt" or "build"
         install_method: "build"
-
