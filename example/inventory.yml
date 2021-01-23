@@ -22,6 +22,10 @@ all:
         # Can be omitted if create=false
         password: "$6$pucajcuOuQDjqgXt$zznGOkhAyYEshAwkMYh81TGnDnt52TM42LOkuLvMZ9.IX0RpeWukDwvy1P5u.kl8J62Qd34NvCNyP1.lNH0M31"
 
+      python:
+        build: yes
+        version: 3.9.1
+
       xmonad:
         install: true
 

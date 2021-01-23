@@ -15,7 +15,7 @@
     - role: python
       tags: python
       # TODO 専用の変数でやる
-      when: has_root and os.dist=="debian" and os.version <= 9
+      when: has_root and python.build
 
     - role: node
       tags: node
