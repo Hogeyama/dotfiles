@@ -1,31 +1,35 @@
 ---
 - hosts: all
-  become: yes
+  become: "{{ has_root }}"
   environment:
     SSL_CERT_DIR: /etc/ssl/certs
   roles:
     - role: devtool
       tags: devtool
+      when: has_root
 
     - role: desktop
       tags: desktop
+      when: has_root
 
     - role: python
       tags: python
       # TODO 専用の変数でやる
-      when: os.dist=="debian" and os.version <= 9
+      when: has_root and os.dist=="debian" and os.version <= 9
 
     - role: node
       tags: node
+      when: has_root
 
     - role: company
       tags: company
-      when: at_company|default(false)
+      when: has_root and at_company|default(false)
 
-    # non-grobal settings
     - role: add_user
       tags: add_user
+      when: has_root and user.create|default(false)
 
+    # non-grobal settings
     - role: zsh
       tags: zsh
 

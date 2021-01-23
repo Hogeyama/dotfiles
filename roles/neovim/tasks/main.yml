@@ -21,6 +21,7 @@
     owner: "{{ user.name }}"
     group: "{{ user.name }}"
     mode: '0644'
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Install .config/nvim
   copy:
