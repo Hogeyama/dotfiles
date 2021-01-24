@@ -9,7 +9,7 @@
     path: /etc/sudoers
     line: '{{ user.name }} ALL=(ALL) NOPASSWD:ALL'
     validate: /usr/sbin/visudo -cf %s
-  when: "{{ user.has_sudo }}"
+  when: user.has_sudo
 
 - name: Create ~/.ssh
   file:
