@@ -15,21 +15,21 @@ let g:lsp_plugin = 'coc'
 "" VM-unique Configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" function! MyClipboard(lines,regtype) abort
-"   call writefile(a:lines, "/tmp/some_file_shared_with_host")
-"   call extend(g:, {'my_clipboard': [a:lines, a:regtype]})
-" endfunction
-" let g:clipboard = {
-"       \   'name': 'myClipboard',
-"       \   'copy': {
-"       \      '+': function("MyClipboard"),
-"       \      '*': function("MyClipboard")
-"       \    },
-"       \   'paste': {
-"       \      '+': {-> get(g:, 'my_clipboard', [])},
-"       \      '*': {-> get(g:, 'my_clipboard', [])},
-"       \   },
-"       \ }
+function! MyClipboard(lines,regtype) abort
+  call extend(g:, {'my_clipboard': [a:lines, a:regtype]})
+  call system("myclip", a:lines)
+endfunction
+let g:clipboard = {
+      \   'name': 'myClipboard',
+      \   'copy': {
+      \      '+': function("MyClipboard"),
+      \      '*': function("MyClipboard")
+      \    },
+      \   'paste': {
+      \      '+': {-> get(g:, 'my_clipboard', [])},
+      \      '*': {-> get(g:, 'my_clipboard', [])},
+      \   },
+      \ }
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" General
@@ -76,7 +76,7 @@ Plug 'lambdalisue/gina.vim'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'rhysd/clever-f.vim'
 """nvim-hs
-if g:lsp_plugin == 'nvim-hs-lsp'
+if g:lsp_plugin is 'nvim-hs-lsp'
   Plug 'Hogeyama/nvim-hs.vim', {'branch': 'develop'}
   Plug '~/.config/nvim/nvim-hs-libs/nvim-hs-lsp'
   "Plug '~/.config/nvim/nvim-hs-libs/ghcid-nvim-simple'
@@ -143,7 +143,7 @@ Plug 'tomtom/tlib_vim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'neovim/node-host', { 'do': 'npm install neovim' }
 " Plug 'euclio/vim-markdown-composer', { 'do': 'cargo build --release' }
-if g:lsp_plugin == 'coc'
+if g:lsp_plugin is 'coc'
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
 call plug#end()
@@ -189,7 +189,7 @@ if has("nvim") "{{{
   let g:terminal_color_15 = "#f8f8f8"
   let g:terminal_color_background = g:terminal_color_0
   let g:terminal_color_foreground = g:terminal_color_5
-  if &background == "light"
+  if &background is "light"
     let g:terminal_color_background = g:terminal_color_7
     let g:terminal_color_foreground = g:terminal_color_2
   endif
@@ -500,7 +500,7 @@ call smartinput#define_rule({
 "}}}
 
 "deoplete neosnippet{{{
-let g:deoplete#enable_at_startup  = g:lsp_plugin != 'coc'
+let g:deoplete#enable_at_startup  = g:lsp_plugin isnot 'coc'
 call deoplete#custom#option('ignore_case', v:false)
 call deoplete#custom#option('camel_case', v:true)
 call deoplete#custom#var('terminal', 'require_same_tab', v:false)
@@ -525,7 +525,7 @@ nmap     <C-l> [lsp]
 xmap     <C-l> [lsp]
 
 function! s:lsp_my_setting() abort
-  if g:lsp_plugin == 'nvim-hs-lsp'
+  if g:lsp_plugin is 'nvim-hs-lsp'
     setlocal omnifunc=NvimHsLspComplete
     nnoremap <buffer> [lsp]i :NvimHsLspInitialize<CR>
     nnoremap <buffer> [lsp]s :NvimHsLspStartServer<CR>
@@ -542,7 +542,7 @@ function! s:lsp_my_setting() abort
     nnoremap <buffer> [lsp]a :NvimHsLspCodeAction<CR>
     nnoremap <buffer> [lsp]r :NvimHsLspRename 
     inoremap <buffer> <C-o>  <C-x><C-o>
-  elseif g:lsp_plugin == 'coc'
+  elseif g:lsp_plugin is 'coc'
     nmap     <buffer> <C-j>  <Plug>(coc-definition)
     nmap     <buffer> [lsp]j <Plug>(coc-definition)
     nmap     <buffer> [lsp]r <Plug>(coc-references)
@@ -648,7 +648,7 @@ let g:NvimHsLsp_languageConfig['typescript'] = {
       \   },
       \ }
 "}}}
-if g:lsp_plugin == 'nvim-hs-lsp'
+if g:lsp_plugin is 'nvim-hs-lsp'
   let g:nvimhsPluginStarter=nvimhs#cabal#pluginstarter()
 endif
 "}}}
@@ -962,8 +962,8 @@ autocmd FileType scala nnoremap <buffer><C-j> :update!<CR>:EnDeclaration<CR>
 autocmd FileType make setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
 "}}}
 
-"Align {{{
-"autocmd VimEnter * AlignCtrl W=
+"vim-easy-align {{{
+vmap <Enter> <Plug>(EasyAlign)
 "}}}
 
 "Rainbow {{{
@@ -1177,7 +1177,7 @@ function! CRecursive(cmd) abort "{{{
   let p0 = getpos('.')
   let p  = p0
   try
-    while p == p0
+    while p is p0
       execute a:cmd
       let p = getpos('.')
     endwhile
