@@ -1,0 +1,5 @@
+- name: Check if user {{ user.name }} exists
+  getent:
+    database: passwd
+    key: "{{ user.name }}"
+    fail_key: true

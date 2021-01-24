@@ -60,6 +60,8 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 plugins=(
   git
   z
+  docker
+  docker-compose
   # bundler
   # dotenv
   # rake
@@ -79,7 +81,7 @@ source $ZSH/oh-my-zsh.sh
 export LANG=ja_JP.UTF-8
 
 # Preferred editor for local and remote sessions
-export EDITOR='nvim'
+export EDITOR='$HOME/.local/bin/nvim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"

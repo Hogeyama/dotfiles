@@ -1,4 +1,4 @@
-- name: Install python3.8 dependencies
+- name: Install python dependencies
   apt:
     name:
     - build-essential
@@ -12,22 +12,22 @@
     - wget
     - curl
 
-- name: Download python3.8 source
+- name: Download python source
   get_url:
-    url: https://www.python.org/ftp/python/3.8.2/Python-3.8.2.tar.xz
-    dest: /root/Python-3.8.2.tar.xz
+    url: "https://www.python.org/ftp/python/{{ python.version }}/Python-{{ python.version }}.tar.xz"
+    dest: "/root/Python-{{ python.version }}.tar.xz"
 
-- name: Unarchive python3.8 source
+- name: Unarchive python source
   unarchive:
-    src: /root/Python-3.8.2.tar.xz
+    src: "/root/Python-{{ python.version }}.tar.xz"
     dest: /root
     remote_src: yes
 
-- name: Install python3.8
+- name: Install python
   shell:
-    chdir: /root/Python-3.8.2
+    chdir: "/root/Python-{{ python.version }}"
     cmd: |
       ./configure --enable-optimizations
       make -j4
       sudo make altinstall
-    creates: /usr/local/bin/python3.8
+    creates: "/usr/local/bin/python{{ python.version }}"
