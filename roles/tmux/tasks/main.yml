@@ -15,14 +15,14 @@
       - libncurses-dev
       - xsel
   when: "tmux.install_method|default('apt') == 'build' and
-         not which_tmux.skipped|default(true) and which_tmux.rc != 0"
+         not which_tmux.skipped|default(false) and which_tmux.rc != 0"
 
 - name: Clone tmux
   git:
     repo: 'https://github.com/tmux/tmux.git'
     dest: /root/tmux
   when: "tmux.install_method|default('apt') == 'build' and
-         not which_tmux.skipped|default(true) and which_tmux.rc != 0"
+         not which_tmux.skipped|default(false) and which_tmux.rc != 0"
 
 - name: Install tmux
   shell:
@@ -34,14 +34,14 @@
       sudo make install
     creates: /usr/local/bin/tmux
   when: "tmux.install_method|default('apt') == 'build' and
-         not which_tmux.skipped|default(true) and which_tmux.rc != 0"
+         not which_tmux.skipped|default(false) and which_tmux.rc != 0"
 
 - name: Install tmux (apt)
   apt:
     name:
       - tmux
   when: "tmux.install_method|default('apt') == 'apt' and
-         not which_tmux.skipped|default(true) and which_tmux.rc != 0"
+         not which_tmux.skipped|default(false) and which_tmux.rc != 0"
 
 - name: Check if tpm is installed
   stat:

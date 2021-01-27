@@ -9,9 +9,10 @@
   shell:
     cmd: curl -sL https://deb.nodesource.com/setup_14.x | sh
     warn: false
-  when: "not which_node.skipped|default(true) and which_node.rc != 0"
+  when: "not which_node.skipped|default(false) and which_node.rc != 0"
 
 - name: Install Node.js
   apt:
     name:
       - nodejs
+  when: "not which_node.skipped|default(false) and which_node.rc != 0"
