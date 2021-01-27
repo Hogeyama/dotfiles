@@ -1,32 +1,84 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 Vagrant.configure("2") do |config|
-  config.vm.box = "debian/stretch64"
   config.vm.synced_folder "C:\\", "/c"
-  name = "main-vm"
-  config.vm.define name, primary: true do |cfg|
-    cfg.vm.hostname = name
+  stretch_name = "main-vm"
+  config.vm.provision "shell", inline: <<-SHELL
+    apt-get update
+    apt-get install curl python3-distutils
+  SHELL
+  config.vm.define stretch_name, primary: true do |cfg|
+    cfg.vm.hostname = stretch_name
+    cfg.vm.box = "debian/stretch64"
     cfg.vm.network "private_network", ip: "10.10.10.10"
     cfg.vm.network "forwarded_port", guest: 8081, host: 8081
     cfg.vm.network "forwarded_port", guest: 22, host: 2200
     cfg.vm.provider "virtualbox" do |vb|
-      vb.gui = false
+      vb.gui = true
       vb.memory = "4096"
       vb.customize ["modifyvm", :id, "--vram", "32", '--clipboard', 'bidirectional']
-      vb.name = name
+      vb.name = stretch_name
     end
     cfg.vm.provision "ansible_local" do |ansible|
       ansible.playbook = "playbook.yml"
       ansible.install_mode = "pip"
       ansible.pip_install_cmd = "curl -s https://bootstrap.pypa.io/get-pip.py | sudo python3"
       ansible.extra_vars = {
+        has_root: true,
         os: {
           dist: "debian",
-          version: 9
+          version: 10
         },
         user: {
           name: "cq2n-iwym",
+          create: true,
+          has_sudo: true,
           password: "$6$N4.rjdBkS3Y/Od1U$77YfWpOFu8xbrv14Qot/RsKEfGexlb/TggyjMAz37oAn5knI7h2gwHcw0ZsVkmPGtGbr5A02uglrJLHsV0rF90"
+        },
+        python: {
+          build: true,
+          version: "3.9.1"
+        },
+        xmonad: {
+          install: false
+        },
+        tmux: {
+          install_method: "build"
+        }
+      }
+    end
+  end
+  buster_name = "buster-vm"
+  config.vm.define buster_name, primary: false do |cfg|
+    cfg.vm.hostname = buster_name
+    cfg.vm.box = "debian/buster64"
+    cfg.vm.network "private_network", ip: "10.10.10.11"
+    cfg.vm.network "forwarded_port", guest: 8081, host: 8082
+    cfg.vm.network "forwarded_port", guest: 22, host: 2201
+    cfg.vm.provider "virtualbox" do |vb|
+      vb.gui = false
+      vb.memory = "4096"
+      vb.customize ["modifyvm", :id, "--vram", "32", '--clipboard', 'bidirectional']
+      vb.name = buster_name
+    end
+    cfg.vm.provision "ansible_local" do |ansible|
+      ansible.playbook = "playbook.yml"
+      ansible.install_mode = "pip"
+      ansible.pip_install_cmd = "curl -s https://bootstrap.pypa.io/get-pip.py | sudo python3"
+      ansible.extra_vars = {
+        has_root: true,
+        os: {
+          dist: "debian",
+          version: 10
+        },
+        user: {
+          name: "cq2n-iwym",
+          create: true,
+          has_sudo: true,
+          password: "$6$N4.rjdBkS3Y/Od1U$77YfWpOFu8xbrv14Qot/RsKEfGexlb/TggyjMAz37oAn5knI7h2gwHcw0ZsVkmPGtGbr5A02uglrJLHsV0rF90"
+        },
+        python: {
+          build: false
         },
         xmonad: {
           install: false
