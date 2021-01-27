@@ -42,8 +42,7 @@
 
 - name: Install fzf
   command:
-    cmd: '/home/{{ user.name }}/.fzf/install --key-bindings --completion --no-update-rc'
-  become: yes
-  become_user: '{{ user.name }}'
+    cmd: 'sudo -u {{ user.name }} /home/{{ user.name }}/.fzf/install --key-bindings --completion --no-update-rc'
+    warn: false
   when: download_fzf.changed|default(false)
 
