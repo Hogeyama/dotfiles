@@ -1,3 +1,10 @@
+- name: Check whether python-{{ python.version }} is installed
+  shell:
+    cmd: which python
+  register: which_python
+  changed_when: false
+  ignore_errors: true
+
 - name: Install python dependencies
   apt:
     name:
@@ -11,17 +18,20 @@
     - libffi-dev
     - wget
     - curl
+  when: "not which_python.skipped|default(false) and which_python.rc != 0"
 
 - name: Download python source
   get_url:
     url: "https://www.python.org/ftp/python/{{ python.version }}/Python-{{ python.version }}.tar.xz"
     dest: "/root/Python-{{ python.version }}.tar.xz"
+  when: "not which_python.skipped|default(false) and which_python.rc != 0"
 
 - name: Unarchive python source
   unarchive:
     src: "/root/Python-{{ python.version }}.tar.xz"
     dest: /root
     remote_src: yes
+  when: "not which_python.skipped|default(false) and which_python.rc != 0"
 
 - name: Install python
   shell:
@@ -31,3 +41,4 @@
       make -j4
       sudo make altinstall
     creates: "/usr/local/bin/python{{ python.version }}"
+  when: "not which_python.skipped|default(false) and which_python.rc != 0"

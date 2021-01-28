@@ -66,8 +66,10 @@
 
 - name: Set .tmux.conf
   copy:
-    src: tmux.conf
-    dest: "/home/{{ user.name }}/.tmux.conf"
+    src: "{{ item }}"
+    dest: "/home/{{ user.name }}/{{ item }}"
     owner: "{{ user.name }}"
     group: "{{ user.name }}"
     mode: '0644'
+  loop:
+    - .tmux.conf
