@@ -14,7 +14,6 @@
 
     - role: python
       tags: python
-      # TODO 専用の変数でやる
       when: has_root and python.build
 
     - role: node
