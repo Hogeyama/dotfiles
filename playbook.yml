@@ -8,10 +8,6 @@
       tags: devtool
       when: has_root
 
-    - role: desktop
-      tags: desktop
-      when: has_root
-
     - role: python
       tags: python
       when: has_root and python.build
