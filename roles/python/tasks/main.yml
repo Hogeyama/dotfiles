@@ -1,6 +1,7 @@
 - name: Check whether python-{{ python.version }} is installed
   shell:
-    cmd: which python
+    # drop minor version number by 'splitext | first'
+    cmd: "which python{{ python.version | splitext | first }}"
   register: which_python
   changed_when: false
   ignore_errors: true

@@ -11,21 +11,12 @@
     validate: /usr/sbin/visudo -cf %s
   when: user.has_sudo
 
-- name: Create ~/.ssh
-  file:
-    path: "/home/{{ user.name }}/.ssh"
-    state: directory
-    owner: "{{ user.name }}"
-    group: "{{ user.name }}"
-    mode: '0700'
-
-- name: Create ~/.local
-  file:
-    path: "/home/{{ user.name }}/.local"
-    state: directory
-    owner: "{{ user.name }}"
-    group: "{{ user.name }}"
-    mode: '0755'
+- name: Set authorized key taken from file
+  ansible.posix.authorized_key:
+    user: "{{ user.name }}"
+    state: present
+    key: "{{ lookup('file', user.ssh_public_key) }}"
+  when: user.ssh_public_key is defined
 
 - name: Create ~/.local/bin
   file:

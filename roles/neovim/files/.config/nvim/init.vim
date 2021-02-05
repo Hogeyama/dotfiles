@@ -41,6 +41,7 @@ Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/denite.nvim'
 Plug 'Shougo/defx.nvim'
+Plug 'Shougo/deol.nvim'
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/deoplete.nvim'
 Plug 'Shougo/deoplete-terminal'
@@ -200,6 +201,8 @@ endif "}}}
 filetype plugin indent on
 
 set fileencoding=utf-8
+" set fileencoding=cp932
+" set fileencodings=cp932,utf-8
 set termencoding=utf-8
 let mapleader=","
 let maplocalleader=","
@@ -290,9 +293,11 @@ set pumblend=15
 let g:grepper = {}
 let g:grepper.quickfix = 0
 command! -nargs=+ -complete=file Ag Grepper -noprompt -tool ag -query <args>
+"}}}
 
-" coc.nvim
+"coc.nvim {{{
 set updatetime=300
+let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-java']
 "}}}
 
 "Denite{{{
@@ -473,28 +478,28 @@ let g:submode_timeout = 0
 let g:smartinput_no_default_key_mappings=0
 call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
 call smartinput#map_to_trigger('i', '<CR>', '<CR>', '<CR>')
-call smartinput#map_to_trigger('i', '(', '(', '(')
-call smartinput#map_to_trigger('i', '{', '{', '{')
-call smartinput#define_rule({
-      \ 'at'    : '{\%#}',
-      \ 'char'  : '<CR>',
-      \ 'input' : '<CR><Left><CR><Tab>',
-      \})
-call smartinput#define_rule({
-      \ 'at': '\%#',
-      \ 'char': '(',
-      \ 'input': '()<Left>',
-      \})
-call smartinput#define_rule({
-      \ 'at'    : '(\%#)',
-      \ 'char'  : '<Space>',
-      \ 'input' : '<Space><Space><Left>',
-      \})
-call smartinput#define_rule({
-      \ 'at': '\%#',
-      \ 'char': '{',
-      \ 'input': '{}<Left>',
-      \})
+" call smartinput#map_to_trigger('i', '(', '(', '(')
+" call smartinput#map_to_trigger('i', '{', '{', '{')
+" call smartinput#define_rule({
+"       \ 'at'    : '{\%#}',
+"       \ 'char'  : '<CR>',
+"       \ 'input' : '<CR><Left><CR><Tab>',
+"       \})
+" call smartinput#define_rule({
+"       \ 'at': '\%#',
+"       \ 'char': '(',
+"       \ 'input': '()<Left>',
+"       \})
+" call smartinput#define_rule({
+"       \ 'at'    : '(\%#)',
+"       \ 'char'  : '<Space>',
+"       \ 'input' : '<Space><Space><Left>',
+"       \})
+" call smartinput#define_rule({
+"       \ 'at': '\%#',
+"       \ 'char': '{',
+"       \ 'input': '{}<Left>',
+"       \})
 "inoremap ( (
 "inoremap { {
 "}}}
@@ -549,10 +554,12 @@ function! s:lsp_my_setting() abort
     nmap     <buffer> [lsp]f <Plug>(coc-format)
     xmap     <buffer> [lsp]f <Plug>(coc-format-selected)
     nmap     <buffer> [lsp]a <Plug>(coc-codeaction)
-    nmap     <buffer> [lsp]r <Plug>(coc-rename)
+    nmap     <buffer> <F2>   <Plug>(coc-rename)
     nmap     <buffer> [lsp]l <Plug>(coc-openlink)
-    nnoremap <buffer> [lsp]h :call CocAction('doHover')<CR>
-    nnoremap <buffer> <C-h>  :call CocAction('doHover')<CR>
+    nmap     <buffer> [lsp]n <Plug>(coc-diagnostics-next)
+    nmap     <buffer> [lsp]p <Plug>(coc-diagnostics-prev)
+    nnoremap <buffer> [lsp]h :call CocActionAsync('doHover')<CR>
+    nnoremap <buffer> <C-h>  :call CocActionAsync('doHover')<CR>
   else
   endif
 endfunction
@@ -691,6 +698,12 @@ set rtp+=~/.fzf
 autocmd FileType c setlocal expandtab ts=4 sts=4 sw=4
 augroup lsp
   autocmd FileType c call s:lsp_my_setting()
+augroup END
+"}}}
+
+"Java"{{{
+augroup lsp
+  autocmd FileType java call s:lsp_my_setting()
 augroup END
 "}}}
 
