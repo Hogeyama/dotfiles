@@ -16,6 +16,10 @@
       tags: node
       when: has_root
 
+    - role: java
+      tags: java
+      when: has_root
+
     - role: company
       tags: company
       when: has_root and at_company|default(false)
