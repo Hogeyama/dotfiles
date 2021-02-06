@@ -1,0 +1,32 @@
+---
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
+      ansible_python_interpreter: auto
+
+      # config
+      ########
+      has_root: true
+
+      os:
+        dist: debian
+        version: 10
+
+      user:
+        name: cq2n-iwym
+        create: true
+        has_sudo: true
+        password: "$6$N4.rjdBkS3Y/Od1U$77YfWpOFu8xbrv14Qot/RsKEfGexlb/TggyjMAz37oAn5knI7h2gwHcw0ZsVkmPGtGbr5A02uglrJLHsV0rF90"
+
+      python:
+        build: false
+
+      xmonad:
+        install: false
+
+      tmux:
+        # Either "apt" or "build"
+        install_method: "apt"
+
+      at_company: true

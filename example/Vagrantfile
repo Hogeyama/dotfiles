@@ -2,18 +2,20 @@
 # vi: set ft=ruby :
 Vagrant.configure("2") do |config|
   config.vm.synced_folder "C:\\", "/c"
-  stretch_name = "main-vm"
-  config.vm.define stretch_name, primary: true do |cfg|
-    cfg.vm.hostname = stretch_name
+  name = "stretch"
+  config.vm.define name, primary: true do |cfg|
+    cfg.disksize.size = "100GB"
+    cfg.vm.hostname = name
     cfg.vm.box = "debian/stretch64"
-    cfg.vm.network "private_network", ip: "10.10.10.10"
-    cfg.vm.network "forwarded_port", guest: 8081, host: 8081
-    cfg.vm.network "forwarded_port", guest: 22, host: 2200
+    cfg.vm.network "private_network", ip: "10.10.10.11"
+    cfg.vm.network "forwarded_port", guest: 8080, host: 8081
+    cfg.vm.network "forwarded_port", guest: 22, host: 2201
     cfg.vm.provider "virtualbox" do |vb|
-      vb.gui = true
-      vb.memory = "4096"
+      vb.gui = false
+      # vb.gui = true
+      vb.memory = "10240"
       vb.customize ["modifyvm", :id, "--vram", "32", '--clipboard', 'bidirectional']
-      vb.name = stretch_name
+      vb.name = name
     end
     cfg.vm.provision "ansible_local" do |ansible|
       ansible.playbook = "playbook.yml"
@@ -23,13 +25,14 @@ Vagrant.configure("2") do |config|
         has_root: true,
         os: {
           dist: "debian",
-          version: 10
+          version: 9
         },
         user: {
           name: "cq2n-iwym",
           create: true,
           has_sudo: true,
-          password: "$6$N4.rjdBkS3Y/Od1U$77YfWpOFu8xbrv14Qot/RsKEfGexlb/TggyjMAz37oAn5knI7h2gwHcw0ZsVkmPGtGbr5A02uglrJLHsV0rF90"
+          password: "$6$N4.rjdBkS3Y/Od1U$77YfWpOFu8xbrv14Qot/RsKEfGexlb/TggyjMAz37oAn5knI7h2gwHcw0ZsVkmPGtGbr5A02uglrJLHsV0rF90",
+          ssh_public_key: "C:\\Users\\cq2n-iwym\\.ssh\\id_ed25519.pub"
         },
         python: {
           build: true,
@@ -40,27 +43,30 @@ Vagrant.configure("2") do |config|
         },
         tmux: {
           install_method: "build"
-        }
+        },
+        at_company: true
       }
     end
   end
-  buster_name = "buster-vm"
-  config.vm.define buster_name, primary: false do |cfg|
-    cfg.vm.hostname = buster_name
+  ##############################################################################
+  name = "buster"
+  config.vm.define name, primary: false do |cfg|
+    cfg.disksize.size = "100GB"
+    cfg.vm.hostname = name
     cfg.vm.box = "debian/buster64"
-    cfg.vm.network "private_network", ip: "10.10.10.11"
-    cfg.vm.network "forwarded_port", guest: 8081, host: 8082
-    cfg.vm.network "forwarded_port", guest: 22, host: 2201
+    cfg.vm.network "private_network", ip: "10.10.10.12"
+    cfg.vm.network "forwarded_port", guest: 8080, host: 8082
+    cfg.vm.network "forwarded_port", guest: 22, host: 2202
     cfg.vm.provider "virtualbox" do |vb|
       vb.gui = false
-      vb.memory = "4096"
+      vb.memory = "10240"
       vb.customize ["modifyvm", :id, "--vram", "32", '--clipboard', 'bidirectional']
-      vb.name = buster_name
+      vb.name = name
     end
     cfg.vm.provision "ansible_local" do |ansible|
       ansible.playbook = "playbook.yml"
       ansible.install_mode = "pip"
-      ansible.pip_install_cmd = "curl -s https://bootstrap.pypa.io/get-pip.py | sudo python3"
+      ansible.pip_install_cmd = "apt install -y python3-distutils && curl https://bootstrap.pypa.io/get-pip.py | sudo python3"
       ansible.extra_vars = {
         has_root: true,
         os: {
@@ -71,17 +77,19 @@ Vagrant.configure("2") do |config|
           name: "cq2n-iwym",
           create: true,
           has_sudo: true,
-          password: "$6$N4.rjdBkS3Y/Od1U$77YfWpOFu8xbrv14Qot/RsKEfGexlb/TggyjMAz37oAn5knI7h2gwHcw0ZsVkmPGtGbr5A02uglrJLHsV0rF90"
+          password: "$6$N4.rjdBkS3Y/Od1U$77YfWpOFu8xbrv14Qot/RsKEfGexlb/TggyjMAz37oAn5knI7h2gwHcw0ZsVkmPGtGbr5A02uglrJLHsV0rF90",
+          ssh_public_key: "/c/Users/cq2n-iwym/.ssh/id_ed25519.pub"
         },
         python: {
-          build: false
+          build: false,
         },
         xmonad: {
           install: false
         },
         tmux: {
           install_method: "apt"
-        }
+        },
+        at_company: true
       }
     end
   end
