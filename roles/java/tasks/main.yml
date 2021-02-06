@@ -13,15 +13,20 @@
     - "https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.10%2B9/OpenJDK11U-jdk_x64_linux_hotspot_11.0.10_9.tar.gz"
     - "https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u282-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u282b08.tar.gz"
 
+- name: Prepare install directory for jdt.ls
+  file:
+    path: /usr/local/share/jdt-language-server
+    state: directory
+
 - name: Install jdt.ls
   unarchive:
     src: https://ftp.yz.yamagata-u.ac.jp/pub/eclipse/jdtls/snapshots/jdt-language-server-latest.tar.gz
-    dest: /usr/local/share
+    dest: /usr/local/share/jdt-language-server
     remote_src: true
 
 - name: Set permission of jdt.ls
   file:
-    path: /usr/local/share/jdt-language-server-latest
+    path: /usr/local/share/jdt-language-server
     recurse: yes
     mode: '777'
   changed_when: false

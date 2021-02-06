@@ -18,7 +18,7 @@
     }
   },
   "java.home": "/usr/lib/jvm/jdk-11.0.10+9",
-  "java.jdt.ls.home": "/usr/local/share/jdt-language-server-latest",
+  "java.jdt.ls.home": "/usr/local/share/jdt-language-server",
   "java.signatureHelp.enabled": true,
   "java.import.gradle.enabled" : true,
   "java.configuration.runtimes": [
