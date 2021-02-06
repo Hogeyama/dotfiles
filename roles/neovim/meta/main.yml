@@ -5,3 +5,5 @@ dependencies:
     when: user.create|default(false)
   - role: check_user
     when: not user.create|default(false)
+  - role: python
+    when: python.build

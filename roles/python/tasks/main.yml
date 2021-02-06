@@ -6,6 +6,12 @@
   changed_when: false
   ignore_errors: true
 
+- set_fact:
+    build_python:
+      "{{ python.build|default(false) and
+          not which_python.skipped|default(false) and
+          which_python.rc != 0 }}"
+
 - name: Install python dependencies
   apt:
     name:
@@ -19,20 +25,14 @@
     - libffi-dev
     - wget
     - curl
-  when: "not which_python.skipped|default(false) and which_python.rc != 0"
-
-- name: Download python source
-  get_url:
-    url: "https://www.python.org/ftp/python/{{ python.version }}/Python-{{ python.version }}.tar.xz"
-    dest: "/root/Python-{{ python.version }}.tar.xz"
-  when: "not which_python.skipped|default(false) and which_python.rc != 0"
+  when: build_python
 
 - name: Unarchive python source
   unarchive:
-    src: "/root/Python-{{ python.version }}.tar.xz"
+    src: "https://www.python.org/ftp/python/{{ python.version }}/Python-{{ python.version }}.tar.xz"
     dest: /root
-    remote_src: yes
-  when: "not which_python.skipped|default(false) and which_python.rc != 0"
+    remote_src: true
+  when: build_python
 
 - name: Install python
   shell:
@@ -42,4 +42,4 @@
       make -j4
       sudo make altinstall
     creates: "/usr/local/bin/python{{ python.version }}"
-  when: "not which_python.skipped|default(false) and which_python.rc != 0"
+  when: build_python

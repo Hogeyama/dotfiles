@@ -33,14 +33,21 @@
   loop:
     - .config/nvim/
 
+- set_fact:
+    # pip3.X if python.version is 3.X.Y
+    # pip3 if python.version is undefined
+    pip_cmd: "pip{{ python.version|default('3.0')|splitext|first }}"
+
 - name: Install neovim-remote
   pip:
     name: neovim-remote
+    executable: "{{ pip_cmd }}"
   ignore_errors: true
 
 - name: Install pynvim
   pip:
     name: pynvim
+    executable: "{{ pip_cmd }}"
   ignore_errors: true
 
 - name: Install neovim/node-client
