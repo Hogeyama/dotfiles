@@ -2,6 +2,11 @@
   timezone:
     name: Asia/Tokyo
 
+- name: Ensure a locale exists
+  community.general.locale_gen:
+    name: ja_JP.UTF-8
+    state: present
+
 - name: Install basic developement tools
   apt:
     name:

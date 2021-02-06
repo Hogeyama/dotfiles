@@ -16,7 +16,7 @@ all:
       user:
         name: cq2n-iwym
         create: true
-        has_sudo: true
+        sudoer: true
         password: "$6$N4.rjdBkS3Y/Od1U$77YfWpOFu8xbrv14Qot/RsKEfGexlb/TggyjMAz37oAn5knI7h2gwHcw0ZsVkmPGtGbr5A02uglrJLHsV0rF90"
 
       python:
