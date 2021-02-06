@@ -1,0 +1,37 @@
+- name: Install build system
+  apt:
+    name:
+    - ant
+    - gradle
+
+- name: Install AdoptOpenJDK
+  unarchive:
+    src: "{{ item }}"
+    dest: "/usr/lib/jvm"
+    remote_src: true
+  loop:
+    - "https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.10%2B9/OpenJDK11U-jdk_x64_linux_hotspot_11.0.10_9.tar.gz"
+    - "https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u282-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u282b08.tar.gz"
+
+- name: Install jdt.ls
+  unarchive:
+    src: https://ftp.yz.yamagata-u.ac.jp/pub/eclipse/jdtls/snapshots/jdt-language-server-latest.tar.gz
+    dest: /usr/local/share
+    remote_src: true
+  when: download_jdtls.changed|default(false)
+
+- name: Set permission of jdt.ls
+  file:
+    path: /usr/local/share/jdt-language-server-latest
+    recurse: yes
+    mode: 777
+  changed_when: false
+
+- name: Configure Environment varibales
+  copy:
+    src: "{{ item }}"
+    dest: "/{{ item }}"
+    mode: "755"
+  loop:
+    - etc/profile.d/java.sh
+
