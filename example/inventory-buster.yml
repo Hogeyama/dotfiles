@@ -27,6 +27,6 @@ all:
 
       tmux:
         # Either "apt" or "build"
-        install_method: "apt"
+        install_method: "build"
 
       at_company: true
