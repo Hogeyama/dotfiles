@@ -23,7 +23,7 @@
   file:
     path: /usr/local/share/jdt-language-server-latest
     recurse: yes
-    mode: 777
+    mode: '777'
   changed_when: false
 
 - name: Configure Environment varibales
