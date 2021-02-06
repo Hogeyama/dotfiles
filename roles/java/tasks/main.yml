@@ -18,7 +18,6 @@
     src: https://ftp.yz.yamagata-u.ac.jp/pub/eclipse/jdtls/snapshots/jdt-language-server-latest.tar.gz
     dest: /usr/local/share
     remote_src: true
-  when: download_jdtls.changed|default(false)
 
 - name: Set permission of jdt.ls
   file:
