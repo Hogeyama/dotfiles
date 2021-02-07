@@ -20,10 +20,6 @@
       tags: java
       when: has_root
 
-    - role: company
-      tags: company
-      when: has_root and at_company|default(false)
-
     - role: add_user
       tags: add_user
       when: has_root and user.create|default(false)

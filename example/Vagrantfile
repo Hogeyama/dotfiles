@@ -39,8 +39,7 @@ Vagrant.configure("2") do |config|
         },
         tmux: {
           install_method: "build"
-        },
-        at_company: true
+        }
       }
     end
   end
@@ -80,8 +79,7 @@ Vagrant.configure("2") do |config|
         },
         tmux: {
           install_method: "apt"
-        },
-        at_company: true
+        }
       }
     end
   end
