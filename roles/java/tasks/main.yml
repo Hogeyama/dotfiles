@@ -34,6 +34,7 @@
     src: https://ftp.yz.yamagata-u.ac.jp/pub/eclipse/jdtls/snapshots/jdt-language-server-latest.tar.gz
     dest: /usr/local/share/jdt-language-server
     remote_src: true
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Set permission of jdt.ls
   file:
