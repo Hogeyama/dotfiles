@@ -1,17 +1,28 @@
-- name: Install build system
+- set_fact:
+    is_jessie: "{{ ansible_distribution_release == 'jessie' }}"
+
+- name: Install build tools
   apt:
     name:
     - ant
     - gradle
 
+- name: Install OpenJDK8 (jessie only)
+  apt:
+    name:
+      - openjdk-8-jdk-headless
+  when: is_jessie
+
 - name: Install AdoptOpenJDK
+  vars:
+    adopt_openjdk8: "https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u282-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u282b08.tar.gz"
+    adopt_openjdk11: "https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.10%2B9/OpenJDK11U-jdk_x64_linux_hotspot_11.0.10_9.tar.gz"
+    targets: "{{ [ adopt_openjdk11 ] if is_jessie else [ adopt_openjdk8, adopt_openjdk11 ]}}"
   unarchive:
     src: "{{ item }}"
     dest: "/usr/lib/jvm"
     remote_src: true
-  loop:
-    - "https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.10%2B9/OpenJDK11U-jdk_x64_linux_hotspot_11.0.10_9.tar.gz"
-    - "https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u282-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u282b08.tar.gz"
+  loop: "{{ targets }}"
 
 - name: Prepare install directory for jdt.ls
   file:
@@ -32,10 +43,9 @@
   changed_when: false
 
 - name: Configure Environment varibales
-  copy:
-    src: "{{ item }}"
+  template:
+    src: "{{ item }}.j2"
     dest: "/{{ item }}"
-    mode: "755"
+    mode: "644"
   loop:
     - etc/profile.d/java.sh
-
