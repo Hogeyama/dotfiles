@@ -61,5 +61,6 @@
 - name: Install neovim/node-client
   community.general.npm:
     name: neovim
-    global: no
+    global: yes
   ignore_errors: true
+  when: has_root
