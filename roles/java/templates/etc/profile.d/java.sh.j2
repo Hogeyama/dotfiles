@@ -1,10 +1,10 @@
-{% if is_jessie %}}
+{% if is_stretch %}
 export JAVA8_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
 export JAVA11_HOME="/usr/lib/jvm/jdk-11.0.10+9"
-{% if else %}}
+{% else %}
 export JAVA_HOME="/usr/lib/jvm/jdk8u282-b08"
 export JAVA8_HOME="/usr/lib/jvm/jdk8u282-b08"
 export JAVA11_HOME="/usr/lib/jvm/jdk-11.0.10+9"
 export PATH="$JAVA_HOME/bin:$PATH"
-{% endif %}}
+{% endif %}
 

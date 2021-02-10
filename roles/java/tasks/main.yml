@@ -1,5 +1,11 @@
 - set_fact:
-    is_jessie: "{{ ansible_distribution_release == 'jessie' }}"
+    is_stretch: "{{ ansible_distribution_release == 'stretch' }}"
+
+- debug:
+    var: is_stretch
+
+- debug:
+    var: ansible_distribution_release
 
 - name: Install build tools
   apt:
@@ -7,17 +13,17 @@
     - ant
     - gradle
 
-- name: Install OpenJDK8 (jessie only)
+- name: Install OpenJDK8 (stretch only)
   apt:
     name:
       - openjdk-8-jdk-headless
-  when: is_jessie
+  when: is_stretch
 
 - name: Install AdoptOpenJDK
   vars:
     adopt_openjdk8: "https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u282-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u282b08.tar.gz"
     adopt_openjdk11: "https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.10%2B9/OpenJDK11U-jdk_x64_linux_hotspot_11.0.10_9.tar.gz"
-    targets: "{{ [ adopt_openjdk11 ] if is_jessie else [ adopt_openjdk8, adopt_openjdk11 ]}}"
+    targets: "{{ [ adopt_openjdk11 ] if is_stretch else [ adopt_openjdk8, adopt_openjdk11 ]}}"
   unarchive:
     src: "{{ item }}"
     dest: "/usr/lib/jvm"
