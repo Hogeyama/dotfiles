@@ -1,0 +1,64 @@
+- name: Install neovim (user local)
+  get_url:
+    url: https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+    dest: "/home/{{ user.name }}/.local/bin/nvim"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: '0755'
+  when: not has_root
+
+- name: Install neovim (system)
+  get_url:
+    url: https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+    dest: "/usr/local/bin/nvim"
+    mode: '0755'
+  when: has_root
+
+- name: Create ~/.config/nvim/autoload
+  file:
+    path: "/home/{{ user.name }}/.config/nvim/autoload"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: '0755'
+
+- name: Install vim-plug
+  get_url:
+    url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    dest: "/home/{{ user.name }}/.config/nvim/autoload/plug.vim"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: '0644'
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Install .config/nvim
+  copy:
+    src: "{{ item }}"
+    dest: "/home/{{ user.name }}/{{ item }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 'preserve'
+  with_fileglob: '.config/nvim/*'
+
+- set_fact:
+    # pip3.X if python.version is 3.X.Y
+    # pip3 if python.version is undefined
+    pip_cmd: "pip{{ python.version|default('3.0')|splitext|first }}"
+
+- name: Install neovim-remote
+  pip:
+    name: neovim-remote
+    executable: "{{ pip_cmd }}"
+  ignore_errors: true
+
+- name: Install pynvim
+  pip:
+    name: pynvim
+    executable: "{{ pip_cmd }}"
+  ignore_errors: true
+
+- name: Install neovim/node-client
+  community.general.npm:
+    name: neovim
+    global: no
+  ignore_errors: true

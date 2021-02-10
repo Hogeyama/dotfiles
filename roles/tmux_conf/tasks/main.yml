@@ -1,0 +1,30 @@
+- name: Check if tpm is installed
+  stat:
+    path: "/home/{{ user.name }}/.tmux/plugins/tpm"
+  register: tpm
+
+- name: Download tpm
+  git:
+    repo: 'https://github.com/tmux-plugins/tpm'
+    dest: "/home/{{ user.name }}/.tmux/plugins/tpm"
+  register: download_tpm
+  when: not tpm.stat.isdir|default(false)
+
+- name: Make ~/.tmux owned by {{ user.name }}
+  file:
+    path: "/home/{{ user.name }}/.tmux"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    state: directory
+    recurse: yes
+  changed_when: false # TODO
+
+- name: Set .tmux.conf
+  copy:
+    src: "{{ item }}"
+    dest: "/home/{{ user.name }}/{{ item }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: '0644'
+  loop:
+    - .tmux.conf

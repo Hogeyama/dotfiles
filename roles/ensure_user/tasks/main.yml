@@ -3,6 +3,13 @@
     name: "{{ user.name }}"
     password: "{{ user.password }}"
     shell: /usr/bin/zsh
+  when: user.create
+
+- name: Check if user "{{ user.name }}" exists
+  getent:
+    database: passwd
+    key: "{{ user.name }}"
+    fail_key: true
 
 - name: Ensure privilege attached to "{{ user.name }}"
   lineinfile:
@@ -17,6 +24,14 @@
     state: present
     key: "{{ lookup('file', user.ssh_public_key) }}"
   when: user.ssh_public_key is defined
+
+- name: Create ~/Downloads
+  file:
+    path: "/home/{{ user.name }}/Downloads"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: '0755'
 
 - name: Create ~/.local/bin
   file:

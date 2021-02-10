@@ -4,6 +4,7 @@
   environment:
     SSL_CERT_DIR: /etc/ssl/certs
   roles:
+    # Tools
     - role: devtool
       tags: devtool
       when: has_root
@@ -20,23 +21,31 @@
       tags: java
       when: has_root
 
-    - role: add_user
-      tags: add_user
-      when: has_root and user.create|default(false)
-
     # non-grobal settings
     - role: zsh
       tags: zsh
+      when: has_root
 
     - role: tmux
       tags: tmux
+      when: has_root
 
     - role: neovim
       tags: neovim
 
+    # User settings
     - role: dotfiles
       tags: dotfiles
 
-    - role: xmonad
+    - role: zsh_conf
+      tags: zsh
+
+    - role: tmux_conf
+      tags: tmux
+
+    - role: neovim_conf
+      tags: neovim
+
+    - role: xmonad_conf
       tags: xmonad
       when: xmonad.install|default(false)

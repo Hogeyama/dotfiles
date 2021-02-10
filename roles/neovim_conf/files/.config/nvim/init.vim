@@ -51,7 +51,7 @@ Plug 'kana/vim-submode'
 Plug 'benekastah/neomake'
 Plug 'kassio/neoterm'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'junegunn/fzf'
+Plug '~/fzf'
 Plug 'junegunn/fzf.vim'
 """便利
 "Plug 'vim-scripts/Align'
@@ -217,7 +217,7 @@ set fillchars=fold:-
 set visualbell t_vb=
 set hidden
 set modeline
-"set number
+set number
 set expandtab
 set tabstop=2 shiftwidth=2 softtabstop=2
 set autoindent
@@ -298,6 +298,12 @@ command! -nargs=+ -complete=file Ag Grepper -noprompt -tool ag -query <args>
 "coc.nvim {{{
 set updatetime=300
 let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-java']
+nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 "}}}
 
 "Denite{{{
@@ -343,7 +349,7 @@ command! DeniteNext     Denite -resume -cursor-pos=+1 -immediately
 command! DenitePrevious Denite -resume -cursor-pos=-1 -immediately
 
 nnoremap [denite] <nop>
-nmap <C-u> [denite]
+" nmap <C-u> [denite]
 nnoremap [denite]r :Denite -resume<CR>
 nnoremap [denite]b :Denite buffer -winheight=10 -split=floating buffer<CR>
 nnoremap [denite]d :Denite -winheight=10 
@@ -688,6 +694,15 @@ let g:niji_matching_filetypes = ['lisp', 'smt2', 'python']
 
 "fzf{{{
 set rtp+=~/.fzf
+let g:fzf_layout = { 'down': '40%' }
+let g:fzf_preview_window = ['right:50%:noborder']
+nmap <C-u> [fzf]
+nnoremap [fzf]b :Buffers<CR>
+nnoremap [fzf]h :History<CR>
+nnoremap [fzf]g :Rg 
+nnoremap <C-c>  :Files<CR>
+
+" let g:fzf_preview_window = ['right:50%:sharp']
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -702,6 +717,7 @@ augroup END
 "}}}
 
 "Java"{{{
+autocmd FileType java setlocal tabstop=4 shiftwidth=4 softtabstop=4
 augroup lsp
   autocmd FileType java call s:lsp_my_setting()
 augroup END

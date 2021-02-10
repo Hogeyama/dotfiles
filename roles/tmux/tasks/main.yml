@@ -5,6 +5,10 @@
   changed_when: false
   ignore_errors: true
 
+- set_fact:
+    tmux_install: "{{ not which_tmux.skipped|default(false) and which_tmux.rc != 0 }}"
+    tmux_install_method: "{{ 'build' if not has_root else tmux.install_method|default('apt') }}"
+
 - name: Install tmux dependencies
   apt:
     name:
@@ -14,17 +18,15 @@
       - libevent-dev
       - libncurses-dev
       - xsel
-  when: "tmux.install_method|default('apt') == 'build' and
-         not which_tmux.skipped|default(false) and which_tmux.rc != 0"
+  when: tmux_install and tmux_install_method == 'build'
 
 - name: Clone tmux
   git:
     repo: 'https://github.com/tmux/tmux.git'
     dest: /root/tmux
-  when: "tmux.install_method|default('apt') == 'build' and
-         not which_tmux.skipped|default(false) and which_tmux.rc != 0"
+  when: tmux_install and tmux_install_method == 'build'
 
-- name: Install tmux
+- name: Build and install tmux
   shell:
     chdir: /root/tmux
     cmd: |
@@ -33,43 +35,10 @@
       make -j4
       sudo make install
     creates: /usr/local/bin/tmux
-  when: "tmux.install_method|default('apt') == 'build' and
-         not which_tmux.skipped|default(false) and which_tmux.rc != 0"
+  when: tmux_install and tmux_install_method == 'build'
 
 - name: Install tmux (apt)
   apt:
     name:
       - tmux
-  when: "tmux.install_method|default('apt') == 'apt' and
-         not which_tmux.skipped|default(false) and which_tmux.rc != 0"
-
-- name: Check if tpm is installed
-  stat:
-    path: "/home/{{ user.name }}/.tmux/plugins/tpm"
-  register: tpm
-
-- name: Download tpm
-  git:
-    repo: 'https://github.com/tmux-plugins/tpm'
-    dest: "/home/{{ user.name }}/.tmux/plugins/tpm"
-  register: download_tpm
-  when: not tpm.stat.isdir|default(false)
-
-- name: Make ~/.tmux owned by {{ user.name }}
-  file:
-    path: "/home/{{ user.name }}/.tmux"
-    owner: "{{ user.name }}"
-    group: "{{ user.name }}"
-    state: directory
-    recurse: yes
-  changed_when: false # TODO
-
-- name: Set .tmux.conf
-  copy:
-    src: "{{ item }}"
-    dest: "/home/{{ user.name }}/{{ item }}"
-    owner: "{{ user.name }}"
-    group: "{{ user.name }}"
-    mode: '0644'
-  loop:
-    - .tmux.conf
+  when: tmux_install and tmux_install_method == 'apt'

@@ -2,3 +2,6 @@
 allow_duplicates: false
 dependencies:
   - role: ensure_user
+  - role: neovim
+  - role: node
+  - role: python

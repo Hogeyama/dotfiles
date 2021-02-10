@@ -6,10 +6,6 @@
     group: "{{ user.name }}"
     mode: '0644'
   loop:
-    - .zprofile
-    - .zshrc
-    - .zshenv
-    - .zsh_aliases
     - .Xmodmap
 
 - name: Set ~/local/bin/with-log

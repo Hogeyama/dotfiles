@@ -1,0 +1,17 @@
+- name: Install basic developement tools
+  apt:
+    name:
+    - zsh
+
+- name: Set /etc/zsh/zprofile
+  blockinfile:
+    path: /etc/zsh/zprofile
+    block: |
+      if [ -d /etc/profile.d ]; then
+       for i in /etc/profile.d/*.sh; do
+         if [ -r $i ]; then
+           . $i
+         fi
+       done
+       unset i
+      fi
