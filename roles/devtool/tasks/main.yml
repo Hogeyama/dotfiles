@@ -13,6 +13,25 @@
     - unzip
     - unar
 
+- name: Download awesome cli tools
+  vars:
+  unarchive:
+    src: "{{ item.url }}"
+    dest: "/usr/local/bin"
+    creates: "/usr/local/bin/{{ item.name }}"
+    remote_src: true
+    extra_opts:
+      - --strip=1
+      - --wildcards
+      - '*/{{  item.name }}'
+  loop:
+    - name: "rg"
+      url: "https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep-12.1.1-x86_64-unknown-linux-musl.tar.gz"
+    - name: "bat"
+      url: "https://github.com/sharkdp/bat/releases/download/v0.17.1/bat-v0.17.1-x86_64-unknown-linux-musl.tar.gz"
+    - name: "fd"
+      url: "https://github.com/sharkdp/fd/releases/download/v8.2.1/fd-v8.2.1-i686-unknown-linux-musl.tar.gz"
+
 - name: Set timezone to Asia/Tokyo
   timezone:
     name: Asia/Tokyo
