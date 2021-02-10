@@ -38,7 +38,8 @@
     owner: "{{ user.name }}"
     group: "{{ user.name }}"
     mode: 'preserve'
-  with_fileglob: '.config/nvim/*'
+  loop:
+    - .config/nvim/
 
 - set_fact:
     # pip3.X if python.version is 3.X.Y
