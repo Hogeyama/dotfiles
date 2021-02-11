@@ -15,21 +15,21 @@ let g:lsp_plugin = 'coc'
 "" VM-unique Configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-function! MyClipboard(lines,regtype) abort
-  call extend(g:, {'my_clipboard': [a:lines, a:regtype]})
-  call system("myclip", a:lines)
-endfunction
-let g:clipboard = {
-      \   'name': 'myClipboard',
-      \   'copy': {
-      \      '+': function("MyClipboard"),
-      \      '*': function("MyClipboard")
-      \    },
-      \   'paste': {
-      \      '+': {-> get(g:, 'my_clipboard', [])},
-      \      '*': {-> get(g:, 'my_clipboard', [])},
-      \   },
-      \ }
+" function! MyClipboard(lines,regtype) abort
+"   call extend(g:, {'my_clipboard': [a:lines, a:regtype]})
+"   call system("myclip", a:lines)
+" endfunction
+" let g:clipboard = {
+"       \   'name': 'myClipboard',
+"       \   'copy': {
+"       \      '+': function("MyClipboard"),
+"       \      '*': function("MyClipboard")
+"       \    },
+"       \   'paste': {
+"       \      '+': {-> get(g:, 'my_clipboard', [])},
+"       \      '*': {-> get(g:, 'my_clipboard', [])},
+"       \   },
+"       \ }
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" General
@@ -37,12 +37,7 @@ let g:clipboard = {
 
 "Plug{{{
 call plug#begin('~/.config/nvim/plugged')
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-Plug 'Shougo/unite.vim'
-Plug 'Shougo/denite.nvim'
-Plug 'Shougo/defx.nvim'
 Plug 'Shougo/deol.nvim'
-Plug 'Shougo/neomru.vim'
 Plug 'Shougo/deoplete.nvim'
 Plug 'Shougo/deoplete-terminal'
 Plug 'Shougo/neosnippet'
@@ -87,8 +82,6 @@ endif
 Plug 'neovimhaskell/haskell-vim'
 Plug 'vim-scripts/alex.vim'
 Plug 'vim-scripts/happy.vim'
-Plug 'Hogeyama/unite-haddock'
-Plug 'Hogeyama/unite-haskellimport'
 Plug 'LnL7/vim-nix'
 ""Elm
 Plug 'carmonw/elm-vim'
@@ -234,7 +227,6 @@ set noundofile
 set conceallevel=0
 set concealcursor=
 set laststatus=2
-" set completeopt=menuone,noselect,preview,noinsert
 set completeopt=menuone,noselect,noinsert
 "set autoread
 set scrolloff=5
@@ -296,121 +288,62 @@ command! -nargs=+ -complete=file Ag Grepper -noprompt -tool ag -query <args>
 "}}}
 
 "coc.nvim {{{
-set updatetime=300
-let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-java']
-nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
-vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+if g:lsp_plugin is 'coc'
+  set updatetime=300
+  let g:coc_global_extensions = [
+    \ 'coc-highlight',
+    \ 'coc-lists',
+    \ 'coc-pairs',
+    \ 'coc-git',
+    \ 'coc-json',
+    \ 'coc-yaml',
+    \ 'coc-java'
+    \ ]
+    " \ 'coc-snippets',
+    " \ 'coc-neosnippet',
+  function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+  endfunction
+  inoremap <expr> <CR>
+    \ pumvisible() ? coc#refresh() : "\<CR>"
+  inoremap <silent><expr> <Tab>
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<Tab>" :
+    \ coc#refresh()
+  inoremap <silent><expr> <S-Tab>
+    \ pumvisible() ? "\<C-p>" :
+    \ <SID>check_back_space() ? "\<S-Tab>" :
+    \ coc#refresh()
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  autocmd CursorHold * silent call CocActionAsync('highlight')
+endif
 "}}}
 
-"Denite{{{
-hi CursorLine ctermbg=8
-autocmd FileType denite call s:denite_my_settings()
-function! s:denite_my_settings() abort
-  nnoremap <silent><buffer><expr> <CR>    denite#do_map('do_action')
-  nnoremap <silent><buffer><expr> q       denite#do_map('quit')
-  nnoremap <silent><buffer><expr> i       denite#do_map('open_filter_buffer')
-  nnoremap <silent><buffer><expr> d       denite#do_map('do_action', 'delete')
-  nnoremap <silent><buffer><expr> p       denite#do_map('do_action', 'preview')
-  nnoremap <silent><buffer><expr> t       denite#do_map('do_action', 'tabopen')
-  nnoremap <silent><buffer><expr> <Tab>   denite#do_map('choose_action')
-  nnoremap <silent><buffer><expr> <Space> denite#do_map('toggle_select').'j'
-  nnoremap <silent><buffer><expr> ..      denite#do_map('move_up_path') ":move_up_path>
-endfunction
-autocmd FileType denite-filter call s:denite_filter_my_settings()
-function! s:denite_filter_my_settings() abort
-endfunction
+"deoplete neosnippet{{{
+if g:lsp_plugin isnot 'coc'
+  let g:deoplete#enable_at_startup  = g:lsp_plugin isnot 'coc'
+  call deoplete#custom#option('ignore_case', v:false)
+  call deoplete#custom#option('camel_case', v:true)
+  call deoplete#custom#var('terminal', 'require_same_tab', v:false)
+  inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+  function! s:my_cr_function() abort
+    return deoplete#close_popup() . "\<CR>"
+  endfunction
 
-call denite#custom#var('grep', 'command', ['ag'])
-call denite#custom#var('grep', 'default_opts', ['-i', '--vimgrep'])
-call denite#custom#var('grep', 'recursive_opts', [])
-call denite#custom#var('grep', 'pattern_opt', [])
-call denite#custom#var('grep', 'separator', [])
-call denite#custom#var('grep', 'final_opts', [])
-
-call denite#custom#var('grep', 'command', ['ack'])
-call denite#custom#var('grep', 'default_opts', ['-H','-i','--nopager','--nocolor','--nogroup','--column'])
-call denite#custom#var('grep', 'recursive_opts', [])
-call denite#custom#var('grep', 'pattern_opt', ['--match'])
-call denite#custom#var('grep', 'separator', ['--'])
-call denite#custom#var('grep', 'final_opts', [])
-
-call denite#custom#var('grep', 'command', ['hoge'])
-
-call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
-      \ [ '.git/', '.ropeproject/', '__pycache__/', '*.cmo*', '*.cmi',
-      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/', '.stack-work/', '_build/'
-      \ ])
-call denite#custom#source('_', 'matchers', ['matcher_substring', 'matcher_ignore_globs'])
-command! DeniteNext     Denite -resume -cursor-pos=+1 -immediately
-command! DenitePrevious Denite -resume -cursor-pos=-1 -immediately
-
-nnoremap [denite] <nop>
-" nmap <C-u> [denite]
-nnoremap [denite]r :Denite -resume<CR>
-nnoremap [denite]b :Denite buffer -winheight=10 -split=floating buffer<CR>
-nnoremap [denite]d :Denite -winheight=10 
-nnoremap [denite]g :Denite -winheight=10 grep:::<CR>
-nnoremap [denite]n :DeniteNext<CR>
-nnoremap [denite]p :DenitePevious<CR>
-nnoremap [denite]c :DeniteBufferDir -winheight=10 -split=floating file<CR>
-nnoremap [denite]h :Denite          -winheight=10 -split=floating file_mru<CR>
-nnoremap <C-c>     :Denite          -winheight=10 -split=floating file/rec<CR>
-"TODO outline, output
-"メモ grep:$0:$1:$2は次に展開される
-"  ag -i --vimgrep $1 -- $2 $PWD/$0
-"interactiveに指定する場合，Argumentが$1でPatternが$2に対応するっぽい
-
-call denite#custom#source('file/rec', 'sorters', ['sorter/word'])
-call denite#custom#source('file', 'sorters', ['sorter/word'])
-"}}}
-
-"Unite{{{
-call unite#custom#profile('default', 'context', {
-      \ 'start_insert': 0,
-      \ 'winheight': 10,
-      \ 'winwidth': 40,
-      \ 'direction': 'botright',
-      \ 'prompt_direction' : 'top'
-      \})
-call unite#custom#source('file',
-      \ 'ignore_pattern', '\.\(hi\|o\|log\|gz\|dvi\|aux\|fdb_latexmk\|cmo\|cmi\|cmx\|cmt\)$')
-"unite map
-autocmd FileType unite call s:unite_my_settings()
-function! s:unite_my_settings()"{{{
-  " Overwrite settings.
-  imap <buffer> jk        <Plug>(unite_insert_leave)
-  imap <buffer> <TAB>     <Plug>(unite_select_next_line)
-  imap <buffer> <S-TAB>   <Plug>(unite_select_previous_line)
-  nmap <buffer> <C-j>     <Plug>(unite_select_next_line)
-  nmap <buffer> <C-k>     <Plug>(unite_select_previous_line)
-endfunction "}}}
-call unite#custom#default_action('haddock', 'browse_remote')
-"}}}
-
-"defx{{{
-autocmd FileType defx call s:defx_my_settings()
-function! s:defx_my_settings() abort
-  " Define mappings
-  nnoremap <silent><buffer><expr><CR>
-    \ defx#do_action('drop', 'rightbelow vsplit')
-  nnoremap <silent><buffer><expr>tt
-    \ defx#do_action('drop', 'tabnew')
-  nnoremap <silent><buffer><expr>K
-    \ defx#do_action('new_directory')
-  nnoremap <silent><buffer><expr>N
-    \ defx#do_action('new_file')
-  nnoremap <silent><buffer><expr>..
-    \ defx#do_action('cd', ['..'])
-  nnoremap <silent><buffer><expr>~
-    \ defx#do_action('cd')
-  nnoremap <silent><buffer><expr><Space>
-    \ defx#do_action('open_or_close_tree')
-    " \ defx#do_action('toggle_select') . 'j'
-endfunction
+  " <Tab>で選ぶ
+  inoremap <expr><Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+  inoremap <expr><S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+  "BS
+  inoremap <expr><BS> deoplete#smart_close_popup()."\<C-h>"
+  "cancel completion
+  inoremap <C-c> <C-e>
+endif
 "}}}
 
 "QuickFix"{{{
@@ -481,9 +414,10 @@ let g:submode_timeout = 0
 "}}}
 
 "smartinput{{{
-let g:smartinput_no_default_key_mappings=0
-call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
-call smartinput#map_to_trigger('i', '<CR>', '<CR>', '<CR>')
+" TODO
+" let g:smartinput_no_default_key_mappings=0
+" call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
+" call smartinput#map_to_trigger('i', '<CR>', '<CR>', '<CR>')
 " call smartinput#map_to_trigger('i', '(', '(', '(')
 " call smartinput#map_to_trigger('i', '{', '{', '{')
 " call smartinput#define_rule({
@@ -508,25 +442,6 @@ call smartinput#map_to_trigger('i', '<CR>', '<CR>', '<CR>')
 "       \})
 "inoremap ( (
 "inoremap { {
-"}}}
-
-"deoplete neosnippet{{{
-let g:deoplete#enable_at_startup  = g:lsp_plugin isnot 'coc'
-call deoplete#custom#option('ignore_case', v:false)
-call deoplete#custom#option('camel_case', v:true)
-call deoplete#custom#var('terminal', 'require_same_tab', v:false)
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function() abort
-  return deoplete#close_popup() . "\<CR>"
-endfunction
-
-" <Tab>で選ぶ
-inoremap <expr><Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr><S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-"BS
-inoremap <expr><BS> deoplete#smart_close_popup()."\<C-h>"
-"cancel completion
-inoremap <C-c> <C-e>
 "}}}
 
 "LSP {{{
@@ -564,6 +479,7 @@ function! s:lsp_my_setting() abort
     nmap     <buffer> [lsp]l <Plug>(coc-openlink)
     nmap     <buffer> [lsp]n <Plug>(coc-diagnostics-next)
     nmap     <buffer> [lsp]p <Plug>(coc-diagnostics-prev)
+    nnoremap <buffer> [lsp]c :CocCommand<CR>
     nnoremap <buffer> [lsp]h :call CocActionAsync('doHover')<CR>
     nnoremap <buffer> <C-h>  :call CocActionAsync('doHover')<CR>
   else
@@ -694,15 +610,18 @@ let g:niji_matching_filetypes = ['lisp', 'smt2', 'python']
 
 "fzf{{{
 set rtp+=~/.fzf
+let g:fzf_command_prefix = 'Fzf'
 let g:fzf_layout = { 'down': '40%' }
 let g:fzf_preview_window = ['right:50%:noborder']
 nmap <C-u> [fzf]
-nnoremap [fzf]b :Buffers<CR>
-nnoremap [fzf]h :History<CR>
-nnoremap [fzf]g :Rg 
-nnoremap <C-c>  :Files<CR>
-
-" let g:fzf_preview_window = ['right:50%:sharp']
+nnoremap [fzf]b :FzfBuffers<CR>
+nnoremap [fzf]h :FzfHistory<CR>
+nnoremap [fzf]c :FzfFiles %:p:h<CR>
+nnoremap [fzf]f :FzfFiles<CR>
+nnoremap [fzf]g :FzfGFiles<CR>
+nnoremap [fzf]G :FzfGFiles?<CR>
+nnoremap [fzf]/ :FzfRg 
+nnoremap <C-c>  :FzfCommands<CR>
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -742,41 +661,9 @@ let g:haskell_enable_typeroles = 1
 let g:haskell_enable_static_pointers = 1
 let g:haskell_backpack = 1
 
-""indent
-"let g:haskell_indent_disable = 1
 augroup lsp
   autocmd FileType haskell call s:lsp_my_setting()
 augroup END
-
-
-""ghc-mod-nvim
-"autocmd FileType haskell nnoremap <buffer> ,t :update!<CR>:NeoGhcModType<CR>
-"autocmd FileType haskell nnoremap <buffer> ,T :update!<CR>:NeoGhcModType!<CR>
-"autocmd FileType haskell nnoremap <buffer> ,i :update!<CR>:NeoGhcModInfo<CR>
-"autocmd FileType haskell nnoremap <buffer> ,I :update!<CR>:NeoGhcModInfo
-"autocmd FileType haskell nnoremap <buffer> ,l :update!<CR>:NeoGhcModLintAll<CR>
-"autocmd FileType haskell nnoremap <buffer> ^  :noh    <CR>:NeoGhcModTypeClear<CR>
-
-""hoogle
-call unite#custom_default_action('source/hoogle', 'preview')
-autocmd FileType haskell nnoremap <buffer> ,H :Unite hoogle<CR>
-autocmd FileType haskell nnoremap <buffer> ,h :Unite haskellimport<CR>
-
-""ghcid-nvim-hs
-" TODO ghcidのautoreload
-function! GhcidAutoReload() abort
-  augroup ghcid_autoreload
-    autocmd!
-    "autocmd BufWrite *.hs GhcidCheck
-  augroup END
-endfunction
-function! GhcidExecMain() abort
-  let l:lines = getline(1, line('$'))
-  let l:moduleLine = matchstr(l:lines, '^module')
-  let l:mModuleName = matchlist(l:moduleLine, '^module\s\+\(\S*\)')
-  let l:moduleName = len(l:mModuleName) is 0 ? "Main" : l:mModuleName[1]
-  execute "GhcidExec " . l:moduleName . ".main"
-endfunction
 autocmd FileType haskell nnoremap <buffer> <leader>w :update!<CR>:GhcidCheck!<CR>
 autocmd FileType haskell nnoremap <buffer> <leader>W :update!<CR>:GhcidCheck<CR>
 autocmd FileType haskell nnoremap <buffer> <leader>r :GhcidStopAll<CR>
@@ -789,28 +676,6 @@ autocmd FileType haskell nnoremap <buffer> <C-q>     :call GhcidExecMain()<CR>
 autocmd FileType cabal   setlocal expandtab tabstop=4
 autocmd! BufNewFile,BufFilePRe,BufRead *.x set filetype=alex
 autocmd! BufNewFile,BufFilePRe,BufRead *.y set filetype=happy
-
-""intero
-let g:use_intero = 0
-if g:use_intero
-  let g:intero_start_immediately = 0
-  let g:intero_type_on_hover = 0
-  nnoremap [intero] <nop>
-  autocmd FileType haskell nmap     <buffer> <C-l> [intero]
-  autocmd FileType haskell nnoremap <buffer> [intero]i :InteroOpen<CR>
-  autocmd FileType haskell nnoremap <buffer> [intero]r :InteroRestart<CR>
-  autocmd FileType haskell nnoremap <buffer> [intero]h :InteroGenericType<CR>
-  autocmd FileType haskell nnoremap <buffer> [intero]H :InteroType<CR>
-  autocmd FileType haskell nnoremap <buffer> <C-j> :InteroGoToDef<CR>
-  autocmd FileType haskell nnoremap <buffer> <C-h> :InteroGenericType<CR>
-  autocmd FileType haskell nnoremap <buffer> <Space>r :InteroReload<CR>
-  autocmd FileType haskell nnoremap <buffer> <Space>t :InteroGenericType<CR>
-  autocmd FileType haskell nnoremap <buffer> <Space>T :InteroType<CR>
-  augroup interoAutoReload
-      autocmd!
-      autocmd BufWrite *.hs InteroReload
-  augroup END
-endif
 "}}}
 
 "OCaml"{{{

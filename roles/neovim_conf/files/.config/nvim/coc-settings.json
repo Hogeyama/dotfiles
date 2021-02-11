@@ -33,6 +33,7 @@
       "path": "/usr/lib/jvm/jdk-11.0.10+9"
     }
   ],
+  "suggest.keepCompleteopt": true,
   "diagnostic.virtualText": true,
   "diagnostic.virtualTextPrefix": "-- ",
   "diagnostic.enableSign": false,

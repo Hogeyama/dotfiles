@@ -31,15 +31,26 @@
     mode: '0644'
   ignore_errors: "{{ ansible_check_mode }}"
 
+- set_fact:
+    files:
+      "{{ files|default([])
+         + (dict( lookup('fileglob', item+'*', wantlist=True)
+                | product([item]))
+           | dict2items(key_name='src', value_name='dest'))}}"
+  loop:
+    # Do not forget the last '/'
+    - '.config/nvim/'
+    - '.config/nvim/snippets/'
+    - '.config/nvim/indent/'
+
 - name: Install .config/nvim
   copy:
-    src: "{{ item }}"
-    dest: "/home/{{ user.name }}/{{ item }}"
+    src: "{{ item.src }}"
+    dest: "/home/{{ user.name }}/{{ item.dest }}"
     owner: "{{ user.name }}"
     group: "{{ user.name }}"
     mode: 'preserve'
-  loop:
-    - .config/nvim/
+  loop: "{{ files }}"
 
 - set_fact:
     # pip3.X if python.version is 3.X.Y
