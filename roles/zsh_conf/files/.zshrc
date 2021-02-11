@@ -116,5 +116,7 @@ precmd() {
 PROMPT='$ '
 
 source-if-exists $HOME/.fzf.zsh
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 source-if-exists $HOME/.zsh_aliases
 source-if-exists $HOME/.zshrc.local
