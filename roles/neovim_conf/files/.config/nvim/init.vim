@@ -290,16 +290,16 @@ endif
 if g:lsp_plugin is 'coc'
   set updatetime=300
   let g:coc_global_extensions = [
-    \ 'coc-highlight',
-    \ 'coc-lists',
-    \ 'coc-pairs',
+    \ 'coc-java',
     \ 'coc-git',
     \ 'coc-json',
     \ 'coc-yaml',
-    \ 'coc-java'
+    \ 'coc-pairs',
+    \ 'coc-lists',
+    \ 'coc-snippets',
+    \ 'coc-neosnippet',
+    \ 'coc-highlight'
     \ ]
-    " \ 'coc-snippets',
-    " \ 'coc-neosnippet',
   function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~ '\s'
@@ -446,6 +446,7 @@ let g:neosnippet#snippets_directory = '~/.config/nvim/snippets'
 "}}}
 
 "fzf{{{
+set rtp+=~/.fzf
 let g:fzf_command_prefix = 'Fzf'
 let g:fzf_layout = { 'down': '40%' }
 let g:fzf_preview_window = ['right:50%:noborder']
