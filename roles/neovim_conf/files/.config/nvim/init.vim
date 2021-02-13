@@ -44,23 +44,19 @@ Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'kana/vim-submode'
 Plug 'benekastah/neomake'
-Plug 'kassio/neoterm'
 Plug 'editorconfig/editorconfig-vim'
 Plug '~/fzf'
 Plug 'junegunn/fzf.vim'
 """便利
 "Plug 'vim-scripts/Align'
 Plug 'junegunn/vim-easy-align'
-Plug 'kana/vim-smartinput'
 Plug 'tomtom/tcomment_vim'
-Plug 'scrooloose/nerdtree'
 Plug 'machakann/vim-sandwich'
 Plug 'itchyny/lightline.vim'
 Plug 'AndrewRadev/linediff.vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'Yggdroot/indentLine'
 Plug 'losingkeys/vim-niji'
-Plug 'mhinz/vim-grepper'
 Plug 'wellle/visual-split.vim'
 Plug 'mhinz/vim-startify'
 ""Git TODO 整理
@@ -74,8 +70,7 @@ Plug 'rhysd/clever-f.vim'
 """nvim-hs
 if g:lsp_plugin is 'nvim-hs-lsp'
   Plug 'Hogeyama/nvim-hs.vim', {'branch': 'develop'}
-  Plug '~/.config/nvim/nvim-hs-libs/nvim-hs-lsp'
-  "Plug '~/.config/nvim/nvim-hs-libs/ghcid-nvim-simple'
+  Plug 'Hogeyama/nvim-hs-lsp'
 endif
 """filetype
 ""Haskell
@@ -85,18 +80,17 @@ Plug 'vim-scripts/happy.vim'
 Plug 'LnL7/vim-nix'
 ""Elm
 Plug 'carmonw/elm-vim'
-" Plug 'w0rp/ale'
 ""PureScript
 Plug 'purescript-contrib/purescript-vim'
 Plug 'FrigoEU/psc-ide-vim'
 ""Dhall
 Plug 'vmchale/dhall-vim'
 """Python
-" Plug 'numirias/semshi'
+"Plug 'numirias/semshi'
 Plug 'vim-python/python-syntax'
 ""Scala
 Plug 'derekwyatt/vim-scala'
-" Plug 'ensime/ensime-vim', { 'do': ':UpdateRemotePlugins' }
+"Plug 'ensime/ensime-vim', { 'do': ':UpdateRemotePlugins' }
 "Plug 'ktvoelker/sbt-vim'
 ""Idris Agda
 Plug 'idris-hackers/idris-vim'
@@ -136,7 +130,6 @@ Plug 'vim-scripts/paredit.vim'
 Plug 'tomtom/tlib_vim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'neovim/node-host', { 'do': 'npm install neovim' }
-" Plug 'euclio/vim-markdown-composer', { 'do': 'cargo build --release' }
 if g:lsp_plugin is 'coc'
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
@@ -190,12 +183,10 @@ if has("nvim") "{{{
 endif "}}}
 "}}}
 
-"各種設定"{{{
+"Set{{{
 filetype plugin indent on
 
-set fileencoding=utf-8
-" set fileencoding=cp932
-" set fileencodings=cp932,utf-8
+set fileencodings=utf-8,cp932
 set termencoding=utf-8
 let mapleader=","
 let maplocalleader=","
@@ -242,49 +233,57 @@ set backspace=indent,eol,start
 set wildoptions=pum
 set showtabline=2
 set switchbuf="split"
+set conceallevel=0
 autocmd QuickFixCmdPost *grep* cwindow
-autocmd FileType vim setlocal et ts=2 sw=2 sts=2
-
-let g:lightline = {}
-let g:lightline.active = {
-      \ 'left':  [['mode', 'paste'], ['readonly', 'relativepath', 'filetype', 'modified']],
-      \ 'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding', 'example']]
-      \}
-let g:lightline.inactive = {
-      \ 'left':  [['relativepath', 'modified']],
-      \ 'right': [['lineinfo'], ['percent']]
-      \}
-let g:lightline.tabline = {
-      \ 'left':  [['tabs']],
-      \ 'right': [['cwd']]
-      \}
-let g:lightline.component = {
-      \ 'cwd': '%{fnamemodify(getcwd(), ":~")}',
-      \}
-function! SetLightlineConfig() abort
-  augroup lightline
-    autocmd!
-    autocmd WinEnter,SessionLoadPost * call lightline#update()
-    autocmd SessionLoadPost * call lightline#highlight()
-    autocmd ColorScheme * if !has('vim_starting')
-          \ | call lightline#update() | call lightline#highlight() | endif
-  augroup END
-endfunction
-autocmd VimEnter * call SetLightlineConfig()
+autocmd FileType qf wincmd J
+autocmd FileType qf 3 wincmd _
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" Plugin
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"おためし{{{
-nmap s <nop>
-xmap s <nop>
+"editorconfig{{{
 let g:EditorConfig_max_line_indicator = 'exceeding'
-set pumblend=15
-let g:grepper = {}
-let g:grepper.quickfix = 0
-command! -nargs=+ -complete=file Ag Grepper -noprompt -tool ag -query <args>
+"}}}
+
+"LSP {{{
+nnoremap [lsp] <nop>
+xnoremap [lsp] <nop>
+nmap     <C-l> [lsp]
+xmap     <C-l> [lsp]
+if g:lsp_plugin is 'coc'
+  nmap     <buffer> <C-j>  <Plug>(coc-definition)
+  nmap     <buffer> [lsp]j <Plug>(coc-definition)
+  nmap     <buffer> [lsp]r <Plug>(coc-references)
+  nmap     <buffer> [lsp]f <Plug>(coc-format)
+  xmap     <buffer> [lsp]f <Plug>(coc-format-selected)
+  nmap     <buffer> [lsp]a <Plug>(coc-codeaction)
+  nmap     <buffer> <F2>   <Plug>(coc-rename)
+  nmap     <buffer> [lsp]l <Plug>(coc-openlink)
+  nmap     <buffer> [lsp]n <Plug>(coc-diagnostics-next)
+  nmap     <buffer> [lsp]p <Plug>(coc-diagnostics-prev)
+  nnoremap <buffer> [lsp]c :CocCommand<CR>
+  nnoremap <buffer> [lsp]h :call CocActionAsync('doHover')<CR>
+  nnoremap <buffer> <C-h>  :call CocActionAsync('doHover')<CR>
+elseif g:lsp_plugin is 'nvim-hs-lsp'
+  setlocal omnifunc=NvimHsLspComplete
+  nnoremap <buffer> [lsp]i :NvimHsLspInitialize<CR>
+  nnoremap <buffer> [lsp]s :NvimHsLspStartServer<CR>
+  nnoremap <buffer> [lsp]q :NvimHsLspStopServer<CR>
+  nnoremap <buffer> <C-j>  :NvimHsLspDefinition<CR>
+  nnoremap <buffer> [lsp]j :NvimHsLspDefinition<CR>
+  nnoremap <buffer> [lsp]h :NvimHsLspInfo<CR>
+  nnoremap <buffer> [lsp]H :NvimHsLspHover<CR>
+  nnoremap <buffer> <C-h>  :NvimHsLspHoverFloat<CR>
+  nnoremap <buffer> [lsp]w :NvimHsLspLoadQuickfix<CR>
+  nnoremap <buffer> [lsp]r :NvimHsLspReferences<CR>
+  nnoremap <buffer> [lsp]f :NvimHsLspFormatting!<CR>
+  xnoremap <buffer> [lsp]f :NvimHsLspFormatting<CR>
+  nnoremap <buffer> [lsp]a :NvimHsLspCodeAction<CR>
+  nnoremap <buffer> [lsp]r :NvimHsLspRename 
+  inoremap <buffer> <C-o>  <C-x><C-o>
+endif
 "}}}
 
 "coc.nvim {{{
@@ -325,168 +324,7 @@ if g:lsp_plugin is 'coc'
 endif
 "}}}
 
-"deoplete neosnippet{{{
-if g:lsp_plugin isnot 'coc'
-  let g:deoplete#enable_at_startup  = g:lsp_plugin isnot 'coc'
-  call deoplete#custom#option('ignore_case', v:false)
-  call deoplete#custom#option('camel_case', v:true)
-  call deoplete#custom#var('terminal', 'require_same_tab', v:false)
-  inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-  function! s:my_cr_function() abort
-    return deoplete#close_popup() . "\<CR>"
-  endfunction
-
-  " <Tab>で選ぶ
-  inoremap <expr><Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-  inoremap <expr><S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-  "BS
-  inoremap <expr><BS> deoplete#smart_close_popup()."\<C-h>"
-  "cancel completion
-  inoremap <C-c> <C-e>
-endif
-"}}}
-
-"QuickFix"{{{
-autocmd FileType qf wincmd J
-autocmd FileType qf 3 wincmd _
-"}}}
-
-"{{{Neomake
-let g:neomake_airline=1
-let g:neomake_open_list=0
-" let g:neomake_open_list=2
-let g:neomake_place_signs=0
-let g:neomake_echo_current_error=0
-let g:neomake_virtualtext_current_error=0
-" let g:neomake_haskell_hlint_remove_invalid_entries=1
-" let g:neomake_haskell_ghcmod_remove_invalid_entries=1
-" let g:neomake_haskell_runghc_remove_invalid_entries=1
-nnoremap ! :NeomakeSh 
-"}}}
-
-"neoterm{{{
-let g:neoterm_default_mod = "botright"
-let g:neoterm_size = 10
-let g:neoterm_autoinsert = 0
-nnoremap <F12> :Ttoggle<CR><C-w>ji
-"}}}
-
-"NERD_tree"{{{
-let g:NERDTreeWinPos="left"
-let g:NERDTreeShowLineNumbers=1
-let g:NERDTreeIgnore=['\.bin$']
-nnoremap <Space>n :NERDTreeToggle<CR>
-nnoremap <Space>N :NERDTreeMirror<CR>
-
-nmap ,, <Plug>TComment_gcc
-vmap ,, <Plug>TComment_gc
-vmap ,l <Plug>TComment_,_r
-"vmap ,b <Plug>TComment_,_b
-"vmap ,i <Plug>TComment_,_i
-vmap ,b :TCommentRight!<CR>
-vmap ,i :TCommentInline!<CR>
-"}}}
-
-"neosnippet{{{
-imap <C-f> <Plug>(neosnippet_expand_or_jump)
-smap <C-f> <Plug>(neosnippet_expand_or_jump)
-xmap <C-f> <Plug>(neosnippet_expand_target)
-let g:neosnippet#enable_conceal_markers = 0
-let g:neosnippet#snippets_directory = '~/.config/nvim/snippets'
-"}}}
-
-"git-gutter {{{
-let g:gitgutter_map_keys = 0
-let g:gitgutter_signs = 0
-nnoremap [gitgutter] <nop>
-nmap     <C-g> [gitgutter]
-nnoremap [gitgutter]n :GitGutterNextHunk<CR>
-nnoremap [gitgutter]p :GitGutterPrevHunk<CR>
-nnoremap [gitgutter]P :GitGutterPreviewHunk<CR>
-nnoremap [gitgutter]e :GitGutterSignsEnable<CR>
-nnoremap [gitgutter]d :GitGutterSignsDisable<CR>
-nnoremap [gitgutter]s :GitGutterStageHunk<CR>
-"}}}
-
-"submode{{{
-let g:submode_always_show_submode = 1
-let g:submode_timeout = 0
-"}}}
-
-"smartinput{{{
-" TODO
-" let g:smartinput_no_default_key_mappings=0
-" call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
-" call smartinput#map_to_trigger('i', '<CR>', '<CR>', '<CR>')
-" call smartinput#map_to_trigger('i', '(', '(', '(')
-" call smartinput#map_to_trigger('i', '{', '{', '{')
-" call smartinput#define_rule({
-"       \ 'at'    : '{\%#}',
-"       \ 'char'  : '<CR>',
-"       \ 'input' : '<CR><Left><CR><Tab>',
-"       \})
-" call smartinput#define_rule({
-"       \ 'at': '\%#',
-"       \ 'char': '(',
-"       \ 'input': '()<Left>',
-"       \})
-" call smartinput#define_rule({
-"       \ 'at'    : '(\%#)',
-"       \ 'char'  : '<Space>',
-"       \ 'input' : '<Space><Space><Left>',
-"       \})
-" call smartinput#define_rule({
-"       \ 'at': '\%#',
-"       \ 'char': '{',
-"       \ 'input': '{}<Left>',
-"       \})
-"inoremap ( (
-"inoremap { {
-"}}}
-
-"LSP {{{
-nnoremap [lsp] <nop>
-xnoremap [lsp] <nop>
-nmap     <C-l> [lsp]
-xmap     <C-l> [lsp]
-
-function! s:lsp_my_setting() abort
-  if g:lsp_plugin is 'nvim-hs-lsp'
-    setlocal omnifunc=NvimHsLspComplete
-    nnoremap <buffer> [lsp]i :NvimHsLspInitialize<CR>
-    nnoremap <buffer> [lsp]s :NvimHsLspStartServer<CR>
-    nnoremap <buffer> [lsp]q :NvimHsLspStopServer<CR>
-    nnoremap <buffer> <C-j>  :NvimHsLspDefinition<CR>
-    nnoremap <buffer> [lsp]j :NvimHsLspDefinition<CR>
-    nnoremap <buffer> [lsp]h :NvimHsLspInfo<CR>
-    nnoremap <buffer> [lsp]H :NvimHsLspHover<CR>
-    nnoremap <buffer> <C-h>  :NvimHsLspHoverFloat<CR>
-    nnoremap <buffer> [lsp]w :NvimHsLspLoadQuickfix<CR>
-    nnoremap <buffer> [lsp]r :NvimHsLspReferences<CR>
-    nnoremap <buffer> [lsp]f :NvimHsLspFormatting!<CR>
-    xnoremap <buffer> [lsp]f :NvimHsLspFormatting<CR>
-    nnoremap <buffer> [lsp]a :NvimHsLspCodeAction<CR>
-    nnoremap <buffer> [lsp]r :NvimHsLspRename 
-    inoremap <buffer> <C-o>  <C-x><C-o>
-  elseif g:lsp_plugin is 'coc'
-    nmap     <buffer> <C-j>  <Plug>(coc-definition)
-    nmap     <buffer> [lsp]j <Plug>(coc-definition)
-    nmap     <buffer> [lsp]r <Plug>(coc-references)
-    nmap     <buffer> [lsp]f <Plug>(coc-format)
-    xmap     <buffer> [lsp]f <Plug>(coc-format-selected)
-    nmap     <buffer> [lsp]a <Plug>(coc-codeaction)
-    nmap     <buffer> <F2>   <Plug>(coc-rename)
-    nmap     <buffer> [lsp]l <Plug>(coc-openlink)
-    nmap     <buffer> [lsp]n <Plug>(coc-diagnostics-next)
-    nmap     <buffer> [lsp]p <Plug>(coc-diagnostics-prev)
-    nnoremap <buffer> [lsp]c :CocCommand<CR>
-    nnoremap <buffer> [lsp]h :call CocActionAsync('doHover')<CR>
-    nnoremap <buffer> <C-h>  :call CocActionAsync('doHover')<CR>
-  else
-  endif
-endfunction
-
-" nvim-hs-lsp config"{{{
+" nvim-hs-lsp"{{{
 " g:NvimHsLsp_languageConfig {{{
 let g:NvimHsLsp_languageConfig = {}
 let g:NvimHsLsp_languageConfig['_'] = {
@@ -501,10 +339,6 @@ let g:NvimHsLsp_languageConfig['haskell'] = {
       \     'insertSpaces': v:true,
       \   },
       \}
-      " \     ['cabal', 'exec', '--', 'ghcide', '--lsp'],
-      " \     ['hie-wrapper', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
-      " \     ['haskell-language-server-wrapper', '--lsp', '-d', '-l', '/tmp/LanguageServer.log'],
-      " \     ['stack', 'exec', '--', 'ghcide', '--lsp'],
 let g:NvimHsLsp_languageConfig['tex'] = {
       \ 'serverCommand':
       \     ['texlab'],
@@ -582,9 +416,117 @@ if g:lsp_plugin is 'nvim-hs-lsp'
 endif
 "}}}
 
-"QuickFixを開けっ放しにする
-autocmd InsertLeave * let g:airline_disabled = 1
-autocmd FileType qf let g:airline_disabled = 1
+"deoplete{{{
+let g:deoplete#enable_at_startup = g:lsp_plugin isnot 'coc'
+if g:lsp_plugin isnot 'coc'
+  call deoplete#custom#option('ignore_case', v:false)
+  call deoplete#custom#option('camel_case', v:true)
+  call deoplete#custom#var('terminal', 'require_same_tab', v:false)
+  inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+  function! s:my_cr_function() abort
+    return deoplete#close_popup() . "\<CR>"
+  endfunction
+
+  "<Tab>で選ぶ
+  inoremap <expr><Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+  inoremap <expr><S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+  "BS
+  inoremap <expr><BS> deoplete#smart_close_popup()."\<C-h>"
+  "cancel completion
+  inoremap <C-c> <C-e>
+endif
+"}}}
+
+"neosnippet{{{
+imap <C-f> <Plug>(neosnippet_expand_or_jump)
+smap <C-f> <Plug>(neosnippet_expand_or_jump)
+xmap <C-f> <Plug>(neosnippet_expand_target)
+let g:neosnippet#enable_conceal_markers = 0
+let g:neosnippet#snippets_directory = '~/.config/nvim/snippets'
+"}}}
+
+"fzf{{{
+let g:fzf_command_prefix = 'Fzf'
+let g:fzf_layout = { 'down': '40%' }
+let g:fzf_preview_window = ['right:50%:noborder']
+nmap <C-u> [fzf]
+nnoremap [fzf]b :FzfBuffers<CR>
+nnoremap [fzf]h :FzfHistory<CR>
+nnoremap [fzf]c :FzfFiles %:p:h<CR>
+nnoremap [fzf]f :FzfFiles<CR>
+nnoremap [fzf]g :FzfGFiles<CR>
+nnoremap [fzf]G :FzfGFiles?<CR>
+nnoremap [fzf]/ :FzfRg 
+nnoremap <C-c>  :FzfCommands<CR>
+"}}}
+
+"lightline{{{
+let g:lightline = {}
+let g:lightline.component_function = {
+      \ 'cocstatus': 'coc#status'
+      \ }
+let g:lightline.active = {
+      \ 'left':  [['mode', 'paste'], ['readonly', 'relativepath', 'filetype', 'modified']],
+      \ 'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding', 'cocstatus']]
+      \}
+let g:lightline.inactive = {
+      \ 'left':  [['relativepath', 'modified']],
+      \ 'right': [['lineinfo'], ['percent']]
+      \}
+let g:lightline.tabline = {
+      \ 'left':  [['tabs']],
+      \ 'right': [['cwd']]
+      \}
+let g:lightline.component = {
+      \ 'cwd': '%{fnamemodify(getcwd(), ":~")}',
+      \}
+function! SetLightlineConfig() abort
+  augroup lightline
+    autocmd!
+    autocmd WinEnter,SessionLoadPost * call lightline#update()
+    autocmd SessionLoadPost * call lightline#highlight()
+    autocmd ColorScheme * if !has('vim_starting')
+          \ | call lightline#update() | call lightline#highlight() | endif
+  augroup END
+endfunction
+autocmd VimEnter * call SetLightlineConfig()
+"}}}
+
+"{{{Neomake
+let g:neomake_open_list=0
+" let g:neomake_open_list=2
+let g:neomake_place_signs=0
+let g:neomake_echo_current_error=0
+let g:neomake_virtualtext_current_error=0
+nnoremap ! :NeomakeSh 
+"}}}
+
+"tcomment{{{
+nmap ,, <Plug>TComment_gcc
+vmap ,, <Plug>TComment_gc
+vmap ,l <Plug>TComment_,_r
+"vmap ,b <Plug>TComment_,_b
+"vmap ,i <Plug>TComment_,_i
+vmap ,b :TCommentRight!<CR>
+vmap ,i :TCommentInline!<CR>
+"}}}
+
+"git-gutter {{{
+let g:gitgutter_map_keys = 0
+let g:gitgutter_signs = 0
+nnoremap [gitgutter] <nop>
+nmap     <C-g> [gitgutter]
+nnoremap [gitgutter]n :GitGutterNextHunk<CR>
+nnoremap [gitgutter]p :GitGutterPrevHunk<CR>
+nnoremap [gitgutter]P :GitGutterPreviewHunk<CR>
+nnoremap [gitgutter]e :GitGutterSignsEnable<CR>
+nnoremap [gitgutter]d :GitGutterSignsDisable<CR>
+nnoremap [gitgutter]s :GitGutterStageHunk<CR>
+"}}}
+
+"submode{{{
+let g:submode_always_show_submode = 1
+let g:submode_timeout = 0
 "}}}
 
 " indentLine {{{
@@ -608,20 +550,27 @@ let g:clever_f_smart_case = 1
 let g:niji_matching_filetypes = ['lisp', 'smt2', 'python']
 "}}}
 
-"fzf{{{
-set rtp+=~/.fzf
-let g:fzf_command_prefix = 'Fzf'
-let g:fzf_layout = { 'down': '40%' }
-let g:fzf_preview_window = ['right:50%:noborder']
-nmap <C-u> [fzf]
-nnoremap [fzf]b :FzfBuffers<CR>
-nnoremap [fzf]h :FzfHistory<CR>
-nnoremap [fzf]c :FzfFiles %:p:h<CR>
-nnoremap [fzf]f :FzfFiles<CR>
-nnoremap [fzf]g :FzfGFiles<CR>
-nnoremap [fzf]G :FzfGFiles?<CR>
-nnoremap [fzf]/ :FzfRg 
-nnoremap <C-c>  :FzfCommands<CR>
+"vim-easy-align {{{
+vmap <Enter> <Plug>(EasyAlign)
+"}}}
+
+"Rainbow {{{
+autocmd FileType lisp nmap <buffer> <F7> :RainbowToggle<CR>
+let g:rainbow_conf = {
+\   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+\   'ctermfgs': ["darkblue", "darkgreen", "red", "yellow"],
+\   'operators': '_,_',
+\   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+\   'separately': {
+\     '*': {},
+\     'tex': {
+\       'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
+\     },
+\   }
+\ }
+"\  'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+"\  'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
+"\       'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -630,16 +579,10 @@ nnoremap <C-c>  :FzfCommands<CR>
 
 "C"{{{
 autocmd FileType c setlocal expandtab ts=4 sts=4 sw=4
-augroup lsp
-  autocmd FileType c call s:lsp_my_setting()
-augroup END
 "}}}
 
 "Java"{{{
 autocmd FileType java setlocal tabstop=4 shiftwidth=4 softtabstop=4
-augroup lsp
-  autocmd FileType java call s:lsp_my_setting()
-augroup END
 "}}}
 
 "sh"{{{
@@ -648,9 +591,10 @@ autocmd FileType bash setlocal expandtab shiftwidth=2
 "}}}
 
 "Haskell"{{{
-""general
-autocmd FileType haskell inoremap <buffer> <C-o> <C-x><C-o>
 autocmd FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=0 ambiwidth=single
+autocmd FileType haskell inoremap <buffer> <C-d> $
+autocmd FileType haskell let @a = "->"
+autocmd FileType haskell let @b = "<-"
 
 ""syntax
 let g:haskell_enable_quantification = 1
@@ -661,17 +605,6 @@ let g:haskell_enable_typeroles = 1
 let g:haskell_enable_static_pointers = 1
 let g:haskell_backpack = 1
 
-augroup lsp
-  autocmd FileType haskell call s:lsp_my_setting()
-augroup END
-autocmd FileType haskell nnoremap <buffer> <leader>w :update!<CR>:GhcidCheck!<CR>
-autocmd FileType haskell nnoremap <buffer> <leader>W :update!<CR>:GhcidCheck<CR>
-autocmd FileType haskell nnoremap <buffer> <leader>r :GhcidStopAll<CR>
-autocmd FileType haskell nnoremap <buffer> <leader>q :GhcidExec 
-autocmd FileType haskell nnoremap <buffer> <leader>t :GhcidTypeCurrentWord<CR>
-autocmd FileType haskell nnoremap <buffer> <C-S-q>   :GhcidExec main<CR>
-autocmd FileType haskell nnoremap <buffer> <C-q>     :call GhcidExecMain()<CR>
-
 ""other filetype
 autocmd FileType cabal   setlocal expandtab tabstop=4
 autocmd! BufNewFile,BufFilePRe,BufRead *.x set filetype=alex
@@ -680,17 +613,8 @@ autocmd! BufNewFile,BufFilePRe,BufRead *.y set filetype=happy
 
 "OCaml"{{{
 ""general
-autocmd FileType ocaml inoremap <buffer> <C-o> <C-x><C-o>
 autocmd FileType ocaml setlocal tabstop=2 shiftwidth=2 softtabstop=0 commentstring=(*%s*)
 ""merlin
-autocmd FileType ocaml nnoremap <buffer> ,t :update!<CR>:MerlinTypeOf<CR>
-autocmd FileType ocaml vnoremap <buffer> ,t :MerlinTypeOfSel<CR>
-autocmd FileType ocaml nnoremap <buffer> >  :MerlinGrowEnclosing<CR>
-autocmd FileType ocaml nnoremap <buffer> <  :MerlinShrinkEnclosing<CR>
-autocmd FileType ocaml nnoremap <buffer> ,y :MerlinYankLatestType<CR>
-" autocmd FileType ocaml nnoremap <buffer> ,w :update!<CR>:MerlinErrorCheck<CR>
-autocmd FileType ocaml nnoremap <buffer> <C-j> :update!<CR>:MerlinLocate<CR>
-autocmd FileType ocaml nnoremap <buffer> ^ :noh<CR>a<Esc>
 autocmd FileType ocaml let g:neomake_enabled_makers = ['dune'] "b:だと効かない
 let g:neomake_ocaml_dune_maker = {
       \ 'exe': 'dune',
@@ -699,10 +623,6 @@ let g:neomake_ocaml_dune_maker = {
       \   join([ "%DEntering directory '%f',"
       \        , 'File "%f"\, line %l\, characters %c%m,%m']),
       \}
-""nvim-hs-lsp
-augroup lsp
-  autocmd FileType ocaml call s:lsp_my_setting()
-augroup END
 "config for merlin and ocp-indent
 let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 try
@@ -728,10 +648,6 @@ autocmd FileType purescript nnoremap <buffer> <C-h> :Ptype<CR>
 autocmd FileType purescript nnoremap <buffer> ,w :Prebuild<CR>
 "}}}
 
-"TypeScript{{{
-autocmd FileType typescript nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
-"}}}
-
 "Agda"{{{
 "let maplocalleader="\\"
 autocmd FileType agda setlocal expandtab ts=2 sts=2 sw=2
@@ -741,47 +657,6 @@ autocmd FileType agda set commentstring=--%s
 
 "Elm{{{
 autocmd FileType elm nnoremap <buffer> ,w :ElmMake<CR>
-"}}}
-
-"LaTeX{{{
-let g:tex_flavor = "latex"
-autocmd FileType tex setlocal et sw=2 sts=2
-" autocmd FileType tex setlocal et sw=2 sts=2 noautoindent
-" autocmd BufRead,BufNewFile *.tex setlocal filetype=tex
-autocmd filetype tex nnoremap <buffer> ,w :update!<CR>:VimtexErrors<CR>
-autocmd filetype tex nnoremap <buffer> <C-q>    :update!<CR>:VimtexCompileSS<CR>
-autocmd filetype tex nnoremap <buffer> <F8>     :VimtexTocToggle<CR>
-autocmd filetype tex nnoremap <buffer> <Space>c :VimtexCountWords<CR>
-let g:vimtex_view_general_viewer   = 'evince'
-let g:vimtex_latexmk_options       = ''
-let g:vimtex_complete_close_braces = 1
-let g:vimtex_fold_enabled          = 0
-let g:vimtex_indent_enabled        = 1
-let g:vimtex_quickfix_method       = 'latexlog'
-let g:vimtex_quickfix_mode         = 2
-let g:vimtex_compiler_latexmk      = {
-      \ 'backend'    : 'nvim',
-      \ 'background' : 1,
-      \ 'build_dir'  : '_build',
-      \ 'callback'   : 1,
-      \ 'continuous' : 1,
-      \ 'executable' : 'latexmk',
-      \ 'options'    : [
-      \   '-verbose',
-      \   '-file-line-error',
-      \   '-synctex=1',
-      \   '-interaction=nonstopmode',
-      \ ],
-      \}
-let g:vimtex_quickfix_latexlog = { 'overfull' : 0 }
-let g:vimtex_index_split_pos   = 'vert botright'
-let g:vimtex_index_split_width = 40
-let g:vimtex_compiler_progname = 'nvr'
-"nmap <c-z> /\$<CR>srb\(
-"有用そう
-"   <localleader>lY  |<plug>(vimtex-labels-toggle)|        `n`
-"   <localleader>ll  |<plug>(vimtex-compile-toggle)|       `n`
-"   <localleader>lk  |<plug>(vimtex-stop)|                 `n`
 "}}}
 
 "MarkDown/Pandoc{{{
@@ -824,117 +699,79 @@ autocmd FileType scheme setlocal et ts=2 sts=2 sw=2
 autocmd! BufNewFile,BufFilePRe,BufRead *.pl set filetype=prolog
 "}}}
 
-"Rust "{{{
-"let g:racer_cmd = "~/.cargo/bin/racer"
-"let g:rustfmt_autosave             = 0
-"let g:rust_recommended_style       = 1
-"let g:racer_experimental_completer = 0
-"let g:rust_fold                    = 0
-"let g:racer_insert_paren           = 0
-"autocmd FileType rust nmap <buffer> <C-j> <Plug>(rust-def)
-"autocmd FileType rust nmap <buffer> gs    <Plug>(rust-def-split)
-"autocmd FileType rust nmap <buffer> gv    <Plug>(rust-def-vertical)
-"autocmd FileType rust nmap <buffer> gK    <Plug>(rust-doc)
-"let g:racer_no_default_keymappings=0
-""nvim-hs-lsp
-augroup lsp
-  autocmd FileType rust call s:lsp_my_setting()
-augroup END
-"}}}
-
 "Scala {{{
 autocmd FileType scala nnoremap <buffer><C-h> :update!<CR>:EnTypeCheck<CR>
 autocmd FileType scala nnoremap <buffer>,t    :update!<CR>:EnInspectType<CR>
 autocmd FileType scala nnoremap <buffer><C-j> :update!<CR>:EnDeclaration<CR>
-" autocmd FileType scala setlocal omnifunc=NvimHsLspComplete
-" autocmd FileType scala nnoremap <buffer> <C-j> :NvimHsLspDefinition<CR>
-" autocmd FileType scala nnoremap <buffer> <C-h> :NvimHsLspInfo<CR>
-" autocmd FileType scala nnoremap <buffer> <Space>w :NvimHsLspLoadQuickfix<CR>
 "}}}
 
 "Makefile {{{
 autocmd FileType make setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
 "}}}
 
-"vim-easy-align {{{
-vmap <Enter> <Plug>(EasyAlign)
-"}}}
-
-"Rainbow {{{
-autocmd FileType lisp nmap <buffer> <F7> :RainbowToggle<CR>
-let g:rainbow_conf = {
-\   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
-\   'ctermfgs': ["darkblue", "darkgreen", "red", "yellow"],
-\   'operators': '_,_',
-\   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
-\   'separately': {
-\     '*': {},
-\     'tex': {
-\       'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
-\     },
-\   }
-\ }
-"\  'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
-"\  'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
-"\       'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
+"vim{{{
+autocmd FileType vim setlocal et ts=2 sw=2 sts=2
 "}}}
 
 " Python{{{
 let g:python_highlight_all = 1
-let g:ale_python_autopep8_executable = ''
-autocmd FileType python Python3Syntax
-function! NvimHsLspFormattingPython3() abort
-  NvimHsLspFormatting!
-  Python3Syntax
-endfunction
-autocmd FileType python nnoremap [lsp]f call NvimHsLspFormattingPython3()
-autocmd InsertLeave,BufNewFile,BufFilePRe,BufRead *.py Python3Syntax
-augroup lsp
-  autocmd FileType python call s:lsp_my_setting()
-augroup END
 "}}}
 
-"smt2{{{
+"Smt2{{{
 autocmd FileType smt2 call PareditInitBuffer()
 autocmd FileType smt2 setlocal lisp
 autocmd FileType smt2 setlocal lispwords+=assert,forall,exists
-" あってもなくても良い
-" autocmd bufread,bufnewfile *.smt2,*.scm,*.lisp setlocal equalprg=scmindent
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" Other Configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"key-map{{{
-"""<C-d> $
-inoremap <C-d> $
-"""ttでtabnew
-nnoremap <silent> tt  :<C-u>tabe<CR>
-"""tgで前のタブ
-nnoremap tg gT
-"""<space>oで改行
-"nnoremap <Space>o  :<C-u>for i in range(v:count1) \| call append(line('.'), '') \| endfor<CR>
-"jkで<esc>
+"My Command{{{
+command! -nargs=+ -complete=command Redir let s:reg = @@ | redir @"> | silent execute <q-args> | redir END | e /tmp/vim_tmp_redir | pu | 1,2d_ | let @@ = s:reg
+command! RmTrailingWhiteSpaces %s/\s\+$//g | :noh
+command! LNextRecursive call CRecursive("lnext")
+command! LPreviousRecursive call CRecursive("lprevious")
+command! CNextRecursive call CRecursive("cnext")
+command! CPreviousRecursive call CRecursive("cprevious")
+function! CRecursive(cmd) abort "{{{
+  let p0 = getpos('.')
+  let p  = p0
+  try
+    while p is p0
+      execute a:cmd
+      let p = getpos('.')
+    endwhile
+  catch
+    echomsg "no more items"
+  endtry
+endfunction "}}}
+let g:init_vim = $XDG_CONFIG_HOME != ""
+                  \ ? $XDG_CONFIG_HOME   . "/nvim/init.vim"
+                  \ : $HOME . "/.config" . "/nvim/init.vim"
+command! EditInitVim   execute "e " .  g:init_vim
+command! SourceInitVim execute "so " .  g:init_vim
+"}}}
+
+"Key mapping{{{
+"""esc
 inoremap jk <Esc>
-" inoremap jk <Esc>:w<CR>
-"inoremap kj <Esc>:w<CR>
 inoremap <C-j><C-k> <Esc>:w<CR>
-"""<Space>\で保存
 nnoremap <C-\> :update<CR>
 inoremap <C-\> <Esc>:update<CR>
-"""削除関連
+"""tab
+nnoremap <silent> tt  :<C-u>tabe<CR>
+nnoremap tg gT
+for n in range(1, 9)
+  execute 'nnoremap <silent> t'.n  ':<C-u>tabnext'.n.'<CR>'
+endfor
+"""delete
 nnoremap dk ddk
 nnoremap dj dd
+inoremap <C-w> <esc>ldba
+"""yank
 nnoremap Y  y$
-" nnoremap dw diw
-" nnoremap diw dw
-" nnoremap cw ciw
-" nnoremap ciw cw
-" nnoremap yw yiw
-" nnoremap yiw yw
-inoremap <C-w> <esc>ldbi
-"""window関連
+"""window
 nnoremap zh <C-w>h
 nnoremap zj <C-w>j
 nnoremap zk <C-w>k
@@ -952,33 +789,12 @@ call submode#map('winsize', 'n', '', '>', '<C-w>>')
 call submode#map('winsize', 'n', '', '<', '<C-w><')
 call submode#map('winsize', 'n', '', '+', '<C-w>-')
 call submode#map('winsize', 'n', '', '-', '<C-w>+')
-"""折りたたみ
+"""folding
 nnoremap zn za
 """paste mode
 nnoremap <F10> :set paste<CR>
 autocmd InsertLeave * set nopaste
-"""インサートモードでいろいろ
-inoremap <C-j> <down>
-inoremap <C-k> <up>
-inoremap <C-h> <left>
-inoremap <C-l> <right>
-inoremap <C-b> <esc>lBi
-inoremap <expr><C-n> deoplete#mappings#close_popup()."<Esc>lWi"
-inoremap <C-a> <esc>I
-inoremap <C-e> <esc>A
-"""コマンドライン上下
-cnoremap <C-j> <down>
-cnoremap <C-k> <up>
-"""開いているファイルのディレクトリに移動する
-nnoremap <Space>cd :cd %:h<CR>
-"""Neomake
-nnoremap <C-q> :update!<CR>:Neomake!<CR>
-nnoremap ,w    :update!<CR>:Neomake!<CR>
-"""ctag
-"nnoremap <C-j> <C-]>
-""" noh
-nnoremap ^ :noh<CR>
-"""移動
+"""moving: normal mode
 nnoremap <C-a> I
 nnoremap <C-e> A
 nnoremap gJ J
@@ -988,7 +804,6 @@ noremap H B
 noremap L W
 noremap <A-h> gE
 noremap <A-l> E
-"物理行移動
 nnoremap j gj
 nnoremap k gk
 vnoremap j gj
@@ -997,16 +812,6 @@ nnoremap gj j
 nnoremap gk k
 vnoremap gj j
 vnoremap gk k
-"w/e motion
-nnoremap b B
-nnoremap B b
-"nnoremap w W
-"nnoremap W w
-nnoremap e E
-nnoremap E e
-"""easymotion
-"nmap s <Plug>(easymotion-s2)
-"nmap / <Plug>(easymotion-sn)
 nmap w <Plug>(easymotion-bd-w)
 nmap W <Plug>(easymotion-bd-W)
 nmap e <Plug>(easymotion-bd-e)
@@ -1017,13 +822,20 @@ vmap e <Plug>(easymotion-bd-e)
 vmap E <Plug>(easymotion-bd-E)
 nmap r <Plug>(easymotion-repeat)
 nmap ; <Plug>(easymotion-next)
-"nmap <Space>; <Plug>(easymotion-prev)
-"}}}
-
-"Terminal他"{{{
-"nnoremap .. :cd..<CR>
-"nnoremap te :vs<CR><C-w>l:te<CR>
-nnoremap te :terminal with-log neovim-terminal zsh<CR>
+"""moving: insert mode
+inoremap <C-j> <down>
+inoremap <C-k> <up>
+inoremap <C-h> <left>
+inoremap <C-l> <right>
+inoremap <C-b> <esc>lBi
+inoremap <C-n> <esc>lWi
+inoremap <C-a> <esc>I
+inoremap <C-e> <esc>A
+"""moving: mode
+cnoremap <C-j> <down>
+cnoremap <C-k> <up>
+"""terminal
+nnoremap te :terminal<CR>
 nnoremap vs :rightbelow vs<CR>
 tnoremap <Esc> <C-\><C-n>
 tnoremap jk    <C-\><C-n>
@@ -1036,65 +848,14 @@ tnoremap <C-k> <Up>
 tnoremap <C-j> <Down>
 tnoremap <C-h> <Left>
 tnoremap <C-l> <Right>
-"}}}
-
-"tab"{{{
-for n in range(1, 9)
-  execute 'nnoremap <silent> t'.n  ':<C-u>tabnext'.n.'<CR>'
-endfor
-"}}}
-
-"register"{{{
-let @a = "->"
-let @b = "<-"
-let @t = "……"
-"}}}
-
-"tmp"{{{
-let $BASH_ENV='~/.bashenv'
-let g:previm_open_cmd="google-chrome"
-
-nnoremap <F8> :TagbarToggle<CR>
-nnoremap gs :Gstatus<CR>
+"""other
+nnoremap <Space>cd :cd %:h<CR>
+nnoremap ^ :noh<CR>
 vnoremap * "zy:let @/ = @z<CR>n
-"vnoremap ,a :Align
-
-command! -nargs=+ -complete=command Redir let s:reg = @@ | redir @"> | silent execute <q-args> | redir END | e /tmp/vim_tmp_redir | pu | 1,2d_ | let @@ = s:reg
-
-command! RmTrailingWhiteSpaces %s/\s\+$//g | :noh
-
-command! LNextRecursive call CRecursive("lnext")
-command! LPreviousRecursive call CRecursive("lprevious")
-command! CNextRecursive call CRecursive("cnext")
-command! CPreviousRecursive call CRecursive("cprevious")
-function! CRecursive(cmd) abort "{{{
-  let p0 = getpos('.')
-  let p  = p0
-  try
-    while p is p0
-      execute a:cmd
-      let p = getpos('.')
-    endwhile
-  catch
-    echomsg "no more items"
-  endtry
-endfunction "}}}
 nnoremap <C-n> :CNextRecursive<CR>
 nnoremap <C-p> :CPreviousRecursive<CR>
 nnoremap <M-n> :LNextRecursive<CR>
 nnoremap <M-p> :LPreviousRecursive<CR>
-call submode#enter_with('lnext', 'n', '', '<Space>l', ':LNextRecursive<CR>')
-call submode#map('lnext', 'n', '', '<C-n>', ':LNextRecursive<CR>')
-call submode#map('lnext', 'n', '', '<C-p>', ':LPreviousRecursive<CR>')
-
-let g:init_vim = $XDG_CONFIG_HOME != ""
-                  \ ? $XDG_CONFIG_HOME   . "/nvim/init.vim"
-                  \ : $HOME . "/.config" . "/nvim/init.vim"
-command! EditInitVim   execute "e " .  g:init_vim
-command! SourceInitVim execute "so " .  g:init_vim
 "}}}
-
-set conceallevel=0
-
 
 "vim: set et ts=1 sts=2 tw=2:
