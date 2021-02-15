@@ -30,6 +30,10 @@ Vagrant.configure("2") do |config|
           password: "$6$N4.rjdBkS3Y/Od1U$77YfWpOFu8xbrv14Qot/RsKEfGexlb/TggyjMAz37oAn5knI7h2gwHcw0ZsVkmPGtGbr5A02uglrJLHsV0rF90",
           ssh_public_key: "C:\\Users\\cq2n-iwym\\.ssh\\id_ed25519.pub"
         },
+        haskell: {
+          install_ghcup: false,
+          install_nix: false,
+        },
         python: {
           build: true,
           version: "3.9.1"
@@ -70,6 +74,10 @@ Vagrant.configure("2") do |config|
           sudoer: true,
           password: "$6$N4.rjdBkS3Y/Od1U$77YfWpOFu8xbrv14Qot/RsKEfGexlb/TggyjMAz37oAn5knI7h2gwHcw0ZsVkmPGtGbr5A02uglrJLHsV0rF90",
           ssh_public_key: "/c/Users/cq2n-iwym/.ssh/id_ed25519.pub"
+        },
+        haskell: {
+          install_ghcup: false,
+          install_nix: false,
         },
         python: {
           build: false,

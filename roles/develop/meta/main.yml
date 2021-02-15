@@ -2,6 +2,7 @@
 dependencies:
   - role: basic
   - role: tool
+  - role: haskell
   - role: python
   - role: node
   - role: java

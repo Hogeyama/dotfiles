@@ -1,4 +1,4 @@
-inventory.yml
+./inventory.yml
 Vagrantfile
 ansible.cfg
 .vagrant/
