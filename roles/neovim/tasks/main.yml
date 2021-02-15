@@ -4,6 +4,8 @@
     dest: "/usr/local/bin/nvim"
     mode: '0755'
   when: has_root
+  tags:
+    - neovim
 
 - name: Install neovim (user local)
   get_url:
@@ -13,3 +15,5 @@
     group: "{{ user.name }}"
     mode: '0755'
   when: not has_root
+  tags:
+    - neovim

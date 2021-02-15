@@ -2,6 +2,9 @@
   stat:
     path: "/home/{{ user.name }}/.tmux/plugins/tpm"
   register: tpm
+  tags:
+    - tmux
+    - tmux_conf
 
 - name: Download tpm
   git:
@@ -9,6 +12,9 @@
     dest: "/home/{{ user.name }}/.tmux/plugins/tpm"
   register: download_tpm
   when: not tpm.stat.isdir|default(false)
+  tags:
+    - tmux
+    - tmux_conf
 
 - name: Make ~/.tmux owned by {{ user.name }}
   file:
@@ -18,6 +24,9 @@
     state: directory
     recurse: yes
   changed_when: false # TODO
+  tags:
+    - tmux
+    - tmux_conf
 
 - name: Set .tmux.conf
   copy:
@@ -28,3 +37,6 @@
     mode: '0644'
   loop:
     - .tmux.conf
+  tags:
+    - tmux
+    - tmux_conf

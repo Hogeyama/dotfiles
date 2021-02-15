@@ -7,3 +7,5 @@
     mode: 'preserve'
   loop:
     - .xmonad/
+  tags:
+    - xmonad

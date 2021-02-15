@@ -1,23 +1,23 @@
 - set_fact:
     is_stretch: "{{ ansible_distribution_release == 'stretch' }}"
-
-- debug:
-    var: is_stretch
-
-- debug:
-    var: ansible_distribution_release
+  tags:
+    - java
 
 - name: Install build tools
   apt:
     name:
     - ant
     - gradle
+  tags:
+    - java
 
 - name: Install OpenJDK8 (stretch only)
   apt:
     name:
       - openjdk-8-jdk-headless
   when: is_stretch
+  tags:
+    - java
 
 - name: Install AdoptOpenJDK
   vars:
@@ -29,11 +29,15 @@
     dest: "/usr/lib/jvm"
     remote_src: true
   loop: "{{ targets }}"
+  tags:
+    - java
 
 - name: Prepare install directory for jdt.ls
   file:
     path: /usr/local/share/jdt-language-server
     state: directory
+  tags:
+    - java
 
 - name: Install jdt.ls
   unarchive:
@@ -41,6 +45,8 @@
     dest: /usr/local/share/jdt-language-server
     remote_src: true
   ignore_errors: "{{ ansible_check_mode }}"
+  tags:
+    - java
 
 - name: Set permission of jdt.ls
   file:
@@ -48,6 +54,8 @@
     recurse: yes
     mode: '777'
   changed_when: false
+  tags:
+    - java
 
 - name: Configure Environment varibales
   template:
@@ -56,3 +64,5 @@
     mode: "644"
   loop:
     - etc/profile.d/java.sh
+  tags:
+    - java

@@ -1,0 +1,8 @@
+---
+dependencies:
+  - role: ensure_user
+  - role: user_script
+  - role: zsh_conf
+  - role: tmux_conf
+  - role: neovim_conf
+  - role: xmonad_conf

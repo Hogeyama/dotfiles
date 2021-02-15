@@ -4,10 +4,14 @@
   register: which_tmux
   changed_when: false
   ignore_errors: true
+  tags:
+    - tmux
 
 - set_fact:
     tmux_install: "{{ not which_tmux.skipped|default(false) and which_tmux.rc != 0 }}"
     tmux_install_method: "{{ 'build' if not has_root else tmux.install_method|default('apt') }}"
+  tags:
+    - tmux
 
 - name: Install tmux dependencies
   apt:
@@ -19,12 +23,16 @@
       - libncurses-dev
       - xsel
   when: tmux_install and tmux_install_method == 'build'
+  tags:
+    - tmux
 
 - name: Clone tmux
   git:
     repo: 'https://github.com/tmux/tmux.git'
     dest: /root/tmux
   when: tmux_install and tmux_install_method == 'build'
+  tags:
+    - tmux
 
 - name: Build and install tmux
   shell:
@@ -36,9 +44,13 @@
       sudo make install
     creates: /usr/local/bin/tmux
   when: tmux_install and tmux_install_method == 'build'
+  tags:
+    - tmux
 
 - name: Install tmux (apt)
   apt:
     name:
       - tmux
   when: tmux_install and tmux_install_method == 'apt'
+  tags:
+    - tmux

@@ -6,12 +6,16 @@
   when: python.build|default(false)
   changed_when: false
   ignore_errors: true
+  tags:
+    - python
 
 - set_fact:
     build_python:
       "{{ python.build|default(false) and
           not which_python.skipped|default(false) and
           which_python.rc != 0 }}"
+  tags:
+    - python
 
 - name: Install python dependencies
   apt:
@@ -27,6 +31,8 @@
     - wget
     - curl
   when: build_python
+  tags:
+    - python
 
 - name: Unarchive python source
   unarchive:
@@ -34,6 +40,8 @@
     dest: /root
     remote_src: true
   when: build_python
+  tags:
+    - python
 
 - name: Install python
   shell:
@@ -44,3 +52,5 @@
       sudo make altinstall
     creates: "/usr/local/bin/python{{ python.version }}"
   when: build_python
+  tags:
+    - python

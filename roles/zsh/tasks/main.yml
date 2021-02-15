@@ -2,6 +2,8 @@
   apt:
     name:
     - zsh
+  tags:
+    - zsh
 
 - name: Set /etc/zsh/zprofile
   blockinfile:
@@ -15,3 +17,5 @@
        done
        unset i
       fi
+  tags:
+    - zsh

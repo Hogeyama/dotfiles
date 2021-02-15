@@ -1,0 +1,10 @@
+---
+dependencies:
+  - role: basic
+  - role: tool
+  - role: python
+  - role: node
+  - role: java
+  - role: zsh
+  - role: tmux
+  - role: neovim
