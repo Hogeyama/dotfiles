@@ -38,8 +38,8 @@ let g:lsp_plugin = 'coc'
 "Plug{{{
 call plug#begin('~/.config/nvim/plugged')
 Plug 'Shougo/deol.nvim'
-Plug 'Shougo/deoplete.nvim'
-Plug 'Shougo/deoplete-terminal'
+" Plug 'Shougo/deoplete.nvim'
+" Plug 'Shougo/deoplete-terminal'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'kana/vim-submode'
@@ -86,7 +86,7 @@ Plug 'FrigoEU/psc-ide-vim'
 ""Dhall
 Plug 'vmchale/dhall-vim'
 """Python
-"Plug 'numirias/semshi'
+" Plug 'numirias/semshi'
 Plug 'vim-python/python-syntax'
 ""Scala
 Plug 'derekwyatt/vim-scala'
@@ -185,7 +185,6 @@ endif "}}}
 
 "Set{{{
 filetype plugin indent on
-
 set fileencodings=utf-8,cp932
 set termencoding=utf-8
 let mapleader=","
@@ -194,10 +193,10 @@ let maplocalleader=","
 filetype plugin on
 filetype indent on
 set mouse=
-set ambiwidth=double
-" set ambiwidth=single
+" set ambiwidth=double
+set ambiwidth=single
 set foldmethod=marker
-set fillchars=fold:-
+set fillchars=fold:-,vert:\|
 set visualbell t_vb=
 set hidden
 set modeline
@@ -253,36 +252,36 @@ xnoremap [lsp] <nop>
 nmap     <C-l> [lsp]
 xmap     <C-l> [lsp]
 if g:lsp_plugin is 'coc'
-  nmap     <buffer> <C-j>  <Plug>(coc-definition)
-  nmap     <buffer> [lsp]j <Plug>(coc-definition)
-  nmap     <buffer> [lsp]r <Plug>(coc-references)
-  nmap     <buffer> [lsp]f <Plug>(coc-format)
-  xmap     <buffer> [lsp]f <Plug>(coc-format-selected)
-  nmap     <buffer> [lsp]a <Plug>(coc-codeaction)
-  nmap     <buffer> <F2>   <Plug>(coc-rename)
-  nmap     <buffer> [lsp]l <Plug>(coc-openlink)
-  nmap     <buffer> [lsp]n <Plug>(coc-diagnostics-next)
-  nmap     <buffer> [lsp]p <Plug>(coc-diagnostics-prev)
-  nnoremap <buffer> [lsp]c :CocCommand<CR>
-  nnoremap <buffer> [lsp]h :call CocActionAsync('doHover')<CR>
-  nnoremap <buffer> <C-h>  :call CocActionAsync('doHover')<CR>
+  nmap     <C-j>  <Plug>(coc-definition)
+  nmap     [lsp]j <Plug>(coc-definition)
+  nmap     [lsp]r <Plug>(coc-references)
+  nmap     [lsp]f <Plug>(coc-format)
+  xmap     [lsp]f <Plug>(coc-format-selected)
+  nmap     [lsp]a <Plug>(coc-codeaction)
+  nmap     <F2>   <Plug>(coc-rename)
+  nmap     [lsp]l <Plug>(coc-openlink)
+  nmap     [lsp]n <Plug>(coc-diagnostics-next)
+  nmap     [lsp]p <Plug>(coc-diagnostics-prev)
+  nnoremap [lsp]c :CocCommand<CR>
+  nnoremap [lsp]h :call CocActionAsync('doHover')<CR>
+  nnoremap <C-h>  :call CocActionAsync('doHover')<CR>
 elseif g:lsp_plugin is 'nvim-hs-lsp'
   setlocal omnifunc=NvimHsLspComplete
-  nnoremap <buffer> [lsp]i :NvimHsLspInitialize<CR>
-  nnoremap <buffer> [lsp]s :NvimHsLspStartServer<CR>
-  nnoremap <buffer> [lsp]q :NvimHsLspStopServer<CR>
-  nnoremap <buffer> <C-j>  :NvimHsLspDefinition<CR>
-  nnoremap <buffer> [lsp]j :NvimHsLspDefinition<CR>
-  nnoremap <buffer> [lsp]h :NvimHsLspInfo<CR>
-  nnoremap <buffer> [lsp]H :NvimHsLspHover<CR>
-  nnoremap <buffer> <C-h>  :NvimHsLspHoverFloat<CR>
-  nnoremap <buffer> [lsp]w :NvimHsLspLoadQuickfix<CR>
-  nnoremap <buffer> [lsp]r :NvimHsLspReferences<CR>
-  nnoremap <buffer> [lsp]f :NvimHsLspFormatting!<CR>
-  xnoremap <buffer> [lsp]f :NvimHsLspFormatting<CR>
-  nnoremap <buffer> [lsp]a :NvimHsLspCodeAction<CR>
-  nnoremap <buffer> [lsp]r :NvimHsLspRename 
-  inoremap <buffer> <C-o>  <C-x><C-o>
+  nnoremap [lsp]i :NvimHsLspInitialize<CR>
+  nnoremap [lsp]s :NvimHsLspStartServer<CR>
+  nnoremap [lsp]q :NvimHsLspStopServer<CR>
+  nnoremap <C-j>  :NvimHsLspDefinition<CR>
+  nnoremap [lsp]j :NvimHsLspDefinition<CR>
+  nnoremap [lsp]h :NvimHsLspInfo<CR>
+  nnoremap [lsp]H :NvimHsLspHover<CR>
+  nnoremap <C-h>  :NvimHsLspHoverFloat<CR>
+  nnoremap [lsp]w :NvimHsLspLoadQuickfix<CR>
+  nnoremap [lsp]r :NvimHsLspReferences<CR>
+  nnoremap [lsp]f :NvimHsLspFormatting!<CR>
+  xnoremap [lsp]f :NvimHsLspFormatting<CR>
+  nnoremap [lsp]a :NvimHsLspCodeAction<CR>
+  nnoremap [lsp]r :NvimHsLspRename 
+  inoremap <C-o>  <C-x><C-o>
 endif
 "}}}
 
@@ -305,7 +304,7 @@ if g:lsp_plugin is 'coc'
     return !col || getline('.')[col - 1]  =~ '\s'
   endfunction
   inoremap <expr> <CR>
-    \ pumvisible() ? coc#refresh() : "\<CR>"
+    \ pumvisible() ? coc#refresh()."\<C-y>" : "\<CR>"
   inoremap <silent><expr> <Tab>
     \ pumvisible() ? "\<C-n>" :
     \ <SID>check_back_space() ? "\<Tab>" :
@@ -716,6 +715,7 @@ autocmd FileType vim setlocal et ts=2 sw=2 sts=2
 
 " Python{{{
 let g:python_highlight_all = 1
+autocmd FileType python Python3Syntax
 "}}}
 
 "Smt2{{{
