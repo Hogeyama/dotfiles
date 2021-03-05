@@ -1,0 +1,19 @@
+#!/bin/bash
+CLIPBOARD=/c/Users/cq2n-iwym/.clipboard
+host-pc()
+{
+  # host pc (gz200302) always sshs to this vm via 'ssh -R 2302:localhost:22'
+  local port=2302
+  if ss -l | grep $port >/dev/null 2>&1; then
+    ssh -p $port localhost clip.exe
+  fi
+}
+remote-pc()
+{
+  # remote pc (gz200506) always sshs to this vm via 'ssh -R 2506:localhost:22'
+  local port=2506
+  if ss -l | grep $port >/dev/null 2>&1; then
+    ssh -p $port localhost clip.exe
+  fi
+}
+tee >(remote-pc) >(host-pc) >$CLIPBOARD

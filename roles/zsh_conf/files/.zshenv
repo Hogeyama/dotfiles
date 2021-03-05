@@ -3,8 +3,9 @@
 source-if-exists() {
   [ -e $1 ] && . $1
 }
-export PATH=$HOME/.local/bin:$PATH
-export PATH=$HOME/go/bin:$PATH
+export PATH=$PATH:$HOME/.local/bin
+export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:/usr/local/google-cloud-sdk/bin
 source-if-exists $HOME/.ghcup/env
 source-if-exists $HOME/.cargo/env
 source-if-exists $HOME/.opam/opam-init/init.zsh
