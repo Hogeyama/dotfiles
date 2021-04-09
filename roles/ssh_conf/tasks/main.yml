@@ -1,0 +1,21 @@
+---
+- name: Set SSH authorized keys (for Vagrant)
+  ansible.posix.authorized_key:
+    user: "{{ user.name }}"
+    state: present
+    key: "{{ lookup('file', item) }}"
+  loop: "{{ user.ssh_authorized_keys|default[] }}"
+  tags:
+    - ssh_conf
+
+- name: Install SSH private keys (for Vagrant)
+  copy:
+    src: "{{ item.src }}"
+    dest: "/home/{{ user.name }}/.ssh/{{ item.name }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: '0600'
+  loop: "{{ user.ssh_private_keys|default[] }}"
+  tags:
+    - ssh_conf
+
