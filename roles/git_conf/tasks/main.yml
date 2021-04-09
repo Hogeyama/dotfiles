@@ -1,0 +1,22 @@
+---
+- name: Add a setting to ~/.gitconfig
+  community.general.git_config:
+    scope: global
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+  become: yes
+  become_user: "{{ user.name }}"
+  loop:
+    - key: user.email
+      value: "{{ user.git.email }}"
+    - key: user.name
+      value: "{{ user.git.name }}"
+    - key: merge.ff
+      value: "false"
+    - key: merge.conflictstyle
+      value: "diff3"
+    - key: core.pager
+      value: "LESSCHARSET=utf-8 less"
+  tags:
+    - git
+    - git_conf

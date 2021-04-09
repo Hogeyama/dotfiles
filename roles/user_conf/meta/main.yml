@@ -6,3 +6,4 @@ dependencies:
   - role: tmux_conf
   - role: neovim_conf
   - role: xmonad_conf
+  - role: git_conf
