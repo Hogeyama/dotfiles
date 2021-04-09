@@ -47,6 +47,7 @@ Plug 'benekastah/neomake'
 Plug 'editorconfig/editorconfig-vim'
 Plug '~/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'yuki-yano/fzf-preview.vim'
 """便利
 "Plug 'vim-scripts/Align'
 Plug 'junegunn/vim-easy-align'
@@ -56,7 +57,6 @@ Plug 'itchyny/lightline.vim'
 Plug 'AndrewRadev/linediff.vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'Yggdroot/indentLine'
-Plug 'losingkeys/vim-niji'
 Plug 'wellle/visual-split.vim'
 Plug 'mhinz/vim-startify'
 ""Git TODO 整理
@@ -78,6 +78,7 @@ Plug 'neovimhaskell/haskell-vim'
 Plug 'vim-scripts/alex.vim'
 Plug 'vim-scripts/happy.vim'
 Plug 'LnL7/vim-nix'
+Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim', 'tag': 'v0.6.10' }
 ""Elm
 Plug 'carmonw/elm-vim'
 ""PureScript
@@ -196,7 +197,7 @@ set mouse=
 " set ambiwidth=double
 set ambiwidth=single
 set foldmethod=marker
-set fillchars=fold:-,vert:\|
+set fillchars=fold:-
 set visualbell t_vb=
 set hidden
 set modeline
@@ -226,7 +227,8 @@ set wildmode=longest:full,full
 set ignorecase
 set smartcase
 set list
-set listchars=tab:>.,trail:_
+" set listchars=tab:>.,trail:_
+set listchars=tab:>─,trail:_
 set whichwrap =b,s,h,l,<,>,[,]
 set backspace=indent,eol,start
 set wildoptions=pum
@@ -288,17 +290,18 @@ endif
 "coc.nvim {{{
 if g:lsp_plugin is 'coc'
   set updatetime=300
+  let g:coc_start_at_startup=0
   let g:coc_global_extensions = [
-    \ 'coc-java',
-    \ 'coc-git',
     \ 'coc-json',
     \ 'coc-yaml',
     \ 'coc-pairs',
     \ 'coc-lists',
     \ 'coc-snippets',
     \ 'coc-neosnippet',
-    \ 'coc-highlight'
     \ ]
+    " \ 'coc-git'
+    " \ 'coc-highlight'
+    " \ 'coc-java',
   function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~ '\s'
@@ -546,10 +549,6 @@ let g:EasyMotion_enter_jump_first = 1
 let g:clever_f_smart_case = 1
 "}}}
 
-"vim-niji{{{
-let g:niji_matching_filetypes = ['lisp', 'smt2', 'python']
-"}}}
-
 "vim-easy-align {{{
 vmap <Enter> <Plug>(EasyAlign)
 "}}}
@@ -571,6 +570,11 @@ let g:rainbow_conf = {
 "\  'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
 "\  'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
 "\       'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
+"}}}
+
+"ghcid {{{
+let g:ghcid_keep_open=1
+let g:ghcid_command='ghcid-docker.sh'
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -678,7 +682,7 @@ let g:neomake_pandoc_pandoc_maker = {
 let g:previm_enable_realtime = 1
 let g:vim_markdown_math = 1
 let g:pandoc#syntax#codeblocks#embeds#use = 1
-let g:pandoc#syntax#codeblocks#embeds#langs = ["ocaml","haskell","python3"]
+" let g:pandoc#syntax#codeblocks#embeds#langs = ["ocaml","haskell","python3"]
 let g:pandoc#folding#mode = 'marker'
 let g:pandoc#syntax#conceal#use = 0
 let g:pandoc#modules#disabled = ["folding", "chdir"]

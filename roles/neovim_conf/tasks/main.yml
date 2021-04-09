@@ -70,14 +70,6 @@
     - neovim
     - neovim_conf
 
-- set_fact:
-    # pip3.X if python.version is 3.X.Y
-    # pip3 if python.version is undefined
-    pip_cmd: "pip{{ python.version|default('3.0')|splitext|first }}"
-  tags:
-    - neovim
-    - neovim_conf
-
 - name: Install neovim-remote
   pip:
     name: neovim-remote

@@ -5,7 +5,7 @@
   changed_when: false
   ignore_errors: true
   tags:
-    - node
+    - javascript
 
 - name: Add Node.js PPA
   shell:
@@ -13,7 +13,7 @@
     warn: false
   when: "not which_node.skipped|default(false) and which_node.rc != 0"
   tags:
-    - node
+    - javascript
 
 - name: Install Node.js
   apt:
@@ -21,4 +21,4 @@
       - nodejs
   when: "not which_node.skipped|default(false) and which_node.rc != 0"
   tags:
-    - node
+    - javascript

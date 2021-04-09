@@ -4,8 +4,12 @@ dependencies:
   - role: tool
   - role: haskell
   - role: python
-  - role: node
+  - role: javascript
   - role: java
+  - role: go
   - role: zsh
   - role: tmux
+  - role: neovim
+  - role: pandoc
+  - role: docker
   - role: neovim

@@ -1,7 +1,6 @@
-
 ## Usage
 
-- `cp example/inventory-${DIST}.yml ./inventory.yml`
+- `cp example/inventory.yml ./inventory.yml`
 - Edit `inventory.yml`
 - `ansible-playbook playbook.yml -i inventory.yml`
 
@@ -9,6 +8,7 @@
 
 - `cp example/Vagrantfile example/ansible.cfg ./`
 - Edit Vagrantfile
+- `vagrant plugin install vagrant-vbguest`
 - `vagrant plugin install vagrant-disksize`
 - `vagrant up`
 

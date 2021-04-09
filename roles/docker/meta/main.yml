@@ -1,6 +1,4 @@
 ---
 dependencies:
   - role: ensure_user
-  - role: neovim
-  - role: javascript
   - role: python

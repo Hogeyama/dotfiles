@@ -1,51 +1,38 @@
-- name: Install dependencies
+- name: Install ghcup dependencies
   apt:
     name:
       - build-essential
       - curl
       - libffi-dev
-      - libffi7
       - libgmp-dev
-      - libgmp10
       - libncurses-dev
-      - libncurses5
-      - libtinfo5
-  when: has_root
-  tags:
-    - haskell
-  when: haskell.install_ghcup|default(false)
-
-- name: Download get-ghcup.sh
-  get_url:
-    url: https://get-ghcup.haskell.org
-    dest: "/home/{{ user.name }}/Downloads/get-ghcup.sh"
-    mode: "755"
-    owner: "{{ user.name }}"
-    group: "{{ user.name }}"
+      - libtinfo-dev
   tags:
     - haskell
   when: haskell.install_ghcup|default(false)
 
 - name: Install ghcup
   environment:
+    # TODO configure
     BOOTSTRAP_HASKELL_NONINTERACTIVE: "1"
     BOOTSTRAP_HASKELL_NO_UPGRADE: "1"
-    BOOTSTRAP_HASKELL_GHC_VERSION: "9.0.1"
+    BOOTSTRAP_HASKELL_GHC_VERSION: "8.10.4"
+  shell:
+    cmd: "curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sudo -E -u {{ user.name }} sh"
   command:
-    cmd: "/home/{{ user.name }}/Downloads/get-ghcup.sh"
+    cmd: "/tmp/get-ghcup.sh"
     creates: "/home/{{ user.name }}/.ghcup"
-  become: yes
-  become_user: "{{ user.name }}"
   tags:
     - haskell
   when: haskell.install_ghcup|default(false) # totemo jikan kakaru
 
 - name: Instal nix
-  command:
+  shell:
     cmd: "curl -L https://nixos.org/nix/install | sh"
     creates: "/home/{{ user.name }}/.nix-profile"
+    warn: false
   become: yes
   become_user: "{{ user.name }}"
   tags:
     - haskell
-  when: haskell.install_nix|default(false) # totemo jikan kakaru
+  when: haskell.install_nix|default(false)

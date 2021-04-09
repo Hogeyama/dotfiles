@@ -1,0 +1,50 @@
+- set_fact:
+    install_go:
+      "{{ go.install|default(false) }}"
+  tags:
+    - go
+
+- name: Install go
+  vars:
+    src: https://golang.org/dl/go1.15.8.linux-amd64.tar.gz
+    dest: /usr/local
+  unarchive:
+    src: "{{ src }}"
+    dest: "{{ dest }}"
+    creates: "{{ dest }}/go"
+    remote_src: true
+  ignore_errors: "{{ ansible_check_mode }}"
+  tags:
+    - go
+
+- name: Create ~/go
+  file:
+    path: "/home/{{ user.name }}/go"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    state: directory
+  changed_when: false
+  when: install_go
+  tags:
+    - go
+
+- name: "Check whether golangci-lint is installed"
+  stat:
+    path: "/home/{{ user.name }}/go/bin/golangci-lint"
+  register: golangci_lint
+  when: install_go
+  tags:
+    - go
+
+- name: Install golangci_lint
+  vars:
+    dest: "/home/{{ user.name }}/go/bin"
+  shell:
+    cmd: "curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh
+          | sudo -u {{ user.name }} sh -s -- -b {{ dest }} v1.37.1"
+    warn: false
+    creates: "{{ dest }}/golangci-lint"
+  when: not golangci_lint.stat.exists|default(false)
+  ignore_errors: "{{ ansible_check_mode }}"
+  tags:
+    - go
