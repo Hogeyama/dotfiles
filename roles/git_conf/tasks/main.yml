@@ -20,3 +20,26 @@
   tags:
     - git
     - git_conf
+
+- name: Add Git hosting server to known_hosts
+  known_hosts:
+    name: "{{ item.name }}"
+    key: "{{ item.name }} {{ item.key }}"
+    state: present
+  become: yes
+  become_user: "{{ user.name }}"
+  loop: "{{ user.git.hosts|default([]) }}"
+  tags:
+    - git
+    - git_conf
+
+- name: Checkout git repositories
+  ansible.builtin.git:
+    repo: "{{ item.url }}"
+    dest: "{{ item.dest }}"
+  become: yes
+  become_user: "{{ user.name }}"
+  loop: "{{ user.git.repositories|default([]) }}"
+  tags:
+    - git
+    - git_conf
