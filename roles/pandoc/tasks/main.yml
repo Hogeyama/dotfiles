@@ -1,0 +1,30 @@
+- name: Install latex
+  apt:
+    name:
+      - texlive
+      - texlive-xetex
+      - texlive-luatex
+      - texlive-pstricks
+      - texlive-lang-japanese
+      - fonts-takao
+      - pdft
+  when: has_root and pandoc.install_latex|default(false)
+  tags:
+    - pandoc
+
+- name: Install pandoc-2.7.3
+  vars:
+    src: "https://github.com/jgm/pandoc/releases/download/2.7.3/pandoc-2.7.3-linux.tar.gz"
+    dest: "{{ '/usr/local/bin' if has_root else '/home/'+user.name+'/.local/bin' }}"
+  unarchive:
+    src: "{{ src }}"
+    dest: "{{ dest }}"
+    creates: "{{ dest }}/pandoc"
+    remote_src: true
+    extra_opts:
+      - --strip=2
+      - --wildcards
+      - "*/bin/pandoc"
+  tags:
+    - pandoc
+

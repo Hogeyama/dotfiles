@@ -3,6 +3,7 @@ all:
   hosts:
     localhost:
       ansible_connection: local
+      ansible_python_interpreter: auto
 
       # config
       ########
@@ -19,16 +20,22 @@ all:
         password: "$6$pucajcuOuQDjqgXt$zznGOkhAyYEshAwkMYh81TGnDnt52TM42LOkuLvMZ9.IX0RpeWukDwvy1P5u.kl8J62Qd34NvCNyP1.lNH0M31"
 
       haskell:
-        install_ghcup: false
-        install_nix: false
+        install_ghcup: true
+        install_stack: true
+        install_nix: true
 
       python:
         build: true
-        version: 3.9.1
+        version: 3.9.2
 
       xmonad:
         install: false
 
       tmux:
-        # "build" or "apt"
-        install_method: "build"
+        install_method: "apt" # Either "apt" or "build"
+
+      pandoc:
+        install_latex: false
+
+      go:
+        install: true

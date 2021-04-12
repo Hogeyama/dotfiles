@@ -1,0 +1,4 @@
+---
+dependencies:
+  - role: ensure_user
+    when: not has_root

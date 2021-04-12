@@ -7,16 +7,20 @@
     - subversion
     - fuse
     - vim
+    - jq
     - dnsutils
     - curl
     - wget
     - unzip
     - unar
+    - debhelper
+    - devscripts
+    - dh-make
   when: has_root
   tags:
     - tool
 
-- name: Download awesome cli tools
+- name: Install awesome cli tools
   vars:
     dest: "{{ '/usr/local/bin' if has_root else '/home/'+user.name+'/.local/bin' }}"
   unarchive:
@@ -37,3 +41,81 @@
       url: "https://github.com/sharkdp/fd/releases/download/v8.2.1/fd-v8.2.1-i686-unknown-linux-musl.tar.gz"
   tags:
     - tool
+
+- name: Install direnv
+  environment:
+    bin_path: /usr/local/bin
+  shell:
+    cmd: "curl -sfL https://direnv.net/install.sh | bash"
+    warn: false
+    creates: /usr/local/bin/direnv
+  tags:
+    - tool
+
+### AWS
+
+- name: "Check whether aws cli is installed"
+  shell:
+    cmd: "which aws"
+  register: which_aws
+  changed_when: false
+  ignore_errors: true
+  tags:
+    - tool
+    - aws
+
+- set_fact:
+    install_aws: "{{ not which_aws.skipped|default(false) and which_aws.rc != 0 }}"
+  tags:
+    - tool
+    - aws
+
+- name: Download AWS cli installer
+  unarchive:
+    src: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+    dest: /tmp/
+    creates: /tmp/aws
+    remote_src: true
+  when: install_aws and has_root
+  tags:
+    - tool
+    - aws
+
+- name: Install AWS cli
+  shell:
+    cmd: "/tmp/aws/install --update"
+    warn: false
+    creates: /usr/local/bin/aws
+  when: install_aws and has_root
+  tags:
+    - tool
+    - aws
+
+### GCP
+
+- name: "Check whether aws cli is installed"
+  shell:
+    cmd: "which gcloud"
+  register: which_gcloud
+  changed_when: false
+  ignore_errors: true
+  tags:
+    - tool
+    - gcp
+
+- set_fact:
+    install_gcloud: "{{ not which_gcloud.skipped|default(false) and which_gcloud.rc != 0 }}"
+  tags:
+    - tool
+    - gcp
+
+- name: Install GCP cli
+  unarchive:
+    src: https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-331.0.0-linux-x86.tar.gz
+    dest: /usr/local
+    creates: /usr/local/google-cloud-sdk
+    remote_src: true
+  when: install_gcloud and has_root
+  tags:
+    - tool
+    - gcp
