@@ -11,13 +11,26 @@
     - git
     - git_conf
 
+- name: Check if git repositories exists locally
+  stat:
+    path: "{{ repo.dest }}"
+  register: repos
+  loop: "{{ user.git.repositories|default([]) }}"
+  loop_control:
+    loop_var: repo
+  tags:
+    - git
+    - git_conf
+
 - name: Checkout git repositories
   ansible.builtin.git:
-    repo: "{{ item.url }}"
-    dest: "{{ item.dest }}"
+    repo: "{{ item.repo.url }}"
+    dest: "{{ item.repo.dest }}"
   become: yes
   become_user: "{{ user.name }}"
-  loop: "{{ user.git.repositories|default([]) }}"
+  loop: "{{ repos.results }}"
+  when: "{{ not item.stat.exists }}"
+  ignore_errors: yes
   tags:
     - git
     - git_conf
