@@ -76,7 +76,6 @@
     dest: /tmp/
     creates: /tmp/aws
     remote_src: true
-  when: install_aws and has_root
   tags:
     - tool
     - aws
@@ -86,14 +85,50 @@
     cmd: "/tmp/aws/install --update"
     warn: false
     creates: /usr/local/bin/aws
-  when: install_aws and has_root
+  tags:
+    - tool
+    - aws
+
+- name: "Check whether sam cli is installed"
+  shell:
+    cmd: "which sam"
+  register: which_sam
+  changed_when: false
+  ignore_errors: true
+  tags:
+    - tool
+    - aws
+
+- set_fact:
+    install_sam: "{{ not which_sam.skipped|default(false) and which_sam.rc != 0 }}"
+  tags:
+    - tool
+    - aws
+
+- name: Download SAM cli installer
+  unarchive:
+    src: https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
+    dest: /tmp/
+    creates: /tmp/aws-sam-cli-linux-x86_64
+    remote_src: true
+  when: install_sam and has_root
+  tags:
+    - tool
+    - aws
+
+- name: Install SAM cli
+  shell:
+    cmd: /tmp/install
+    warn: false
+    creates: /usr/local/bin/sam
+  when: install_sam and has_root
   tags:
     - tool
     - aws
 
 ### GCP
 
-- name: "Check whether aws cli is installed"
+- name: Check whether GCP cli is installed
   shell:
     cmd: "which gcloud"
   register: which_gcloud
