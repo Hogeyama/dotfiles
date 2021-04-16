@@ -32,6 +32,21 @@
   tags:
     - java
 
+- name: Symlink jvm
+  vars:
+    jvms:
+      - src: "{{ 'java-8-openjdk-amd64' if is_stretch else 'jdk8u282-b08' }}"
+        dest: 'java8'
+      - src: 'jdk-11.0.10+9'
+        dest: 'java11'
+  file:
+    src: "{{ item.src }}"
+    dest: "/usr/lib/jvm/{{ item.dest }}"
+    state: link
+  loop: "{{ jvms }}"
+  tags:
+    - java
+
 - name: Prepare install directory for jdt.ls
   file:
     path: /usr/local/share/jdt-language-server

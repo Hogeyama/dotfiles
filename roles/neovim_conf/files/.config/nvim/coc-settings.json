@@ -24,13 +24,12 @@
   "java.configuration.runtimes": [
     {
       "name": "JavaSE-1.8",
-      "path": "/usr/lib/jvm/java-8-openjdk-amd64",
-      //"path": "/usr/lib/jvm/jdk8u282-b08",
+      "path": "/usr/lib/jvm/java8",
       "default": true
     },
     {
       "name": "JavaSE-11",
-      "path": "/usr/lib/jvm/jdk-11.0.10+9"
+      "path": "/usr/lib/jvm/java11"
     }
   ],
   "suggest.keepCompleteopt": true,
