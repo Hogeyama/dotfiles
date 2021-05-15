@@ -1,22 +1,37 @@
 ---
 - name: Add a setting to ~/.gitconfig
+  vars:
+    config:
+      "user.email": "{{ user.git.email }}"
+      "user.name": "{{ user.git.name }}"
+      "core.autoLF": "false"
+      "core.autoCRLF": "false"
+      "fetch.prune": "true"
+      "merge.ff": "false"
+      "merge.tool": "my-nvimdiff3"
+      "merge.conflictstyle": "diff3"
+      "pull.rebase": "true"
+      "init.defaultBranch": "main"
+      "alias.stash-all": "stash save --include-untracked"
+      "alias.glog": "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'"
   community.general.git_config:
     scope: global
     name: "{{ item.key }}"
     value: "{{ item.value }}"
   become: yes
   become_user: "{{ user.name }}"
-  loop:
-    - key: user.email
-      value: "{{ user.git.email }}"
-    - key: user.name
-      value: "{{ user.git.name }}"
-    - key: merge.ff
-      value: "false"
-    - key: merge.conflictstyle
-      value: "diff3"
-    - key: core.pager
-      value: "LESSCHARSET=utf-8 less"
+  loop: "{{ config | dict2items }}"
+  tags:
+    - git
+    - git_conf
+
+- name: Add a setting to ~/.gitconfig (2)
+  blockinfile:
+    path: "/home/{{ user.name }}/.gitconfig"
+    marker: ""
+    block: |
+      [mergetool "my-nvimdiff3"]
+      	cmd = nvim -d -c 'wincmd J' $MERGED $LOCAL $BASE $REMOTE
   tags:
     - git
     - git_conf
