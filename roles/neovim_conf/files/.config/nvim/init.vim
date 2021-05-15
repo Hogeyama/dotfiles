@@ -143,45 +143,14 @@ set background=dark
 colorscheme deep-space
 " colorscheme maui
 
-if 1 "true color
-  set termguicolors
-  "対応表 http://vim.wikia.com/wiki/Xterm256_color_names_for_console_Vim
-  "hi Normal guibg=#182020
-  "hi LineNr guibg=#182020
-endif
+set termguicolors
 command! GoodMatchParen hi MatchParen ctermfg=253 guifg=#dadada ctermbg=0 guibg=#000000
 GoodMatchParen
 " hi Normal guibg=None
-hi Folded ctermbg=None guibg=None "guifg=#506080
+hi Folded ctermbg=None guibg=None
 hi LineNr ctermbg=None guibg=None
 autocmd InsertLeave * GoodMatchParen
 
-" terminal color
-if has("nvim") "{{{
-  "base16-spacemacsから
-  let g:terminal_color_0 =  "#1f2022"
-  let g:terminal_color_1 =  "#f2241f"
-  let g:terminal_color_2 =  "#67b11d"
-  let g:terminal_color_3 =  "#b1951d"
-  let g:terminal_color_4 =  "#4f97d7"
-  let g:terminal_color_5 =  "#a31db1"
-  let g:terminal_color_6 =  "#2d9574"
-  let g:terminal_color_7 =  "#a3a3a3"
-  let g:terminal_color_8 =  "#585858"
-  let g:terminal_color_9 =  "#f2241f"
-  let g:terminal_color_10 = "#67b11d"
-  let g:terminal_color_11 = "#b1951d"
-  let g:terminal_color_12 = "#4f97d7"
-  let g:terminal_color_13 = "#a31db1"
-  let g:terminal_color_14 = "#2d9574"
-  let g:terminal_color_15 = "#f8f8f8"
-  let g:terminal_color_background = g:terminal_color_0
-  let g:terminal_color_foreground = g:terminal_color_5
-  if &background is "light"
-    let g:terminal_color_background = g:terminal_color_7
-    let g:terminal_color_foreground = g:terminal_color_2
-  endif
-endif "}}}
 "}}}
 
 "Set{{{
