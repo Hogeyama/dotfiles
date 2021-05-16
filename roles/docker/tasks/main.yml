@@ -37,6 +37,8 @@
       - containerd.io
     update_cache: yes
     state: latest
+  tags:
+    - docker
 
 - name: Install Docker Module for Python
   pip:
@@ -53,3 +55,5 @@
     append: yes
     groups:
       - docker
+  tags:
+    - docker
