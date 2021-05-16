@@ -238,6 +238,7 @@ if g:lsp_plugin is 'coc'
   nmap     [lsp]n <Plug>(coc-diagnostics-next)
   nmap     [lsp]p <Plug>(coc-diagnostics-prev)
   nnoremap [lsp]c :CocCommand<CR>
+  nnoremap [lsp]d :CocDiagnostics<CR>
   nnoremap [lsp]h :call CocActionAsync('doHover')<CR>
   nnoremap <C-h>  :call CocActionAsync('doHover')<CR>
 elseif g:lsp_plugin is 'nvim-hs-lsp'
@@ -633,6 +634,10 @@ autocmd FileType agda set commentstring=--%s
 
 "Elm{{{
 autocmd FileType elm nnoremap <buffer> ,w :ElmMake<CR>
+"}}}
+
+"Go"{{{
+autocmd FileType go setlocal tabstop=8 shiftwidth=8 softtabstop=8 noexpandtab
 "}}}
 
 "MarkDown/Pandoc{{{
