@@ -213,6 +213,10 @@ autocmd FileType qf 3 wincmd _
 "" Plugin
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+"sandwich{{{
+vmap s <Plug>(operator-sandwich-add)
+"}}}
+
 "editorconfig{{{
 let g:EditorConfig_max_line_indicator = 'exceeding'
 "}}}
@@ -622,7 +626,6 @@ autocmd FileType purescript nnoremap <buffer> ,w :Prebuild<CR>
 "}}}
 
 "Agda"{{{
-"let maplocalleader="\\"
 autocmd FileType agda setlocal expandtab ts=2 sts=2 sw=2
 "autocmd FileType agda set commentstring=\ --%s
 autocmd FileType agda set commentstring=--%s
@@ -786,16 +789,16 @@ nnoremap gj j
 nnoremap gk k
 vnoremap gj j
 vnoremap gk k
-nmap w <Plug>(easymotion-bd-w)
-nmap W <Plug>(easymotion-bd-W)
-nmap e <Plug>(easymotion-bd-e)
-nmap E <Plug>(easymotion-bd-E)
-vmap w <Plug>(easymotion-bd-w)
-vmap W <Plug>(easymotion-bd-W)
-vmap e <Plug>(easymotion-bd-e)
-vmap E <Plug>(easymotion-bd-E)
-nmap r <Plug>(easymotion-repeat)
-nmap ; <Plug>(easymotion-next)
+nmap <Leader>w <Plug>(easymotion-bd-w)
+nmap <Leader>W <Plug>(easymotion-bd-W)
+nmap <Leader>e <Plug>(easymotion-bd-e)
+nmap <Leader>E <Plug>(easymotion-bd-E)
+vmap <Leader>w <Plug>(easymotion-bd-w)
+vmap <Leader>W <Plug>(easymotion-bd-W)
+vmap <Leader>e <Plug>(easymotion-bd-e)
+vmap <Leader>E <Plug>(easymotion-bd-E)
+nmap <Leader>r <Plug>(easymotion-repeat)
+nmap <Leader>; <Plug>(easymotion-next)
 """moving: insert mode
 inoremap <C-j> <down>
 inoremap <C-k> <up>
@@ -823,7 +826,7 @@ tnoremap <C-j> <Down>
 tnoremap <C-h> <Left>
 tnoremap <C-l> <Right>
 """other
-nnoremap <Space>cd :cd %:h<CR>
+nnoremap <Space>cd :lcd %:h<CR>
 nnoremap ^ :noh<CR>
 vnoremap * "zy:let @/ = @z<CR>n
 nnoremap <C-n> :CNextRecursive<CR>
