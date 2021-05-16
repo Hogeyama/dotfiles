@@ -12,4 +12,3 @@ dependencies:
   - role: neovim
   - role: pandoc
   - role: docker
-  - role: neovim
