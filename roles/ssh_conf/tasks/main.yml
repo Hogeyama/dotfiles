@@ -4,7 +4,7 @@
     user: "{{ user.name }}"
     state: present
     key: "{{ lookup('file', item) }}"
-  loop: "{{ user.ssh_authorized_keys|default[] }}"
+  loop: "{{ user.ssh.authorized_keys|default[] }}"
   tags:
     - ssh_conf
 
@@ -15,7 +15,17 @@
     owner: "{{ user.name }}"
     group: "{{ user.name }}"
     mode: '0600'
-  loop: "{{ user.ssh_private_keys|default[] }}"
+  loop: "{{ user.ssh.private_keys|default[] }}"
   tags:
     - ssh_conf
 
+- name: Add known_hosts
+  known_hosts:
+    name: "{{ item.name }}"
+    key: "{{ item.name }} {{ item.key }}"
+    state: present
+  become: yes
+  become_user: "{{ user.name }}"
+  loop: "{{ user.ssh.known_hosts|default([]) }}"
+  tags:
+    - ssh_conf

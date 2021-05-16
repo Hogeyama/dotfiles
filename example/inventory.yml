@@ -19,30 +19,41 @@ all:
         # Can be omitted if create=false
         password: "$6$pucajcuOuQDjqgXt$zznGOkhAyYEshAwkMYh81TGnDnt52TM42LOkuLvMZ9.IX0RpeWukDwvy1P5u.kl8J62Qd34NvCNyP1.lNH0M31"
         git:
-          name: "Hogeyama"
-          email: "gan13027830@gmail.com"
-          hosts:
+          config:
+            user.name: "Hogeyama"
+            user.email: "gan13027830@gmail.com"
+            core.autoCRLF: "false"
+            core.autoLF: "false"
+            fetch.prune: "true"
+            merge.conflictstyle: "diff3"
+            merge.ff: "false"
+            merge.tool: "my-nvimdiff3"
+            mergetool.my-nvimdiff3.cmd: "nvim -d -c 'wincmd J' $MERGED $LOCAL $BASE $REMOTE"
+            pull.rebase: "true"
+            init.defaultBranch: "main"
+            alias.stash-all: "stash save --include-untracked"
+            alias.glog: "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'"
+          # repositories:
+          #   - url: git@github.com:haskell/haskell-language-server.git
+          #     dest: /home/cq2n-iwym/tool/haskell-language-server
+
+        ssh:
+          # for vagrant
+          # authorized_keys:
+          #   - "/vagrant/.ssh/id_ed25519"
+          # private_keys:
+          #   - "/vagrant/.ssh/id_ed25519"
+          known_hosts:
             - name: github.com
               key: ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
-          repositories:
-            - url: git@github.com:haskell/haskell-language-server.git
-              dest: /home/cq2n-iwym/tool/haskell-language-server
-
-        # for vagrant
-        # ssh_authorized_keys:
-        #   - "/vagrant/.ssh/id_ed25519"
-        # ssh_private_keys:
-        #   - src: "/vagrant/.ssh/id_ed25519"
-        #     name: "id_ed2519"
 
       haskell:
-        install_ghcup: true
-        install_stack: true
+        install_ghcup: false
+        install_stack: false
         install_nix: true
 
       python:
-        build: true
-        version: 3.9.2
+        build: false
 
       xmonad:
         install: false
