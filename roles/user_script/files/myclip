@@ -1,2 +1,2 @@
 #!/bin/bash
-xclip
+xclip -selection clipboard -selection primary
