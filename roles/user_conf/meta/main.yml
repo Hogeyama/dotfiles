@@ -5,5 +5,4 @@ dependencies:
   - role: zsh_conf
   - role: tmux_conf
   - role: neovim_conf
-  - role: xmonad_conf
   - role: git_conf

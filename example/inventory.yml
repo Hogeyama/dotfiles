@@ -34,9 +34,9 @@ all:
             init.defaultBranch: "main"
             alias.stash-all: "stash save --include-untracked"
             alias.glog: "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'"
-          # repositories:
-          #   - url: git@github.com:haskell/haskell-language-server.git
-          #     dest: /home/cq2n-iwym/tool/haskell-language-server
+          repositories:
+            - url: git@github.com:Hogeyama/xmonad-config.git
+              dest: /home/hogeyama/.xmonad
 
         ssh:
           # for vagrant

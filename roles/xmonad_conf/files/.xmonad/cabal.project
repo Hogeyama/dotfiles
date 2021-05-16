@@ -1,2 +1,0 @@
-packages: xmonad-config.cabal
-constraints: xmobar +all_extensions
