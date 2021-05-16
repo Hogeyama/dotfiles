@@ -7,7 +7,17 @@
     mode: '0755'
   loop:
     - 'with-log'
-    - 'myclip'
     - 'nvr-git'
+  tags:
+    - user_script
+
+- name: Install ~/local/bin/myclip
+  template:
+    src: myclip.j2
+    dest: "/home/{{ user.name }}/.local/bin/myclip"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: '0755'
+  when: false # TODO
   tags:
     - user_script
