@@ -1,0 +1,13 @@
+#!/bin/bash
+PROG="$(basename $0)"
+nvr -p $*
+echo
+echo "$PROG: command: 'nvr -p $*'"
+while true; do
+  read -p "$PROG: finished? [y/n/abort]: " -r
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    exit
+  elif [[ $REPLY =~ ^abort$ ]]; then
+    exit 1
+  fi
+done

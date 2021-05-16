@@ -1,20 +1,13 @@
-- name: Set ~/local/bin/with-log
+- name: Install user scripts
   copy:
-    src: with-log
-    dest: "/home/{{ user.name }}/.local/bin/with-log"
+    src: "{{ item }}"
+    dest: "/home/{{ user.name }}/.local/bin/{{ item }}"
     owner: "{{ user.name }}"
     group: "{{ user.name }}"
     mode: '0755'
-  tags:
-    - user_script
-
-- name: Set ~/local/bin/myclip
-  template:
-    src: myclip.j2
-    dest: "/home/{{ user.name }}/.local/bin/myclip"
-    owner: "{{ user.name }}"
-    group: "{{ user.name }}"
-    mode: '0755'
-  when: false # TODO
+  loop:
+    - 'with-log'
+    - 'myclip'
+    - 'nvr-git'
   tags:
     - user_script
