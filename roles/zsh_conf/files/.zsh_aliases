@@ -39,11 +39,16 @@ neovim(){
   fi
 }
 
+nvr-cd() {
+  nvr -c "cd $(realpath $1)"
+}
+
 # vim
 alias v='neovim'
 alias vi='neovim'
 alias vim='neovim'
 alias nvim='neovim'
+alias ncd=nvr-cd
 
 ################################################################################
 # SSH
