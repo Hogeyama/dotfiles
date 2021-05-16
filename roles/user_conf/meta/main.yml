@@ -2,6 +2,7 @@
 dependencies:
   - role: ensure_user
   - role: user_script
+  - role: ssh_conf
   - role: zsh_conf
   - role: tmux_conf
   - role: neovim_conf
