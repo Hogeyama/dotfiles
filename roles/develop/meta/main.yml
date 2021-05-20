@@ -12,3 +12,4 @@ dependencies:
   - role: neovim
   - role: pandoc
   - role: docker
+  - role: xmonad_desktop

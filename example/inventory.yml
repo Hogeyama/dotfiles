@@ -58,7 +58,7 @@ all:
         build: false
 
       xmonad:
-        install: false
+        install: true
 
       tmux:
         install_method: "apt" # Either "apt" or "build"

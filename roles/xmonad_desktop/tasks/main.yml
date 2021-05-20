@@ -1,0 +1,97 @@
+---
+- name: Install moromoro
+  apt:
+    name:
+      - xmonad
+      - gnome
+      - libasound2-dev
+      - libxpm-dev
+      - fonts-liberation
+      - fcitx-mozc
+      - xsel
+      - gconf2
+  when: xmonad.install|default(false)
+  tags:
+    - xmonad
+    - xmonad_desktop
+
+- name: Install google-chrome
+  apt:
+    deb: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  when: xmonad.install|default(false)
+  tags:
+    - xmonad
+    - xmonad_desktop
+
+- name: Install ~/.xinputrc
+  copy:
+    src: "{{ item }}"
+    dest: "/home/{{ user.name }}/{{ item }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: '0644'
+  loop:
+    - .xinputrc
+  when: xmonad.install|default(false)
+  tags:
+    - xmonad
+    - xmonad_desktop
+
+- name: Install favorite fonts
+  shell:
+    cmd: "{{ item.cmd }}"
+    creates: "{{ item.creates }}"
+  loop:
+    - creates: "/home/{{ user.name}}/.fonts/Illusion-Regular.ttc"
+      cmd: |
+        TMP=$(mktemp -d)
+        trap 'rm -rf $TMP' EXIT
+        OWD=$(pwd)
+        cd $TMP
+        wget https://github.com/tomonic-x/Illusion/releases/download/v0.2.5/Illusion-0.2.5.zip
+        unar Illusion-0.2.5.zip 'hinted/*.ttc'
+        mkdir -p ~/.fonts
+        find . -name '*.ttc' | xargs -I{} cp {} ~/.fonts/tmp
+        cd $OWD
+    - creates: "/home/{{ user.name}}/.fonts/rounded-mgenplus-1m-regular.ttf"
+      cmd: |
+        TMP=$(mktemp -d)
+        trap 'rm -rf $TMP' EXIT
+        OWD=$(pwd)
+        cd $TMP
+        wget https://osdn.jp/downloads/users/8/8598/rounded-mgenplus-20150602.7z
+        unar rounded-mgenplus-20150602.7z '*.ttf'
+        mkdir -p ~/.fonts
+        find . -name '*.ttf' | xargs -I{} cp {} ~/.fonts/tmp
+        cd $OWD
+  become: yes
+  become_user: "{{ user.name }}"
+  when: xmonad.install|default(false)
+  tags:
+    - xmonad
+    - xmonad_desktop
+
+- name: Create ~/.config/fontconfig/conf.d
+  file:
+    path: "/home/{{ user.name }}/.config/fontconfig/conf.d"
+    state: directory
+    recurse: yes
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+  tags:
+    - xmonad
+    - xmonad_desktop
+
+- name: Combine Illusion and Rounded-Mgen+
+  copy:
+    src: "{{ item }}"
+    dest: "/home/{{ user.name }}/{{ item }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: '0644'
+  loop:
+    - .config/fontconfig/conf.d/illusion.conf
+  when: xmonad.install|default(false)
+  tags:
+    - xmonad
+    - xmonad_desktop
