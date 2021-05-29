@@ -12,26 +12,6 @@ let g:lsp_plugin = 'coc'
 " let g:python3_host_prog = '/usr/local/bin/python3.8'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" VM-unique Configuration
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" function! MyClipboard(lines,regtype) abort
-"   call extend(g:, {'my_clipboard': [a:lines, a:regtype]})
-"   call system("myclip", a:lines)
-" endfunction
-" let g:clipboard = {
-"       \   'name': 'myClipboard',
-"       \   'copy': {
-"       \      '+': function("MyClipboard"),
-"       \      '*': function("MyClipboard")
-"       \    },
-"       \   'paste': {
-"       \      '+': {-> get(g:, 'my_clipboard', [])},
-"       \      '*': {-> get(g:, 'my_clipboard', [])},
-"       \   },
-"       \ }
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -106,7 +86,7 @@ Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'vim-voom/VOoM'
 """Textile
-Plug 'amiorin/vim-textile'
+Plug 's3rvac/vim-syntax-redminewiki'
 ""Coq
 Plug 'jvoorhis/coq.vim'
 Plug 'eagletmt/coqtop-vim'
@@ -126,6 +106,9 @@ Plug 'rakr/vim-one'
 Plug 'w0ng/vim-hybrid'
 Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'chriskempson/base16-vim' "true_color
+Plug 'kana/vim-metarw'
+Plug 'mattn/vim-metarw-redmine'
+Plug 'mattn/webapi-vim'
 """otameshi
 Plug 'vim-scripts/paredit.vim'
 Plug 'tomtom/tlib_vim'
@@ -207,6 +190,24 @@ set conceallevel=0
 autocmd QuickFixCmdPost *grep* cwindow
 autocmd FileType qf wincmd J
 autocmd FileType qf 3 wincmd _
+"}}}
+
+" Clipboard {{{
+function! MyClipboard(lines,regtype) abort
+  call extend(g:, {'my_clipboard': [a:lines, a:regtype]})
+  call system("myclip", a:lines)
+endfunction
+let g:clipboard = {
+      \   'name': 'myClipboard',
+      \   'copy': {
+      \      '+': function("MyClipboard"),
+      \      '*': function("MyClipboard")
+      \    },
+      \   'paste': {
+      \      '+': {-> get(g:, 'my_clipboard', [])},
+      \      '*': {-> get(g:, 'my_clipboard', [])},
+      \   },
+      \ }
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -551,6 +552,13 @@ let g:ghcid_keep_open=1
 let g:ghcid_command='ghcid-docker.sh'
 "}}}
 
+"Redmine{{{
+let g:metarw_redmine_server = readfile(expand("~/.redmine_api_key"))[0]
+let g:metarw_redmine_apikey = readfile(expand("~/.redmine_api_key"))[1]
+au BufNewFile,BufRead             *.redmine  set filetype=redminewiki
+au BufNewFile,BufRead,InsertLeave redmine:/* set filetype=redminewiki ro
+"}}}
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" FileType
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -654,7 +662,7 @@ let g:neomake_pandoc_pandoc_maker = {
     \ 'errorformat': '',
     \ 'process_output': {-> []},
     \ }
-"autocmd InsertLeave *.md Neomake pandoc
+let g:pandoc#filetypes#handled = ["pandoc"]
 
 let g:previm_enable_realtime = 1
 let g:vim_markdown_math = 1
