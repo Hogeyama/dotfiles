@@ -27,7 +27,7 @@ Plug 'benekastah/neomake'
 Plug 'editorconfig/editorconfig-vim'
 Plug '~/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'yuki-yano/fzf-preview.vim'
+Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
 """便利
 "Plug 'vim-scripts/Align'
 Plug 'junegunn/vim-easy-align'
@@ -39,6 +39,9 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'Yggdroot/indentLine'
 Plug 'wellle/visual-split.vim'
 Plug 'mhinz/vim-startify'
+Plug 'kana/vim-metarw'
+Plug 'mattn/vim-metarw-redmine'
+Plug 'mattn/webapi-vim'
 ""Git TODO 整理
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
@@ -106,9 +109,6 @@ Plug 'rakr/vim-one'
 Plug 'w0ng/vim-hybrid'
 Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'chriskempson/base16-vim' "true_color
-Plug 'kana/vim-metarw'
-Plug 'mattn/vim-metarw-redmine'
-Plug 'mattn/webapi-vim'
 """otameshi
 Plug 'vim-scripts/paredit.vim'
 Plug 'tomtom/tlib_vim'
@@ -235,7 +235,7 @@ if g:lsp_plugin is 'coc'
   xmap     [lsp]f <Plug>(coc-format-selected)
   nmap     [lsp]a <Plug>(coc-codeaction)
   nmap     <F2>   <Plug>(coc-rename)
-  nmap     [lsp]l <Plug>(coc-openlink)
+  nmap     [lsp]l <Plug>(coc-codelens-action)
   nmap     [lsp]n <Plug>(coc-diagnostics-next)
   nmap     [lsp]p <Plug>(coc-diagnostics-prev)
   nnoremap [lsp]c :CocCommand<CR>
@@ -265,7 +265,7 @@ endif
 "coc.nvim {{{
 if g:lsp_plugin is 'coc'
   set updatetime=300
-  let g:coc_start_at_startup=0
+  let g:coc_start_at_startup=1
   let g:coc_global_extensions = [
     \ 'coc-json',
     \ 'coc-yaml',
@@ -553,8 +553,10 @@ let g:ghcid_command='ghcid-docker.sh'
 "}}}
 
 "Redmine{{{
-let g:metarw_redmine_server = readfile(expand("~/.redmine_api_key"))[0]
-let g:metarw_redmine_apikey = readfile(expand("~/.redmine_api_key"))[1]
+if filereadable(expand("~/.redmine_api_key"))
+  let g:metarw_redmine_server = readfile(expand("~/.redmine_api_key"))[0]
+  let g:metarw_redmine_apikey = readfile(expand("~/.redmine_api_key"))[1]
+endif
 au BufNewFile,BufRead             *.redmine  set filetype=redminewiki
 au BufNewFile,BufRead,InsertLeave redmine:/* set filetype=redminewiki ro
 "}}}

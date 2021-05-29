@@ -7,7 +7,7 @@
       "filetypes": ["haskell", "lhaskell"],
       "initializationOptions": {
         "haskell": {
-          "formattingProvider": "ormolu"
+          "formattingProvider": "brittany"
         }
       }
     },
@@ -36,5 +36,6 @@
   "diagnostic.virtualText": true,
   "diagnostic.virtualTextPrefix": "-- ",
   "diagnostic.enableSign": false,
-  "coc.preferences.useQuickfixForLocations": true
+  "coc.preferences.useQuickfixForLocations": true,
+  "codeLens.enable": true
 }

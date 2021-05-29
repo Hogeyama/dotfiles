@@ -1,0 +1,28 @@
+snippet     $
+abbr        ${}
+alias       v
+options     word
+	\${${0}}
+
+snippet     parsearg
+options     head
+	while [ $# -gt 0 ]; do
+	  case \$1 in
+	    ${1})
+	      ${2}
+	      ;;
+	    ${0}
+	    *)
+	      ;;
+	  esac
+	  shift
+	done
+
+snippet     branch
+abbr        ${1})..
+alias       br
+options     head
+	${1})
+	  ${2}
+	  ;;
+	${0}

@@ -1,0 +1,23 @@
+include sh.snip
+
+snippet if
+	if [[ ${1:#:condition} ]]; then
+		${0:TARGET}
+	fi
+
+snippet set-safe
+	set -eu
+	set -o pipefail
+
+snippet     parsearg
+options     head
+	while [[ $# -gt 0 ]]; do
+	  case \$1 in
+	    ${1})
+	      ${2}
+	      ;;
+	    *)
+	      ;;
+	  esac
+	  shift
+	done
