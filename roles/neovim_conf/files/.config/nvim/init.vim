@@ -230,7 +230,7 @@ function! ToggleFloatermVfimFun() abort
     FloatermToggle vifm
   else
     FloatermNew  --name=vifm
-    FloatermSend --name=vifm vifm
+    FloatermSend --name=vifm vifm .
     let g:floaterm_vifm_exists=1
   endif
 endfunction
@@ -767,8 +767,12 @@ let g:init_vim = $XDG_CONFIG_HOME != ""
                   \ : $HOME . "/.config" . "/nvim/init.vim"
 command! EditInitVim   execute "e " .  g:init_vim
 command! SourceInitVim execute "so " .  g:init_vim
+au WinLeave * let g:last_win = winnr()
 au TabLeave * let g:last_tab = tabpagenr()
-command! -complete=file -nargs=1 TabEditBehind tabedit <args> | execute "tabnext ".g:last_tab
+command! -nargs=0 MoveToLastWin | execute "normal! ".g:last_win."<C-w><C-w>"
+command! -nargs=0 MoveToLastTab | execute "tabnext ".g:last_tab
+command! -complete=file -nargs=1 EditBehind    edit <args>    | MoveToLastWin
+command! -complete=file -nargs=1 TabEditBehind tabedit <args> | MoveToLastTab
 "}}}
 
 "Key mapping{{{

@@ -407,10 +407,6 @@ nnoremap S :sort<cr>
 nnoremap w :view<cr>
 vnoremap w :view<cr>gv
 
-" Open file in existing instance of nvim
-nnoremap o :!nvr -c 'TabEditBehind %f:p'<cr>
-nnoremap O :!nvr -p %f<cr>
-
 " Open file in the background using its default program
 " nnoremap gb :file &<cr>l
 
@@ -466,10 +462,18 @@ nnoremap <f8> :delete<cr>
 "     vifm --server-name "$VIFM_SERVER_NAME" --remote +"cd '$PWD'"
 "
 " let $VIFM_SERVER_NAME = v:servername
-command! fzf :set noquickview | :execute system('vifm-fzf 2>/dev/tty') | redraw | view
-nnoremap ,f :fzf<cr>
-command! ncd :execute system('nvr -c "cd %d"')
-nnoremap ,n :ncd<cr>
+
+" ------------------------------------------------------------------------------
+
 fileviewer * vifm-viewer %c
 set grepprg='rg --color=never -Hn %i %a %s'
+
+nnoremap o :!nvr -c 'vsplit  %f:p | MoveToLastWin'<cr>
+nnoremap O :!nvr -c 'tabedit %f:p | MoveToLastTab'<cr>
+
+command! fzf :set noquickview | :execute system('vifm-fzf 2>/dev/tty') | redraw | view
+nnoremap ,f :fzf<cr>
+
+command! ncd :execute system('nvr -c "cd %d"')
+nnoremap ,n :ncd<cr>
 
