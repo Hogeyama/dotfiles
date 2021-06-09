@@ -31,16 +31,16 @@ alias gs='git status -s'
 ################################################################################
 
 neovim(){
-  if [[ -z $NVIM_LISTEN_ADDRESS ]]
+  if [[ -z "$NVIM_LISTEN_ADDRESS" ]]
   then
-    nvim $*
+    nvim "$@"
   else
-    nvr -p $*
+    nvr -p "$@"
   fi
 }
 
 nvr-cd() {
-  nvr -c "cd $(realpath $1)"
+  nvr -c "cd '$(realpath $1)'"
 }
 
 # vim

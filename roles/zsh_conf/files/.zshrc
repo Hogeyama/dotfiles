@@ -101,7 +101,7 @@ bashcompinit
 zstyle ':completion:*:*:nvim:*' file-patterns '^*.(aux|log|pdf|cmo|cmi|cmt|cmx):source-files' '*:all-files'
 
 # drwxrwxrwxなるディレクトリ(other writable)が見にくいのを直す
-eval `dircolors | sed 's/ow=[^:]*:/ow=01;34:/'` #青背景白文字
+eval $(dircolors | sed 's/ow=[^:]*:/ow=01;34:/') #青背景白文字
 
 # bindkey
 bindkey "^K" up-line-or-history
