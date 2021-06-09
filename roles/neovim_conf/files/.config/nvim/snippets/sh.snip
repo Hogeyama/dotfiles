@@ -1,8 +1,14 @@
-snippet     $
+snippet     variable
 abbr        ${}
-alias       v
+alias       v var
 options     word
-	\${${0}}
+	\${${1}}${0}
+
+snippet     command-substiturion
+abbr        $()
+alias       cs
+options     word
+	\$(${1})${0}
 
 snippet     parsearg
 options     head

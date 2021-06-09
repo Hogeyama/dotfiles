@@ -26,6 +26,8 @@ alias DU='du -hd1 | sort -h'
 # git
 alias gs='git status -s'
 
+alias open=xdg-open
+
 ################################################################################
 # Neovim
 ################################################################################
@@ -41,6 +43,29 @@ neovim(){
 
 nvr-cd() {
   nvr -c "cd '$(realpath $1)'"
+}
+
+with-env() {
+  local env=.env
+  local cmd=()
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --env)
+        shift
+        env=$1
+        ;;
+      --)
+        shift
+        cmd=("$@")
+        break
+        ;;
+      *)
+        cmd+=("$1")
+        ;;
+    esac
+    shift
+  done
+  env -v $(grep -v ^# "$env" | xargs) $cmd
 }
 
 # vim
