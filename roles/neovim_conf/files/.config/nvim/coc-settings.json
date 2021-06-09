@@ -17,7 +17,7 @@
       "filetypes": ["ocaml"]
     }
   },
-  "java.home": "/usr/lib/jvm/jdk-11.0.10+9",
+  "java.home": "/usr/lib/jvm/java11",
   "java.jdt.ls.home": "/usr/local/share/jdt-language-server",
   "java.signatureHelp.enabled": true,
   "java.import.gradle.enabled" : true,
