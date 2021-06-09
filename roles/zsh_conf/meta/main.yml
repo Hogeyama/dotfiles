@@ -1,4 +1,4 @@
 ---
 dependencies:
   - role: ensure_user
-  - role: zsh
+  - role: tool

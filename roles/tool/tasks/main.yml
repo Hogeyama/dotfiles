@@ -1,6 +1,7 @@
 - name: Install basic developement tools
   apt:
     name:
+    - zsh
     - git
     - cvs
     - mercurial
@@ -8,7 +9,6 @@
     - fuse
     - vim
     - vifm
-    - exa
     - jq
     - dnsutils
     - curl
@@ -21,6 +21,22 @@
   when: has_root
   tags:
     - tool
+
+- name: Set /etc/zsh/zprofile
+  blockinfile:
+    path: /etc/zsh/zprofile
+    block: |
+      if [ -d /etc/profile.d ]; then
+       for i in /etc/profile.d/*.sh; do
+         if [ -r $i ]; then
+           . $i
+         fi
+       done
+       unset i
+      fi
+  tags:
+    - tool
+    - zsh
 
 - name: Install awesome cli tools
   vars:
