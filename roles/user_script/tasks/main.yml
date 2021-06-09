@@ -8,6 +8,8 @@
   loop:
     - 'with-log'
     - 'nvr-git'
+    - 'vifm-viewer'
+    - 'vifm-fzf'
   tags:
     - user_script
 

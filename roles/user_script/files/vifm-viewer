@@ -1,0 +1,23 @@
+#!/bin/bash
+set -eu
+set -o pipefail
+EXA_OPTS=(
+  --all
+  --sort name
+  --tree
+  --level 1
+  --classify
+  --git
+  --color=always
+)
+BAT_OPTS=(
+  --color always
+  --wrap never
+  --pager never
+  --style='numbers,changes'
+)
+if [[ -d "$1" ]]; then
+  exa "${EXA_OPTS[@]}" "$1"
+elif [[ -f "$1" ]]; then
+  bat "${BAT_OPTS[@]}" "$1"
+fi

@@ -28,6 +28,11 @@ Plug 'editorconfig/editorconfig-vim'
 Plug '~/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
+Plug 'vifm/vifm.vim'
+Plug 'voldikss/vim-floaterm'
+Plug 'voldikss/fzf-floaterm'
+Plug 'voldikss/clap-floaterm'
+Plug 'liuchengxu/vim-clap'
 """便利
 "Plug 'vim-scripts/Align'
 Plug 'junegunn/vim-easy-align'
@@ -38,7 +43,7 @@ Plug 'AndrewRadev/linediff.vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'Yggdroot/indentLine'
 Plug 'wellle/visual-split.vim'
-Plug 'mhinz/vim-startify'
+" Plug 'mhinz/vim-startify'
 Plug 'kana/vim-metarw'
 Plug 'mattn/vim-metarw-redmine'
 Plug 'mattn/webapi-vim'
@@ -213,6 +218,24 @@ let g:clipboard = {
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" Plugin
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"floaterm{{{
+let g:floaterm_width = 0.9
+let g:floaterm_height = 0.9
+nnoremap <F8> :ToggleFloatermVfim<CR>
+tnoremap <F8> <C-\><C-n>:ToggleFloatermVfim<CR>
+command! ToggleFloatermVfim call ToggleFloatermVfimFun()
+function! ToggleFloatermVfimFun() abort
+  if get(g:,'floaterm_vifm_exists',0)
+    FloatermToggle vifm
+  else
+    FloatermNew  --name=vifm
+    FloatermSend --name=vifm vifm
+    let g:floaterm_vifm_exists=1
+  endif
+endfunction
+
+"}}}
 
 "sandwich{{{
 vmap s <Plug>(operator-sandwich-add)
@@ -425,8 +448,9 @@ let g:neosnippet#snippets_directory = '~/.config/nvim/snippets'
 "fzf{{{
 set rtp+=~/.fzf
 let g:fzf_command_prefix = 'Fzf'
-let g:fzf_layout = { 'down': '40%' }
-let g:fzf_preview_window = ['right:50%:noborder']
+" let g:fzf_layout = { 'down': '40%' }
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
+let g:fzf_preview_window = ['right:50%:noborder', 'ctrl-/']
 nmap <C-u> [fzf]
 nnoremap [fzf]b :FzfBuffers<CR>
 nnoremap [fzf]h :FzfHistory<CR>
@@ -743,6 +767,8 @@ let g:init_vim = $XDG_CONFIG_HOME != ""
                   \ : $HOME . "/.config" . "/nvim/init.vim"
 command! EditInitVim   execute "e " .  g:init_vim
 command! SourceInitVim execute "so " .  g:init_vim
+au TabLeave * let g:last_tab = tabpagenr()
+command! -complete=file -nargs=1 TabEditBehind tabedit <args> | execute "tabnext ".g:last_tab
 "}}}
 
 "Key mapping{{{
@@ -829,17 +855,15 @@ cnoremap <C-k> <up>
 """terminal
 nnoremap te :terminal<CR>
 nnoremap vs :rightbelow vs<CR>
-tnoremap <Esc> <C-\><C-n>
-tnoremap jk    <C-\><C-n>
-tnoremap JK    <C-\><C-n><C-w>h
-tnoremap zh    <C-\><C-n><C-w>h
-tnoremap zj    <C-\><C-n><C-w>j
-tnoremap zk    <C-\><C-n><C-w>k
-tnoremap zl    <C-\><C-n><C-w>l
-tnoremap <C-k> <Up>
-tnoremap <C-j> <Down>
-tnoremap <C-h> <Left>
-tnoremap <C-l> <Right>
+tnoremap <C-j><C-k> <C-\><C-n>
+tnoremap JK         <C-\><C-n><C-w>h
+tnoremap zh         <C-\><C-n><C-w>h
+tnoremap zj         <C-\><C-n><C-w>j
+tnoremap zk         <C-\><C-n><C-w>k
+tnoremap zl         <C-\><C-n><C-w>l
+tnoremap zz         <C-\><C-n>
+tnoremap zgt        <C-\><C-n>gt
+tnoremap ztg        <C-\><C-n>gT
 """other
 nnoremap <Space>cd :lcd %:h<CR>
 nnoremap ^ :noh<CR>

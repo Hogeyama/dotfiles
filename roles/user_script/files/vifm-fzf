@@ -1,0 +1,22 @@
+#!/bin/bash
+set -eu
+set -o pipefail
+FD_OPTS=(
+  --hidden
+  --no-ignore
+  --exclude .git
+  --exclude .hie
+  --exclude .direnv
+  --exclude dist-newstyle
+  --exclude .stack-work
+)
+FZF_OPTS=(
+  --preview "vifm-viewer {}"
+  --preview-window right:50%:noborder
+)
+TARGET=$(fd "${FD_OPTS[@]}" | fzf "${FZF_OPTS[@]}")
+if [[ -d "${TARGET}" ]]; then
+  echo "cd '${TARGET}'"
+else
+  echo "goto '${TARGET}'"
+fi

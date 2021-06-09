@@ -1,0 +1,24 @@
+
+- name: Create ~/.config/vifm
+  file:
+    path: "/home/{{ user.name }}/.config/vifm"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: '0755'
+  tags:
+    - vifm
+    - vifm_conf
+
+- name: Install vifmrc
+  copy:
+    src: "{{ item }}"
+    dest: "/home/{{ user.name }}/{{ item }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: 'preserve'
+  loop:
+    - .config/vifm/vifmrc
+  tags:
+    - vifm
+    - vifm_conf
