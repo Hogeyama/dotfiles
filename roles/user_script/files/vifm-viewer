@@ -1,23 +1,43 @@
 #!/bin/bash
 set -eu
 set -o pipefail
+
+LEVEL=3
+WIDTH=80
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -l|--level)
+      LEVEL="$2"
+      shift
+      ;;
+    -w|--width)
+      WIDTH="$2"
+      shift
+      ;;
+    *)
+      TARGET="$1"
+      ;;
+  esac
+  shift
+done
+
 EXA_OPTS=(
   --all
   --sort name
   --tree
-  --level 1
+  --level "${LEVEL}"
   --classify
   --git
   --color=always
 )
 BAT_OPTS=(
   --color always
-  --wrap never
   --pager never
   --style='numbers,changes'
 )
-if [[ -d "$1" ]]; then
-  exa "${EXA_OPTS[@]}" "$1"
-elif [[ -f "$1" ]]; then
-  bat "${BAT_OPTS[@]}" "$1"
+  # --terminal-width "${WIDTH}"
+if [[ -d "${TARGET}" ]]; then
+  exa "${EXA_OPTS[@]}" "${TARGET}"
+elif [[ -f "${TARGET}" ]]; then
+  bat "${BAT_OPTS[@]}" "${TARGET}"
 fi

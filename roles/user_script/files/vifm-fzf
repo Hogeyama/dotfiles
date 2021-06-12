@@ -1,6 +1,25 @@
 #!/bin/bash
 set -eu
 set -o pipefail
+
+FCMD=goto
+DCMD=cd
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -c|--cmd)
+      FCMD="$2"
+      shift
+      ;;
+    -d|--dcmd)
+      DCMD="$2"
+      shift
+      ;;
+    *)
+      ;;
+  esac
+  shift
+done
+
 FD_OPTS=(
   --hidden
   --no-ignore
@@ -14,9 +33,9 @@ FZF_OPTS=(
   --preview "vifm-viewer {}"
   --preview-window right:50%:noborder
 )
-TARGET=$(fd "${FD_OPTS[@]}" | fzf "${FZF_OPTS[@]}")
+TARGET=$(realpath $(fd "${FD_OPTS[@]}" | fzf "${FZF_OPTS[@]}"))
 if [[ -d "${TARGET}" ]]; then
-  echo "cd '${TARGET}'"
+  echo "${DCMD} '${TARGET}'"
 else
-  echo "goto '${TARGET}'"
+  echo "${FCMD} '${TARGET}'"
 fi
