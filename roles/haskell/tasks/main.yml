@@ -11,14 +11,22 @@
     - haskell
   when: haskell.install_ghcup|default(false)
 
+- name: Install stack
+  shell:
+    cmd: "curl -sSL https://get.haskellstack.org/ | sh"
+    creates: /usr/local/bin/stack
+  tags:
+    - haskell
+  when: haskell.install_stack|default(false)
+
 - name: Install ghcup
   shell:
-    cmd: "curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sudo -u {{ user.name }} BOOTSTRAP_HASKELL_NONINTERACTIVE=1 sh"
+    cmd: "cd /tmp && curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sudo -u {{ user.name }} env BOOTSTRAP_HASKELL_NONINTERACTIVE=1 sh"
     creates: "/home/{{ user.name }}/.ghcup"
     warn: false
   tags:
     - haskell
-  when: haskell.install_ghcup|default(false) # totemo jikan kakaru
+  when: haskell.install_ghcup|default(false)
 
 - name: Instal nix
   shell:
