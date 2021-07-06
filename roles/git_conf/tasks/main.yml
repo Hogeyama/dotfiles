@@ -29,7 +29,7 @@
   become: yes
   become_user: "{{ user.name }}"
   loop: "{{ repos.results }}"
-  when: "{{ not item.stat.exists }}"
+  when: not item.stat.exists
   ignore_errors: yes
   tags:
     - git
