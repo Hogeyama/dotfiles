@@ -10,6 +10,7 @@
     - 'nvr-git'
     - 'vifm-viewer'
     - 'vifm-fzf'
+    - 'myfzf'
   tags:
     - user_script
 
