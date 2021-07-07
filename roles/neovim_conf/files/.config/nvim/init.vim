@@ -222,16 +222,16 @@ let g:clipboard = {
 "floaterm{{{
 let g:floaterm_width = 0.9
 let g:floaterm_height = 0.9
-nnoremap <F8> :ToggleFloatermVfim<CR>
-tnoremap <F8> <C-\><C-n>:ToggleFloatermVfim<CR>
-command! ToggleFloatermVfim call ToggleFloatermVfimFun()
-function! ToggleFloatermVfimFun() abort
-  if get(g:,'floaterm_vifm_exists',0)
-    FloatermToggle vifm
+nnoremap <F8> :ToggleFloatermFzf<CR>
+tnoremap <F8> <C-\><C-n>:ToggleFloatermFzf<CR>
+command! ToggleFloatermFzf call ToggleFloatermFzfFun()
+function! ToggleFloatermFzfFun() abort
+  if get(g:,'floaterm_fzf_exists',0)
+    FloatermToggle fzf
   else
-    FloatermNew  --name=vifm
-    FloatermSend --name=vifm vifm .
-    let g:floaterm_vifm_exists=1
+    FloatermNew  --name=fzf
+    FloatermSend --name=fzf myfzf
+    let g:floaterm_fzf_exists=1
   endif
 endfunction
 
@@ -769,8 +769,8 @@ command! EditInitVim   execute "e " .  g:init_vim
 command! SourceInitVim execute "so " .  g:init_vim
 au WinLeave * let g:last_win = winnr()
 au TabLeave * let g:last_tab = tabpagenr()
-command! -nargs=0 MoveToLastWin | execute "normal! ".g:last_win."<C-w><C-w>"
-command! -nargs=0 MoveToLastTab | execute "tabnext ".g:last_tab
+command! -nargs=0 MoveToLastWin execute "normal! ".g:last_win."<C-w><C-w>"
+command! -nargs=0 MoveToLastTab execute "tabnext ".g:last_tab
 command! -complete=file -nargs=1 EditBehind    edit <args>    | MoveToLastWin
 command! -complete=file -nargs=1 TabEditBehind tabedit <args> | MoveToLastTab
 "}}}
