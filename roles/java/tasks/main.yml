@@ -3,6 +3,26 @@
   tags:
     - java
 
+- set_fact:
+    stretch_openjdk8:
+      version_name: "java8"
+      path: "/usr/lib/jvm/java-8-openjdk-amd64"
+    adopt_openjdk8:
+      version_name: "java8"
+      path: "/usr/lib/jvm/jdk8u282-b08"
+      url: "https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u282-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u282b08.tar.gz"
+    adopt_openjdk11:
+      version_name: "java11"
+      path: "/usr/lib/jvm/jdk-11.0.10+9"
+      url: "https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.10%2B9/OpenJDK11U-jdk_x64_linux_hotspot_11.0.10_9.tar.gz"
+  tags:
+    - java
+
+- set_fact:
+    targets: "{{ [ stretch_openjdk8, adopt_openjdk11 ] if is_stretch else [ adopt_openjdk8, adopt_openjdk11 ]}}"
+  tags:
+    - java
+
 - name: Install build tools
   apt:
     name:
@@ -20,30 +40,22 @@
     - java
 
 - name: Install AdoptOpenJDK
-  vars:
-    adopt_openjdk8: "https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u282-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u282b08.tar.gz"
-    adopt_openjdk11: "https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.10%2B9/OpenJDK11U-jdk_x64_linux_hotspot_11.0.10_9.tar.gz"
-    targets: "{{ [ adopt_openjdk11 ] if is_stretch else [ adopt_openjdk8, adopt_openjdk11 ]}}"
   unarchive:
-    src: "{{ item }}"
+    src: "{{ item.url }}"
     dest: "/usr/lib/jvm"
+    creates: "{{ item.path }}"
     remote_src: true
+  when: "{{ item.url is defined }}"
   loop: "{{ targets }}"
   tags:
     - java
 
 - name: Symlink jvm
-  vars:
-    jvms:
-      - src: "{{ 'java-8-openjdk-amd64' if is_stretch else 'jdk8u282-b08' }}"
-        dest: 'java8'
-      - src: 'jdk-11.0.10+9'
-        dest: 'java11'
   file:
-    src: "{{ item.src }}"
-    dest: "/usr/lib/jvm/{{ item.dest }}"
+    src: "{{ item.path | basename }}"
+    dest: "/usr/lib/jvm/{{ item.version_name }}"
     state: link
-  loop: "{{ jvms }}"
+  loop: "{{ targets }}"
   tags:
     - java
 
