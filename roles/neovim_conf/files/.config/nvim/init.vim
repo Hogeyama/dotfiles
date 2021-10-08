@@ -43,6 +43,7 @@ Plug 'AndrewRadev/linediff.vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'Yggdroot/indentLine'
 Plug 'wellle/visual-split.vim'
+Plug 'glidenote/memolist.vim'
 " Plug 'mhinz/vim-startify'
 Plug 'kana/vim-metarw'
 Plug 'mattn/vim-metarw-redmine'
@@ -119,6 +120,8 @@ Plug 'vim-scripts/paredit.vim'
 Plug 'tomtom/tlib_vim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'neovim/node-host', { 'do': 'npm install neovim' }
+Plug 'tpope/vim-obsession'
+Plug 'dhruvasagar/vim-prosession'
 if g:lsp_plugin is 'coc'
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
@@ -219,6 +222,10 @@ let g:clipboard = {
 "" Plugin
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+"memolist{{{
+command! MemoTime MemoNewWithMeta 'time', 'time', 'time'
+"}}}
+
 "floaterm{{{
 let g:floaterm_width = 0.9
 let g:floaterm_height = 0.9
@@ -292,7 +299,7 @@ if g:lsp_plugin is 'coc'
   let g:coc_global_extensions = [
     \ 'coc-json',
     \ 'coc-yaml',
-    \ 'coc-pairs',
+    \ 'coc-prettier',
     \ 'coc-lists',
     \ 'coc-snippets',
     \ 'coc-neosnippet',

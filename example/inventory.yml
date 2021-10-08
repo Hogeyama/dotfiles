@@ -26,6 +26,7 @@ all:
             core.autoCRLF: "false"
             core.autoLF: "false"
             fetch.prune: "true"
+            rebase.missingCommitsCheck: "warn"
             merge.conflictstyle: "diff3"
             merge.ff: "false"
             merge.tool: "my-nvimdiff3"

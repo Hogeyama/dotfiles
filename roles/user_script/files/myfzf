@@ -59,10 +59,12 @@ setup() {
     --hidden
     --no-ignore
     --exclude .git
+    --exclude .hg
     --exclude .hie
     --exclude .direnv
     --exclude dist-newstyle
     --exclude .stack-work
+    --exclude .aws-sam
     .
   )
   RG_OPTS=(
