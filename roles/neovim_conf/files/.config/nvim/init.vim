@@ -120,8 +120,8 @@ Plug 'vim-scripts/paredit.vim'
 Plug 'tomtom/tlib_vim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'neovim/node-host', { 'do': 'npm install neovim' }
-Plug 'tpope/vim-obsession'
-Plug 'dhruvasagar/vim-prosession'
+" Plug 'tpope/vim-obsession'
+" Plug 'dhruvasagar/vim-prosession'
 if g:lsp_plugin is 'coc'
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
@@ -223,7 +223,10 @@ let g:clipboard = {
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "memolist{{{
-command! MemoTime MemoNewWithMeta 'time', 'time', 'time'
+let g:memolist_path = "~/.memo"
+let g:memolist_template_dir_path = "~/.memo/template"
+command! MemoToday MemoNewWithMeta 'note', 'daily', 'daily'
+nnoremap <C-t> :MemoToday<CR>
 "}}}
 
 "floaterm{{{
@@ -307,6 +310,7 @@ if g:lsp_plugin is 'coc'
     " \ 'coc-git'
     " \ 'coc-highlight'
     " \ 'coc-java',
+    " \ 'coc-pyright',
   function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~ '\s'

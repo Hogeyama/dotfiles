@@ -32,3 +32,23 @@ options     head
 	  ${2}
 	  ;;
 	${0}
+
+snippet     template-bash
+options     head
+	#!/usr/bin/env bash
+	set -euo pipefail
+	
+	log() {
+	  printf "%s\\n" "$*"
+	}
+	
+	while [ $# -gt 0 ]; do
+	  case \$1 in
+	    --help)
+	      log "not implemented"
+	      ;;
+	    *)
+	      ;;
+	  esac
+	  shift
+	done
