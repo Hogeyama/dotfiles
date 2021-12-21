@@ -66,9 +66,10 @@
   tags:
     - java
 
+# List of mirror site: https://download.eclipse.org/oomph/archive/mirror.php?location=jdtls/snapshots
 - name: Install jdt.ls
   unarchive:
-    src: https://ftp.yz.yamagata-u.ac.jp/pub/eclipse/jdtls/snapshots/jdt-language-server-latest.tar.gz
+    src: http://ftp.kaist.ac.kr/eclipse/jdtls/snapshots/jdt-language-server-latest.tar.gz
     dest: /usr/local/share/jdt-language-server
     remote_src: true
   ignore_errors: "{{ ansible_check_mode }}"

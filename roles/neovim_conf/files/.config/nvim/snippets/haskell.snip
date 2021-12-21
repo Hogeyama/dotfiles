@@ -66,18 +66,8 @@ options     head
 abbr        {-# OPTIONS_GHC ... #-}
 	{-# OPTIONS_GHC ${1} #-}
 
-snippet     Wall
+snippet     brittany-disable-next-binding
+abbr        brittany-disable
 options     head
-abbr        {-# OPTIONS_GHC -Wall #-}
-	{-# OPTIONS_GHC -Wall #-}
-
-snippet     extentions
-options     head
-	{-# LANGUAGE MultiWayIf             #-}
-	{-# LANGUAGE LambdaCase             #-}
-	{-# LANGUAGE TypeApplications       #-}
-	{-# LANGUAGE ScopedTypeVariables    #-}
-	{-# OPTIONS_GHC -Wall               #-}
-	{-# OPTIONS_GHC -Wno-unused-imports #-}
-
+	-- brittany-disable-next-binding
 

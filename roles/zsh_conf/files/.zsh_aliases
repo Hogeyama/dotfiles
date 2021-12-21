@@ -65,7 +65,7 @@ with-env() {
     esac
     shift
   done
-  env -v $(grep -v ^# "$env" | xargs) $cmd
+  env $(grep -v ^# "$env" | xargs) $cmd
 }
 
 # vim

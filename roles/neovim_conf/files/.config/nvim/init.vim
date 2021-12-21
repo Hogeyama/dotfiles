@@ -43,6 +43,7 @@ Plug 'AndrewRadev/linediff.vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'Yggdroot/indentLine'
 Plug 'wellle/visual-split.vim'
+Plug 'glidenote/memolist.vim'
 " Plug 'mhinz/vim-startify'
 Plug 'kana/vim-metarw'
 Plug 'mattn/vim-metarw-redmine'
@@ -119,6 +120,8 @@ Plug 'vim-scripts/paredit.vim'
 Plug 'tomtom/tlib_vim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'neovim/node-host', { 'do': 'npm install neovim' }
+" Plug 'tpope/vim-obsession'
+" Plug 'dhruvasagar/vim-prosession'
 if g:lsp_plugin is 'coc'
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
@@ -219,6 +222,13 @@ let g:clipboard = {
 "" Plugin
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+"memolist{{{
+let g:memolist_path = "~/.memo"
+let g:memolist_template_dir_path = "~/.memo/template"
+command! MemoToday MemoNewWithMeta 'note', 'daily', 'daily'
+nnoremap <C-t> :MemoToday<CR>
+"}}}
+
 "floaterm{{{
 let g:floaterm_width = 0.9
 let g:floaterm_height = 0.9
@@ -292,7 +302,7 @@ if g:lsp_plugin is 'coc'
   let g:coc_global_extensions = [
     \ 'coc-json',
     \ 'coc-yaml',
-    \ 'coc-pairs',
+    \ 'coc-prettier',
     \ 'coc-lists',
     \ 'coc-snippets',
     \ 'coc-neosnippet',
@@ -300,6 +310,7 @@ if g:lsp_plugin is 'coc'
     " \ 'coc-git'
     " \ 'coc-highlight'
     " \ 'coc-java',
+    " \ 'coc-pyright',
   function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~ '\s'
