@@ -65,6 +65,8 @@ setup() {
     --exclude dist-newstyle
     --exclude .stack-work
     --exclude .aws-sam
+    --exclude .next
+    --exclude node_modules
     .
   )
   RG_OPTS=(

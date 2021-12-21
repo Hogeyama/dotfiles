@@ -1,4 +1,16 @@
 {
+  "suggest.keepCompleteopt": true,
+  "diagnostic.virtualText": true,
+  "diagnostic.virtualTextPrefix": "-- ",
+  "diagnostic.enableSign": false,
+  "coc.preferences.useQuickfixForLocations": false,
+  "coc.preferences.formatOnSaveFiletypes": [
+    //"typescript",
+    //"json",
+    "typescriptreact",
+    "haskell"
+  ],
+  "codeLens.enable": true,
   "languageserver": {
     "haskell": {
       "command": "haskell-language-server-wrapper",
@@ -13,6 +25,9 @@
       "filetypes": ["haskell", "lhaskell"],
       "initializationOptions": {
         "haskell": {
+          // "formattingProvider": "floskell"
+          // "formattingProvider": "fourmolu"
+          // "formattingProvider": "ormolu"
           "formattingProvider": "brittany"
         }
       }
@@ -26,6 +41,10 @@
       "command": "bash-language-server",
       "args": ["start"],
       "filetypes": ["sh"]
+    },
+    "nix": {
+      "command": "rnix-lsp",
+      "filetypes": ["nix"]
     }
   },
   "java.home": "/usr/lib/jvm/java11",
@@ -43,11 +62,11 @@
       "path": "/usr/lib/jvm/java11"
     }
   ],
-  "suggest.keepCompleteopt": true,
-  "diagnostic.virtualText": true,
-  "diagnostic.virtualTextPrefix": "── ",
-  "diagnostic.enableSign": false,
-  "coc.preferences.useQuickfixForLocations": true,
-  "coc.preferences.formatOnSaveFiletypes": ["haskell"],
-  "codeLens.enable": true
+  "yaml.customTags": [
+    // CloudFormation
+    "!Ref",
+    "!Sub",
+    "!ImportValue",
+    "!GetAtt"
+  ]
 }

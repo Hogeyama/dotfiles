@@ -62,6 +62,7 @@ plugins=(
   z
   docker
   docker-compose
+  poetry
   # bundler
   # dotenv
   # rake

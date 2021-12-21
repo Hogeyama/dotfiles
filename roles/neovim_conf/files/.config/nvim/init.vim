@@ -120,8 +120,6 @@ Plug 'vim-scripts/paredit.vim'
 Plug 'tomtom/tlib_vim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'neovim/node-host', { 'do': 'npm install neovim' }
-" Plug 'tpope/vim-obsession'
-" Plug 'dhruvasagar/vim-prosession'
 if g:lsp_plugin is 'coc'
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
@@ -232,6 +230,10 @@ nnoremap <C-t> :MemoToday<CR>
 "floaterm{{{
 let g:floaterm_width = 0.9
 let g:floaterm_height = 0.9
+nnoremap <F6> :FloatermToggle shell6<CR>
+tnoremap <F6> <C-\><C-n>:FloatermToggle shell6<CR>
+nnoremap <F7> :FloatermToggle shell7<CR>
+tnoremap <F7> <C-\><C-n>:FloatermToggle shell7<CR>
 nnoremap <F8> :ToggleFloatermFzf<CR>
 tnoremap <F8> <C-\><C-n>:ToggleFloatermFzf<CR>
 command! ToggleFloatermFzf call ToggleFloatermFzfFun()
@@ -273,6 +275,7 @@ if g:lsp_plugin is 'coc'
   nmap     [lsp]p <Plug>(coc-diagnostics-prev)
   nnoremap [lsp]c :CocCommand<CR>
   nnoremap [lsp]d :CocDiagnostics<CR>
+  nnoremap [lsp]D :call CocActionAsync("diagnosticList", {err,res -> SetQf(err,res)})<CR>
   nnoremap [lsp]h :call CocActionAsync('doHover')<CR>
   nnoremap <C-h>  :call CocActionAsync('doHover')<CR>
 elseif g:lsp_plugin is 'nvim-hs-lsp'
@@ -302,6 +305,7 @@ if g:lsp_plugin is 'coc'
   let g:coc_global_extensions = [
     \ 'coc-json',
     \ 'coc-yaml',
+    \ 'coc-pairs',
     \ 'coc-prettier',
     \ 'coc-lists',
     \ 'coc-snippets',
@@ -332,6 +336,25 @@ if g:lsp_plugin is 'coc'
   vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
   vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
   autocmd CursorHold * silent call CocActionAsync('highlight')
+  nnoremap <Space>e :CocCommand explorer<CR>
+
+  function! SetQf(cocList) abort
+    let qfList = map(a:cocList, { ->
+        \ { 'filename': v:val.file
+        \ , 'lnum'    : v:val.lnum
+        \ , 'col'     : v:val.col
+        \ , 'text'    : v:val.message
+        \ , 'type'    : v:val.severity is 'Error'       ? 'E'
+        \             : v:val.severity is 'Hint'        ? 'H'
+        \             : v:val.severity is 'Warning'     ? 'W'
+        \             : v:val.severity is 'Information' ? 'I'
+        \             : "I"
+        \ , 'vcol'    : 0
+        \ }
+        \ })
+    call setqflist(qfList, "r")
+  endfunction
+  autocmd User CocDiagnosticChange :call CocActionAsync("diagnosticList", {err,res -> SetQf(res)})<CR>
 endif
 "}}}
 
